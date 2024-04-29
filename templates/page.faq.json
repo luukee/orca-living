@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "custom_css": [
+        "h1 {color: black; margin: 0 0 var(--base-gutter); font-size: 2.4rem;}"
+      ],
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "315cbd16-cc45-4657-a41f-5c8e7d265a5e": {
+      "type": "nine15--accordion-page",
+      "settings": {
+        "title_style": "",
+        "custom_css": "== h1{\nfont-size: 2.4rem;\ntext-align:start;\nmargin-left: 10px;\n}\n== h2{\nfont-size: 18px;\n}\n== h3{\nfont-size: 15px;\n}\n== .rte{\nfont-size: 15px;\n}\n== .sidebar-link  {\nfont-size: 15px;\n}"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "315cbd16-cc45-4657-a41f-5c8e7d265a5e"
+  ]
+}

@@ -1,0 +1,21 @@
+{% comment %}
+  
+  {% render 'snippet--grid-widths', itemsPerRow: 3 %}
+
+{% endcomment %}
+{% liquid
+  case perRow: 3
+    when 1  
+      assign width = ''
+    when 2 
+      assign width = 'medium-up--one-half'
+    when 3  
+      assign width = 'medium-up--one-third'
+    when 5 or 9 or 10 
+      assign width = 'medium--one-third large-up--one-fifth'
+    when 6 or 11 or 12 
+      assign width = 'medium--one-third large-up--one-sixth'
+    else  
+      assign width = 'medium-up--one-quarter'
+  endcase 
+%}{{width}}

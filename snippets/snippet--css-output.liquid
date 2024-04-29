@@ -1,0 +1,43 @@
+{% liquid 
+
+  assign show         = false 
+  assign css          = blank
+  
+  unless lazy 
+    assign lazy       = false
+  else
+    assign preload    = false
+  endunless 
+
+  if lnk != blank 
+    assign show       = true 
+  endif 
+
+  assign designMode   = true
+  assign designMode   = request.design_mode
+
+  unless lnk contains 'https'
+    assign lnk        = lnk | asset_url
+  endunless 
+
+%}
+{% comment %}
+    
+  {% render 'snippet--css-output', lazy: true, preload: true, lnk: 'base.min.css' %}
+  {% render 'snippet--css-output', lazy: false, preload: false, lnk: 'base.min.css' %}
+
+{% endcomment %}
+{% if show == true %}
+  {% if lazy %}
+    <link 
+      rel="stylesheet" 
+      as="style"
+      {% if id %}id="{{id}}"{% endif %} 
+      {% if preload %}rel="preload"{% endif %} 
+      {% unless designMode %}class="lazyload" data-{% endunless %}href="{{ lnk }}" 
+    >   
+    <noscript>{{ lnk | stylesheet_tag }}</noscript>
+  {% else %}
+    <link {% if id %}id="{{id}}"{% endif %} rel="stylesheet" href="{{ lnk }}">   
+  {% endif %}
+{% endif %}

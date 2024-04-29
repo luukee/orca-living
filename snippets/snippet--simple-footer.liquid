@@ -1,0 +1,83 @@
+<!-- snippets/snippet--simple-menu -->
+
+<div class="simple-footer page-width border-top">
+  <div class="menus">
+    <div class="list-menu-wrapper">
+      <p>Product</p>
+      <ul class="list-menu">
+        {% for link in linklists['shop-footer'].links %}
+          <li class="list-menu__item link">
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="list-menu-wrapper">
+      <p>Trade</p>
+      <ul class="list-menu">
+        {% for link in linklists.trade.links %}
+          <li class="list-menu__item link">
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="list-menu-wrapper">
+      <p>About</p>
+      <ul class="list-menu">
+        {% for link in linklists['about-mobile'].links %}
+          <li class="list-menu__item link">
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div style="display:block !important; pointer-events: none">
+  </div>
+  <div class="klaviyo-form">
+    <div>
+      <p>Join Field Notes</p>
+      {% render 'klaviyo-form' %}
+    </div>
+  </div>
+
+  <div class="copyright">
+    <small>
+      Copyright {{ 'OR.CA Design LLC' | link_to: routes.root_url }}
+      {{ 'now' | date: '%Y' }}. &ensp;
+      <a href="/pages/terms-conditions">Terms and Conditions</a> / 
+      <a href="/pages/privacy-policy">Privacy Policy</a>
+    </small>
+  </div>
+
+  <div class="permissions">
+    <small> Please don’t use imagery without permission, thanks. </small>
+  </div>
+  {% comment %}
+    <div class="page-width border-top main--content">
+      <div>
+        <small>
+          Copyright {{ 'OR.CA Design LLC' | link_to: routes.root_url }}
+          {{ 'now' | date: '%Y' }}.
+        </small>
+
+        <ul class="list-menu list-menu--inline">
+          {%- for link in linklists.footer.links -%}
+            <li>
+              <small class="list-menu__item ">
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </small>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <div>
+        <small style="white-space: nowrap;"> Please don’t use imagery without permission, thanks. </small>
+      </div>
+    </div>
+  {% endcomment %}
+</div>

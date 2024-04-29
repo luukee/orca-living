@@ -1,0 +1,25 @@
+<!-- snippets/snippet--article-feed -->
+{% liquid 
+  assign feed = ''
+%}
+
+{% capture feed %}
+  {% for feedArticle in blog.articles %}
+    {% unless feedArticle.handle == article.handle %}
+      <div class="article-template__blog-article">
+        <a href="{{feedArticle.url}}" class="link">
+          <h3 class="link--text">{{feedArticle.title}}</h3>
+        </a>
+      </div>
+    {% endunless %}
+  {% endfor %}
+{% endcapture %}
+
+{% if feed != '' and feed != blank %}
+  <div class="article-template__blog-feed">
+    <h2><a class="link h2" href="{{blog.url}}">{{blog.title}}</a></h2>
+    <div class="article-template__blog-articles">
+      {{feed}}
+    </div>
+  </div>
+{% endif %}

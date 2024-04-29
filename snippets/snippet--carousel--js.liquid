@@ -1,0 +1,50 @@
+<script src="{{'splide.min.js' | asset_url}}"></script>
+
+
+
+
+{% liquid 
+
+  render 'css-splide'
+
+%}
+
+<script>
+  let splide;
+  let initialSlides;
+
+  waitForJavascript(function() {
+    $(document).ready(function() {
+      splide = new Splide('.splide', {
+        heightRatio: 1,
+        cover: true,
+        pagination: false
+      });
+      splide.mount();
+      initialSlides = [... splide.Components.Slides.get()];
+      updateCarouselSlides();
+    });
+  });
+
+// Global function
+  function updateCarouselSlides() {
+    const optionValue = document.querySelector('.splide').getAttribute('data-current');
+    if (optionValue == "default title") 
+      return
+    
+    let newSlides = [];
+    initialSlides.forEach((slide) => {
+      if (slide.slide.getAttribute('data-option') == optionValue) {
+        newSlides.push(slide);
+      }
+    });
+    splide.Components.Slides.remove('*');
+
+    if (newSlides.length == 0) {
+      document.querySelector('.splide').style.display = "none"
+      return
+    }
+    document.querySelector('.splide').style.display = "block"
+    splide.Components.Slides.add(newSlides.map((slide) => slide.slide));
+  }
+</script>

@@ -1,0 +1,334 @@
+<!-- snippets/head--scripts -->
+
+<script type="text/javascript">
+  // if functions are still firing too quickly
+  function waitForJavascript(method) {
+    if (window.jQuery && typeof pluginJSisLoaded !== 'undefined') {
+      // document.addEventListener("DOMContentLoaded", function() {
+      method();
+      // })
+    } else {
+      setTimeout(function () {
+        waitForJavascript(method);
+      }, 50);
+    }
+  }
+  // wrap your jquery in this.
+  waitForJavascript(function () {
+    // do stuff
+  });
+</script>
+
+{% capture cust %}{% if customer %}{{customer.name}}{% else %}Logged Out{% endif %}{% endcapture %}
+<script type="text/javascript">
+  
+  
+  
+  
+  
+  
+  
+ 
+  var line =      '- - - - - - - - - - - - - ',
+    ul =          '-----------------',
+    trpl =          '\n\n\n',
+    dbl =           '\n\n',
+    sgl =           '\n',
+    headerTitle =   'Theme Information',
+    loggedIn =    'Customer:      {{ cust }}',
+    themeName =     'Theme Name:    {{ theme.name }}',
+    pageTitle =     'Page Title:    {{ page_title | replace: "'","" }}',
+    themeID =       'Theme ID:      {{ theme.id }}',
+    templateName =  'Template:      {{ template }}';
+  console.log(
+    line + 
+    trpl + 
+    headerTitle + sgl + ul + dbl + 
+    themeName + dbl + 
+    pageTitle + dbl +
+    templateName + dbl + 
+    themeID +
+    // themeID + dbl + 
+    // loggedIn + 
+    trpl + 
+    line + 
+    dbl
+  );
+
+  console.time('counter');
+  document.addEventListener("DOMContentLoaded", function() {
+
+    setTimeout(function (argument) {
+      LazyImages()
+      document.body.classList.add('site-loaded');
+    },0)
+
+    updateHeightVar('.section-header', '--header-height')
+    // updateHeightVar('.announcement-bar-section', '--announce-height')
+    updateHeightVar('html', '--view-height')
+    
+    disableDuplicateCSS();
+    disableDuplicateInlineCSS();
+
+    var lazyElements = 'link.lazyload, iframe.lazyload';
+    var lazyScripts  = 'script.lazyload';
+    if (!Shopify.designMode) {
+      checkAndLoad(lazyElements,true)
+      // checkAndLoad(lazyScripts,false)
+    } else {
+      checkAndLoad(lazyElements,false) 
+      // checkAndLoad(lazyScripts,false)
+    }
+
+  });
+
+  function disableDuplicateCSS() {
+    // disables duplicate css link files.
+    var cssNodes    = document.getElementsByTagName("link"),
+        foundNodes  = [],
+        splitFirst  = 'assets/',
+        splitLast   = '.css';
+    for (const element of cssNodes) {
+      var el        = element,
+          elHref    = el.href,
+          lnk       = elHref.split(splitFirst).pop().split(splitLast)[0];
+      if (elHref.includes(splitFirst)) {
+        if (foundNodes.includes(lnk)) {
+          el.setAttribute('disabled', true);
+        } else {
+          foundNodes.push(lnk);
+        }
+      }
+    }
+  }
+
+  function disableDuplicateInlineCSS() {
+    // disables duplicate inline css style files.
+    var cssNodes    = document.getElementsByTagName("style"),
+        foundInlineCSS = [];
+    for (const element of cssNodes) {
+      var el        = element,
+          elData    = el.dataset.id,
+          lnk       = elData;
+      if (typeof elData !== 'undefined') {
+        if (foundInlineCSS.includes(lnk)) {
+          // el.setAttribute('disabled', true);
+          el.remove();
+        } else {
+          foundInlineCSS.push(lnk);
+        }
+      }
+    }
+  }
+
+  function checkAndLoad(lazyElements,loadLazy) {
+    var lazyItems = [].slice.call(document.querySelectorAll(lazyElements));
+    if (loadLazy != false) {
+      var visibleLinks = [];
+      lazyItems.forEach(function(link, index) {
+        var parLink = parentVisible(link);
+        if (parentVisible(link)) {
+          visibleLinks.push(parLink);
+        } else {
+          loadItem(link);
+        }
+      })
+      itemIsVisible(visibleLinks,lazyItems);
+    } else {
+      loadAllItems(lazyItems) 
+    }
+
+    function parentVisible(elem) {
+      var count,
+          elemPar,
+          nodes = [];
+      nodes.push(elem);
+      while( (elem.parentNode && elem.parentNode.nodeName != 'BODY' && elem.parentNode.nodeName != 'HTML' ) || count < 10 ) {
+        count++
+        nodes.unshift(elem.parentNode);
+        elemPar = elem.parentNode;
+        if ( elemPar ) {
+          var styles = window.getComputedStyle(elemPar)
+          if ( styles.display === 'none' || styles.visibility === 'hidden' || styles.opacity === '0' ) {
+            return false;
+          } else if (elemPar.nodeName == 'HEAD') {
+            return elemPar;
+            break
+          } else {
+            return elemPar;
+            break
+          }
+        }
+      }
+      return elemPar;
+    }
+    
+    function loadItem(el) {
+      // el.media='all';
+      if (el.nodeName == 'LINK') {
+        el.href = el.dataset.href;
+      } else {
+        el.src = el.dataset.src;
+      }
+    }
+
+    function itemIsVisible(arr, lazyItems) {
+      if ("IntersectionObserver" in window && "IntersectionObserverEntry" in window && "intersectionRatio" in window.IntersectionObserverEntry.prototype) {
+        let elObserver = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
+            var el = entry.target;
+            // console.log(el)
+            if ( entry.isIntersecting || ( window.scrollY > (el.offsetTop + el.offsetHeight) ) ) {
+              var innerItems = el.querySelectorAll(lazyElements);
+              innerItems.forEach(function(item){
+                loadItem(item);
+              })
+              elObserver.unobserve(el);
+            }
+          });
+        });
+        arr.forEach(function(el) {
+          elObserver.observe(el);
+        });
+      } else {
+        console.log('observer failed')
+        loadAllItems(lazyItems)
+      }
+    }
+
+    function loadAllItems(lazyItems) {
+      lazyItems.forEach(function(item, index) {
+        loadItem(item);
+        // console.log(item)
+      });
+    }
+
+  }
+
+  function LazyImages() {
+
+
+    // To Do: figure out how to only see "visible" images, not ones hidden in menus till needed
+    function isVisible(elem) {
+      const styles = window.getComputedStyle(elem)      
+      return styles.display !== 'none' && styles.visibility !== 'hidden'
+      // return styles.display !== 'none' && styles.visibility !== 'hidden' && parentVisible(elem)
+    }
+    var lazyClass = 'lazyload',
+        loadedClass = 'lazyloaded',
+        ignoreClass = 'defer',
+        lazyImages = [].slice.call(document.querySelectorAll('img.'+lazyClass+':not(.'+ignoreClass+')'));
+    
+    setTimeout(function (argument) {
+      if ("IntersectionObserver" in window && "IntersectionObserverEntry" in window && "intersectionRatio" in window.IntersectionObserverEntry.prototype) {
+        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting ) {
+
+              let lazyImage = entry.target,
+                  lazySrc = lazyImage.dataset.src,
+                  lazySrcSet = lazyImage.dataset.srcset,
+                  lazySizes = lazyImage.dataset.sizes;
+              // console.log(lazySizes)
+
+              if (lazyImage.offsetWidth < window.innerWidth) {
+                let newSize = Math.round(lazyImage.offsetWidth * 2) + 'px';
+                let newLazySize = '(min-width: ' + window.innerWidth + 'px) ' + newSize + ',';
+                lazySizes = newLazySize + lazySizes;
+              }
+
+
+              lazyImage.src = lazySrc;
+              lazyImage.srcset = lazySrcSet;
+              lazyImage.sizes = lazySizes;
+              lazyImage.addEventListener('load', loaded)
+
+              function loaded() {
+                lazyImage.classList.remove(lazyClass);
+                lazyImage.classList.add(loadedClass);
+                lazyImageObserver.unobserve(lazyImage);
+
+              }
+            }
+          });
+        });
+        lazyImages.forEach(function(lazyImage) {
+          lazyImageObserver.observe(lazyImage);
+        });
+      } else {
+        var lazyloadIThrottleTimeout;
+        function lazyload () {
+          if (lazyloadIThrottleTimeout) {
+            clearTimeout(lazyloadIThrottleTimeout);
+          }    
+          lazyloadIThrottleTimeout = setTimeout(function() {
+            var scrollTop = window.pageYOffset;
+            lazyImages.forEach(function(img) {
+              if (img.offsetTop < (window.innerHeight + scrollTop)) {
+
+
+
+                img.src = img.dataset.src;
+                img.srcset = img.dataset.srcset;
+                img.sizes = img.dataset.sizes;
+                img.classList.remove(lazyClass);
+                // console.log(img)
+              }
+            });
+            if (lazyImages.length == 0) { 
+              document.removeEventListener("scroll", lazyload);
+              window.removeEventListener("load", lazyload);
+              window.removeEventListener("resize", lazyload);
+              window.removeEventListener("orientationChange", lazyload);
+            }
+          }, 20);
+        }
+        document.addEventListener("scroll", lazyload);
+        window.addEventListener("load", lazyload);
+        window.addEventListener("resize", lazyload);
+        window.addEventListener("orientationChange", lazyload);
+      }
+    },100)
+
+  }
+  
+  function updateHeightVar(el, v) {
+    var prevH = 0;
+    var itm = document.querySelector(el);
+
+    runTwice()
+    window.addEventListener('resize', runTwice);
+    window.addEventListener('scroll', runTwice);
+
+    function runTwice() {
+      initH()
+      setTimeout(function() {
+        initH(true)
+      }, 100);
+    }
+
+    function initH(force) {
+      var H = itm.clientHeight;
+      if (H != prevH || force == true) {
+        // console.log('run') 
+        // Then we set the value in the --header-height custom property to the root of the document
+        document.documentElement.style.setProperty(v, `${H}px`);
+        prevH = H;
+      }
+    }
+  
+  }
+
+
+
+
+
+
+
+
+</script>
+
+<script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'plugins.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'global.js' | asset_url }}" defer="defer"></script>

@@ -1,0 +1,55 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "link_list_bqw989": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Product",
+            "menu": "shop-footer"
+          }
+        },
+        "link_list_RcEbEa": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Trade",
+            "menu": "trade"
+          }
+        },
+        "link_list_J7AjwP": {
+          "type": "link_list",
+          "settings": {
+            "heading": "About",
+            "menu": "about-mobile"
+          }
+        }
+      },
+      "block_order": [
+        "link_list_bqw989",
+        "link_list_RcEbEa",
+        "link_list_J7AjwP"
+      ],
+      "settings": {
+        "color_scheme": "background-1",
+        "custom_liquid": "<small>\n      Copyright {{ 'OR.CA Design LLC' | link_to: routes.root_url }}\n      {{ 'now' | date: '%Y' }}. &ensp;\n      <a href=\"/pages/terms-of-use\">Terms of Use</a> / \n      <a href=\"/pages/privacy-policy\">Privacy Policy</a>\n    </small>",
+        "newsletter_enable": false,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": false,
+        "show_policy": true,
+        "margin_top": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

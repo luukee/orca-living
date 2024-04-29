@@ -1,0 +1,16 @@
+<!-- snippets/snippet--article-gallery -->
+{% liquid 
+  assign mf = article.metafields.custom
+  assign images  = mf.gallery.value
+%}
+<div class="article-template__gallery">
+  <div class="cell half_gutter cell_margin_bottom vert-top ">
+    {% for img in images %}
+      <div class="cell__item {% comment %}large-up--one-half{% endcomment %}">
+        <!-- <a href="{{img|img_url:'master'}}"> -->
+          {% render 'snippet--image', img: img %}
+        <!-- </a> -->
+      </div>
+    {% endfor %}
+  </div>
+</div>

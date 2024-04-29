@@ -1,0 +1,1 @@
+{"version":3,"sources":["section-related-products.scss"],"names":[],"mappings":"AAAA,kBACA,aAAA,CAGA,2BACA,eAAA","file":"section-related-products.css","sourcesContent":["@import '../assets/mixins';.related-products {\n  display: block;\n}\n\n.related-products__heading {\n  margin: 0 0 3rem;\n}\n"]}

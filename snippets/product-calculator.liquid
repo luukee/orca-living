@@ -1,0 +1,70 @@
+{% liquid 
+
+  assign matchFound      = false
+
+  for collection in product.collections
+    assign colHndl = collection.handle
+    if colHndl == 'pavers'
+      assign matchFound  = true
+      break
+    endif
+  endfor
+
+%}
+
+{% if matchFound %}
+  <!-- snippets/product-calculator -->
+
+  {{ 'calculator-module.css' | asset_url | stylesheet_tag }}
+
+  <calculator-module class="calculatorModule">
+    <calculator id="calculator" data-sectionId="{{ section.id }}" class="">
+      <calculator-close class="background-close">
+        <span class="visually-hidden">Close Modal</span>
+      </calculator-close>
+      {% if product.metafields.custom.footage_calculator == true %}
+        <calBtn>
+          <button>Project Calculator</button>
+        </calBtn>
+      {% endif %}
+      <calculator-container class="calculator-container">
+        <div class="rte">
+          <h2 class="h4">Project Calculator</h2>
+          <p>Please enter the square footage of your project area in the field below.</p>
+          <p>We suggest adding at least 10% overage to account for any breakage.</p>
+          <p class="thin-note">Please note we only sell thin pavers by the box, which is 7.7 square feet per box. </p>
+        </div>
+        <div class="project-area">
+          <calculate name="calculator">
+            <h3>Project Area:</h3>
+            <div class="calculator__input">
+              <input type="number" id="area" min="1" placeholder="Enter your square footage here…">
+              <span>sqft.</span>
+            </div>
+            <button type="button" id="calc-btn" class="button button--primary">Calculate</button>
+          </calculate>
+          <div class="recommendations">
+            <h3>Our Recommendation:</h3>
+            <p>For <span class="inputArea"></span> sqft. We recommend purchasing <span class="recomQty"></span> {% if product.type == 'Paver' %} pavers. {%endif%} <div class="palletEstimate">   Units for proper coverage. [  <span class="boxes"></span>  ] boxes (<span class="bricksInBox"></span> pavers per box).</div></p>
+          </div>
+          <div class="calculator__finish-buttons">
+            <quantity-updater>
+              <button disabled class="button button--primary">Update Quantity</button>
+            </quantity-updater>
+            
+            <calculator-close>
+              <button>Close</button>
+            </calculator-close>
+          </div>            
+        </div>
+      </calculator-container>
+      <script type="application/json" class="productMetafields" id="ProductMetafields-{{ product.id }}">
+        [
+        {% for variant in product.variants %}
+         {"{{ variant.id }}" : {"width" : "{{ variant.metafields.custom.width }}" ,"length":"{{ variant.metafields.custom.length }}","unitsPerSqFt":"{{ variant.metafields.custom.units_per_sqft }}"} }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+        ]
+      </script>
+    </calculator>
+  </calculator-module>
+{% endif %}

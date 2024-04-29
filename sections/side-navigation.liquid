@@ -1,0 +1,173 @@
+<!-- sections/side-navigation -->
+
+{{ 'side-navigation.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+
+{% liquid 
+  assign makeh1       = section.settings.make_h1
+
+  assign headingEl    = 'h2'
+  if makeh1 == true and template.name == 'collection'
+    assign headingEl  = 'h1'
+  endif
+%}
+
+<div class="gradient section--side-navigation">
+  <div class="page-width section-{{ section.id }}-padding">
+
+    {% if section.settings.title %}
+      <{{headingEl}} class="h4">{{section.settings.title}}</{{headingEl}}>
+    {% endif %}
+
+    <ul class="list-menu" role="list">
+      {%- for link in section.settings.menu.links -%}
+        {% liquid 
+          assign isCurrent          = false 
+          assign linkHandle         = link.handle 
+
+          assign collectionHandle   = collection.handle 
+          capture collectionURL 
+            render 'snippet--url-query', queryString: 'collection'
+          endcapture
+          if collectionURL != ''
+            if link.url contains collectionURL
+              assign isCurrent      = true 
+            endif
+          endif
+
+          if link.current
+            assign isCurrent        = true 
+          endif 
+
+          if collectionHandle == linkHandle
+            assign isCurrent        = true
+          endif 
+
+          assign linkURL            = link.url
+          if isCurrent and template.name != 'article'
+            assign linkURL          = linkURL | split: '/tagged' | first
+          endif 
+
+          for tag in article.tags
+            assign linkHndl         = link.url | handleize
+            assign tagHndl          = tag |handleize 
+            if linkHndl contains tagHndl
+              assign isCurrent      = true
+              break
+            endif 
+          endfor 
+
+          assign ChildLinkSize      = link.links | size
+        %}
+        <li>
+          <a href="{{ linkURL }}" class=" list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
+            {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+            {{ link.title | escape }}
+            {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+          </a>
+          {% if isCurrent %}
+            {%- if ChildLinkSize > 0 and template.name == 'collection' -%}
+              <ul class="menu-drawer__menu list-menu medium-down--hide" role="list">
+                {%- for childlink in link.links -%}
+                  {% liquid 
+                    assign showChildLink      = false
+                    assign isCurrentInner     = false
+                    assign taggedHandle       = ''
+                    assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
+                    for tag in current_tags
+                      assign taggedHandle     = tag | handleize | replace: '_',''
+                    endfor 
+                    assign currentChildLink   = childlink.handle | handleize | replace: '_',''
+                    if currentChildLink contains taggedHandle and taggedHandle != ''
+                      assign isCurrentInner   = true
+                    endif
+                    if allTagsHandles contains currentChildLink
+                      assign showChildLink    = true 
+                    endif 
+                  %}
+                  {% if showChildLink %}
+                    <li>
+                      <a href="{{ childlink.url }}" class=" list-menu__item link link--text focus-inset {% if isCurrentInner %} menu-item--active{% endif %}">
+                        {{ childlink.title | escape }}
+                      </a>
+                    </li>
+                  {% endif %}
+                {%- endfor -%}  
+              </ul>          
+            {%- endif -%}            
+          {% endif %}
+        </li>
+      {%- endfor -%}
+    </ul>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Side Navigation",
+  "tag": "section",
+  "class": "section side-navigation",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type":"checkbox",
+      "id":"make_h1",
+      "label": "Make title an H1"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Side Navigation"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "presets": [
+    {
+      "name": "Side Navigation"
+    }
+  ]
+}
+{% endschema %}

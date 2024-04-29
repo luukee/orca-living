@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "custom_css": [
+        "h1 {color: black; margin: 0 0 var(--base-gutter); font-size: 2.4rem;}"
+      ],
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "1688584634d9b03688": {
+      "type": "apps",
+      "blocks": {
+        "1df9c741-d910-46c5-aefd-50dd5bb0645a": {
+          "type": "shopify://apps/helium-customer-fields/blocks/app-block/bab58598-3e6a-4377-aaaa-97189b15f131",
+          "settings": {
+            "form_id": "PytVkY",
+            "width": 600,
+            "vertical_spacing": 60,
+            "horizontal_spacing": 0
+          }
+        }
+      },
+      "block_order": [
+        "1df9c741-d910-46c5-aefd-50dd5bb0645a"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1688584634d9b03688"
+  ]
+}

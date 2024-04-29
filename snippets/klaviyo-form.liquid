@@ -1,0 +1,65 @@
+{% comment %} This should be the id from the list not form {% endcomment %}
+{% assign formId = 'X9NHqL' %}
+<form
+  id="{{formId}}"
+  class="klaviyo_gdpr_embed_{{formId}} newsletter-form"
+  action="//manage.kmail-lists.com/subscriptions/subscribe"
+  data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe"
+  method="GET"
+  target="_blank"
+  novalidate="novalidate"
+>
+  <div class="form">
+    <div class="wrapper">
+      <div class="mc-field-group input-group__field">
+        <input type="hidden" name="g" value="{{formId}}">
+        <input type="hidden" name="$fields" value="tag">
+        <input type="hidden" name="tag" value="shopify sign-up">
+        <span class="visually-hidden label-hidden" for="k_id_email_footer">Newsletter Sign Up</span>
+        <input
+          class="newsletter__input"
+          type="email"
+          value=""
+          name="email"
+          id="k_id_email_footer"
+          placeholder="Enter your email address"
+        >
+        <button type="submit">
+          {% render 'icon-caret' %}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="klaviyo_messages">
+    <div class="success_message form-message form-message--success" style="display:none;">
+      thank you for subscribing
+    </div>
+    <div class="error_message form-message form-message--error" style="display:none;">
+      We're Sorry! Something went wrong!
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
+<script type="text/javascript">
+  lnkDelay = '200'; // Amount of time between Checks
+  var lnkExist = setInterval(function () {
+    lnkObject = $('link[href*="klaviyo_subscribe.css"]');
+    if (lnkObject.length) {
+      clearInterval(lnkExist);
+      setTimeout(function () {
+        lnkObject[0].disabled = true;
+        console.log('Disabled Conflicting Styles');
+      }, 50);
+    }
+  }, lnkDelay);
+  KlaviyoSubscribe.attachToForms('#{{formId}}', {
+    hide_form_on_success: true,
+    custom_success_message: true,
+    error: function ($form) {
+      console.log('failure?');
+      console.log($form);
+    },
+    success: function ($form) {},
+  });
+</script>

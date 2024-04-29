@@ -1,0 +1,32 @@
+{%- liquid
+  unless queryString 
+    assign queryString    = ''
+  endunless 
+  if queryString != '' and queryString != blank
+    assign amp            = '&'
+    assign qst            = '?'
+    assign eql            = '='
+    assign pageUrl        = content_for_header | split: '"pageurl":"' | last | split:'"' | first | split: '.myshopify.com' | last | replace: '\/','/' | replace: '%20',' ' | replace: '\u0026',amp 
+    assign queries        = pageUrl | split: qst | last
+    assign val            = ''
+    if queries contains queryString and pageUrl contains qst
+      if queries contains amp
+        assign queries    = queries | split: amp 
+        for q in queries 
+          assign key      = q | split: eql | first
+          assign val      = ''
+          assign found    = false
+          if key == queryString
+            assign val    = q | split: eql | last
+            break 
+          endif 
+        endfor 
+      else 
+        assign val        = queries | split: eql | last
+      endif 
+    endif 
+    if val != '' 
+      echo val
+    endif 
+  endif 
+-%}

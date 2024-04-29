@@ -1,0 +1,203 @@
+calculator-module {
+  // position: relative;
+
+  .button {
+    height: 0;
+    min-height: 0;
+    min-width: 0;
+    padding: var(--base-gutter--half);
+    border-radius: 50px;
+    background-color: rgba(var(--color-background), 1);
+    color: rgba(var(--color-foreground), 1) !important;
+
+    &:before, 
+    &:after {
+      border-radius: 50px;
+      // background-color: rgba(var(--color-background), 1);
+    }
+  }
+
+  .background-close {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 999999;
+    background: rgba(var(--color-background), 0.75);
+    pointer-events: none;
+    opacity: 0;
+    transition: all .25s ease-out;
+
+  }
+
+
+  calbtn {
+
+    button {
+      display: -webkit-inline-flex; // fixes the underline on Safari, idk why - Austin
+      appearance: none;
+      background: transparent;
+      background: transparent;
+      color: rgb(var(--color-foreground));
+      padding: 0;
+      margin: 0;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 0.5rem;
+    }
+  }
+  
+  .calculator-container {
+    position: fixed;
+    color: rgb(131 120 104 / 1);
+    bottom: 0px;
+    left: 0px;
+    height: calc(100vh - var(--header-height,90px));
+    width: clamp(320px, 75%, 1000px);
+    padding: var(--base-gutter--half);
+    z-index: 9999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+    opacity: 0;
+    bottom: -25%;
+    transition: all .25s ease-out;
+    background-color: rgb(var(--color-foreground));
+
+    > * {
+      width: 100%;
+    }
+    
+    *:not(button) {
+      color: rgba(var(--color-background),1);
+    }
+
+    .rte {
+      align-items: flex-start;
+      max-width: 300px;
+    }
+
+    .project-area {
+      height: 55%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+
+  calculator {
+
+    &.open .background-close {
+      pointer-events: all;
+      opacity: 1; 
+    }
+
+    &.open .calculator-container {
+      opacity: 1;
+      bottom: 0%;
+      pointer-events: all;
+    }
+  }
+
+  calculate {
+
+    > * {
+      margin: 0 0 var(--base-gutter--half);
+    }
+
+    .calculator__input {
+      position: relative;
+
+      input {
+        width: 100%;
+        padding: var(--base-gutter--quarter) 35px;
+        padding-left: 0;
+        border: none;
+        background: transparent;
+        border-bottom: 1px solid rgba(var(--color-background),1);
+
+        &:focus, 
+        &:focus-visible, 
+        &:focus-within {
+          outline: none;
+          box-shadow: 0 4px 0px 0px rgba(var(--color-background),1);
+        }
+
+      }
+
+
+      @include placeholder-text {
+        opacity: 0.6;
+        color: rgba(var(--color-background),1);
+      }
+
+      span {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        display: block;
+        z-index: 2;
+      }
+
+    }
+  }
+
+  .recommendations {
+    display: none;
+    > * {
+      margin: 0 0 var(--base-gutter--half);
+    }
+  }
+
+  quantity-updater {
+    button {
+      width: 100%;
+    }
+  }
+
+
+  .calculator__finish-buttons {
+
+    > * {
+      margin: 0 0 var(--base-gutter--half);
+      display: block;
+    }
+  
+    calculator-close {
+      width: 100%;
+      text-align: center;
+
+      button {
+        display: -webkit-inline-flex; // fixes the underline on Safari, idk why - Austin
+        appearance: none;
+        background: transparent;
+        background: transparent;
+        color: rgba(var(--color-background),1);
+        padding: 0;
+        margin: 0;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 0.5rem;
+      }
+    }
+  }
+
+
+
+
+  @include mq($medium-up) {
+    
+  }
+
+  @include mq($large-up) {
+    
+  }
+
+}

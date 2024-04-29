@@ -1,0 +1,55 @@
+<!-- snippets/snippet--article-products -->
+{% liquid 
+  assign mf         = article.metafields.custom
+  assign prds       = mf.featured_products.value
+  assign products   = ''
+  assign gridRplc   = 'grid_replace'
+  assign prdCount   = 0
+%}
+
+{%- capture products -%}
+  {%- for p in prds -%}
+    {% assign product = p %}
+    {% if product.title != '' %}
+      {% assign prdCount = prdCount | plus: 1 %}
+      <div class="cell__item {{gridRplc}}">
+        {% render 'card-product', 
+          card_product: product,
+          media_aspect_ratio: 'adapt',
+          show_secondary_image: false,
+          show_vendor: false,
+          show_rating: false,
+          lazy_load: lazy_load,
+          show_quick_add: false,
+          section_id: section.id
+        %}
+      </div>
+    {% endif %}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{% if products != '' %}
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  
+  {% liquid 
+
+    assign prdCount = prdCount | at_most: 3
+
+    capture gridWidth 
+      render 'snippet--grid-widths', itemsPerRow: prdCount
+    endcapture 
+
+    assign products = products | replace: gridRplc, gridWidth
+
+  %}
+
+  <div class="article-template__products">
+    <div class="page-width">
+      <h2>Featured Products</h2>
+      <div class="cell cell_margin_bottom vert-top half_gutter text-left">
+        {{products}}
+      </div>
+    </div>
+  </div>
+{% endif %}

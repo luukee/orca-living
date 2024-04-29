@@ -1,0 +1,91 @@
+.template--collection {
+
+    @include mq($medium-down) {
+        .side-navigation {
+            display: none;
+        }
+    }
+
+    #MainContent {
+        [data-preview-collection] {
+            display: none;
+        }
+
+        @include mq($medium-down) {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        @include mq($medium-up) {
+            grid-template-areas: 
+                'left left'
+                'banner banner'
+                'middle middle';
+        }
+        @include mq($large-up) {
+            grid-template-areas: 
+            'left banner banner'
+            'left middle middle';
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+
+            .grid__item:empty {
+                display: none;
+            }
+            @include mq($medium-up) {
+                grid-template-columns: repeat(4,1fr);
+
+                .grid__item:empty {
+                    display: block;
+                }
+            }
+
+            .grid__item {
+                width: 100%;
+                max-width: none;
+                
+                .card__information {
+                    grid-row-start: 1;
+                }
+                
+                .h5,.card__information {
+                    text-align: center;
+                }
+
+                a {
+                    text-decoration: underline;
+                }
+
+                a,.h5 {
+                    padding-block: var(--base-gutter--quarter);
+                }
+
+                .button,.button::after {
+                    border-radius: 40px;
+                }
+                .button {
+                    background-color: #211E1E;
+                    width: 90%;
+                    margin: auto;
+                    font-size: 1.3rem;
+                    color: rgb(var(--color-button-text));
+                    min-width: auto;
+                    min-height: calc(3.5rem + var(--buttons-border-width) * 2);;
+                }
+            }
+        }
+        
+        & > :nth-child(2) {
+            padding-right: 0;
+            grid-column: span 3;
+            padding-inline: 4rem;
+            @include mq($medium-down) {
+                padding-inline: 0;
+                grid-column: span 3;
+            }
+        }
+    }
+}

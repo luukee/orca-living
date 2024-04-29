@@ -1,0 +1,115 @@
+.section--side-navigation {
+  h1,
+  h2 {
+    margin: 0 0 var(--base-gutter--half);
+  }
+
+  .list-menu__item {
+    padding: 1px 0;
+    text-decoration: none;
+    text-underline-offset: 0.3rem;
+    // font-size: 1.5rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      all: inherit;
+    }
+
+    &.menu-item--active {
+      
+      &:before {
+        content:'_';
+      }
+    }
+  }
+
+  li {
+    > ul {
+      padding:{
+        left: var(--base-gutter--half);
+        top: var(--base-gutter--quarter);
+        bottom: var(--base-gutter--quarter);
+      }
+
+      .list-menu__item {
+        font-size: 1.3rem;
+        padding: 2px 0;
+      }
+
+      
+    }
+  }
+
+  .facets-container {
+    margin: 0 0 var(--base-gutter--half);
+    padding: 0;
+
+    .facets-pill,
+    > .product-count,
+    > .active-facets {
+      display: none;
+    }
+
+    .mobile-facets__open {
+      padding: 0;
+    }
+  }
+
+
+  @include mq($medium-down) {
+
+    .page-width {
+      padding: 0;
+      position: relative;
+    }
+
+    h1,
+    h2 {
+      position: absolute !important;
+      overflow: hidden;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      clip: rect(0 0 0 0);
+      word-wrap: normal !important;
+    }
+
+    .list-menu {
+      display: flex;
+      display: none !important;
+      overflow-x: auto; 
+      padding: {
+        top: var(--base-gutter);
+        bottom: var(--base-gutter--half);
+        left: 0;
+        right: 35vw; // to give links clearance on right side
+      }
+
+      .list-menu__item {
+        padding: 0 var(--base-gutter) 0 0;
+      }
+    }
+  }
+
+  @include mq($small) {
+    .page-width {
+      
+      &:before {
+        content:'';
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 99;
+        pointer-events: none;
+        background: linear-gradient(90deg, rgba(var(--color-base-background-1),0) 40%, rgba(var(--color-base-background-1),1) 100%);
+      }
+    }
+  }
+}

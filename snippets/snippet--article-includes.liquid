@@ -1,0 +1,380 @@
+<!-- snippets/snippets--article-includes -->
+
+{% liquid 
+  
+  assign mf                     = article.metafields.custom_fields
+
+  assign H6isWrong              = '<h6><span>'
+  if articleRTE contains H6isWrong
+    assign articleRTE           = articleRTE | replace: H6isWrong,'<h6>'
+    assign articleRTE           = articleRTE | replace: '</span></h6>','</h6>'
+  endif 
+
+  assign endRteSplt             = '</h6>' 
+  assign startRteSplt           = endRteSplt | replace: '/','' 
+
+  assign hasSplitter            = false
+  if articleRTE contains endRteSplt
+    assign hasSplitter          = true
+  endif
+
+  assign articleImages          = mf["images"]
+  assign imageGroups            = '' 
+
+  assign articleTwoGrids        = mf["two_grid"]
+  assign twoGridGroups          = ''
+
+  assign wdthRplc               = "|WIDTH_REPLACE|"  
+  assign wdthDataRplc           = "|WIDTH_DATA_REPLACE|"  
+
+  assign spltComment            = '<!-- split -->' 
+  assign spltSt                 = '<!-- replace_' 
+  assign spltEnd                = ' -->' 
+  assign spltSingleItem         = '<!-- SINGLE_ITEM -->'
+  assign spltBig                = spltEnd | append: spltComment 
+
+
+%}
+
+{% if hasSplitter %}
+
+
+
+{% comment %}
+  Images setup
+{% endcomment %}
+
+    {% comment %}
+      Create Image Item. 
+      Then add Image Item to Image Group.
+    {% endcomment %}
+      {%- for item in articleImages -%}
+        {%- liquid 
+
+          assign showImage          = false
+          assign groupHandle        = item["group_name"] | strip | handleize 
+          assign imgRplc           = spltSt | append: groupHandle | append: spltBig 
+          
+          assign img                = item["image"]
+          assign imgHght            = item["image_height"]
+          assign txt                = item["caption"]
+          assign offset             = item["enable_offset"]
+          
+          assign wdthCls            = wdthRplc
+          assign wdthData           = wdthDataRplc
+          assign imgsPerRow         = item["images_per_row"]
+          if imgsPerRow != '' and imgsPerRow != blank
+            assign wdthData         = imgsPerRow
+            capture wdthCls 
+              include 'snippet--grid-widths', perRow: imgsPerRow 
+            endcapture 
+          endif
+         
+          assign style              = '--image--set-height: 56%;'
+          if imgHght != '' and imgHght != blank
+            assign style            = '--image--set-height:' | append: imgHght | append: ';'
+          endif 
+
+          assign imgsUseSlider      = false
+          assign sliderData         = 'data-slider'
+
+          assign imgsFullWidth      = false
+          assign pageWidthData      = 'data-page-width'
+
+          if img != blank
+            
+            assign showImage        = true
+
+            unless imageGroups contains imgRplc 
+              
+              assign imageGroups    = imageGroups | append: imgRplc 
+              assign imgsFullWidth  = false
+              assign imgsUseSlider  = false
+
+              if item["make_section_full_width"] contains 1 or item["make_section_full_width"] contains '1'
+                assign imgsFullWidth = true
+              endif 
+
+              if item["make_images_a_slider"] contains 1 or item["make_images_a_slider"] contains '1'
+                assign imgsUseSlider = true
+              endif 
+
+            endunless 
+          endif 
+
+        -%}
+
+        {% comment %}  Create Image Item. {% endcomment %}
+        {%- if showImage -%}
+          {%- capture imgItem -%}
+            <div 
+              class="cell__item {%if wdthData == '2'%} medium-up--one-half {%endif%} {% if offset == '1' %} image-margin-top {%endif%}" 
+              data-width="{{wdthData}}" 
+              {% if imgsUseSlider == true %}{{sliderData}}{% endif %} 
+              {% if imgsFullWidth == true %}{{pageWidthData}}{% endif %}
+            >
+              <div class="inner-container">
+
+                {% include 'snippet--image', img: img, cf: true, customStyle: style %}
+                {% if txt != blank and txt != '' %}
+                  <div class="caption">{{txt}}</div>
+                {% endif %}
+                
+              </div>
+            </div>
+            {{spltSingleItem}}
+            {{imgRplc}}
+          {%- endcapture -%}
+
+          {% comment %}  Add Image Item to Image Group.  {% endcomment %}
+          {%- assign imageGroups    = imageGroups | replace: imgRplc, imgItem -%}
+        {%- endif %}
+      {%- endfor %}
+
+
+    {% comment %} 
+      Split Image Group. 
+      Then apply Grid Width and create handle. 
+      Then wrap Image Group in Grid Container. 
+      Then Insert into articleRTE.  
+    {% endcomment %}
+      {%- assign imageGroups        = imageGroups | split: spltComment -%}
+      {%- for group in imageGroups -%}
+        {%- if group != '' and group != blank -%}
+          
+          {% comment %} Then apply Grid Width and create handle. {% endcomment %}
+          {%- liquid 
+            assign groupHandle      = group | split: spltSt | last | split: spltEnd | first | handleize
+            assign spltArticleRTE   = articleRTE | strip | split: startRteSplt
+            assign itemLength       = group | split: spltSingleItem | size | minus: 1 
+            capture width 
+              include 'snippet--grid-widths', perRow: itemLength 
+            endcapture 
+            assign groupWithWidth   = group | replace: wdthRplc, width | replace: wdthData, itemLength
+          -%}
+
+          {% comment %} Then wrap Image Group in Grid Container. {% endcomment %}
+          {%- capture gridContainer -%}
+            <div class="article-template__image-gallery {% if group contains pageWidthData %}full-width{% endif %}">
+              <div class="cell  half_gutter vert-top {% if group contains sliderData %}slider{% endif %}">
+                {{groupWithWidth}}
+              </div>
+            </div>
+          {%- endcapture -%}
+
+          {% comment %} Then Insert into articleRTE.  {% endcomment %}
+          {%- capture articleRTE -%}
+            {%- for rte in spltArticleRTE -%}
+              {%- liquid
+                assign rteGroupHandle = rte | split: endRteSplt | first | trim | remove_first: 'Gallery' | handleize
+                assign rteCleaned   = rte | remove: rteGroupHandle | replace: endRteSplt, ''
+                assign rteCleaned   = rte | prepend: startRteSplt
+              -%}
+              {%- if groupHandle == rteGroupHandle -%}
+                {{gridContainer}}
+              {%- endif -%}
+              {{rteCleaned}}
+            {%- endfor -%}
+          {%- endcapture -%}
+
+        {%- endif -%}
+      {%- endfor -%}
+
+
+
+{% comment %}
+TWO GRID
+{% endcomment %}
+
+    {% comment %}
+    TWO GRID
+    {% endcomment %}
+      {%- for item in articleTwoGrids -%}
+        {%- liquid 
+
+          assign showImage          = false
+          assign groupHandle        = item["group_name"] | strip | handleize 
+          assign imgRplc            = spltSt | append: groupHandle | append: spltBig 
+          
+          assign img                = item["image"]
+          assign img_2              = item["description_image"]
+          assign imgHght            = item["image_height"]
+          assign order              = item["flip_grid"]
+          assign background         = item["background_color"]
+          
+          assign desc               = item["description"]
+          assign reverse_col        = item["reverse_col"]
+          
+          assign wdthCls            = wdthRplc
+          assign wdthData           = wdthDataRplc
+         
+
+          assign style              = '--image--set-height: 56%;'
+          if imgHght != '' and imgHght != blank
+            assign style            = '--image--set-height:' | append: imgHght | append: ';'
+          endif 
+          if img != blank
+            
+            assign showImage        = true
+
+            unless twoGridGroups contains imgRplc 
+              
+              assign twoGridGroups    = twoGridGroups | append: imgRplc 
+              assign imgsFullWidth  = false
+              assign imgsUseSlider  = false
+
+
+            endunless 
+          endif 
+
+        -%}
+
+        {% comment %}  Create Image Item. {% endcomment %}
+        {%- if showImage -%}
+          {%- capture imgItem -%}
+            <div class="cell__item">
+              <div class="two-grid {%if reverse_col == '1' %} reserve-col {%endif%} {%if background != blank%}  custom-style {%endif%}" {%if background != blank%} style="background:{{background}};" {%endif%}>
+                <div class="caption{% if order == '1' %} order-2 {%endif%}" {%if background != blank %} style="padding:60px; margin:auto;" {% endif %} >
+                  {%if img_2 %}
+                  <img src="{{img_2 }}" width="100%" alt="">
+                  {%endif%}
+                  <p>{{desc}}</p>
+                </div>
+                <div class="image  {% if order == '1' %} order-1 {%endif%}">
+                {% include 'snippet--image', img: img, cf: true, customStyle: style %}
+                </div>
+                
+              </div>
+            </div>
+            {{spltSingleItem}}
+            {{imgRplc}}
+          {%- endcapture -%}
+
+          {% comment %}  Add Image Item to Image Group.  {% endcomment %}
+          {%- assign twoGridGroups    = twoGridGroups | replace: imgRplc, imgItem -%}
+        {%- endif %}
+      {%- endfor %}
+
+
+    {% comment %} 
+      Split Image Group. 
+      Then apply Grid Width and create handle. 
+      Then wrap Image Group in Grid Container. 
+      Then Insert into articleRTE.  
+    {% endcomment %}
+      {%- assign twoGridGroups        = twoGridGroups | split: spltComment -%}
+      {%- for group in twoGridGroups -%}
+        {%- if group != '' and group != blank -%}
+          
+          {% comment %} Then apply Grid Width and create handle. {% endcomment %}
+          {%- liquid 
+            assign groupHandle      = group | split: spltSt | last | split: spltEnd | first | handleize
+            assign spltArticleRTE   = articleRTE | strip | split: startRteSplt
+            assign itemLength       = group | split: spltSingleItem | size | minus: 1 
+            capture width 
+              include 'snippet--grid-widths', perRow: itemLength 
+            endcapture 
+            assign groupWithWidth   = group | replace: wdthRplc, width | replace: wdthData, itemLength
+          -%}
+
+          {% comment %} Then wrap Image Group in Grid Container. {% endcomment %}
+          {%- capture gridContainer -%}
+            <div class="two-grid-section {% if group contains pageWidthData %}full-width{% endif %}">
+              <div class="cell  half_gutter vert-top {% if group contains sliderData %}slider{% endif %}">
+                {{groupWithWidth}}
+              </div>
+            </div>
+          {%- endcapture -%}
+
+          {% comment %} Then Insert into articleRTE.  {% endcomment %}
+          {%- capture articleRTE -%}
+            {%- for rte in spltArticleRTE -%}
+              {%- liquid
+                assign rteGroupHandle = rte | split: endRteSplt | first | trim | remove_first: 'Gallery' | handleize
+                assign rteCleaned   = rte | remove: rteGroupHandle | replace: endRteSplt, ''
+                assign rteCleaned   = rte | prepend: startRteSplt
+              -%}
+              {%- if groupHandle == rteGroupHandle -%}
+                {{gridContainer}}
+              {%- endif -%}
+              {{rteCleaned}}
+            {%- endfor -%}
+          {%- endcapture -%}
+
+        {%- endif -%}
+      {%- endfor -%}
+
+
+
+
+
+{% comment %} 
+  !!!!!!!!!!!!!!!!!
+  MUST BE LAST STEP.
+  Clean's all H6's out 
+  !!!!!!!!!!!!!!!!!
+{% endcomment %}
+    {%- liquid
+      capture articleRTE 
+        assign spltArticleRTE     = articleRTE | strip | split: startRteSplt 
+        for rte in spltArticleRTE 
+          if rte contains endRteSplt
+            assign rteGroupHandle = rte | split: endRteSplt | first
+            assign rteCleaned     = rte | remove: rteGroupHandle | replace: endRteSplt, ''
+          else 
+            assign rteCleaned     = rte 
+          endif 
+          echo rteCleaned
+        endfor 
+      endcapture 
+    -%}
+
+
+  <script type="text/javascript">
+    waitForJavascript(function () {
+      var slds = $('.article-template__image-gallery .slider,.article-template__featured-products .slider');
+      slds.each(function () {
+        var el = $(this),
+            slidesCount = el.find('.cell__item').length,
+            slidesWidth = el.children().first().data('width'),
+            settings_slider = {
+              autoplay: false,
+              dots: true,
+              arrows: true,
+              slidesToShow: ( slidesWidth >= +slidesCount ? +slidesCount : slidesWidth ),
+              rows: 0, 
+              infinite: true,
+              centerMode: false,
+              responsive: [
+                {
+                  breakpoint: 990,
+                  settings: {
+                    dots: true,
+                    slidesToShow: ( slidesWidth >= +slidesCount ? +slidesCount : slidesWidth )
+                  }
+                },
+                {
+                  breakpoint: 750,
+                  settings: {
+                    dots: true,
+                    slidesToShow: ( 2 >= +slidesCount ? +slidesCount : 2 )
+                  }
+                },
+                {
+                  breakpoint: 400,
+                  settings: {
+                    dots: true,
+                    slidesToShow: 1
+                  }
+                }
+              ]
+            };
+        // console.log(slidesWidth)
+        el.slick(settings_slider).on("beforeChange", function (){
+          LazyImages();
+        });
+      })
+    });
+  </script>
+
+{% endif %}

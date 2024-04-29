@@ -1,0 +1,21 @@
+<!-- snippets/snippet--simple-footer -->
+
+<div class="simple-header">
+  <div class="page-width">
+    
+    {% render 'snippet--image', img: settings.logo %}
+
+    <nav class="header__inline-menu">
+      <ul class="list-menu list-menu--inline" role="list">
+        {%- for link in linklists["homepage-menu"].links -%}
+          <li class="menu-item__name-{{ link.title | handleize }}">
+            <a href="{{ link.url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.current %} menu-drawer__menu-item--active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>
+              {{ link.title | escape }}{% if link.title contains 'Cart' %} {% render 'snippet--cart-count' %}{% endif %}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>  
+    </nav>
+
+  </div>
+</div>

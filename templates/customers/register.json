@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "09a61d0d-4c4f-4b77-8a63-9aa79f471eb9": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<h1 class=\"account-register page-title\">\n  Trade Application\n</h1>",
+        "color_scheme": "background-1",
+        "padding_top": 32,
+        "padding_bottom": 12
+      }
+    },
+    "main": {
+      "type": "main-register",
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "09a61d0d-4c4f-4b77-8a63-9aa79f471eb9",
+    "main"
+  ]
+}

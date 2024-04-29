@@ -1,0 +1,77 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    
+    {% render 'head--meta-tags' %}
+    
+    {% render 'head--scripts' %}
+    
+    {{ content_for_header }}
+    
+    {% comment %}
+      Must be after content_for_header  
+    {% endcomment %}
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      if (Shopify.designMode) {
+        document.documentElement.classList.add('shopify-design-mode');
+      }
+    </script>
+
+    {% render 'head--styles' %}
+    
+    {% if template == 'cart' %}{% include "revy-bundle-script" %}{% endif %}
+
+    
+  </head>
+<body class="gradient template--{{template.name|handleize}} {% if template.suffix %}template--{{template|handleize}}{% endif %} page--{{canonical_url|split:'/'|last}}">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{ "accessibility.skip_to_text" | t }}
+    </a>
+
+    {%- if settings.cart_type == 'drawer' -%}
+      {%- render 'cart-drawer' -%}
+    {%- endif -%}
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}<!-- End of layout -->
+      <noscript class="endOfLayoutContentX" type="text/mark"></noscript>
+    </main>
+    {% if request.path contains 'edit-account' %}
+      {{ 'customer.css' | asset_url | stylesheet_tag }}
+      <script>
+        const h1El = document.querySelector('#cf-edit-account-heading')
+        const backEl = document.querySelector('#cf-edit-account-back-link')
+        const wrapper = document.createElement('div')
+
+        wrapper.appendChild(h1El)
+        wrapper.appendChild(backEl)
+
+        document.querySelector('main').insertAdjacentHTML("afterbegin",wrapper.outerHTML)
+      </script>
+    {% endif %}
+
+    {% sections 'footer-group' %}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+      <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
+    </ul>
+
+    {% render 'footer--scripts' %}
+
+    <!-- Polyfill for :has selector -->
+    <script defer>
+      waitForJavascript(()=>{
+        try{
+          document.querySelector(':has(+ div)');
+        }
+        catch(e) {
+          document.querySelector('.customer')?.classList.add('has-selector-fix')
+        }
+      })
+    </script>
+  </body>
+</html>

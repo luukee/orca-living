@@ -1,0 +1,831 @@
+<!-- snippets/master--slider -->
+
+{% liquid 
+
+    assign s                    = section.settings
+
+    assign s_id                 = section.id
+
+    assign hght_fallback        = '500px'
+    assign siteMaxWidth         = 1400 | append: 'px'
+    assign sitePadding          = 15 | times: 2 | append: 'px'
+
+    assign mobRelative          = s.mob_rel
+    assign useBgImg             = s.set_height
+    assign mobOvSooner          = s.show_mobile_overlay_sooner
+
+    assign autoSlide            = s.auto_slide
+    assign useArrows            = s.use_arrows
+    assign useDots              = s.use_dots
+
+
+    assign sectionCustomCSS     = s.custom_css
+    assign class                = 'section--' | append: s_id
+    assign cssClass             = '.' | append: class
+
+    assign dskHght              = s.image_height | default: hght_fallback
+    if dskHght contains '%'
+        assign dskHght          = dskHght | replace: '%','vw'
+        assign dskImgHght       = 'padding-top:' | append: dskHght | append: ';height: 0;min-height: 0;'
+    else
+        assign dskImgHght       = 'min-height:' | append: dskHght | append: ';'
+    endif
+
+    assign mobHght              = s.image_height_mob | default: dskHght
+    if mobHght contains '%'
+        assign mobHght          = mobHght | replace: '%','vw'
+        assign mobImgHght       = 'padding-top:' | append: mobHght | append: ';height: 0;min-height: 0;'
+    else
+        assign mobImgHght       = 'min-height:' | append: mobHght | append: ';'
+    endif
+
+    assign modal                = ''
+
+%}
+
+{% for block in section.blocks %}
+
+    {% liquid 
+
+        assign b                = block.settings
+
+        assign useSlide         = b.show_image
+
+        assign blockCustomCSS   = b.custom_css
+        assign slideID          = 'image--' | append: block.id
+        assign slideCls         = '.' | append: slideID
+
+        assign topStars         = b.stars | plus: 0 
+
+        assign ttl              = b.title
+        assign makeh1           = b.make_h1
+        assign ttlClr           = b.title_color
+        assign ttlSze           = b.font_size_title
+
+        assign subTtl           = b.subtitle
+        assign subTtlClr        = b.subtitle_color
+        assign subTtlSze        = b.font_size_subtitle
+
+        assign txt              = b.text
+        assign txtClr           = b.text_color
+        assign txtSze           = b.font_size_text
+
+        assign btn_url          = b.btn_url
+        assign btn_txt          = b.btn_txt
+        assign btn_url2         = b.btn_url2
+        assign btn_txt2         = b.btn_txt2
+        assign use_btn          = false
+        assign use_btn2         = false
+        assign btnStyle         = b.btn_style
+        assign btnStyle2        = b.btn_style2
+
+
+        if btn_url != blank and btn_txt != blank
+            assign use_btn      = true
+        endif
+        if btn_url2 != blank and btn_txt2 != blank
+            assign use_btn2      = true
+        endif
+
+        assign imgMain          = b.image
+        assign imgMob           = b.image_mob
+        assign icnImg           = b.icon
+
+        assign useCF            = false 
+        if b.metafield_image != blank 
+          assign imgMain        = b.metafield_image
+          assign useCF          = true
+          if b.metafield_image_alt != blank 
+          assign imgMainAlt        = b.metafield_image_alt
+          endif  
+        endif 
+
+        assign vidEmbd          = b.video_url
+        assign vidHost          = b.video_hosted
+        
+        assign vidRatio         = blank
+
+        if b.video_ratio != blank 
+            assign baseNum      = 0.00
+            assign vidNum       = baseNum | plus: b.video_ratio
+            assign vidRatio     = vidNum | divided_by: 100
+        endif
+
+        assign v_modal          = b.video_modal 
+        assign v_modal_btn      = b.btn_txt_modal | default: 'Watch Video'
+
+        assign bgColor          = b.bg_color
+        assign op               = b.opacity | times: 0.01
+        assign bgColor          = bgColor | color_modify: 'alpha', op
+        assign bgColorMob       = bgColor
+
+        assign opMob            = b.opacity_mob
+        if opMob != '0'
+            assign bgColorMob   = b.bg_color_mob
+            assign opMob        = opMob | times: 0.01
+            assign bgColorMob   = bgColorMob | color_modify: 'alpha', opMob
+        endif
+
+        assign txtAlgn          = b.align_text
+        assign txtWdth          = b.width
+        assign contAlgn         = b.align_hor
+
+        assign vert             = b.vert_align
+        assign hor              = b.hor_align
+        if contAlgn != 'right'
+            assign alignment    = 'left: ' | append: hor | append: '%; transform: translate(-' | append: hor | append: '%,-' | append: vert | append: '%); top: ' | append: vert | append: '%;'
+        elsif contAlgn == 'right'
+            assign alignment    = 'left: initial; right:'  | append: hor | append: '%; transform: translate(' | append: hor | append: '%,-' | append: vert | append: '%); top:' | append: vert | append: '%;'
+        endif
+
+        assign posType          = 'object-position: '
+        if useBgImg
+            assign posType      = 'background-position: '
+        endif 
+
+        assign position         = posType | append: b.align_bg | append: ';'
+        assign mobPosition      = '' 
+        if imgMob != blank
+            assign mobPosition  = posType | append: b.align_bg_mob | append: ';'
+        endif
+
+        if imgMain == blank 
+          assign useSlide       = false
+        endif 
+
+    %}
+
+    
+
+    {% capture blockCSS %}
+        /* Slide Defaults */
+        {{slideCls}} {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            vertical-align: bottom;
+        }
+        /* Overlay */
+        {{slideCls}} .overlay {
+            background: {{bgColor}};
+            display: block;
+            position: absolute;
+            top:0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        {% if opMob != '0' %}
+            {% if mobOvSooner %}/medium-down/{% else %}/small/{% endif %} {
+                {{slideCls}} .overlay {
+                    background: {{bgColorMob}};
+                }
+            }
+        {% endif %}
+
+        /* Content Position */
+        {{slideCls}} .center-content {
+            position: absolute;
+            text-align: {{txtAlgn}};
+            max-width: {{txtWdth}};
+            margin: 0 auto;
+            width:95%;
+            z-index: 2;
+            {{alignment}}
+        }
+
+        {% if mobOvSooner %}/medium-down/{% else %}/small/{% endif %} {
+
+            {{slideCls}} .center-content {
+                width: 100%;
+                text-align: center;
+                {% if mobRelative == true %}
+                    position: relative;
+                    top: initial;
+                    left: initial;
+                    right: initial;
+                    bottom: initial;
+                    transform: none;
+                    padding: 2em 0;
+                    margin: 0 auto;
+                {% else %}
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+
+                {% endif %}
+            }
+
+            .slick-dotted {{slideCls}} .center-content {
+                max-width: calc(100% - 120px);
+            }
+            {% if mobRelative == true %}
+            {{slideCls}} .page-width {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                transform: none;
+                margin: 0 auto;
+            }
+            {% endif %}
+        }
+
+        /* Text Sizing */
+
+        {{slideCls}} .icon-star {
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          margin-right: 2px;
+          color: var(--color--candlelight-yellow);
+        }
+        {{slideCls}} .h2,
+        {{slideCls}} h2 {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: {{ttlSze}}px;
+            font-weight: 500;
+            color: {{ttlClr}};
+            line-height: 1;
+            font-family: var(--font-heading-family);
+            text-transform: uppercase;
+        }
+        {{slideCls}} h3 {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: {{subTtlSze}}px;
+            font-weight: 500;
+            color: {{subTtlClr}};
+            line-height: 1.1;
+            /*font-family: var(--font-body-family);*/
+            font-family: var(--font-heading-family);
+            font-style: italic;
+        }
+        {{slideCls}} .rte {
+            margin-top: 0;
+            margin-bottom: 0;
+            /*font-family: var(--font-heading-family);*/
+            
+        }
+        {{slideCls}} .rte,
+        {{slideCls}} .rte * {
+            font-size: {{txtSze}}px;
+            color: {{txtClr}};
+        }
+        {{slideCls}} .btn {
+            <!-- font-size: 17px; -->
+        }
+        {{slideCls}} .center-content .rte > * {
+            margin: 0;
+        }
+        {{slideCls}} .center-content .rte > *:not(:last-child),
+        {{slideCls}} .center-content > *:not(:last-child) {
+            margin-bottom: var(--base-gutter--half);
+        }
+        == .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            width: calc(100% + var(--base-gutter));
+            margin-bottom: calc(var(--base-gutter) * -1) !important;
+            margin-left: calc(var(--base-gutter) * -1) !important;
+        }
+
+        == .btn-container .button {
+            margin-bottom:  var(--base-gutter);
+            margin-left:  var(--base-gutter);
+        }
+        == .btn-container .button:not(:only-child) {
+            flex: 1 1;
+            min-width: 150px;
+            max-width: 300px;
+        }
+
+        {% if btnStyle contains 'custom' %}
+        {{slideCls}} .btn {
+            --color--btn-primary-bg        : {{b.color_button|default:'rgba(0,0,0,0)'}} ;
+            --color--btn-primary-bdr       : {{b.color_button_border|default:'rgba(0,0,0,0)'}} ;
+            --color--btn-primary-txt       : {{b.color_button_text|default:'rgba(0,0,0,0)'}} ;
+            --color--btn-primary-bg-hover  : {{b.color_button_hover|default:'rgba(0,0,0,0)'}} ;
+            --color--btn-primary-bdr-hover : {{b.color_button_border_hover|default:'rgba(0,0,0,0)'}} ;
+            --color--btn-primary-txt-hover : {{b.color_button_text_hover|default:'rgba(0,0,0,0)'}} ;
+        }
+        {% endif %}
+        {% if mobOvSooner %}/medium-down/{% else %}/small/{% endif %} {
+            {{slideCls}} .h2,
+            {{slideCls}} h2 {
+                font-size: 32px;
+            }
+            {{slideCls}} h3 {
+                font-size: 20px;
+            }
+            {{slideCls}} .rte,
+            {{slideCls}} .rte * {
+                font-size: 16px;
+            }
+            {{slideCls}} .btn {
+                font-size: 15px;
+            }
+            {{slideCls}} .center-content .rte > *:not(:last-child),
+            {{slideCls}} .center-content > *:not(:last-child) {
+                margin-bottom: var(--base-gutter--quarter);
+            }
+        }
+
+        /* Image Position */
+        {{slideCls}} .bg_image,
+        {{slideCls}} img {
+            {{position}}
+        }
+        {% if imgMob != blank %}
+            {% if mobOvSooner %}/medium-down/{% else %}/small/{% endif %} {
+                {{slideCls}} .bg_image,
+                {{slideCls}} img {
+                    {{mobPosition}}
+                }
+            }
+        {% endif %}
+
+
+        /* Slide Height */
+        {% if useBgImg == true %}
+            {{slideCls}} {
+                {{dskImgHght}}
+                {{position}}
+            }
+           
+
+            {% if mobHght != 0 %}
+                    {% if mobOvSooner %}/medium-down/{% else %}/small/{% endif %} {
+                        {{slideCls}}  {
+                            {{mobImgHght}}
+                        }
+                    }
+                {% unless mobHght contains 'vw' %}
+                {% endunless %}
+            {% endif %}
+            {% if mobRelative == true %}
+                {% if mobOvSooner %}/medium-down/{% else %}/small/{% endif %} {
+                    {{slideCls}}  {
+                        height: auto;
+                        min-height: 100%;
+                        {% if mobHght contains 'vw' %}
+                        padding-top: 0;
+                        {% endif %}
+                    }
+                    {{slideCls}} .h2,
+                    {{slideCls}} h2,
+                    {{slideCls}} h3,
+                    {{slideCls}} .rte * {
+                        color: {{ settings.color_primary_body_text }};
+                    }
+                }
+            {% endif %}
+        {% endif %}
+    {% endcapture %}
+
+    {% liquid
+      if makeh1 == true 
+        assign blockCSS       = blockCSS | replace: ' h2',' .h2'
+        assign blockCustomCSS = blockCustomCSS | replace: ' h2',' .h2'
+      endif
+    %}
+
+    {% capture video %}
+        {% assign normMob = false %}
+        {% if imgMain == blank and imgMob == blank  %}
+            {% assign normMob = true %}
+        {% endif %}
+        {% include 'snippet--video', 
+            vidExt: vidEmbd, 
+            vidHosted: vidHost, 
+            vidClass: sectionClass, 
+            normalMobile: normMob,
+            useBG: useBgImg,
+            videoRatio: vidRatio
+        %}
+            {% comment %}{% assign vCls = sectionClass | append: ' medium-up--hide' %}
+            {% include 'snippet--video', 
+                vidExt: vidEmbd, 
+                vidHosted: vidHost, 
+                vidClass: sectionClass, 
+                useBG: useBgImg,
+                autoPlay: false 
+            %}{% endcomment %}
+    {% endcapture %}
+
+
+    {% capture img %}
+        {% capture imgCls %}{% if imgMob != blank or mobRelative == true %}{% if mobOvSooner %}medium-down{% else %}small{% endif %}--hide{% endif %}{% endcapture %}
+        {% capture mobImgCls %}{% if mobOvSooner %}large-up{% else %}medium-up{% endif %}--hide{% endcapture %}
+        {% include 'snippet--image', 
+            img: imgMain,
+            alt: imgMainAlt, 
+            class: imgCls,
+            cf: useCF,
+            useBG: useBgImg 
+        %}
+        {% if imgMob != blank and mobRelative == false %}
+            {% include 'snippet--image', 
+                img: imgMob, 
+                class: mobImgCls,
+                useBG: useBgImg 
+            %}
+        {% endif %}
+        {% if mobRelative == true %}
+            {% assign relImgMob = imgMain %}
+            {% if imgMob != blank %}
+                {% assign relImgMob = imgMob %}
+            {% endif %}
+            {% include 'snippet--image', 
+                img: relImgMob, 
+                class: mobImgCls,
+                useBG: false 
+            %}
+        {% endif %}
+    {% endcapture %}
+    
+    {% if v_modal != blank %}
+        {% capture modal %}
+            {{modal}}
+            <div class="basic-modal video-modal" id="video_{{ forloop.index }}">
+                <div data-close="video_{{ forloop.index }}" class="bg_close"></div>
+
+                <div class="modal-inner">
+                    <span data-close="video_{{ forloop.index }}" class="close-modal">
+                        <span class="visually-hidden">Close</span>
+                        {% include 'icon-close' %}
+                    </span>
+                    <div class="video-ratio for-modal">
+                        {% if v_modal.type == "youtube" %}
+                            <iframe class="modal_video" src="https://www.youtube.com/embed/{{ v_modal.id }}?rel=0&showinfo=0&vq=720" width="800" height="480" frameborder="0" allowfullscreen></iframe>
+                        {% endif %}
+                        {% if v_modal.type == "vimeo" %}
+                            <iframe class="modal_video" src="//player.vimeo.com/video/{{ v_modal.id }}?byline=0&portrait=0&badge=0" width="800" height="480" frameborder="0" allowfullscreen></iframe>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endcapture %}
+    {% endif %}
+
+    {% if useSlide == true %}
+      {% capture slides %}
+        {{slides}}
+        <div class=" slide-image {% if v_type != blank %}{{v_type}}{% endif %} {{slideID}}" title="{{ ttl | strip_html | strip | strip_newlines | escape | trim  }}" data-index="{{forloop.index}}" {{ block.shopify_attributes }}>
+
+            <div class="overlay {% if mobRelative == true %}{% if mobOvSooner %}medium-down{% else %}small{% endif %}--hide{% endif %}"></div>
+
+            {{video}}
+
+            {{img}}
+
+
+            {% if use_btn == false and btn_url != blank %}
+                <a class="overlay-link" href="{{btn_url}}">
+                    <span class="visually-hidden">{{ttl}}</span>
+                </a>
+            {% endif %}
+
+            <div class="page-width">
+                {% if 
+                    use_btn == true or 
+                    ttl != blank or 
+                    subTtl != blank or
+                    txt != blank 
+                %}
+                    <div class="center-content {{ contAlgn }}">
+                        {% include 'snippet--image', 
+                            img: icnImg, 
+                            useBG: false,
+                            customStyle: 'max-width: 100px;display: inline-block;width: 100%;margin-bottom: 15px;'
+                        %}
+                        {% if topStars > 0 %}
+                            <div class="stars">
+                                {% for i in (1..topStars) %}
+                                    {% include 'icon-star' %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if subTtl != blank %}
+                            <h3 class="sec_h_font">{{ subTtl }}</h3>
+                        {% endif %}
+                        
+                        {% if ttl != blank %}
+                            <h{% if makeh1 %}1{% else %}2{% endif %} class="h2">{{ ttl }}</h{% if makeh1 %}1{% else %}2{% endif %}>
+                        {% endif %}
+                        
+                        {% if txt != blank %}
+                            <div class="rte">{% if s.leaf == true %} {% include 'icon-leaf'%} {%endif%} {{ txt }}{% if s.leaf == true %} {% include 'icon-leaf'%} {%endif%}</div>
+                        {% endif %}
+                        
+                        <div class="but-div">
+                        {% if use_btn == true %}
+                            <a class="btn button button--{{btnStyle}}" href="{{ btn_url }}">{{ btn_txt }}</a>
+                        {% endif %}
+                        {% if use_btn2 == true %}
+                            <a class="btn button button--{{btnStyle2}}" href="{{ btn_url2 }}">{{ btn_txt2 }}</a>
+                        {% endif %}
+                        </div>
+                        
+                        {% if v_modal != blank %}
+                            <a class="btn button button--secondary secondary open-modal" data-open="video_{{ forloop.index }}" href="#">
+                                <span>{% include 'icon-play' %}</span>
+                                <span>{{v_modal_btn}}</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% include 'custom-css', 
+                css: blockCSS, 
+                class: slideCls,
+                important: false
+            %}
+
+            {% include 'custom-css', 
+                css: blockCustomCSS, 
+                class: slideCls 
+            %}
+
+        </div>
+      {% endcapture %}
+    {% endif %}
+{% endfor %}
+
+{% if slides != '' %}
+
+  <style>
+  {% capture sectionCSS %}
+      == {
+          overflow: hidden;
+          position: relative;
+          z-index: 1;
+          margin: 0;
+      }
+      {% if useBgImg == true %}
+      {% unless dskHght contains 'vw' %}
+      == {
+          {{dskImgHght}}
+      }
+      {% endunless %}
+      {% if mobHght != 0 %}
+      {% unless mobHght contains 'vw' %}
+      /small/ {
+          == {
+              {{mobImgHght}}
+          }
+      }
+
+      {% endunless %}
+      
+      {% endif %}
+      {% if mobRelative == true %}
+      /small/ {
+          == {
+              height: auto;
+              min-height: 100%;
+          }
+      }
+      {% endif %}
+      == .bg_image {
+          position: absolute;
+          top: 0;
+          left:0;
+          height: 100%;
+          width: 100%;
+          z-index: -1;
+          background-repeat: no-repeat;
+          background-size: cover;
+      }
+      == .page-width {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          /*width: calc( 100% - {{sitePadding}} );*/
+          transform: translate(-50%,-50%);
+          max-width: {{siteMaxWidth}};
+          z-index: 2;
+      }
+      {% else %}
+      == img {
+          width: 100%;
+      }
+      {% endif %}
+
+      /* Other CSS */
+      == .slick-slider {
+          overflow: hidden;
+      }
+      == slick-track,
+      == .overlay-link {
+          position: absolute;
+          top: 0;
+          left:0;
+          height: 100%;
+          width: 100%;
+          z-index: 99999;
+      }
+      ==.slick-dotted.slick-slider {
+          margin-bottom: 0;
+      }
+      == .slick-dots {
+          bottom: 15px;
+      }
+      == .slick-dots li {
+          margin: 0 7px;
+      }
+      == .slick-prev {
+          left: 0px;
+      } 
+      == .slick-next {
+          right: 0px;
+      }
+      == .slick-prev, 
+      == .slick-next {
+          width: 75px;
+          height: 75px;
+          top: 50%;
+          background: transparent;
+          border-color: transparent;
+          /*-webkit-filter: drop-shadow(0px 0px 6px black);*/
+          /*filter: drop-shadow(0px 0px 6px black);*/
+          z-index: 1;
+      }
+      == .slick-prev::before, 
+      == .slick-next::before {
+          background-color: white;
+      }
+      /small/ {
+          == .slick-prev, 
+          == .slick-next {
+              top: initial;
+              bottom: 15%;
+              transform: translate(0,15%);
+          }
+      }
+      {% if mobRelative == true %}
+          /small/ {
+              == .slick-list, 
+              == .slick-track {
+                  position: relative;
+                  top: initial;
+                  left: initial;
+                  height: auto;
+              }
+          }
+      {% endif %}
+
+      == .page-width {
+          height: 100%;
+      }
+      == > .slide-image:not(:first-of-type) {
+          opacity: 0;
+          display: none;
+      }
+      == .video-inline {
+          position: relative;
+          width:100%;
+          padding-top: 56.6%;
+      }
+      /*== .video-ratio,*/
+      == .video-ratio video,
+      == .video-ratio iframe,
+      == .video-inline video,
+      == .video-inline iframe {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+      }
+      == .video-inline + noscript + .image-content__image-container,
+      == .video-ratio:not(.for-modal) {
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top:50%;
+          left:50%;
+          transform: translate(-50%,-50%);
+          z-index: 0;
+      }
+      == .video-inline + noscript + .image-content__image-container {
+          z-index: -1;
+      }
+      == .video-inline + noscript + .image-content__image-container img {
+          height: 100%;
+          object-fit: cover;
+      }
+
+      == .video-ratio:not(.for-modal):before {
+          content: '';
+          position: absolute;
+          top:0;
+          left:0;
+          width:100%;
+          height:100%;
+          z-index: 1;
+      }
+      == .video-ratio:not(.for-modal) .full-width {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top:50%;
+          left:50%;
+          transform: translate(-50%,-50%);
+      }
+      == .open-modal svg {
+          width: 15px;
+          height: 15px;
+          margin-right: 10px;
+      }
+
+  {% endcapture %}
+  </style>
+
+  {% include 'custom-css', 
+      css: sectionCSS, 
+      class: cssClass,
+      important: false
+  %}
+
+
+
+  <section class="nine15--slider section--nine15-slider {{class}} {% if mobRelative == true %}mobile-relative{% endif %}">
+    {{slides}}
+  </section>
+
+  {{modal}}
+
+
+  {% include 'custom-css', 
+      css: sectionCustomCSS, 
+      class: cssClass 
+  %}
+
+
+  <script type="text/javascript">
+
+      waitForJavascript(function () {
+          $(document).ready(function () {
+
+              $('{{cssClass}}').slick({
+                  // fade:true,
+                  infinite: true,
+                  autoplay: {{autoSlide}},
+                  autoplaySpeed: {{s.pause}},
+                  lazyLoad:"progressive",
+                  arrows: {{useArrows}},
+                  {% if useBgImg == false %}
+                  apaptiveHeight: true,
+                  {% endif %}
+                  dots: {{useDots}},
+                  rows: 0,
+                  responsive: [
+                      {
+                          breakpoint: 750,
+                          settings: {
+                              dots: true
+                          }
+                      }
+                  ]
+              });
+          })
+          $(function(){
+
+              var section = '{{cssClass}}',
+                  open = '.open-modal',
+                  close = '.close-modal, .bg_close',
+                  content = '.video-modal',
+                  cont_active = 'active';
+              $(section+' '+open).click(function(){
+                  var tab = $(this),
+                      tab_id = tab.attr('data-open'),
+                      cont = $("#"+tab_id);
+                    cont.addClass(cont_active);
+              });
+              $(close).click(function(){
+                  var tab = $(this),
+                      tab_id = tab.attr('data-close'),
+                      cont = $("#"+tab_id);
+                    cont.removeClass(cont_active);
+
+                  $(".modal_video").each(function() {
+                      var src = $(this).attr('src');
+                      $(this).attr('src', src);
+                  });
+              });
+          });
+      });
+
+  </script>
+{% endif %}

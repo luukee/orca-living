@@ -1,0 +1,667 @@
+<!-- sections/nine15--slider -->
+
+{% include 'master--slider' %}
+
+{% schema %}
+  {
+    "name": "Slider - NINE15",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "leaf",
+        "label": "Enable leaf icons for RTE"
+      },
+      {
+        "type": "header",
+        "content": "Height Rules"
+      },
+      {
+        "type": "checkbox",
+        "id": "set_height",
+        "label": "Set Specific Height",
+        "default": true,
+        "info": "Unchecking this will make all images and videos inline instead of background."
+      },
+      {
+        "type": "checkbox",
+        "id": "mob_rel",
+        "label": "Separate content from background on mobile",
+        "default": false,
+        "info": "Check this if your text content is getting cutoff on mobile. It will place the content below the image/video."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_mobile_overlay_sooner",
+        "label": "Show Mobile overlay at Tablet size.",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "image_height",
+        "label": "Slider Height",
+        "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
+        "default": "clamp(500px,54%,100vh)"
+      },
+      {
+        "type": "text",
+        "id": "image_height_mob",
+        "label": "Slider Height on Mobile",
+        "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
+        "info": "Leave at empty to ignore."
+      },
+      {
+        "type": "header",
+        "content": "Slide Timing Rules"
+      },
+      {
+        "type": "checkbox",
+        "id": "auto_slide",
+        "label": "Auto Slide",
+        "default": true
+      },
+     {
+        "type":"checkbox",
+        "id":"use_arrows",
+        "label":"Use Arrows"
+      },
+      {
+        "type":"checkbox",
+        "id":"use_dots",
+        "label":"Use Dots",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "pause",
+        "label": "Time between slides",
+        "options": [
+          {
+            "value": "3000",
+            "label": "3 Seconds"
+          },
+          {
+            "value": "4000",
+            "label": "4 Seconds"
+          },
+          {
+            "value": "5000",
+            "label": "5 Seconds"
+          },
+          {
+            "value": "6000",
+            "label": "6 Seconds"
+          },
+          {
+            "value": "7000",
+            "label": "7 Seconds"
+          },
+          {
+            "value": "8000",
+            "label": "8 Seconds"
+          }
+        ],
+        "default": "5000"
+      },
+      {
+        "type": "header",
+        "content": "Custom CSS Rules"
+      },
+      {
+        "type": "paragraph",
+        "content": "Explanation of Custom CSS rules below input."
+      },
+      {
+        "type": "liquid",
+        "id": "custom_css",
+        "label": "Custom CSS"
+      },
+      {
+        "type": "paragraph",
+        "content": "Use '==' to reference this block's parent container, that way the css you use only applies to this container. The example below applies font size to only the h2 element in the current block's container."
+      },
+      {
+        "type": "paragraph",
+        "content": "Ex: '== h2 { font-size: 20px; }'"
+      },
+      {
+        "type": "paragraph",
+        "content": "Use '/MEDIA_QUERY/' to create media queries that match css defaults. The example below would output '@media screen and (max-width: 749px)' before the css."
+      },
+      {
+        "type": "paragraph",
+        "content": "Ex: '/small/ { == h2 { font-size: 20px; } }'"
+      },
+      {
+        "type": "paragraph",
+        "content": "Media Queries: narrow, not-narrow, small, medium, medium-up, medium-down, large, large-up, large-down, ex-large, ex-large-up, ex-large-down, widescreen"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slide",
+        "settings": [
+        {
+          "type": "header",
+          "content": "Image Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_image",
+          "label": "Use Slide",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "align_bg",
+          "label": "Background Alignment",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left center",
+              "label": "Left Center"
+            },
+            {
+              "value": "center right",
+              "label": "Right Center"
+            },
+            {
+              "value": "top center",
+              "label": "Center Top"
+            },
+            {
+              "value": "top left",
+              "label": "Left Top"
+            },
+            {
+              "value": "top right",
+              "label": "Right Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Center Bottom"
+            },
+            {
+              "value": "bottom left",
+              "label": "Left Bottom"
+            },
+            {
+              "value": "bottom right",
+              "label": "Right Bottom"
+            }
+
+          ],
+          "default": "center"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Overlay Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Opacity",
+          "default": 10
+        },
+        {
+          "type": "paragraph",
+          "content": "--------------------------------"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Image Settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mob",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "align_bg_mob",
+          "label": "Background Alignment",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left center",
+              "label": "Left Center"
+            },
+            {
+              "value": "center right",
+              "label": "Right Center"
+            },
+            {
+              "value": "top center",
+              "label": "Center Top"
+            },
+            {
+              "value": "top left",
+              "label": "Left Top"
+            },
+            {
+              "value": "top right",
+              "label": "Right Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Center Bottom"
+            },
+            {
+              "value": "bottom left",
+              "label": "Left Bottom"
+            },
+            {
+              "value": "bottom right",
+              "label": "Right Bottom"
+            }
+
+          ],
+          "default": "center"
+        },
+        {
+          "type": "color",
+          "id": "bg_color_mob",
+          "label": "Mobile Overlay Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "opacity_mob",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Mobile Opacity",
+          "default": 10
+        },
+        {
+          "type": "paragraph",
+          "content": "--------------------------------"
+        },
+        {
+          "type": "header",
+          "content": "Text Settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "text",
+          "id": "stars",
+          "label": "Stars",
+          "info": "Type a number 1 - 5 to show stars"
+        },
+        {
+          "type": "select",
+          "id": "align_text",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "liquid",
+          "id": "title",
+          "label": "Title",
+          "default": "Title Goes Here"
+        },
+        {
+          "type":"checkbox",
+          "id":"make_h1",
+          "label": "Make title an H1"
+        },
+        {
+          "type": "range",
+          "id": "font_size_title",
+          "min": 12,
+          "max": 150,
+          "step": 2,
+          "label": "Title Size",
+          "default": 60
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title Color",
+          "default": "#000000"
+        },
+        {
+          "type": "liquid",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Subtitle goes here"
+        },
+        {
+          "type": "range",
+          "id": "font_size_subtitle",
+          "min": 12,
+          "max": 150,
+          "step": 2,
+          "label": "Subtitle Size",
+          "default": 20
+        },
+        {
+          "type": "color",
+          "id": "subtitle_color",
+          "label": "Subtitle Color",
+          "default": "#000000"
+        },
+        {
+          "type": "liquid",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Text goes here</p>"
+        },
+        {
+          "type": "range",
+          "id": "font_size_text",
+          "min": 12,
+          "max": 150,
+          "step": 2,
+          "label": "Text Size",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#333333"
+        },
+        {
+          "type": "liquid",
+          "id": "btn_txt",
+          "label": "Button Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "btn_url",
+          "label": "Button Url",
+          "info": "If url is added but Button Text is blank then the whole slide becomes a link."
+        },
+        {
+          "type": "select",
+          "id": "btn_style",
+          "label": "Button Type",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "primary Button--custom",
+              "label": "Custom"
+            },
+            {
+              "value": "arrow-link",
+              "label": "Arrow Link"
+            }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt2",
+          "label": "Button Text",
+          "default": "Shop Now"
+        },
+
+        {
+          "type": "url",
+          "id": "btn_url2",
+          "label": "Button Url",
+          "info": "If url is added but Button Text is blank then the whole slide becomes a link."
+        },
+        {
+          "type": "select",
+          "id": "btn_style2",
+          "label": "Button Type",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "primary Button--custom",
+              "label": "Custom"
+            },
+            {
+              "value": "arrow-link",
+              "label": "Arrow Link"
+            }
+          ],
+          "default": "primary"
+        },
+        
+        
+        {
+          "type": "paragraph",
+          "content": "Button Type must be set to Custom to use custom button colors below."
+        },
+        {
+          "type": "color",
+          "id": "color_button_text",
+          "label": "Text"
+        },
+        {
+          "type": "color",
+          "id": "color_button",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "color_button_border",
+          "label": "Border"
+        },
+        {
+          "type": "color",
+          "id": "color_button_text_hover",
+          "label": "Text Hover"
+        },
+        {
+          "type": "color",
+          "id": "color_button_hover",
+          "label": "Background Hover"
+        },
+        {
+          "type": "color",
+          "id": "color_button_border_hover",
+          "label": "Border Hover"
+        },
+        {
+          "type": "paragraph",
+          "content": "--------------------------------"
+        },
+        {
+          "type": "header",
+          "content": "Alignment Settings"
+        },
+        {
+          "type": "select",
+          "id": "align_hor",
+          "label": "Horizontal Content Alignment",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "vert_align",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Vertical Align (optional)",
+          "default": 50,
+          "info": "50 is centered"
+        },
+        {
+          "type": "range",
+          "id": "hor_align",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Horizontal Align (optional)",
+          "default": 10,
+          "info": "50 is centered"
+        },
+        {
+          "type": "text",
+          "id": "width",
+          "label": "Content Width",
+          "default": "450px"
+        },
+        {
+          "type": "paragraph",
+          "content": "--------------------------------"
+        },
+        {
+          "type": "header",
+          "content": "Video Settings"
+        },
+        {
+          "type": "text",
+          "id": "video_ratio",
+          "label": "Video ratio",
+          "default": "56"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Video url",
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
+        },
+        {
+          "type": "text",
+          "id": "video_hosted",
+          "label": "Video url if hosted"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt_modal",
+          "label": "Button Text",
+          "default": "Watch Video"
+        },
+        {
+          "type": "video_url",
+          "id": "video_modal",
+          "label": "Video url for Modal (optional)",
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": "--------------------------------"
+        },
+        {
+          "type": "header",
+          "content": "Custom CSS Rules"
+        },
+        {
+          "type": "paragraph",
+          "content": "Explanation of Custom CSS rules below input."
+        },
+        {
+          "type": "liquid",
+          "id": "custom_css",
+          "label": "Custom CSS"
+        },
+        {
+          "type": "paragraph",
+          "content": "Use '==' to reference this block's parent container, that way the css you use only applies to this container. The example below applies font size to only the h2 element in the current block's container."
+        },
+        {
+          "type": "paragraph",
+          "content": "Ex: '== h2 { font-size: 20px; }'"
+        },
+        {
+          "type": "paragraph",
+          "content": "Use '/MEDIA_QUERY/' to create media queries that match css defaults. The example below would output '@media screen and (max-width: 749px)' before the css."
+        },
+        {
+          "type": "paragraph",
+          "content": "Ex: '/small/ { == h2 { font-size: 20px; } }'"
+        },
+        {
+          "type": "paragraph",
+          "content": "Media Queries: narrow, not-narrow, small, medium, medium-up, medium-down, large, large-up, large-down, ex-large, ex-large-up, ex-large-down, widescreen"
+        },
+        {
+          "type":"header",
+          "content": "Developer Only"
+        },
+        {
+          "type": "liquid",
+          "id": "metafield_image",
+          "label": "Metafield Image"
+        },
+        {
+          "type": "liquid",
+          "id": "metafield_image_alt",
+          "label": "Metafield Image Alt"
+        }
+      ]
+    }
+  ],
+    "presets": [
+      {
+        "name": "Slider - NINE15",
+        "category": "1 - NINE15"
+      }
+    ]
+  }
+{% endschema %}

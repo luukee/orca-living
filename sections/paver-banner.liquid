@@ -1,0 +1,56 @@
+{% if request.path == "/collections/pavers/_Samples" %}
+  {% if section.settings.banner_image %}
+    <div class="overlay-wrapper">
+      {% render 'snippet--image', class: 'banner', img: section.settings.banner_image %}
+      <p class="overlay-text">of earth</p>
+    </div>
+  {% endif %}
+  <div class="two-grids">
+    {% for block in section.blocks %}
+      <div class="two-grid">
+        {% render 'snippet--image', img: block.settings.image %}
+        <div class="text-content">
+          {{ block.settings.text }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endif %}
+{% schema %}
+  {
+    "name": "Paver Banner",
+    "tag": "section",
+    "class": "section-paver-banner",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image",
+        "info": "Banner Image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "two-grid",
+        "name": "Two Grid",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }, {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Paver Banner"
+      }
+    ]
+  }
+{% endschema %}

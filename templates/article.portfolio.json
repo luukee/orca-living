@@ -1,0 +1,115 @@
+{
+  "sections": {
+    "a6a40d43-1bf3-4347-81bd-9a5fb174555e": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "custom_liquid": "{% render 'snippet--article-feed' %}",
+        "color_scheme": "background-1",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "d9b378b8-6831-4515-8bc0-62b9b523d50d": {
+      "type": "side-navigation",
+      "settings": {
+        "title": "{{blog.title}}",
+        "make_h1": false,
+        "menu": "landscapes-menu",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "6faa1e0c-759c-4ccd-a7c0-0a42af9d1dbf": {
+      "type": "main-blog",
+      "custom_css": [
+        "h1 {display: none;}"
+      ],
+      "settings": {
+        "products_per_page": 48,
+        "layout": "grid",
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": false,
+        "show_author": false,
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "featured_image": {
+          "type": "featured_image",
+          "settings": {
+            "image_height": "adapt"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "blog_show_date": true,
+            "blog_show_author": false
+          }
+        },
+        "26bde7e2-72cf-45e5-9b94-6249106d287a": {
+          "type": "custom_liquid",
+          "settings": {
+            "title": "Metafields",
+            "custom_liquid": "{% liquid \n  assign mf = article.metafields.custom\n  assign loc  = mf.location\n  assign com  = mf.plant_community\n  assign typ  = mf.type\n  assign mat  = mf.featured_materials\n%}\n\n{% if loc != blank %}\n  <div>\n    <span>Location: </span> <span>{{loc}}</span>\n  </div>\n{% endif %}\n\n{% if com != blank %}\n  <div>\n    <span>Plant Community: </span> <span>{{com}}</span>\n  </div>\n{% endif %}\n\n{% if typ != blank %}\n  <div>\n    <span>Type: </span> <span>{{typ}}</span>\n  </div>\n{% endif %}\n\n{% if mat != blank %}\n  <div>\n    <span>Featured Materials: </span> <span>{{mat}}</span>\n  </div>\n{% endif %}\n\n<div class=\"inline-products\">\n{% render 'snippet--article-products' %}\n</div>"
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {
+          }
+        },
+        "9f228047-83f2-442b-8b2a-3bdc09f83b4a": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "title": "Metafield Products",
+            "custom_liquid": "{% render 'snippet--article-products' %}"
+          }
+        },
+        "e0295ff1-4dbf-4cd5-b3bc-e7425b7899a5": {
+          "type": "custom_liquid",
+          "settings": {
+            "title": "Metafield Images",
+            "custom_liquid": "{% render 'snippet--article-gallery' %}"
+          }
+        }
+      },
+      "block_order": [
+        "featured_image",
+        "title",
+        "26bde7e2-72cf-45e5-9b94-6249106d287a",
+        "content",
+        "9f228047-83f2-442b-8b2a-3bdc09f83b4a",
+        "e0295ff1-4dbf-4cd5-b3bc-e7425b7899a5"
+      ],
+      "custom_css": [
+
+      ],
+      "settings": {
+      }
+    },
+    "2e29f856-a629-41cb-9b51-49b8164a7b82": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "custom_liquid": "{% render 'snippet--article-gallery' %}",
+        "color_scheme": "background-1",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "a6a40d43-1bf3-4347-81bd-9a5fb174555e",
+    "d9b378b8-6831-4515-8bc0-62b9b523d50d",
+    "6faa1e0c-759c-4ccd-a7c0-0a42af9d1dbf",
+    "main",
+    "2e29f856-a629-41cb-9b51-49b8164a7b82"
+  ]
+}

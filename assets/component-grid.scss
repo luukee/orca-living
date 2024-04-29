@@ -1,0 +1,995 @@
+
+
+
+// 
+// pixel to em mixin
+// num AND base size must be a value with no unit (px,em, vh,etc)
+//     ===
+@function em($num) {
+  $result: calc(((#{$num}) / (var(--font-size-base))) * 1em);
+  @return $result;
+}
+
+
+
+
+/*================ Responsive Show/Hide Helper ================*/
+@mixin responsive-display-helper($grid-breakpoint-type: '') {
+  // sass-lint:disable no-important
+  .cell,
+  .cell_no_margin,
+  :root,
+  :after, 
+  :before {
+    --grid-gutter--neg: calc(var(--grid-gutter) * -1);
+  }
+  .#{$grid-breakpoint-type}show {
+    display: block !important;
+  }
+
+  .#{$grid-breakpoint-type}hide {
+    display: none !important;
+  }
+}
+
+
+/*================ Responsive Text Alignment Helper ================*/
+@mixin responsive-text-align-helper($grid-breakpoint-type: '') {
+  // sass-lint:disable no-important
+  .#{$grid-breakpoint-type}text-left {
+    text-align: left !important;
+  }
+
+  .#{$grid-breakpoint-type}text-right {
+    text-align: right !important;
+  }
+
+  .#{$grid-breakpoint-type}text-center {
+    text-align: center !important;
+  }
+}
+
+@mixin clearfix() {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  // sass-lint:disable no-misspelled-properties
+  *zoom: 1;
+}
+
+
+
+
+/*============================================================================
+  Grid Setup
+    1. Allow the grid system to be used on lists.
+    2. Remove any margins and paddings that might affect the grid system.
+    3. Apply a negative `margin-left` to negate the columns' gutters.
+==============================================================================*/
+
+// Allows a repetion of the base grid settings
+%grid-vars {
+  --base-gutter                           : 30px;
+  
+  --base-gutter--double                   : calc( var(--base-gutter) * 2 );
+  --base-gutter--trip                     : calc( var(--base-gutter) * 3 );
+  --base-gutter--quad                     : calc( var(--base-gutter) * 4 );
+
+  --base-gutter--half                     : calc( var(--base-gutter) / 2 );
+  --base-gutter--third                    : calc( var(--base-gutter) / 3 );
+  --base-gutter--quarter                  : calc( var(--base-gutter) / 4 );
+  --base-gutter--eighth                   : calc( var(--base-gutter) / 8 );
+
+  --grid-gutter                           : var(--base-gutter);
+  --grid-gutter--mobile                   : var(--base-gutter--half);
+  --grid-gutter--neg                      : calc(var(--grid-gutter) * -1);
+}
+
+// Gives access to whole site
+:root,
+:after, 
+:before {
+  --grid-gutter--neg: calc(var(--grid-gutter) * -1);
+}
+
+
+.cell {
+
+  // @include clearfix();
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-left: var(--grid-gutter--neg);
+  font-size:0;
+  letter-spacing: 0;
+  @include mq($small) {
+    --grid-gutter: var(--grid-gutter--mobile);
+  }
+  & > .cell__item {
+    padding-left: var(--grid-gutter);
+    &[class*="--push"] {
+      position: relative;
+    }
+  }
+    
+}
+.cell.no_gutter,
+.cell_no_gutter {
+  // @include clearfix();
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size:0;
+  & > .cell__item {
+    display:inline-block;
+    font-size:16px;
+    font-size: var(--font-size);
+  }
+}
+
+.cell__item {
+  width: 100%;
+  display:inline-block;
+  font-size:16px;
+  font-size: var(--font-size);
+  &[class*="--push"] {
+    position: relative;
+  }
+}
+
+.cell,
+.cell_no_gutter {
+  .cell__item {
+    vertical-align: top;
+  }
+  &.vert-top {
+    & > .cell__item {
+      vertical-align: top;
+    }
+  }
+  &.vert-mid,
+  &.vert-middle {
+    & > .cell__item {
+      vertical-align: middle;
+    }
+  }
+  &.vert-bot,
+  &.vert-bottom {
+    & > .cell__item {
+      vertical-align: bottom;
+    }
+  }
+
+  &.half_gutter {
+    --grid-gutter: var(--base-gutter--half);
+  }
+  &.double_gutter {
+    --grid-gutter: var(--base-gutter--double);
+  }
+
+  &.cell_margin_bottom,
+  &.cell_bottom_margin {
+    margin-bottom: var(--grid-gutter--neg);
+    & > .cell__item {
+      margin-bottom: var(--grid-gutter);
+    }
+  }
+}
+
+
+.match-row.cell:not(.slick-slider),
+.match-row.cell_no_gutter:not(.slick-slider) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  // grid-template-columns: 50% 50%;
+
+  --grid-gutter          : var(--base-gutter--half);
+  --grid-gutter--neg      : calc( (var(--grid-gutter)) * -1 );
+
+  &.half_gutter {
+    --grid-gutter        : var(--base-gutter--quarter);
+  }
+  &.double_gutter {
+    --grid-gutter        : var(--base-gutter);
+  }
+
+
+
+
+
+  > .cell__item {
+    width: 100%;
+    min-width: 0; // somehow helps
+    grid-column-end: span 1;
+    > a,
+    > div {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      > * {
+        align-self: unset;
+      }
+
+      .btn {
+        margin-top: auto;
+      }
+    }
+  }
+  &.cell {
+    margin-bottom: var(--grid-gutter--neg);
+    margin-left: var(--grid-gutter--neg);
+    > .cell__item {
+      padding-left: var(--grid-gutter); 
+      margin-bottom: var(--grid-gutter);
+    }
+  }
+  .product-grid-item {
+    .product-form,
+    .btn {
+      margin-top: auto;
+    }
+  }
+  > .cell__item {
+    grid-column-end: span 2;
+  }
+  @include mq($narrow) {
+    > .cell__item {
+      grid-column-end: span 2;
+    }
+  }
+
+
+  @include mq($small) {
+    &#product-grid {
+      > .cell__item {
+        grid-column-end: span 1;
+      }
+      > .cta-item {
+        grid-column-end: span 2;
+      }
+    }
+    > .small--one-half {
+      grid-column-end: span 1;
+    }
+  }
+  @include mq($medium-up) {
+    grid-template-columns: repeat(60, 1fr); // 60 for columns bc it's evenly dividable by 2, 3, 4, and 5
+    > .cell__item {
+      grid-column-end: span 60;
+    }
+
+    > .medium--one-half,
+    > .medium-up--one-half {
+      grid-column-end: span 30;
+    }
+    > .medium--one-third,
+    > .medium-up--one-third {
+      grid-column-end: span 20;
+    }
+    > .medium--two-thirds,
+    > .medium-up--two-thirds {
+      grid-column-end: span 40;
+    }
+    > .medium--one-quarter,
+    > .medium-up--one-quarter {
+      grid-column-end: span 15;
+    }
+    > .medium--three-quarters,
+    > .medium-up--three-quarters {
+      grid-column-end: span 45;
+    }
+    > .medium--one-fifth,
+    > .medium-up--one-fifth {
+      grid-column-end: span 12;
+    }
+    > .medium--two-fifths,
+    > .medium-up--two-fifths {
+      grid-column-end: span 24;
+    }
+    > .medium--three-fifths,
+    > .medium-up--three-fifths {
+      grid-column-end: span 36;
+    }
+    > .medium--four-fifths,
+    > .medium-up--four-fifths {
+      grid-column-end: span 48;
+    }
+    > .medium--one-sixth,
+    > .medium-up--one-sixth {
+      grid-column-end: span 10;
+    }
+
+  }
+  @include mq($large-up) {
+    --grid-gutter      : var(--base-gutter);
+    &.half_gutter {
+      --grid-gutter    : var(--base-gutter--half);
+    }
+    &.double_gutter {
+      --grid-gutter    : var(--base-gutter--double);
+    }
+    
+    > .large--one-half,
+    > .large-up--one-half {
+      grid-column-end: span 30;
+    }
+    > .large--one-twelfth,
+    > .large-up--one-twelfth {
+      grid-column-end: span 5;
+    }
+    > .large--five-twelfths,
+    > .large-up--five-twelfths {
+      grid-column-end: span 25;
+    }
+    > .large--seven-twelfths,
+    > .large-up--seven-twelfths {
+      grid-column-end: span 35;
+    }
+    > .large--eleven-twelfths,
+    > .large-up--eleven-twelfths {
+      grid-column-end: span 55;
+    }
+    > .large--one-tenth,
+    > .large-up--one-tenth {
+      grid-column-end: span 6;
+    }
+    > .large--three-tenths,
+    > .large-up--three-tenths {
+      grid-column-end: span 18;
+    }
+    > .large--seven-tenths,
+    > .large-up--seven-tenths {
+      grid-column-end: span 42;
+    }
+    > .large--nine-tenths,
+    > .large-up--nine-tenths {
+      grid-column-end: span 54;
+    }
+    > .large--one-third,
+    > .large-up--one-third {
+      grid-column-end: span 20;
+    }
+    > .large--eight-twelfths,
+    > .large-up--eight-twelfths,
+    > .large--two-thirds,
+    > .large-up--two-thirds {
+      grid-column-end: span 40;
+    }
+    > .large--nine-twelfths,
+    > .large-up--nine-twelfths,
+    > .large--three-quarters,
+    > .large-up--three-quarters {
+      grid-column-end: span 45;
+    }
+    > .large--three-twelfths,
+    > .large-up--three-twelfths,
+    > .large--one-quarter,
+    > .large-up--one-quarter {
+      grid-column-end: span 15;
+    }
+    > .large--two-tenths,
+    > .large-up--two-tenths,
+    > .large--one-fifth,
+    > .large-up--one-fifth {
+      grid-column-end: span 12;
+    }
+    > .large--four-tenths,
+    > .large-up--four-tenths,
+    > .large--two-fifths,
+    > .large-up--two-fifths {
+      grid-column-end: span 24;
+    }
+    > .large--six-tenths,
+    > .large-up--six-tenths,
+    > .large--three-fifths,
+    > .large-up--three-fifths {
+      grid-column-end: span 36;
+    }
+    > .large--eight-tenths,
+    > .large-up--eight-tenths,
+    > .large--four-fifths,
+    > .large-up--four-fifths {
+      grid-column-end: span 48;
+    }
+    > .large--two-twelfths,
+    > .large-up--two-twelfths,
+    > .large--one-sixth,
+    > .large-up--one-sixth {
+      grid-column-end: span 10;
+    }
+  }
+  @include mq($ex-large-up) {
+    > .ex-large--one-half,
+    > .ex-large-up--one-half {
+      grid-column-end: span 30;
+    }
+    > .ex-large--one-third,
+    > .ex-large-up--one-third {
+      grid-column-end: span 20;
+    }
+    > .ex-large--two-thirds,
+    > .ex-large-up--two-thirds {
+      grid-column-end: span 40;
+    }
+    > .ex-large--three-quarters,
+    > .ex-large-up--three-quarters {
+      grid-column-end: span 45;
+    }
+    > .ex-large--one-quarter,
+    > .ex-large-up--one-quarter {
+      grid-column-end: span 15;
+    }
+    > .ex-large--one-fifth,
+    > .ex-large-up--one-fifth {
+      grid-column-end: span 12;
+    }
+    > .ex-large--two-fifths,
+    > .ex-large-up--two-fifths {
+      grid-column-end: span 24;
+    }
+    > .ex-large--three-fifths,
+    > .ex-large-up--three-fifths {
+      grid-column-end: span 36;
+    }
+    > .ex-large--four-fifths,
+    > .ex-large-up--four-fifths {
+      grid-column-end: span 48;
+    }
+    > .ex-large--one-sixth,
+    > .ex-large-up--one-sixth {
+      grid-column-end: span 10;
+    }
+  }
+}
+
+/*============================================================================
+    Reversed grids allow you to structure your source in the opposite
+    order to how your rendered layout will appear.
+==============================================================================*/
+.cell--rev {
+  direction: rtl;
+  text-align: left;
+
+  > .cell__item {
+    direction: ltr;
+    text-align: left;
+    float: right;
+  }
+}
+
+.page-width {
+
+  width: 100%;
+  // max-width: var(--page-width);
+  margin: 0 auto;
+  padding:{
+    left: var(--grid-gutter--mobile);
+    right: var(--grid-gutter--mobile);
+  }
+  @include mq($medium-up) {
+    padding:{
+      left: var(--grid-gutter);
+      right: var(--grid-gutter);
+    }
+  }
+
+  &.no-padding {  
+    padding: 0;
+  }
+  &.page-width--narrow {
+    max-width: $grid-medium;
+  }
+}
+
+
+
+/*============================================================================
+  Grid Columns
+    - Create width classes, prepended by the breakpoint name.
+==============================================================================*/
+// sass-lint:disable brace-style empty-line-between-blocks
+@mixin grid-column-generator($grid-breakpoint-type: '') {
+  /* Whole */
+  .#{$grid-breakpoint-type}one-whole { width: 100%; }
+
+  /* Halves */
+  .#{$grid-breakpoint-type}one-half { width: percentage(1 / 2); }
+
+  /* Thirds */
+  .#{$grid-breakpoint-type}one-third { width: percentage(1 / 3); }
+  .#{$grid-breakpoint-type}two-thirds { width: percentage(2 / 3); }
+
+  /* Quarters */
+  .#{$grid-breakpoint-type}one-quarter { width: percentage(1 / 4); }
+  .#{$grid-breakpoint-type}two-quarters { width: percentage(2 / 4); }
+  .#{$grid-breakpoint-type}three-quarters { width: percentage(3 / 4); }
+
+  /* Fifths */
+  .#{$grid-breakpoint-type}one-fifth { width: percentage(1 / 5); }
+  .#{$grid-breakpoint-type}two-fifths { width: percentage(2 / 5); }
+  .#{$grid-breakpoint-type}three-fifths { width: percentage(3 / 5); }
+  .#{$grid-breakpoint-type}four-fifths { width: percentage(4 / 5); }
+
+  /* Sixths */
+  .#{$grid-breakpoint-type}one-sixth { width: percentage(1 / 6); }
+  .#{$grid-breakpoint-type}two-sixths { width: percentage(2 / 6); }
+  .#{$grid-breakpoint-type}three-sixths { width: percentage(3 / 6); }
+  .#{$grid-breakpoint-type}four-sixths { width: percentage(4 / 6); }
+  .#{$grid-breakpoint-type}five-sixths { width: percentage(5 / 6); }
+
+  /* Sevenths */
+  // .#{$grid-breakpoint-type}one-seventh { width: percentage(1 / 7); }
+  // .#{$grid-breakpoint-type}two-sevenths { width: percentage(2 / 7); }
+  // .#{$grid-breakpoint-type}three-sevenths { width: percentage(3 / 7); }
+  // .#{$grid-breakpoint-type}four-sevenths { width: percentage(4 / 7); }
+  // .#{$grid-breakpoint-type}five-sevenths { width: percentage(5 / 7); }
+  // .#{$grid-breakpoint-type}five-sevenths { width: percentage(6 / 7); }
+
+  /* Eighths */
+  .#{$grid-breakpoint-type}one-eighth { width: percentage(1 / 8); }
+  .#{$grid-breakpoint-type}two-eighths { width: percentage(2 / 8); }
+  .#{$grid-breakpoint-type}three-eighths { width: percentage(3 / 8); }
+  .#{$grid-breakpoint-type}four-eighths { width: percentage(4 / 8); }
+  .#{$grid-breakpoint-type}five-eighths { width: percentage(5 / 8); }
+  .#{$grid-breakpoint-type}six-eighths { width: percentage(6 / 8); }
+  .#{$grid-breakpoint-type}seven-eighths { width: percentage(7 / 8); }
+
+  /* Ninths */
+  // .#{$grid-breakpoint-type}one-ninth { width: percentage(1 / 9); }
+  // .#{$grid-breakpoint-type}two-ninths { width: percentage(2 / 9); }
+  // .#{$grid-breakpoint-type}three-ninths { width: percentage(3 / 9); }
+  // .#{$grid-breakpoint-type}four-ninths { width: percentage(4 / 9); }
+  // .#{$grid-breakpoint-type}five-ninths { width: percentage(5 / 9); }
+  // .#{$grid-breakpoint-type}six-ninths { width: percentage(6 / 9); }
+  // .#{$grid-breakpoint-type}seven-ninths { width: percentage(7 / 9); }
+  // .#{$grid-breakpoint-type}seven-ninths { width: percentage(8 / 9); }
+
+  /* Tenths */
+  .#{$grid-breakpoint-type}one-tenth { width: percentage(1 / 10); }
+  .#{$grid-breakpoint-type}two-tenths { width: percentage(2 / 10); }
+  .#{$grid-breakpoint-type}three-tenths { width: percentage(3 / 10); }
+  .#{$grid-breakpoint-type}four-tenths { width: percentage(4 / 10); }
+  .#{$grid-breakpoint-type}five-tenths { width: percentage(5 / 10); }
+  .#{$grid-breakpoint-type}six-tenths { width: percentage(6 / 10); }
+  .#{$grid-breakpoint-type}seven-tenths { width: percentage(7 / 10); }
+  .#{$grid-breakpoint-type}eight-tenths { width: percentage(8 / 10); }
+  .#{$grid-breakpoint-type}nine-tenths { width: percentage(9 / 10); }
+
+  /* Elevenths */
+  // .#{$grid-breakpoint-type}one-eleventh { width: percentage(1 / 11); }
+  // .#{$grid-breakpoint-type}two-elevenths { width: percentage(2 / 11); }
+  // .#{$grid-breakpoint-type}three-elevenths { width: percentage(3 / 11); }
+  // .#{$grid-breakpoint-type}four-elevenths { width: percentage(4 / 11); }
+  // .#{$grid-breakpoint-type}five-elevenths { width: percentage(5 / 11); }
+  // .#{$grid-breakpoint-type}six-elevenths { width: percentage(6 / 11); }
+  // .#{$grid-breakpoint-type}seven-elevenths { width: percentage(7 / 11); }
+  // .#{$grid-breakpoint-type}eight-elevenths { width: percentage(8 / 11); }
+  // .#{$grid-breakpoint-type}nine-elevenths { width: percentage(9 / 11); }
+  // .#{$grid-breakpoint-type}nine-elevenths { width: percentage(10 / 11); }
+
+  /* Twelfths */
+  .#{$grid-breakpoint-type}one-twelfth { width: percentage(1 / 12); }
+  // .#{$grid-breakpoint-type}two-twelfths { width: percentage(2 / 12); }
+  // .#{$grid-breakpoint-type}three-twelfths { width: percentage(3 / 12); }
+  // .#{$grid-breakpoint-type}four-twelfths { width: percentage(4 / 12); }
+  .#{$grid-breakpoint-type}five-twelfths { width: percentage(5 / 12); }
+  .#{$grid-breakpoint-type}six-twelfths { width: percentage(6 / 12); }
+  .#{$grid-breakpoint-type}seven-twelfths { width: percentage(7 / 12); }
+  // .#{$grid-breakpoint-type}eight-twelfths { width: percentage(8 / 12); }
+  // .#{$grid-breakpoint-type}nine-twelfths { width: percentage(9 / 12); }
+  .#{$grid-breakpoint-type}ten-twelfths { width: percentage(10 / 12); }
+  .#{$grid-breakpoint-type}eleven-twelfths { width: percentage(11 / 12); }
+}
+
+/*================ Grid push classes ================*/
+@mixin grid-push-generator($grid-breakpoint-type: '') {
+  /* Halves */
+  .#{$grid-breakpoint-type}push-one-half { left: percentage(1 / 2); }
+
+  /* Thirds */
+  .#{$grid-breakpoint-type}push-one-third { left: percentage(1 / 3); }
+  .#{$grid-breakpoint-type}push-two-thirds { left: percentage(2 / 3); }
+
+  /* Quarters */
+  .#{$grid-breakpoint-type}push-one-quarter { left: percentage(1 / 4); }
+  .#{$grid-breakpoint-type}push-two-quarters { left: percentage(2 / 4); }
+  .#{$grid-breakpoint-type}push-three-quarters { left: percentage(3 / 4); }
+
+  /* Fifths */
+  // .#{$grid-breakpoint-type}push-one-fifth { left: percentage(1 / 5); }
+  // .#{$grid-breakpoint-type}push-two-fifths { left: percentage(2 / 5); }
+  // .#{$grid-breakpoint-type}push-three-fifths { left: percentage(3 / 5); }
+  // .#{$grid-breakpoint-type}push-four-fifths { left: percentage(4 / 5); }
+
+  /* Sixths */
+  // .#{$grid-breakpoint-type}push-one-sixth { left: percentage(1 / 6); }
+  // .#{$grid-breakpoint-type}push-two-sixths { left: percentage(2 / 6); }
+  // .#{$grid-breakpoint-type}push-three-sixths { left: percentage(3 / 6); }
+  // .#{$grid-breakpoint-type}push-four-sixths { left: percentage(4 / 6); }
+  // .#{$grid-breakpoint-type}push-five-sixths { left: percentage(5 / 6); }
+
+  /* Eighths */
+  // .#{$grid-breakpoint-type}push-one-eighth { left: percentage(1 / 8); }
+  // .#{$grid-breakpoint-type}push-two-eighths { left: percentage(2 / 8); }
+  // .#{$grid-breakpoint-type}push-three-eighths { left: percentage(3 / 8); }
+  // .#{$grid-breakpoint-type}push-four-eighths { left: percentage(4 / 8); }
+  // .#{$grid-breakpoint-type}push-five-eighths { left: percentage(5 / 8); }
+  // .#{$grid-breakpoint-type}push-six-eighths { left: percentage(6 / 8); }
+  // .#{$grid-breakpoint-type}push-seven-eighths { left: percentage(7 / 8); }
+
+  /* Tenths */
+  // .#{$grid-breakpoint-type}push-one-tenth { left: percentage(1 / 10); }
+  // .#{$grid-breakpoint-type}push-two-tenths { left: percentage(2 / 10); }
+  // .#{$grid-breakpoint-type}push-three-tenths { left: percentage(3 / 10); }
+  // .#{$grid-breakpoint-type}push-four-tenths { left: percentage(4 / 10); }
+  // .#{$grid-breakpoint-type}push-five-tenths { left: percentage(5 / 10); }
+  // .#{$grid-breakpoint-type}push-six-tenths { left: percentage(6 / 10); }
+  // .#{$grid-breakpoint-type}push-seven-tenths { left: percentage(7 / 10); }
+  // .#{$grid-breakpoint-type}push-eight-tenths { left: percentage(8 / 10); }
+  // .#{$grid-breakpoint-type}push-nine-tenths { left: percentage(9 / 10); }
+
+  /* Twelfths */
+  // .#{$grid-breakpoint-type}push-one-twelfth { left: percentage(1 / 12); }
+  // .#{$grid-breakpoint-type}push-two-twelfths { left: percentage(2 / 12); }
+  // .#{$grid-breakpoint-type}push-three-twelfths { left: percentage(3 / 12); }
+  // .#{$grid-breakpoint-type}push-four-twelfths { left: percentage(4 / 12); }
+  // .#{$grid-breakpoint-type}push-five-twelfths { left: percentage(5 / 12); }
+  // .#{$grid-breakpoint-type}push-six-twelfths { left: percentage(6 / 12); }
+  // .#{$grid-breakpoint-type}push-seven-twelfths { left: percentage(7 / 12); }
+  // .#{$grid-breakpoint-type}push-eight-twelfths { left: percentage(8 / 12); }
+  // .#{$grid-breakpoint-type}push-nine-twelfths { left: percentage(9 / 12); }
+  // .#{$grid-breakpoint-type}push-ten-twelfths { left: percentage(10 / 12); }
+  // .#{$grid-breakpoint-type}push-eleven-twelfths { left: percentage(11 / 12); }
+}
+
+/*================ Clearfix helper on uniform grids ================*/
+@mixin grid-uniform-clearfix($grid-breakpoint-type: '') {
+  .cell--uniform {
+    .#{$grid-breakpoint-type}one-half:nth-child(2n+1),
+    .#{$grid-breakpoint-type}one-third:nth-child(3n+1),
+    .#{$grid-breakpoint-type}one-quarter:nth-child(4n+1),
+    .#{$grid-breakpoint-type}one-fifth:nth-child(5n+1),
+    .#{$grid-breakpoint-type}one-sixth:nth-child(6n+1),
+    .#{$grid-breakpoint-type}two-sixths:nth-child(3n+1),
+    .#{$grid-breakpoint-type}three-sixths:nth-child(2n+1),
+    .#{$grid-breakpoint-type}one-eighth:nth-child(8n+1),
+    .#{$grid-breakpoint-type}two-eighths:nth-child(4n+1),
+    .#{$grid-breakpoint-type}four-eighths:nth-child(2n+1),
+    .#{$grid-breakpoint-type}five-tenths:nth-child(2n+1),
+    .#{$grid-breakpoint-type}one-twelfth:nth-child(12n+1),
+    .#{$grid-breakpoint-type}two-twelfths:nth-child(6n+1),
+    .#{$grid-breakpoint-type}three-twelfths:nth-child(4n+1),
+    .#{$grid-breakpoint-type}four-twelfths:nth-child(3n+1),
+    .#{$grid-breakpoint-type}six-twelfths:nth-child(2n+1) { clear: both; }
+  }
+}
+
+// sass-lint:enable brace-style empty-line-between-blocks
+
+/*================ Build Base Grid Classes ================*/
+@include grid-column-generator();
+@include responsive-display-helper();
+@include responsive-text-align-helper();
+
+/*================ Build Responsive Grid Classes ================*/
+@each $breakpoint in $grid-breakpoint-has-widths {
+  @include mq($breakpoint) {
+    @include grid-column-generator('#{$breakpoint}--');
+    // @include grid-uniform-clearfix('#{$breakpoint}--');
+    @include responsive-display-helper('#{$breakpoint}--');
+    @include responsive-text-align-helper('#{$breakpoint}--');
+  }
+}
+
+/*================ Build Grid Push Classes ================*/
+@each $breakpoint in $grid-breakpoint-has-push {
+  @include mq($breakpoint) {
+    @include grid-push-generator('#{$breakpoint}--');
+  }
+}
+
+
+
+
+
+
+/* component-grid */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: 0;
+  list-style: none;
+  column-gap: var(--grid-mobile-horizontal-spacing);
+  row-gap: var(--grid-mobile-vertical-spacing);
+}
+
+@include mq($medium-up) {
+  .grid {
+    column-gap: var(--grid-desktop-horizontal-spacing);
+    row-gap: var(--grid-desktop-vertical-spacing);
+  }
+}
+
+.grid:last-child {
+  margin-bottom: 0;
+}
+
+.grid__item {
+  width: calc(25% - var(--grid-mobile-horizontal-spacing) * 3 / 4);
+  max-width: calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+@include mq($medium-up) {
+  .grid__item {
+    width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+    max-width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+  }
+}
+
+.grid--gapless.grid {
+  column-gap: 0;
+  row-gap: 0;
+}
+
+@include mq($small) {
+  .grid__item.slider__slide--full-width {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.grid--1-col .grid__item {
+  max-width: 100%;
+  width: 100%;
+}
+
+.grid--3-col .grid__item {
+  width: calc(33.33% - var(--grid-mobile-horizontal-spacing) * 2 / 3);
+}
+
+@include mq($medium-up) {
+  .grid--3-col .grid__item {
+    width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+  }
+}
+
+.grid--2-col .grid__item {
+  width: calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+}
+
+@include mq($medium-up) {
+  .grid--2-col .grid__item {
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+  }
+
+  .grid--4-col-tablet .grid__item {
+    width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+  }
+
+  .grid--3-col-tablet .grid__item {
+    width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+  }
+
+  .grid--2-col-tablet .grid__item {
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+  }
+}
+
+@include mq($medium-down) {
+  .grid--1-col-tablet-down .grid__item {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .slider--tablet.grid--peek {
+    margin: 0;
+    width: 100%;
+  }
+
+  .slider--tablet.grid--peek .grid__item {
+    box-sizing: content-box;
+    margin: 0;
+  }
+}
+
+@include mq($large-up) {
+  .grid--6-col-desktop .grid__item {
+    width: calc(16.66% - var(--grid-desktop-horizontal-spacing) * 5 / 6);
+    max-width: calc(16.66% - var(--grid-desktop-horizontal-spacing) * 5 / 6);
+  }
+
+  .grid--5-col-desktop .grid__item {
+    width: calc(20% - var(--grid-desktop-horizontal-spacing) * 4 / 5);
+    max-width: calc(20% - var(--grid-desktop-horizontal-spacing) * 4 / 5);
+  }
+
+  .grid--4-col-desktop .grid__item {
+    width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+    max-width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+  }
+
+  .grid--3-col-desktop .grid__item {
+    width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+    max-width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+  }
+
+  .grid--2-col-desktop .grid__item {
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+  }
+}
+
+@include mq($large-up) {
+  .grid--1-col-desktop {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .grid--1-col-desktop .grid__item {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@include mq($small) {
+  .grid--peek.slider--mobile {
+    margin: 0;
+    width: 100%;
+  }
+
+  .grid--peek.slider--mobile .grid__item {
+    box-sizing: content-box;
+    margin: 0;
+  }
+
+  .grid--peek .grid__item {
+    min-width: 35%;
+  }
+
+  .grid--peek.slider .grid__item:first-of-type {
+    margin-left: 1.5rem;
+  }
+
+  /* Fix to show some space at the end of our sliders in all browsers */
+  .grid--peek.slider:after {
+    margin-left: calc(-1 * var(--grid-mobile-horizontal-spacing));
+  }
+
+  .grid--2-col-tablet-down .grid__item {
+    width: calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+  }
+
+  .slider--tablet.grid--peek.grid--2-col-tablet-down .grid__item,
+  .grid--peek .grid__item {
+    width: calc(50% - var(--grid-mobile-horizontal-spacing) - 3rem);
+  }
+
+  .slider--tablet.grid--peek.grid--1-col-tablet-down .grid__item,
+  .slider--mobile.grid--peek.grid--1-col-tablet-down .grid__item  {
+    width: calc(100% - var(--grid-mobile-horizontal-spacing) - 3rem);
+  }
+}
+
+@include mq($medium) {
+  .slider--tablet.grid--peek .grid__item {
+    width: calc(25% - var(--grid-desktop-horizontal-spacing) - 3rem);
+  }
+
+  .slider--tablet.grid--peek.grid--3-col-tablet .grid__item {
+    width: calc(33.33% - var(--grid-desktop-horizontal-spacing) - 3rem);
+  }
+
+  .slider--tablet.grid--peek.grid--2-col-tablet .grid__item,
+  .slider--tablet.grid--peek.grid--2-col-tablet-down .grid__item {
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) - 3rem);
+  }
+
+  .slider--tablet.grid--peek .grid__item:first-of-type {
+    margin-left: 1.5rem;
+  }
+
+  .grid--2-col-tablet-down .grid__item {
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+  }
+
+  .grid--1-col-tablet-down.grid--peek .grid__item {
+    width: calc(100% - var(--grid-desktop-horizontal-spacing) - 3rem);
+  }
+}
+
+
+
+.content-container {
+  border-radius: var(--text-boxes-radius);
+  border: var(--text-boxes-border-width) solid rgba(var(--color-foreground), var(--text-boxes-border-opacity));
+  position: relative;
+}
+
+.content-container:after {
+  content: '';
+  position: absolute;
+  top: calc(var(--text-boxes-border-width) * -1);
+  right: calc(var(--text-boxes-border-width) * -1);
+  bottom: calc(var(--text-boxes-border-width) * -1);
+  left: calc(var(--text-boxes-border-width) * -1);
+  border-radius: var(--text-boxes-radius);
+  box-shadow: var(--text-boxes-shadow-horizontal-offset)
+    var(--text-boxes-shadow-vertical-offset)
+    var(--text-boxes-shadow-blur-radius)
+    rgba(var(--color-shadow), var(--text-boxes-shadow-opacity));
+  z-index: -1;
+}
+
+.content-container--full-width:after {
+  left: 0;
+  right: 0;
+  border-radius: 0;
+}
+
+@include mq($small) {
+  .content-container--full-width-mobile {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+  .content-container--full-width-mobile:after {
+    display: none;
+  }
+}
+
+
+/* check for flexbox gap in older Safari versions */
+@supports not (inset: 10px) {
+  .grid {
+    margin-left: calc(-1 * var(--grid-mobile-horizontal-spacing));
+  }
+
+  .grid__item {
+    padding-left: var(--grid-mobile-horizontal-spacing);
+    padding-bottom: var(--grid-mobile-vertical-spacing);
+  }
+
+  @include mq($medium-up) {
+    .grid {
+      margin-left: calc(-1 * var(--grid-desktop-horizontal-spacing));
+    }
+
+    .grid__item {
+      padding-left: var(--grid-desktop-horizontal-spacing);
+      padding-bottom: var(--grid-desktop-vertical-spacing);
+    }
+  }
+
+  .grid--gapless .grid__item {
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+
+  @include mq($medium-up) {
+    .grid--peek .grid__item {
+      padding-left: var(--grid-mobile-horizontal-spacing);
+    }
+  }
+
+  .product-grid .grid__item {
+    padding-bottom: var(--grid-mobile-vertical-spacing);
+  }
+
+  @include mq($medium-up) {
+    .product-grid .grid__item {
+      padding-bottom: var(--grid-desktop-vertical-spacing);
+    }
+  }
+}
+
+
+
+
+

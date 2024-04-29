@@ -1,0 +1,8 @@
+{{'cart-icon.png' | asset_url | img_tag}}
+<span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+{%- if cart != empty -%}
+  <div class="cart-count">
+    <span aria-hidden="true">({{ cart.item_count }})</span>
+    <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+  </div>
+{%- endif -%}

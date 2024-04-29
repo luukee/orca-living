@@ -1,0 +1,90 @@
+{% unless request.path contains 'tagged' %}
+{% liquid
+
+	assign s            = section.settings
+    assign sID          = section.id
+
+    assign customCSS    = s.custom_css
+    
+    assign sectionClass = 'section--' | append: sID
+    assign cssClass     = '.' | append: sectionClass
+
+%}
+{% if s.article.image.src != blank %}
+<section class="feature-article-section {{sectionClass}}">
+    {% include 'custom-css', css: customCSS, class: cssClass %}
+		<div class="page-width">
+			<div class="two-grid">
+			  <div class="feature-article-image">
+			    <img src="{{ s.article.image.src | img_url: 'master'}}" alt="{{ s.article.title }}" width="100%">
+			  </div>
+			  <div class="feature-article-content">
+			    <h3>{{ s.article.title }}</h3>
+			    <div class="article-tags">
+			      {% for tag in s.article.tags %}
+			        <span class="tag">{{ tag }}</span><br>
+			      {% endfor %}
+			    </div>
+			    <article>{{ s.article.excerpt | strip_html | truncatewords: 20 }}</article>
+			    <a href="{{ s.article.url }}" class="link-article link">Read More</a>
+			  </div>
+			</div>
+		</div>
+</section>
+{%endif%}
+{%endunless%}
+{% schema %}
+{
+"name": "Feature Article",
+"settings": [
+			
+		    
+		    {
+				"type": "article",
+				"id": "article",
+				"label": "Select article"
+			},
+			{
+			"type":"header",
+			"content": "Custom CSS Rules"
+			},
+			{
+				"type":"paragraph",
+				"content": "Explanation of Custom CSS rules below input."
+			},
+			{
+				"type": "html",
+				"id": "custom_css",
+				"label": "Custom CSS"
+			},
+			{
+				"type":"paragraph",
+				"content": "Use '==' to reference this block's parent container, that way the css you use only applies to this container. The example below applies font size to only the h2 element in the current block's container."
+			},
+			{
+				"type":"paragraph",
+				"content": "Ex: '== h2 { font-size: 20px; }'"
+			},
+			{
+				"type":"paragraph",
+				"content": "Use '/MEDIA_QUERY/' to create media queries that match css defaults. The example below would output '@media screen and (max-width: 749px)' before the css."
+			},
+			{
+				"type":"paragraph",
+				"content": "Ex: '/small/ { == h2 { font-size: 20px; } }'"
+			},
+			{
+				"type":"paragraph",
+				"content": "Media Queries: narrow, not-narrow, small, medium, medium-up, medium-down, large, large-up, large-down, ex-large, ex-large-up, ex-large-down, widescreen"
+			}
+],
+"presets":[
+{
+"name": "Feature Article",
+"category":"custom"
+}
+]
+}
+{% endschema %}
+
+

@@ -1,0 +1,189 @@
+{
+  "sections": {
+    "29db9ca7-acdf-4494-97cc-e78c6a58cae8": {
+      "type": "nine15--slider",
+      "blocks": {
+        "2cb5d8cf-8d84-4d48-8b5c-50510b49ee96": {
+          "type": "slider",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/orca_home_page_under_the_maple_tree.png",
+            "align_bg": "center",
+            "bg_color": "#000000",
+            "opacity": 0,
+            "image_mob": "shopify://shop_images/orca_home_page_under_the_maple_tree.png",
+            "align_bg_mob": "center",
+            "bg_color_mob": "#000000",
+            "opacity_mob": 10,
+            "stars": "",
+            "align_text": "left",
+            "title": "",
+            "make_h1": false,
+            "font_size_title": 60,
+            "title_color": "#000000",
+            "subtitle": "",
+            "font_size_subtitle": 20,
+            "subtitle_color": "#000000",
+            "text": "",
+            "font_size_text": 16,
+            "text_color": "#333333",
+            "btn_txt": "",
+            "btn_url": "",
+            "btn_style": "primary",
+            "btn_txt2": "Shop Now",
+            "btn_url2": "",
+            "btn_style2": "primary",
+            "color_button_text": "",
+            "color_button": "",
+            "color_button_border": "",
+            "color_button_text_hover": "",
+            "color_button_hover": "",
+            "color_button_border_hover": "",
+            "align_hor": "left",
+            "vert_align": 50,
+            "hor_align": 10,
+            "width": "450px",
+            "video_ratio": "56",
+            "video_url": "",
+            "video_hosted": "",
+            "btn_txt_modal": "Watch Video",
+            "video_modal": "",
+            "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
+            "metafield_image": "",
+            "metafield_image_alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "2cb5d8cf-8d84-4d48-8b5c-50510b49ee96"
+      ],
+      "settings": {
+        "leaf": false,
+        "set_height": true,
+        "mob_rel": false,
+        "show_mobile_overlay_sooner": false,
+        "image_height": "100vh",
+        "image_height_mob": "",
+        "auto_slide": true,
+        "use_arrows": false,
+        "use_dots": true,
+        "pause": "5000",
+        "custom_css": ".shopify-section-group-header-group {\n  position: fixed;\n  z-index: 10000;\n  width: 100%;\n}\n.header__menu-item,\n.header__cart,\n.header__heading-logo,\nheader-drawer .cart_mobile,\n.header__icon > span > svg\n{\n  filter: invert(1);\n}\n\n.gradient {\n  background: transparent;\n  border: none;\n}\n\n/*.shopify-section-group-header-group,*/\n.shopify-section-group-footer-group {\n  display: none;\n}\n/* LUKE CSS */\n/* mobile menu */\n.section-header header-drawer {\n  display: none;\n}\n/* cart */\n.section-header .header__cart {\n  display: none;\n}\n/* desktop menu */\n.section-header .header__inline-menu {\n  display: none;\n}"
+      }
+    },
+    "rich_text_iptR9Q": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_QMmrx8": {
+          "type": "heading",
+          "settings": {
+            "heading": "Outdoor design and product studio re/connecting humans to earth.",
+            "heading_size": "h1"
+          }
+        },
+        "button_MgKUB3": {
+          "type": "button",
+          "settings": {
+            "button_label": "Landscapes",
+            "button_link": "shopify://blogs/landscapes",
+            "button_style_secondary": true,
+            "button_label_2": "Shop",
+            "button_link_2": "shopify://collections/all",
+            "button_style_secondary_2": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_QMmrx8",
+        "button_MgKUB3"
+      ],
+      "custom_css": [
+
+      ],
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "background-1",
+        "full_width": false,
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "custom_liquid_jzJyUM": {
+      "type": "custom-liquid",
+      "custom_css": [
+        "div {bottom: 0;}"
+      ],
+      "settings": {
+        "custom_liquid": "<style>\n@media only screen and (min-width: 750px) {\n  .rich-text:not(.rich-text--full-width) .rich-text__wrapper {\n    width: calc(100% - 21rem / var(--font-body-scale));\n  }\n}\n.template--index #MainContent>*:not(#shopify-section-template--15099472412790__custom_liquid_jzJyUM):nth-child(n+2) {\n    bottom: 45vh !important;\n  }\n.rich-text__buttons {\n  gap: 2em;\n}\n.rich-text__heading,\n.button {\n  color: #fff;\n}\n.button {\n  font-size: 2rem;\n  background-color: transparent;\n  padding: 0;\n  justify-content: flex-start;\n  flex-grow: 0;\n  min-width: unset;\n  min-height: 1.5em\n}\n.button::before,\n.button::after {\n  box-shadow: none;\n}\n.button::after {\n  content: \"\";\n  border-bottom: 1px solid #fff !important;\n}\n.button:not([disabled]):hover::after {\n  box-shadow: none;\n  border-bottom-width: 2px !important;\n}\n</style>",
+        "color_scheme": "background-1",
+        "padding_top": 0,
+        "padding_bottom": 52
+      }
+    },
+    "a344e9ec-ccdb-421e-80f3-86ddb1d39d48": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "custom_css": [
+        ".simple-header {padding-top: 0;}",
+        ".simple-header > div {max-width: unset;}"
+      ],
+      "settings": {
+        "custom_liquid": "{% render 'snippet--simple-menu' %}",
+        "color_scheme": "background-1",
+        "padding_top": 0,
+        "padding_bottom": 52
+      }
+    },
+    "7569cdaa-5406-40cc-ac5c-440e2cb92ff4": {
+      "type": "side-navigation",
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "make_h1": false,
+        "menu": "collections-menu",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "cde30bcf-026b-449b-8415-02faa321ddc8": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 3,
+        "image_ratio": "portrait",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": false,
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": false,
+        "columns_mobile": "2",
+        "padding_top": 16,
+        "padding_bottom": 16,
+        "collection": "all"
+      }
+    },
+    "74abdffb-b673-459e-9b79-955732d00bee": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
+        "color_scheme": "background-1",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "29db9ca7-acdf-4494-97cc-e78c6a58cae8",
+    "rich_text_iptR9Q",
+    "custom_liquid_jzJyUM",
+    "a344e9ec-ccdb-421e-80f3-86ddb1d39d48",
+    "7569cdaa-5406-40cc-ac5c-440e2cb92ff4",
+    "cde30bcf-026b-449b-8415-02faa321ddc8",
+    "74abdffb-b673-459e-9b79-955732d00bee"
+  ]
+}

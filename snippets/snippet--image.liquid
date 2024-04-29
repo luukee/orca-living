@@ -1,0 +1,175 @@
+{% if img != blank %}
+  {% comment %}
+    {% render 'snippet--image',
+      img: s.image,
+      useBG: false,
+      lazy: true,
+      cf: false,
+      id: id,
+      style: style,
+      class: xtra,
+      setHeight: height,
+      setWidth: width,
+    %}
+  {% endcomment %}
+  <!-- snippets/snippet--image -->
+  {% liquid
+    if imgMaster contains '.webp'
+      assign cf = true
+    endif
+
+    unless lazy == false or cf == true
+      assign isLazy = true
+      assign lazyload = 'lazyload'
+    else
+      assign lazyload = ''
+      assign isLazy = false
+      assign cf = true
+    endunless
+
+    assign imgAlt = img.alt
+    if alt != blank
+      assign imgAlt = alt
+    endif
+
+    assign imgMaster = img | img_url: 'master'
+    assign imgSrc = img | img_url: '600x'
+    assign img_url = img | img_url: '600x'
+    assign paddingTop = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
+    assign imageWidth = img.src.width | append: 'px'
+
+    if cf == true
+      assign paddingTop = '100%'
+      unless imgMaster contains '.webp'
+        assign imgSrc = img
+        assign imgMaster = img
+      else
+        assign imgSrc = imgMaster
+      endunless
+      assign imageWidth = '100%'
+    endif
+
+    assign key = imageWidth | append: paddingTop | append: alt | append: section.id | append: block.id | append: forloop.index
+    assign imageID = img | hmac_sha1: key
+  %}
+
+  {% assign imgSrcSet = img.src %}
+  {%- capture srcSet -%}
+    {% unless imgSrcSet == '' or imgSrcSet == blank %}
+      {%- for i in (1..100) -%}
+        {%- liquid 
+          assign w = i | times: 50
+          assign wSize = w | append: 'x'
+        -%}
+        {%- if img.src.width > w -%}{{ img.src | img_url: wSize }} {{w}}w,{%- endif -%}
+      {%- endfor -%}
+      {{ img.src | image_url }} {{ img.src.width }}w
+    {% else %}
+      {{ img | file_url }} 1400w
+    {% endunless %}
+  {%- endcapture -%}
+  {%- assign srcSet = srcSet | lstrip | rstrip | trim | strip | strip_newlines -%}
+
+  {%- capture sizes -%}
+    {% comment %}
+    {% unless imgSrcSet == '' or imgSrcSet == blank %}
+      (min-width: {{img.src.width}}px) {{img.src.width}}px,
+
+      {%- for i in (1..100) -%}
+        {%- liquid 
+          assign w = i | times: 50
+        -%}
+        {%- if img.src.width > w -%}(min-width: {{w}}px) {{w}}px,{%- endif -%}
+      {%- endfor -%}
+    {% endunless %}
+    {% endcomment %}
+    100vw
+  {%- endcapture -%}
+  {%- assign sizes = sizes | lstrip | rstrip | trim | strip | strip_newlines -%}
+
+  {% if useBG == true %}
+    <noscript>
+      <div class="bg_image {{class}}">
+        <img
+          src="{{ imgSrc }}"
+          alt="{{ imgAlt }}"
+          class=""
+          {% if style %}
+            style="{{style}}"
+          {% endif %}
+          {{ attr }}
+        >
+      </div>
+    </noscript>
+
+    <div
+      class="bg_image {{class}}"
+    >
+      <img
+        {% if id %}
+          id="{{id}}"
+        {% endif %}
+        class="{{ lazyload }} "
+        src="{{ imgSrc }}"
+        {% if isLazy %}
+          data-src="{{ img_url }}"
+          data-sizes="{{-sizes-}}"
+          data-srcset="{{-srcSet-}}"
+        {% endif %}
+        alt="{{ imgAlt | escape }}"
+        {{ attr }}
+      >
+    </div>
+  {% else %}
+    {% comment %}
+      <!-- {{key}} -->
+      <!-- {{imageID}} -->
+    {% endcomment %}
+    <noscript>
+      <img
+        src="{{ imgSrc }}"
+        alt="{{ imgAlt }}"
+        class=""
+        {% if style %}
+          style="{{style}}"
+        {% endif %}
+        {{ attr }}
+      >
+    </noscript>
+    <div class="image--outer image--{{imageID}} {{class}}">
+      <div class="image--inner ">
+        <img
+          {% if id %}
+            id="{{id}}"
+          {% endif %}
+          class="{{ lazyload }} "
+          src="{{ imgSrc }}"
+
+          {% if isLazy %}
+            data-src="{{ img_url }}"
+            data-sizes="{{-sizes-}}"
+            data-srcset="{{-srcSet-}}"
+          {% endif %}
+          alt="{{ imgAlt | escape }}"
+          {{ attr }}
+        >
+      </div>
+      <style type="text/css">
+        .image--{{imageID}} {
+          --image--max-source: url('{{imgMaster}}');
+          --image--set-width:var(--image--natural-width);
+          --image--set-height:var(--image--natural-height);
+          --image--natural-width:{{imageWidth}};
+          --image--natural-height:{{paddingTop}};
+          /*max-width:var(--image--set-width,100%);*/
+          {%- if setHeight -%}--image--set-height:{{setHeight}};{%- endif -%}
+          {%- if setWidth -%}--image--set-width:{{setWidth}};{%- endif -%}
+          {{style}}
+        }
+        .image--{{imageID}} .image--inner {
+          padding-top:var(--image--set-height,56.6%);
+        }
+      </style>
+    </div>
+  {% endif %}
+{% endif %}
