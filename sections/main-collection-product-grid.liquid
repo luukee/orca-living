@@ -5,12 +5,25 @@
     assign collection = collections[section.settings.collection]
   endif
   assign is_samples = false
-  assign single_variant_quick_add = blank
-  if request.path == "/collections/pavers/_Samples"
-    assign is_samples = true
-    assign collection = collections['pavers']
-    assign single_variant_quick_add = 'sample'
-  endif                 
+  ## assign single_variant_quick_add = blank
+  ## if request.path == "/collections/pavers/_Samples"
+  ##   assign is_samples = true
+  ##   assign collection = collections['pavers']
+  ##   assign single_variant_quick_add = 'sample'
+  ## endif    
+  
+  if section.settings.alternate_product_card != ''
+    assign currentTags = section.settings.alternate_product_card | split: ", "
+    assign single_variant_quick_add = blank
+    for tag in currentTags
+      if current_tags contains tag
+        ## old
+        assign is_samples = true
+        assign collection = collections['pavers']
+        assign single_variant_quick_add = 'sample'
+      endif
+    endfor
+  endif
 %}
 
 
@@ -45,9 +58,9 @@
   }
 {%- endstyle -%}
 
-{% if is_samples %}
+{% comment %} {% if is_samples %}
   {{ 'collection-pavers.css' | asset_url | stylesheet_tag }}
-{% endif %}
+{% endif %} {% endcomment %}
 
 {% if collection %}
   <div class="section-{{ section.id }}-padding">
@@ -207,7 +220,7 @@
     {%- endpaginate -%}
   </div>
   <script>
-    {% comment %} return {% endcomment %}
+    // return
     // //Doing grouping in Javascript coz it easier ^-^
     // const groupProducts = document.querySelectorAll('[data-group]')
     // const groups = new Map()
@@ -243,7 +256,7 @@
 {% schema %}
   {
     "name": "t:sections.main-collection-product-grid.name",
-    "class": "section",
+    "class": "section collection-product-grid",
     "settings": [
       {
         "type": "range",
@@ -266,6 +279,13 @@
       {
         "type": "header",
         "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+      },
+      {
+        "type": "text",
+        "id": "alternate_product_card",
+        "label": "Alternate product card",
+        "info": "Enter comma separated tag names here.",
+        "placeholder": "_Samples, _Clay worn"
       },
       {
         "type": "select",
