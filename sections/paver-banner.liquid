@@ -1,8 +1,29 @@
-{% if request.path == "/collections/pavers/_Samples" %}
+{% liquid
+if section.settings.banner_show_for_tag != ''
+  assign showPaverBanner = false
+  if current_tags contains section.settings.banner_show_for_tag
+    assign showPaverBanner = true
+  endif
+endif
+%}
+
+{% comment %} {% if request.path == "/collections/pavers/_Samples" %} {% endcomment %}
+{% if showPaverBanner %}
+  {{ 'collection-pavers.css' | asset_url | stylesheet_tag }}
+  {% style %}
+    /* move product grid to middle */
+    .template--collection #MainContent>.shopify-section.collection-product-grid{
+      grid-area: middle;
+    }
+    /* move paver banner to top */
+    .template--collection #MainContent>.shopify-section.section-paver-banner:has(*){
+      grid-area: banner;
+    }
+  {% endstyle %}
   {% if section.settings.banner_image %}
     <div class="overlay-wrapper">
       {% render 'snippet--image', class: 'banner', img: section.settings.banner_image %}
-      <p class="overlay-text">of earth</p>
+      <p class="overlay-text">{{  section.settings.banner_overlay_text }}</p>
     </div>
   {% endif %}
   <div class="two-grids">
@@ -24,10 +45,23 @@
     "class": "section-paver-banner",
     "settings": [
       {
+        "type": "text",
+        "id": "banner_show_for_tag",
+        "label": "Show banner for product tag",
+        "info": "Enter tag name here.",
+        "placeholder": "_Samples"
+      },
+      {
         "type": "image_picker",
         "id": "banner_image",
         "label": "Banner Image",
         "info": "Banner Image"
+      },
+      {
+        "type": "text",
+        "id": "banner_overlay_text",
+        "label": "Banner Overlay Text",
+        "info": "Banner Overlay Text"
       }
     ],
     "blocks": [
