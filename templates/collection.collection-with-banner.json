@@ -1,0 +1,106 @@
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "a9fc5bfd-0b5d-4d04-a71b-98b67a41f0be": {
+      "type": "side-navigation",
+      "settings": {
+        "title": "Shop",
+        "make_h1": true,
+        "menu": "collections-menu",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 3,
+        "image_ratio": "portrait",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": false,
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": false,
+        "columns_mobile": "2",
+        "padding_top": 16,
+        "padding_bottom": 16,
+        "collection": ""
+      }
+    },
+    "be769056-a616-4653-a32a-74f9b612fbc4": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"hovered-item small--hide\" data-preview-collection>\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
+        "color_scheme": "background-1",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "8a199031-80d4-48da-b9b6-e85453636b03": {
+      "type": "paver-banner",
+      "blocks": {
+        "f6b85351-9c49-4083-a861-7e1429035d5a": {
+          "type": "two-grid",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/worn-retouched.jpg",
+            "text": "<p><strong>Worn Clay</strong></p><p>The Worn Clay Paver is hand-antiqued in the spirit of the aged terracotta earthenware. Characterized by unfinished edges and a patinated appearance, this paver lends tactile warmth to its surroundings.</p>"
+          }
+        },
+        "586575a9-b1b8-42f9-990a-da3dd8f51bc6": {
+          "type": "two-grid",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Earth_be9496e7-c2cf-442e-8655-bb1d24a4c6d7.png",
+            "text": "<p><strong>Clay Paver<br/><br/></strong>The Clay Paver shapes locally-sourced California clay into familiar form. Defined by a naturally textured surface, its minimalist profile lends a thoughtfully tactile element suited for outdoor pathways, patios, driveways, exterior cladding and interior applications.</p>"
+          }
+        },
+        "e64aacb9-049a-45d5-93a6-7d274b43903b": {
+          "type": "two-grid",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Earth_Terrazzo_Edited_copy_1.png",
+            "text": "<p><strong>Recycled Terrazzo<br/><br/></strong>The Recycled Terrazzo Paver is a mosaic of natural shapes, sediments and geological textures. Sustainable by design, this paver is comprised of rock offcuts suspended in recycled concrete and softened to a textured matte finish.</p>"
+          }
+        },
+        "two_grid_YjDDiM": {
+          "type": "two-grid",
+          "disabled": true,
+          "settings": {
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "f6b85351-9c49-4083-a861-7e1429035d5a",
+        "586575a9-b1b8-42f9-990a-da3dd8f51bc6",
+        "e64aacb9-049a-45d5-93a6-7d274b43903b",
+        "two_grid_YjDDiM"
+      ],
+      "custom_css": [
+
+      ],
+      "settings": {
+        "banner_image": "shopify://shop_images/Paver_Mud_Family_Paver_Flatlay.jpg"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "a9fc5bfd-0b5d-4d04-a71b-98b67a41f0be",
+    "product-grid",
+    "be769056-a616-4653-a32a-74f9b612fbc4",
+    "8a199031-80d4-48da-b9b6-e85453636b03"
+  ]
+}

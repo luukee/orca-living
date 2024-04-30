@@ -115,7 +115,8 @@
             "fieldset_margin_right": 0,
             "border_thickness": 1,
             "border_radius": 0,
-            "border_color": "#000000"
+            "border_color": "#000000",
+            "product": "{{product}}"
           }
         },
         "280b22a8-63c8-4d97-be23-ea1752259cd1": {

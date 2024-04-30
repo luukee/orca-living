@@ -1,5 +1,4 @@
-{% comment %} {% if request.path == "/collections/pavers/_Samples" %} {% endcomment %}
-  
+{% if request.path == "/collections/pavers/_Samples" %}
   {% if section.settings.banner_image %}
     <div class="overlay-wrapper">
       {% render 'snippet--image', class: 'banner', img: section.settings.banner_image %}
@@ -17,7 +16,7 @@
     {% endfor %}
   </div>
 
-{% comment %} {% endif %} {% endcomment %}
+{% endif %}
 {% schema %}
   {
     "name": "Paver Banner",
