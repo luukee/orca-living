@@ -52,7 +52,6 @@
       "blocks": {
         "f6b85351-9c49-4083-a861-7e1429035d5a": {
           "type": "two-grid",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/worn-retouched.jpg",
             "text": "<p><strong>Worn Clay</strong></p><p>The Worn Clay Paver is hand-antiqued in the spirit of the aged terracotta earthenware. Characterized by unfinished edges and a patinated appearance, this paver lends tactile warmth to its surroundings.</p>"
@@ -92,7 +91,27 @@
 
       ],
       "settings": {
-        "banner_image": "shopify://shop_images/Paver_Mud_Family_Paver_Flatlay.jpg"
+        "banner_image": "shopify://shop_images/Paver_Mud_Family_Paver_Flatlay.jpg",
+        "banner_show_for_tag": "_Samples"
+      }
+    },
+    "paver_banner_g737Uf": {
+      "type": "paver-banner",
+      "blocks": {
+        "two_grid_mVq7Tj": {
+          "type": "two-grid",
+          "settings": {
+            "image": "shopify://shop_images/Paver_Worn_Driftwood_Paver_3-4.jpg",
+            "text": "<p>Clay Brick Good</p>"
+          }
+        }
+      },
+      "block_order": [
+        "two_grid_mVq7Tj"
+      ],
+      "settings": {
+        "banner_image": "shopify://shop_images/Paver_Worn_Desert_Paver_Head_On.jpg",
+        "banner_show_for_tag": "_Clay Brick"
       }
     }
   },
@@ -101,6 +120,7 @@
     "a9fc5bfd-0b5d-4d04-a71b-98b67a41f0be",
     "product-grid",
     "be769056-a616-4653-a32a-74f9b612fbc4",
-    "8a199031-80d4-48da-b9b6-e85453636b03"
+    "8a199031-80d4-48da-b9b6-e85453636b03",
+    "paver_banner_g737Uf"
   ]
 }
