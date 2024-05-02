@@ -24,6 +24,7 @@
       "settings": {
         "products_per_page": 24,
         "columns_desktop": 3,
+        "alternate_product_card": "_Samples",
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,
@@ -41,10 +42,46 @@
     "be769056-a616-4653-a32a-74f9b612fbc4": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"hovered-item small--hide\" data-preview-collection>\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
+        "custom_liquid": "<div class=\"hovered-item small--hide\" data-preview-collection>\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
         "color_scheme": "background-1",
         "padding_top": 16,
         "padding_bottom": 16
+      }
+    },
+    "paver_banner_UezWKE": {
+      "type": "paver-banner",
+      "blocks": {
+        "two_grid_tVAwfb": {
+          "type": "two-grid",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Enduring-through-time.jpg",
+            "text": "<p><strong>Enduring through time<\/strong><\/p><p>Newly added to the Worn collection is a Cobble size, a palm-sized block with ancient origins. Timeless cobble evokes both old world charm and modernist gridlines, enduring as one of the strongest and most flexible paving materials laid by the human hand.<\/p>"
+          }
+        },
+        "two_grid_eRLH4g": {
+          "type": "two-grid",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Permeable-Surfaces.jpg",
+            "text": "<p><strong>Permeable Surfaces<\/strong><\/p><p>ORCA pavers are inherently permeable, allowing water to pass through and into our aquifers. This cycle of naturally aggregating the earth and allowing the land to breathe is a part of our ethos of reconnecting humans to earth.<\/p>"
+          }
+        },
+        "two_grid_MWaQra": {
+          "type": "two-grid",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Made-in-California.jpg",
+            "text": "<p><strong>Made in California<\/strong><\/p><p>Unlike stone cobble which is often shipped overseas, our Cobble pavers are made locally from California clay. Our mission is to source materials with a light footprint and a substantial story. <\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "two_grid_tVAwfb",
+        "two_grid_eRLH4g",
+        "two_grid_MWaQra"
+      ],
+      "settings": {
+        "banner_show_for_tag": "_Cobble",
+        "banner_image": "shopify:\/\/shop_images\/clay-cobble.jpg",
+        "banner_overlay_text": "clay cobble"
       }
     },
     "8a199031-80d4-48da-b9b6-e85453636b03": {
@@ -52,25 +89,26 @@
       "blocks": {
         "f6b85351-9c49-4083-a861-7e1429035d5a": {
           "type": "two-grid",
+          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/worn-retouched.jpg",
-            "text": "<p><strong>Worn Clay</strong></p><p>The Worn Clay Paver is hand-antiqued in the spirit of the aged terracotta earthenware. Characterized by unfinished edges and a patinated appearance, this paver lends tactile warmth to its surroundings.</p>"
+            "image": "shopify:\/\/shop_images\/worn-retouched.jpg",
+            "text": "<p><strong>Worn Clay<\/strong><\/p><p>The Worn Clay Paver is hand-antiqued in the spirit of the aged terracotta earthenware. Characterized by unfinished edges and a patinated appearance, this paver lends tactile warmth to its surroundings.<\/p>"
           }
         },
         "586575a9-b1b8-42f9-990a-da3dd8f51bc6": {
           "type": "two-grid",
           "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/Earth_be9496e7-c2cf-442e-8655-bb1d24a4c6d7.png",
-            "text": "<p><strong>Clay Paver<br/><br/></strong>The Clay Paver shapes locally-sourced California clay into familiar form. Defined by a naturally textured surface, its minimalist profile lends a thoughtfully tactile element suited for outdoor pathways, patios, driveways, exterior cladding and interior applications.</p>"
+            "image": "shopify:\/\/shop_images\/Earth_be9496e7-c2cf-442e-8655-bb1d24a4c6d7.png",
+            "text": "<p><strong>Clay Paver<br\/><br\/><\/strong>The Clay Paver shapes locally-sourced California clay into familiar form. Defined by a naturally textured surface, its minimalist profile lends a thoughtfully tactile element suited for outdoor pathways, patios, driveways, exterior cladding and interior applications.<\/p>"
           }
         },
         "e64aacb9-049a-45d5-93a6-7d274b43903b": {
           "type": "two-grid",
           "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/Earth_Terrazzo_Edited_copy_1.png",
-            "text": "<p><strong>Recycled Terrazzo<br/><br/></strong>The Recycled Terrazzo Paver is a mosaic of natural shapes, sediments and geological textures. Sustainable by design, this paver is comprised of rock offcuts suspended in recycled concrete and softened to a textured matte finish.</p>"
+            "image": "shopify:\/\/shop_images\/Earth_Terrazzo_Edited_copy_1.png",
+            "text": "<p><strong>Recycled Terrazzo<br\/><br\/><\/strong>The Recycled Terrazzo Paver is a mosaic of natural shapes, sediments and geological textures. Sustainable by design, this paver is comprised of rock offcuts suspended in recycled concrete and softened to a textured matte finish.<\/p>"
           }
         },
         "two_grid_YjDDiM": {
@@ -91,27 +129,9 @@
 
       ],
       "settings": {
-        "banner_image": "shopify://shop_images/Paver_Mud_Family_Paver_Flatlay.jpg",
-        "banner_show_for_tag": "_Samples"
-      }
-    },
-    "paver_banner_g737Uf": {
-      "type": "paver-banner",
-      "blocks": {
-        "two_grid_mVq7Tj": {
-          "type": "two-grid",
-          "settings": {
-            "image": "shopify://shop_images/Paver_Worn_Driftwood_Paver_3-4.jpg",
-            "text": "<p>Clay Brick Good</p>"
-          }
-        }
-      },
-      "block_order": [
-        "two_grid_mVq7Tj"
-      ],
-      "settings": {
-        "banner_image": "shopify://shop_images/Paver_Worn_Desert_Paver_Head_On.jpg",
-        "banner_show_for_tag": "_Clay Brick"
+        "banner_show_for_tag": "_Samples",
+        "banner_image": "shopify:\/\/shop_images\/Paver_Mud_Family_Paver_Flatlay.jpg",
+        "banner_overlay_text": "of earth"
       }
     }
   },
@@ -120,7 +140,7 @@
     "a9fc5bfd-0b5d-4d04-a71b-98b67a41f0be",
     "product-grid",
     "be769056-a616-4653-a32a-74f9b612fbc4",
-    "8a199031-80d4-48da-b9b6-e85453636b03",
-    "paver_banner_g737Uf"
+    "paver_banner_UezWKE",
+    "8a199031-80d4-48da-b9b6-e85453636b03"
   ]
 }
