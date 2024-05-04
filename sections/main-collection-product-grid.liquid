@@ -5,25 +5,15 @@
     assign collection = collections[section.settings.collection]
   endif
   assign is_samples = false
-  ## assign single_variant_quick_add = blank
-  ## if request.path == "/collections/pavers/_Samples"
-  ##   assign is_samples = true
-  ##   assign collection = collections['pavers']
-  ##   assign single_variant_quick_add = 'sample'
-  ## endif    
-  
-  if section.settings.alternate_product_card != ''
-    assign currentTags = section.settings.alternate_product_card | split: ", "
-    assign single_variant_quick_add = blank
-    for tag in currentTags
-      if current_tags contains tag
-        ## old
-        assign is_samples = true
-        assign collection = collections['pavers']
-        assign single_variant_quick_add = 'sample'
-      endif
-    endfor
-  endif
+  assign single_variant_quick_add = blank
+  if request.path == "/collections/pavers/_Samples"
+    assign is_samples = true
+    assign collection = collections['pavers']
+    assign single_variant_quick_add = 'sample'
+  elsif request.path contains section.settings.filter_on_tag
+    assign is_samples = true
+    assign single_variant_quick_add = 'sample'
+  endif 
 %}
 
 
@@ -106,7 +96,6 @@
                 class="grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
                 {% assign index = 0 %}
                 {% assign filterTag = section.settings.filter_on_tag %}
-                {% assign includeOnlyVariantName = section.settings.filter_variant %}
                 {%- for product in collection.products -%}
                   {% assign lazy_load = false %}
                   {% assign product_expanded = false %}
@@ -138,6 +127,10 @@
                             if is_samples
                               if displayed_variants contains p.id
                                 continue
+                              elsif request.path contains filterTag
+                                unless p.metafields.custom.featured == true
+                                  continue 
+                                endunless
                               endif
                               unless p.options contains 'Sample' 
                                 continue
@@ -161,17 +154,6 @@
                               assign prod_title = prod_title | append: ' in ' | append: option_variant
                             endif
                           %}
-                          {% comment %} 
-                            if filter tag page (filterTag is set in the customizer's "Filter on tag name" input) 
-                            exclude variants that are not includeOnlyVariantName 
-                            (includeOnlyVariantName is set in the customizer's "Filter by variant name" input) 
-                          {% endcomment %}
-                          {%- assign variant_values = p.options | join: ' ' -%}
-                          {% if request.path contains filterTag %}
-                            {%- unless variant_values contains includeOnlyVariantName -%}
-                              {%- continue -%}
-                            {%- endunless -%}
-                          {% endif %}
                           <li class="grid__item" {% if p.metafields.custom.group != blank %}data-group={{p.metafields.custom.group}}{% endif %}>
                             {% render 'card-product', 
                               product_title: prod_title,
