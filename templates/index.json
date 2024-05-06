@@ -115,7 +115,7 @@
         "div {bottom: 0;}"
       ],
       "settings": {
-        "custom_liquid": "<style>\n@media only screen and (min-width: 750px) {\n  .rich-text:not(.rich-text--full-width) .rich-text__wrapper {\n    width: calc(100% - 21rem \/ var(--font-body-scale));\n  }\n}\n.template--index #MainContent>*:not(#shopify-section-template--15281807065206__custom_liquid_jzJyUM):nth-child(n+2) {\n    bottom: 45vh !important;\n  }\n.rich-text__buttons {\n  gap: 2em;\n}\n.rich-text__heading,\n.button {\n  color: #fff;\n}\n.button {\n  font-size: 2rem;\n  background-color: transparent;\n  padding: 0;\n  justify-content: flex-start;\n  flex-grow: 0;\n  min-width: unset;\n  min-height: 1.5em\n}\n.button::before,\n.button::after {\n  box-shadow: none;\n}\n.button::after {\n  content: \"\";\n  border-bottom: 1px solid #fff !important;\n}\n.button:not([disabled]):hover::after {\n  box-shadow: none;\n  border-bottom-width: 2px !important;\n}\n<\/style>",
+        "custom_liquid": "<style>\n@media only screen and (min-width: 750px) {\n  .rich-text:not(.rich-text--full-width) .rich-text__wrapper {\n    width: calc(100% - 21rem \/ var(--font-body-scale));\n  }\n}\n.template--index #MainContent>*:not(#shopify-section-template--15281807065206__custom_liquid_jzJyUM):nth-child(n+2) {\n    bottom: 45vh !important;\n  }\n.rich-text__buttons {\n  gap: 2em;\n}\n.rich-text__heading,\n.button {\n  color: #fff;\n}\n.button {\n  font-size: 2rem;\n  background-color: transparent;\n  padding: 0;\n  justify-content: flex-start;\n  flex-grow: 0;\n  min-width: unset;\n  min-height: 1.5em\n}\n.button::before,\n.button::after {\n  box-shadow: none;\n}\n.button::after {\n  content: \"\";\n  border-bottom: 1px solid #fff !important;\n}\n.button:not([disabled]):hover::after {\n  box-shadow: none;\n  border-bottom-width: 2px !important;\n}\n#shopify-section-template--15267871654006__custom_liquid_jzJyUM {\n    top: 60vh;\n}\n<\/style>",
         "color_scheme": "background-1",
         "padding_top": 0,
         "padding_bottom": 52
@@ -152,6 +152,7 @@
       "settings": {
         "products_per_page": 24,
         "columns_desktop": 3,
+        "filter_on_tag": "",
         "alternate_product_card": "",
         "image_ratio": "portrait",
         "show_secondary_image": false,

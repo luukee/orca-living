@@ -24,7 +24,8 @@
       "settings": {
         "products_per_page": 24,
         "columns_desktop": 3,
-        "alternate_product_card": "_Samples",
+        "filter_on_tag": "_Cobble",
+        "alternate_product_card": "_Cobble",
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,
@@ -55,14 +56,14 @@
           "type": "two-grid",
           "settings": {
             "image": "shopify:\/\/shop_images\/Enduring-through-time.jpg",
-            "text": "<p><strong>Enduring through time<\/strong><\/p><p>Newly added to the Worn collection is a Cobble size, a palm-sized block with ancient origins. Timeless cobble evokes both old world charm and modernist gridlines, enduring as one of the strongest and most flexible paving materials laid by the human hand.<\/p>"
+            "text": "<p><strong>Clay for the ages<\/strong><\/p><p>Newly added to the Worn collection is Cobble: a palm-sized block with ancient origins. A timeless square evokes both old world charm and modernist gridlines. Made from local California clay, our Cobble is  permeable when sand set. <\/p>"
           }
         },
         "two_grid_eRLH4g": {
           "type": "two-grid",
           "settings": {
-            "image": "shopify:\/\/shop_images\/Permeable-Surfaces.jpg",
-            "text": "<p><strong>Permeable Surfaces<\/strong><\/p><p>ORCA pavers are inherently permeable, allowing water to pass through and into our aquifers. This cycle of naturally aggregating the earth and allowing the land to breathe is a part of our ethos of reconnecting humans to earth.<\/p>"
+            "image": "shopify:\/\/shop_images\/Paver_Worn_Char_Cobble_edit2_e2328f3a-5e3a-43c9-930b-485147e23cfa.png",
+            "text": "<p><strong>Permeable surfaces<\/strong><\/p><p>The Worn Clay Cobble, when installed correctly, is permeable and allows rainwater to pass through to the earth beneath it to replenish the land's natural aquifers. This cycle of naturally aggregating the earth and allowing the land to breathe is a part of our ethos of reconnecting humans to earth.<\/p>"
           }
         },
         "two_grid_MWaQra": {
@@ -80,7 +81,7 @@
       ],
       "settings": {
         "banner_show_for_tag": "_Cobble",
-        "banner_image": "shopify:\/\/shop_images\/clay-cobble.jpg",
+        "banner_image": "shopify:\/\/shop_images\/ORCA_Worn_Clay_Cobble_Flatlay.png",
         "banner_overlay_text": "clay cobble"
       }
     },

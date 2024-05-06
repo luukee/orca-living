@@ -1,8 +1,8 @@
 {
   "current": {
-    "logo": "shopify://shop_images/ORCA_logo_stacked.png",
+    "logo": "shopify:\/\/shop_images\/ORCA_logo_stacked.png",
     "logo_width": 90,
-    "favicon": "shopify://shop_images/Group_459705.png",
+    "favicon": "shopify:\/\/shop_images\/Group_459705.png",
     "colors_solid_button_labels": "#93826c",
     "colors_accent_1": "#000000",
     "gradient_accent_1": "",
@@ -109,7 +109,7 @@
     "sold_out_badge_color_scheme": "inverse",
     "accent_icons": "text",
     "brand_headline": "",
-    "brand_description": "<p></p>",
+    "brand_description": "<p><\/p>",
     "brand_image_width": 100,
     "social_facebook_link": "",
     "social_instagram_link": "",
@@ -147,13 +147,13 @@
     ],
     "blocks": {
       "855628211100114053": {
-        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "type": "shopify:\/\/apps\/klaviyo-email-marketing-sms\/blocks\/klaviyo-onsite-embed\/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": false,
         "settings": {
         }
       },
       "9776720720251544092": {
-        "type": "shopify://apps/helium-customer-fields/blocks/app-embed/bab58598-3e6a-4377-aaaa-97189b15f131",
+        "type": "shopify:\/\/apps\/helium-customer-fields\/blocks\/app-embed\/bab58598-3e6a-4377-aaaa-97189b15f131",
         "disabled": false,
         "settings": {
           "registration_form_id": "PytVkY",
@@ -161,8 +161,7 @@
           "edit_account_link_text": "Edit account",
           "edit_account_heading": "Edit account",
           "edit_account_back_link_text": "Back to account",
-          "enable_js_api": false,
-          "js_api_version": ""
+          "enable_js_api": false
         }
       }
     }
@@ -276,7 +275,7 @@
       "sold_out_badge_color_scheme": "inverse",
       "accent_icons": "text",
       "brand_headline": "",
-      "brand_description": "<p></p>",
+      "brand_description": "<p><\/p>",
       "brand_image_width": 100,
       "social_twitter_link": "",
       "social_facebook_link": "",
