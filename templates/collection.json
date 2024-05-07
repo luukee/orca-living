@@ -21,6 +21,9 @@
     },
     "product-grid": {
       "type": "main-collection-product-grid",
+      "custom_css": [
+        ".product-grid-container {padding-bottom: 1em;}"
+      ],
       "settings": {
         "products_per_page": 24,
         "columns_desktop": 3,
@@ -63,14 +66,14 @@
           "type": "two-grid",
           "settings": {
             "image": "shopify:\/\/shop_images\/Paver_Worn_Char_Cobble_edit2_e2328f3a-5e3a-43c9-930b-485147e23cfa.png",
-            "text": "<p><strong>Permeable surfaces<\/strong><\/p><p>The Worn Clay Cobble, when installed correctly, is permeable and allows rainwater to pass through to the earth beneath it to replenish the land's natural aquifers. This cycle of naturally aggregating the earth and allowing the land to breathe is a part of our ethos of reconnecting humans to earth.<\/p>"
+            "text": "<p><strong>Permeable surfaces<\/strong><\/p><p>Our Cobble is inherently permeable and allows rainwater to pass through to the earth beneath it to replenish the land's natural aquifers. This cycle of naturally aggregating the earth and allowing the land to breathe is a part of our ethos of reconnecting humans to earth.<\/p>"
           }
         },
         "two_grid_MWaQra": {
           "type": "two-grid",
           "settings": {
             "image": "shopify:\/\/shop_images\/Made-in-California.jpg",
-            "text": "<p><strong>Made in California<\/strong><\/p><p>Unlike stone cobble which is often shipped overseas, our Cobble pavers are made locally from California clay. Our mission is to source materials with a light footprint and a substantial story. <\/p>"
+            "text": "<p><strong>Made in California<\/strong><\/p><p>Our Cobble pavers are made locally from California clay. Our mission is to source materials with a light footprint and a substantial story. <\/p>"
           }
         }
       },
@@ -81,7 +84,7 @@
       ],
       "settings": {
         "banner_show_for_tag": "_Cobble",
-        "banner_image": "shopify:\/\/shop_images\/ORCA_Worn_Clay_Cobble_Flatlay.png",
+        "banner_image": "shopify:\/\/shop_images\/Frame_1_429196b9-66b5-43c5-b536-0988164e3a67.png",
         "banner_overlay_text": "clay cobble"
       }
     },

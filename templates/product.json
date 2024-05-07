@@ -40,9 +40,14 @@
     },
     "286763a8-0ff1-4341-b4b8-a2f74befd3dc": {
       "type": "main-collection-product-grid",
+      "custom_css": [
+        ".product-grid-container {padding-bottom: 1em;}"
+      ],
       "settings": {
         "products_per_page": 24,
         "columns_desktop": 3,
+        "filter_on_tag": "_Cobble",
+        "alternate_product_card": "_Cobble",
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,
@@ -100,6 +105,9 @@
             "show_input_placeholder": false,
             "show_quantity_input": false,
             "add_cart_value_type": "number_of_boxes",
+            "project_requirement": "keep_requirement",
+            "show_actual_calc": false,
+            "actual_calc_content": "will cover {calculation} sq. ft.",
             "show_message": false,
             "additional_message": "Use the calculate to calculate how much material you need per square foot",
             "message_width": 100,
