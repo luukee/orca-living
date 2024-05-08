@@ -12,8 +12,10 @@ endif
   {{ 'collection-pavers.css' | asset_url | stylesheet_tag }}
   {% style %}
     /* move product grid to middle */
-    .template--collection #MainContent>.shopify-section.collection-product-grid{
-      grid-area: middle;
+    @media only screen and (min-width: 750px) {
+      .template--collection #MainContent>.shopify-section.collection-product-grid{
+        grid-area: middle;
+      }
     }
     /* move paver banner to top */
     .template--collection #MainContent>.shopify-section.section-paver-banner:has(*){
