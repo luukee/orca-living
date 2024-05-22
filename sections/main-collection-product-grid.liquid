@@ -52,7 +52,176 @@
   {{ 'collection-pavers.css' | asset_url | stylesheet_tag }}
 {% endif %} {% endcomment %}
 
-{% if collection %}
+{% comment %} grid is on product page {% endcomment %}
+{% if product %}
+  {% render 'dump' with product %}
+  {% comment %} include only products with the same type {% endcomment %}
+  {% comment %} set the product type {% endcomment %}
+  {% assign product_type = product.type %}
+  {% assign same_type_products = collection.products | where: "type", product_type %}
+  {% comment %} END include only products with the same type {% endcomment %}
+  <div class="section-{{ section.id }}-padding">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+        <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}">
+        {% unless is_samples %}
+          <div class="feed--view-type">
+            <span>View:
+            </span>
+            <a
+              href="#images"
+              data-type="images"
+              class="current">Images</a>,
+            <a href="#list" data-type="list">List</a>
+          </div>
+        {% endunless %}
+
+
+        <div class="product-grid-container" id="ProductGridContainer">
+          {%- if collection.products.size == 0 -%}
+            <div
+              class="collection collection--empty page-width"
+              id="product-grid"
+              data-id="{{ section.id }}">
+              <div class="loading-overlay gradient"></div>
+              <div class="title-wrapper center">
+                <h2 class="title title--primary">
+                  {{ 'sections.collection_template.empty' | t -}}
+                  <br>
+                  {{
+                     'sections.collection_template.use_fewer_filters_html'
+                   | t: link: collection.url, class: 'underlined-link link' }}
+                </h2>
+              </div>
+            </div>
+          {%- else -%}
+            <div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
+              <div class="loading-overlay gradient"></div>
+
+              <ul
+                id="product-grid"
+                data-id="{{ section.id }}"
+                class="grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
+                {% assign index = 0 %}
+                {% assign filterTag = section.settings.filter_on_tag %}
+                {% comment %} products array including only the products with the product type property value {% endcomment %}
+                {%- for product in same_type_products -%}
+                  {% assign lazy_load = false %}
+                  {% assign product_expanded = false %}
+                  {%- if forloop.index > 2 -%}
+                    {%- assign lazy_load = true -%}
+                  {%- endif -%}
+                  {% assign displayed_variants = '' %}
+                  {% for tag in product.tags %}
+                    {% if tag contains 'expand-' %}
+                      {% liquid
+                        assign split_option = tag | split: "-" | last | capitalize
+                        assign option_variants = product.options_with_values | where: 'name', split_option | first
+                        assign option_pos = 'option'
+
+                        for opt in product.options
+                          if opt == split_option
+                            assign option_pos = option_pos | append: forloop.index
+                          endif
+                        endfor
+                      %}
+
+                      {% for option_variant in option_variants.values %}
+
+                        {% assign filtered_prods = product.variants | where: option_pos, option_variant%}
+                        
+                        {% for p in filtered_prods %}
+
+                          {% liquid
+                            if is_samples
+                              if displayed_variants contains p.id
+                                continue
+                              elsif request.path contains filterTag
+                                unless p.metafields.custom.featured == true
+                                  continue 
+                                endunless
+                              endif
+                              unless p.options contains 'Sample' 
+                                continue
+                              endunless
+                            else
+                              if displayed_variants contains p.id or p.options contains 'Sample'
+                                continue
+                              endif
+                            endif
+
+                            assign displayed_variants = displayed_variants | append: ' ' | append: p.id
+                            assign prod_title = product.title
+                            
+                            if split_option == 'Size' and p.option2 != blank
+                              if option_pos == 'option1'
+                                assign prod_title = prod_title | append: ' in ' | append: p.option2 
+                              else
+                                assign prod_title = prod_title | append: ' in ' | append: p.option1
+                              endif
+                            else
+                              assign prod_title = prod_title | append: ' in ' | append: option_variant
+                            endif
+                          %}
+                          <li class="grid__item" {% if p.metafields.custom.group != blank %}data-group={{p.metafields.custom.group}}{% endif %}>
+                            {% render 'card-product', 
+                              product_title: prod_title,
+                              card_product: p,
+                              hide_overlay_link: is_samples,
+                              media_aspect_ratio: section.settings.image_ratio,
+                              show_secondary_image: section.settings.show_secondary_image,
+                              show_vendor: section.settings.show_vendor,
+                              show_rating: section.settings.show_rating,
+                              lazy_load: lazy_load,
+                              show_quick_add: section.settings.enable_quick_add,
+                              single_variant_quick_add: single_variant_quick_add,
+                              section_id: section.id 
+                            %}
+                          </li>
+                          {% assign index = index | plus: 1 %}
+                          {% assign remainder = index | modulo: 7 %}
+                          {% if index > 0 and remainder == 0 and is_samples %}
+                            <!-- <li class="grid__item"></li> -->
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      {% assign product_expanded = true %}
+                    {% endif %}                  
+                  {% endfor %}
+                  {% unless product_expanded %}
+                    <li class="grid__item">
+                      {% render 'card-product', 
+                        card_product: product,
+                        is_samples: is_samples,
+                        hide_overlay_link: is_samples,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_rating: section.settings.show_rating,
+                        lazy_load: lazy_load,
+                        show_quick_add: section.settings.enable_quick_add,
+                        single_variant_quick_add: single_variant_quick_add,
+                        section_id: section.id 
+                      %}
+                    </li>
+                    {% assign index = index | plus: 1 %}
+                    {% assign remainder = index | modulo: 7 %}
+                    {% if index > 0 and remainder == 0 and is_samples %}
+                      <!-- <li class="grid__item"></li> -->
+                    {% endif %}
+                  {% endunless %}
+                {%- endfor -%}
+              </ul>
+
+              {%- if paginate.pages > 1 -%}
+                {% render 'pagination', paginate: paginate, anchor: '' %}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endpaginate -%}
+  </div>
+{% elsif collection %}
   <div class="section-{{ section.id }}-padding">
     {%- paginate collection.products by section.settings.products_per_page -%}
         <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
