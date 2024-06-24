@@ -28,13 +28,22 @@
     </span>
   </label>
   <quantity-input class="quantity">
-    <span class="qtyLabel" {% unless isPavers %}style="display:none" {% endunless %}>sqft</span>
+    <span class="qtyLabel" {% unless isPavers and product.selected_or_first_available_variant.option1 != 'Sample' %}style="display:none" {% endunless %}>sqft</span>
     <button class="quantity__button no-js-hidden" name="minus" type="button">
       <span class="visually-hidden">
         {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
       </span>
       {% render 'icon-minus' %}
     </button>
+    {% if product.selected_or_first_available_variant.option1 == "Sample" %}
+      <input
+      class="quantity__input"
+      type="number"
+      name="quantity"
+      id="Quantity-{{ section.id }}"
+      disabled
+      />
+    {% else %}
     <input
       class="quantity__input"
       type="number"
@@ -51,6 +60,7 @@
       {% endif %}
       form="{{ product_form_id }}"
     />
+  {% endif %}
     <button class="quantity__button no-js-hidden" name="plus" type="button">
       <span class="visually-hidden">
         {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
