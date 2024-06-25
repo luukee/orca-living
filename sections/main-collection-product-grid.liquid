@@ -54,7 +54,7 @@
 
 {% comment %} grid is on product page {% endcomment %}
 {% if product %}
-  {% render 'dump' with product %}
+  {% comment %} {% render 'dump' with product %} {% endcomment %}
   {% comment %} include only products with the same type {% endcomment %}
   {% comment %} set the product type {% endcomment %}
   {% assign product_type = product.type %}
