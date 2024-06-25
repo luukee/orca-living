@@ -72,6 +72,12 @@
           endfor 
 
           assign ChildLinkSize      = link.links | size
+          
+          assign path = request.path
+          assign show_nav_child_links = false
+          if path contains 'pavers'
+            assign show_nav_child_links = true
+          endif
         %}
         <li>
           <a href="{{ linkURL }}" class=" list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
@@ -79,8 +85,10 @@
             {{ link.title | escape }}
             {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
           </a>
+          {% comment %} <pre>{{ isCurrent }}</pre>
+          <pre>{{ ChildLinkSize }}</pre> {% endcomment %}
           {% if isCurrent %}
-            {%- if ChildLinkSize > 0 and template.name == 'collection' -%}
+            {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
               <ul class="menu-drawer__menu list-menu medium-down--hide" role="list">
                 {%- for childlink in link.links -%}
                   {% liquid 
@@ -88,6 +96,7 @@
                     assign isCurrentInner     = false
                     assign taggedHandle       = ''
                     assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
+                    render 'dump' with allTagsHandles
                     for tag in current_tags
                       assign taggedHandle     = tag | handleize | replace: '_',''
                     endfor 
