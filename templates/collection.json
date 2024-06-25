@@ -45,9 +45,6 @@
     },
     "be769056-a616-4653-a32a-74f9b612fbc4": {
       "type": "custom-liquid",
-      "custom_css": [
-
-      ],
       "settings": {
         "custom_liquid": "<div class=\"hovered-item small--hide\" data-preview-collection>\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
         "color_scheme": "background-1",
@@ -88,7 +85,7 @@
       "settings": {
         "banner_show_for_tag": "_Cobble",
         "banner_image": "shopify:\/\/shop_images\/Frame_1_429196b9-66b5-43c5-b536-0988164e3a67.png",
-        "banner_overlay_text": "cobble clay"
+        "banner_overlay_text": "clay cobble"
       }
     },
     "8a199031-80d4-48da-b9b6-e85453636b03": {
@@ -140,15 +137,6 @@
         "banner_image": "shopify:\/\/shop_images\/Paver_Mud_Family_Paver_Flatlay.jpg",
         "banner_overlay_text": "of earth"
       }
-    },
-    "custom_liquid_UmhWAa": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "<style>\n.section-paver-banner:not(:has(div)) {\n    display: none;\n}\n<\/style>",
-        "color_scheme": "background-1",
-        "padding_top": 40,
-        "padding_bottom": 52
-      }
     }
   },
   "order": [
@@ -157,7 +145,6 @@
     "product-grid",
     "be769056-a616-4653-a32a-74f9b612fbc4",
     "paver_banner_UezWKE",
-    "8a199031-80d4-48da-b9b6-e85453636b03",
-    "custom_liquid_UmhWAa"
+    "8a199031-80d4-48da-b9b6-e85453636b03"
   ]
 }
