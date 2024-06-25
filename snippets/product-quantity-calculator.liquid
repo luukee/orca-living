@@ -4,8 +4,8 @@
 
   assign isPavers      = false
   for collection in product.collections
-    assign colHndl = collection.handle
-    if colHndl == 'pavers'
+    assign collection_handle = collection.handle
+    if collection_handle == 'pavers'
       assign isPavers  = true
       break
     endif
