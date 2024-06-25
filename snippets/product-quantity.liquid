@@ -28,7 +28,7 @@
     </span>
   </label>
   <quantity-input class="quantity">
-    <span class="qtyLabel" {% unless isPavers %}style="display:none" {% endunless %}>sqft</span>
+    <span class="qtyLabel" {% unless is_pavers %}style="display:none" {% endunless %}>sqft</span>
     <button class="quantity__button no-js-hidden" name="minus" type="button">
       <span class="visually-hidden">
         {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
@@ -40,7 +40,7 @@
       type="number"
       name="quantity"
       id="Quantity-{{ section.id }}"
-      {% if isPavers %}
+      {% if is_pavers %}
         data-paver
         min= "80"
         data-min="80"

@@ -226,37 +226,37 @@
               {{ block.settings.custom_liquid }}
             {%- when 'collapsible_tab' -%}
               {% liquid 
-                assign showAccordion      = false
-                assign accHeading         = block.settings.heading
-                assign accContent         = block.settings.content
+                assign show_accordion = false
+                assign acc_heading = block.settings.heading
+                assign acc_content = block.settings.content
 
-                capture accContent
-                  echo accContent
+                capture acc_content
+                  echo acc_content
                 endcapture 
 
-                assign accPageContent     = block.settings.page.content
-                if accHeading != blank and accHeading != '' and accContent != blank and accContent != '' 
-                  assign showAccordion    = true
+                assign acc_page_content     = block.settings.page.content
+                if acc_heading != blank and acc_heading != '' and acc_content != blank and acc_content != '' 
+                  assign show_accordion    = true
                 endif 
-                if accPageContent != blank and accPageContent != ''
-                  assign accHeading       = accHeading | default: block.settings.page.title
+                if acc_page_content != blank and acc_page_content != ''
+                  assign acc_heading       = acc_heading | default: block.settings.page.title
                 endif 
               %}
-              {% if showAccordion %}
+              {% if show_accordion %}
                 <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
                   <details id="Details-{{ block.id }}-{{ section.id }}">
                     <summary>
                       <div class="summary__title">
                         {% render 'icon-accordion', icon: block.settings.icon %}
                         <h2 class="h4 accordion__title inline-richtext">
-                          {{ accHeading }}
+                          {{ acc_heading }}
                         </h2>
                       </div>
                       {% render 'icon-caret' %}
                     </summary>
                     <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
-                      {{ accContent }}
-                      {{ accPageContent }}
+                      {{ acc_content }}
+                      {{ acc_page_content }}
                     </div>
                   </details>
                 </div>
