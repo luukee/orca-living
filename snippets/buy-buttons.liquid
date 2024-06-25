@@ -102,6 +102,16 @@
                   assign price = price | times: 0.9
                   assign money_price = price | money
                 endif
+
+                assign selected_product = product.selected_or_first_available_variant
+                assign sample_variant = blank
+                for prod in product.variants
+                  if prod.option1 == 'Sample' and selected_product.option2 == prod.option2
+                    assign sample_variant = prod
+                    assign money_price = prod.compare_at_price | money
+                    break
+                  endif
+                endfor
               %}
               <span class="price-item price-item--regular" data-price="{{ price }}">
                 {{ money_price }}
@@ -121,16 +131,7 @@
               </svg>
             </div>
           </button>
-          {% liquid
-            assign selected_product = product.selected_or_first_available_variant
-            assign sample_variant = blank
-            for prod in product.variants
-              if prod.option1 == 'Sample' and selected_product.option2 == prod.option2
-                assign sample_variant = prod
-                break
-              endif
-            endfor
-          %}
+          {% comment %} Liquid prior place {% endcomment %}
           {% if sample_variant != blank %}
             <button
               id="SampleOrderButton-{{ section_id }}"
