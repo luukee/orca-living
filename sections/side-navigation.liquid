@@ -100,6 +100,10 @@
                     endif 
                   %}
                   {% comment %} {% if showChildLink %} {% endcomment %}
+                   {% comment %} 
+                    Info: 
+                    "if showChildLink" prevented new navigation items from displying on the front end on the collections-menu navigation menu
+                   {% endcomment %}
                     <li>
                       <a href="{{ childlink.url }}" class=" list-menu__item link link--text focus-inset {% if isCurrentInner %} menu-item--active{% endif %}">
                         {{ childlink.title | escape }}
