@@ -96,7 +96,6 @@
                     assign isCurrentInner     = false
                     assign taggedHandle       = ''
                     assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
-                    render 'dump' with allTagsHandles
                     for tag in current_tags
                       assign taggedHandle     = tag | handleize | replace: '_',''
                     endfor 
