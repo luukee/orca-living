@@ -286,9 +286,6 @@
                       %}
 
 
-                      {% render 'dump' with product %}
-
-
                       {% for option_variant in option_variants.values %}
                         {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
                         {% for p in filtered_prods %}
@@ -359,6 +356,11 @@
                   {% endfor %}
                   {% unless product_expanded %}
                     <li class="grid__item">
+                      {% comment %} COLLECTION card-product {% endcomment %}
+                      {% comment %} COLLECTION card-product {% endcomment %}
+                      {% comment %} COLLECTION card-product {% endcomment %}
+                      {% comment %} COLLECTION card-product {% endcomment %}
+                      {% comment %} COLLECTION card-product {% endcomment %}
                       {% render 'card-product'
                         , card_product: product
                         , is_samples: is_samples
