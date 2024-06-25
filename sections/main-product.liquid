@@ -54,11 +54,11 @@
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
 
   {% liquid
-    assign matchFound      = false
+    assign match_found = false
     for collection in product.collections
       assign colHndl = collection.handle
       if colHndl == 'pavers'
-        assign matchFound  = true
+        assign match_found  = true
         break
       endif
     endfor
