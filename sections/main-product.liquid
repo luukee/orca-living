@@ -32,8 +32,8 @@
     <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
-  {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
-  {%- if first_3d_model -%}
+  {%- assign first_three_d_model = product.media | where: 'media_type', 'model' | first -%}
+  {%- if first_three_d_model -%}
     {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
     <link
       id="ModelViewerStyle"
@@ -463,7 +463,7 @@
     <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
-  {%- if first_3d_model -%}
+  {%- if first_three_d_model -%}
     <script type="application/json" id="ProductJSON-{{ product.id }}">
       {{ product.media | where: 'media_type', 'model' | json }}
     </script>
