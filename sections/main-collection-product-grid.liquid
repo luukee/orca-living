@@ -45,7 +45,7 @@
 {%- endstyle -%}
 
 {% comment %} {% if is_samples %}
-                                              {{ 'collection-pavers.css' | asset_url | stylesheet_tag }}
+                                    {{ 'collection-pavers.css' | asset_url | stylesheet_tag }}
 {% endif %} {% endcomment %}
 
 {% comment %} grid is on product page {% endcomment %}
@@ -258,6 +258,10 @@
           {%- else -%}
             <div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
               <div class="loading-overlay gradient"></div>
+
+              {% render 'dump' with collection.products %}
+
+
               <ul
                 id="product-grid"
                 data-id="{{ section.id }}"
@@ -285,13 +289,12 @@
                         endfor
                       %}
 
-
-                      {% render 'dump' with product %}
-
-
                       {% for option_variant in option_variants.values %}
+
                         {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
+
                         {% for p in filtered_prods %}
+
                           {% liquid
                             if is_samples
                               if displayed_variants contains p.id
@@ -323,16 +326,13 @@
                               assign prod_title = prod_title | append: ' in ' | append: option_variant
                             endif
                           %}
+
+
                           <li
                             class="grid__item"
                             {% if p.metafields.custom.group != blank %}
                             data-group={{p.metafields.custom.group}}
                             {% endif %}>
-                            {% comment %} COLLECTION product {% endcomment %}
-                            {% comment %} COLLECTION product {% endcomment %}
-                            {% comment %} COLLECTION product {% endcomment %}
-                            {% comment %} COLLECTION product {% endcomment %}
-                            {% comment %} COLLECTION product {% endcomment %}
                             {% render 'card-product'
                               , product_title: prod_title
                               , card_product: p
