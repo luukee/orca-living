@@ -99,13 +99,13 @@
                       assign showChildLink    = true 
                     endif 
                   %}
-                  {% if showChildLink %}
+                  {% comment %} {% if showChildLink %} {% endcomment %}
                     <li>
                       <a href="{{ childlink.url }}" class=" list-menu__item link link--text focus-inset {% if isCurrentInner %} menu-item--active{% endif %}">
                         {{ childlink.title | escape }}
                       </a>
                     </li>
-                  {% endif %}
+                  {% comment %} {% endif %} {% endcomment %}
                 {%- endfor -%}  
               </ul>          
             {%- endif -%}            
