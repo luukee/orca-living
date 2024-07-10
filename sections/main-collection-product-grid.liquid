@@ -11,6 +11,7 @@
     assign collection = collections['pavers']
     assign single_variant_quick_add = 'sample'
   elsif request.path contains section.settings.filter_on_tag
+    echo section.settings.filter_on_tag
     assign is_samples = true
     assign single_variant_quick_add = 'sample'
   endif 
@@ -102,7 +103,7 @@
                 data-id="{{ section.id }}"
                 class="grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
                 {% assign index = 0 %}
-                {% assign filterTag = section.settings.filter_on_tag %}
+                {% assign filter_tag = section.settings.filter_on_tag %}
                 {% comment %} products array including only the products with the product type property value {% endcomment %}
                 {%- for product in same_type_products -%}
                   {% assign lazy_load = false %}
@@ -135,7 +136,7 @@
                             if is_samples
                               if displayed_variants contains p.id
                                 continue
-                              elsif request.path contains filterTag
+                              elsif request.path contains filter_tag
                                 unless p.metafields.custom.featured == true
                                   continue 
                                 endunless
@@ -264,7 +265,7 @@
                 data-id="{{ section.id }}"
                 class="grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
                 {% assign index = 0 %}
-                {% assign filterTag = section.settings.filter_on_tag %}
+                {% assign filter_tag = section.settings.filter_on_tag %}
                 {%- for product in collection.products -%}
                   {% assign lazy_load = false %}
                   {% assign product_expanded = false %}
@@ -296,7 +297,7 @@
                             if is_samples
                               if displayed_variants contains p.id
                                 continue
-                              elsif request.path contains filterTag
+                              elsif request.path contains filter_tag
                                 unless p.metafields.custom.featured == true
                                   continue 
                                 endunless
