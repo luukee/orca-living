@@ -11,10 +11,18 @@
     assign is_samples = true
     assign collection = collections['pavers']
     assign single_variant_quick_add = 'sample'
-  elsif request.path contains section.settings.filter_on_tag
+  ## check if filter_on_tag is not blank and the URL contains the filter_on_tag string
+  elsif section.settings.filter_on_tag != ' ' and request.path contains section.settings.filter_on_tag
     assign on_filter_by_tag_page = true
-    assign selected_tag = section.settings.filter_on_tag
-    assign filter_by_this_tag = selected_tag | replace: "_", "" 
+    ## check if filter_on_tag contains underscore
+    if section.settings.filter_on_tag contains "_"
+      ## if it does we need to remove/replace the underscore
+      assign selected_tag = section.settings.filter_on_tag
+      assign filter_by_this_tag = selected_tag | replace: "_", "" 
+    ## otherwise assign filter_on_tag string to filter_by_this_tag variable
+    else 
+      assign filter_by_this_tag = section.settings.filter_on_tag
+    endif
     assign is_samples = true
     assign single_variant_quick_add = 'sample'
   endif 
@@ -461,12 +469,6 @@
       {
         "type": "header",
         "content": "t:sections.main-collection-product-grid.settings.header__3.content"
-      },
-      {
-        "type": "text",
-        "id": "alternate_product_card",
-        "label": "Tag pages alternate product card",
-        "info": "Enter comma separated tag names here."
       },
       {
         "type": "select",
