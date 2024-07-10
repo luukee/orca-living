@@ -1,6 +1,7 @@
 <!-- sections/main-collection-product-grid -->
 
 {% liquid
+  assign on_filter_by_tag_page = false
   if section.settings.collection != '' and section.settings.collection != blank
     assign collection = collections[section.settings.collection]
   endif
@@ -11,7 +12,9 @@
     assign collection = collections['pavers']
     assign single_variant_quick_add = 'sample'
   elsif request.path contains section.settings.filter_on_tag
-    echo section.settings.filter_on_tag
+    assign on_filter_by_tag_page = true
+    assign selected_tag = section.settings.filter_on_tag
+    assign filter_by_this_tag = selected_tag | replace: "_", "" 
     assign is_samples = true
     assign single_variant_quick_add = 'sample'
   endif 
@@ -294,7 +297,12 @@
                         {% for p in filtered_prods %}
 
                           {% liquid
-                            if is_samples
+                            ## filter by tag page
+                            if on_filter_by_tag_page
+                              unless p.title contains filter_by_this_tag
+                                continue 
+                              endunless
+                            elsif is_samples
                               if displayed_variants contains p.id
                                 continue
                               elsif request.path contains filter_tag
