@@ -1,0 +1,325 @@
+{% render 'css-section-blog-post' %}
+
+{% liquid
+  assign s = section.settings
+  assign section_id = section.id
+
+  assign section_custom_css = s.custom_css
+  assign class = 'section--' | append: section_id
+  assign css_class = '.' | append: class
+  assign category = article.tags | first
+
+  assign article_rte = article.content
+
+  assign mf = article.metafields.custom
+  render 'dump' with mf
+  assign date_updated = mf.date_modified
+%}
+{% render 'dump' with category %}
+{% comment %}theme-check-disable NestedSnippet{% endcomment %}
+{% render 'snippet--article-includes' %}
+{% comment %}theme-check-enable NestedSnippet{% endcomment %}
+
+<article class='article-template {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
+  
+	
+	{% comment %} {% if blog.metafields["custom_fields"]["two_grid"] != blank %}
+		<div class="two-grid-section custom-field__two-grid custom-field__type--field-collection-json">
+			<div class="cell  half_gutter vert-top">
+				{% for item in blog.metafields["custom_fields"]["two_grid"] %}
+					<div class="cell__item fc-item fc-index--{{ forloop.index0 }}">
+						 {% if item["group_name"] != blank %}
+							 <div class="fc-field field__group-name field-type--text">
+								 <div class="custom-field--value">
+									 {{ item["group_name"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["images_per_row"] != blank %}
+							 <div class="fc-field field__images-per-row field-type--number-list">
+								 <div class="custom-field--value">
+									 {{ item["images_per_row"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["image_height"] != blank %}
+							 <div class="fc-field field__image-height field-type--text">
+								 <h4 class="custom-field--title">Image Height</h4>
+								 <div class="custom-field--value">
+									 {{ item["image_height"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["caption"] != blank %}
+							 <div class="fc-field field__caption field-type--html">
+								 <h4 class="custom-field--title">Caption</h4>
+								 <div class="custom-field--value">
+									 {{ item["caption"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["image"] != blank %}
+							 <div class="fc-field field__image field-type--image">
+								 <h4 class="custom-field--title">Image</h4>
+								 <div class="custom-field--value">
+									 {{ item["image"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["enable_offset"] != blank %}
+							 <div class="fc-field field__enable-offset field-type--checkbox">
+								 <h4 class="custom-field--title">Enable offset</h4>
+								 <div class="custom-field--value">
+									 {{ item["enable_offset"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+					 </div>
+				 {% endfor %}
+			</div>
+		</div>
+	{% endif %} {% endcomment %}
+	
+	{%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when '@app' -%}
+        <div class='page-width page-width--narrow'>
+          {% render block %}
+        </div>
+      {%- when 'featured_image' -%}
+				{% render 'dump' with article %}
+        {%- if article.image -%}
+          <div class='article-template__hero-container' {{ block.shopify_attributes }}>
+            <div
+              class='article-template__hero-{{ block.settings.image_height }} media'
+              itemprop='image'
+              {% if block.settings.image_height == 'adapt' and article.image %}
+                style='padding-bottom: {{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;'
+              {% endif %}
+            >
+              <img
+                srcset='
+                  {% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
+                  {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
+                  {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
+                  {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
+                  {% if article.image.width >= 2200 %}{{ article.image | image_url: width: 2200 }} 2200w,{% endif %}
+                  {% if article.image.width >= 3000 %}{{ article.image | image_url: width: 3000 }} 3000w,{% endif %}
+                  {{ article.image | image_url }} {{ article.image.width }}w
+                '
+                sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw'
+                src='{{ article.image | image_url: 'x1500' }}'
+                loading='lazy'
+                width='{{ article.image.width }}'
+                height='{{ article.image.height }}'
+                alt='{{ article.image.alt | escape }}'
+              >
+            </div>
+          </div>
+        {%- endif -%}
+
+      {%- when 'title' -%}
+        <header class='page-width page-width--narrow' {{ block.shopify_attributes }}>
+          <h1 class='article-template__title' itemprop='headline'>{{ article.title | escape }}</h1>
+          <div class='details'>
+            {%- if block.settings.blog_show_author -%}
+              <span class='caption-with-letter-spacing' itemprop='author' itemscope itemtype='http://schema.org/Person'>
+                <span itemprop='name'>By {{ article.author }}</span>
+              </span>
+            {%- endif -%}
+            {%- if block.settings.blog_show_date -%}
+              <span class=' caption-with-letter-spacing' itemprop='dateCreated pubdate datePublished'>
+                <time datetime='{{ article.published_at | date: '%T' }}'>
+                  {{- article.published_at | date: '%B %e, %Y' -}}
+                </time>
+                {% if date_updated != blank %}
+                  <b> | </b
+                  ><span class='date-updated' itemprop='dateModified'
+                    ><b>Updated:</b>
+                    <time datetime='{{ date_updated | date: '%T' }}'>{{ date_updated | date: '%B %e, %Y' }}</time></span
+                  >
+                {% endif %}
+              </span>
+            {%- endif -%}
+          </div>
+        </header>
+
+      {%- when 'content' -%}
+        <div
+          class='article-template__content page-width page-width--narrow rte'
+          itemprop='articleBody'
+          {{ block.shopify_attributes }}
+        >
+          {{ article_rte }}
+        </div>
+
+      {%- when 'custom' -%}
+        {{ block.settings.content }}
+
+      {%- when 'share' -%}
+        <div class='article-template__social-sharing page-width page-width--narrow' {{ block.shopify_attributes }}>
+          <span class='share-header'>
+            <a
+              target='_blank'
+              href='//www.facebook.com/sharer.php?u={{ shop.url | append: article.url }}'
+              class='social-link'
+            >
+              {% render 'icon-facebook' %}
+              <span class='visually-hidden'>Share on Facebook</span>
+            </a>
+            <a
+              target='_blank'
+              href='//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: article.url }}'
+              class='social-link'
+            >
+              {% render 'icon-twitter' %}
+              <span class='visually-hidden'>Share on Twitter</span>
+            </a>
+          </span>
+          {% comment %} {% render 'snippet--js-output', defer: true, lazy: true, lnk: 'share.min.js' %} {% endcomment %}
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+	{% render 'custom-css', css: section_custom_css, class: css_class %}
+</article>
+{% schema %}
+{
+  "name": "Landscapes Blog Landing",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+		{
+      "type": "header",
+      "content": "Custom CSS Rules"
+    },
+    {
+      "type": "paragraph",
+      "content": "Explanation of Custom CSS rules below input."
+    },
+    {
+      "type": "liquid",
+      "id": "custom_css",
+      "label": "Custom CSS"
+    },
+    {
+      "type": "paragraph",
+      "content": "Use '==' to reference this block's parent container, that way the css you use only applies to this container. The example below applies font size to only the h2 element in the current block's container."
+    },
+    {
+      "type": "paragraph",
+      "content": "Ex: '== h2 { font-size: 20px; }'"
+    },
+    {
+      "type": "paragraph",
+      "content": "Use '/MEDIA_QUERY/' to create media queries that match css defaults. The example below would output '@media screen and (max-width: 749px)' before the css."
+    },
+    {
+      "type": "paragraph",
+      "content": "Ex: '/small/ { == h2 { font-size: 20px; } }'"
+    },
+    {
+      "type": "paragraph",
+      "content": "Media Queries: narrow, not-narrow, small, medium, medium-up, medium-down, large, large-up, large-down, ex-large, ex-large-up, ex-large-down, widescreen"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "featured_image",
+      "name": "t:sections.main-article.blocks.featured_image.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "image_height",
+          "options": [
+            {
+              "value": "adapt",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__1.label"
+            },
+            {
+              "value": "small",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__2.label"
+            },
+            {
+              "value": "medium",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__3.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__4.label"
+            }
+          ],
+          "default": "adapt",
+          "label": "t:sections.main-article.blocks.featured_image.settings.image_height.label",
+          "info": "t:sections.main-article.blocks.featured_image.settings.image_height.info"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "t:sections.main-article.blocks.title.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "default": true,
+          "label": "t:sections.main-article.blocks.title.settings.blog_show_date.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_author",
+          "default": false,
+          "label": "t:sections.main-article.blocks.title.settings.blog_show_author.label"
+        }
+      ]
+    },
+    {
+      "type": "custom",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "t:sections.main-article.blocks.content.name",
+      "limit": 1
+    },
+    {
+      "type": "share",
+      "name": "t:sections.main-article.blocks.share.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "share_label",
+          "label": "t:sections.main-article.blocks.share.settings.text.label",
+          "default": "Share"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-article.blocks.share.settings.featured_image_info.content"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-article.blocks.share.settings.title_info.content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landscapes Blog Landing",
+			"category": "custom"
+    }
+  ]
+}
+{% endschema %}
