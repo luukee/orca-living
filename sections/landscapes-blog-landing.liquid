@@ -1,27 +1,140 @@
 {% render 'css-section-blog-post' %}
-
+ 
 {% liquid
-  assign s = section.settings
+	## custom fields
+	## ## cf: content, excerpt & featured_image
+	## ## c_fields: images, two_grid & all children
+	assign cf 			= blog.metafields.custom
+	assign c_fields = blog.metafields.custom_fields
+	## render 'dump' with c_fields
+	
+	## set variables
+	assign blog_title 			= blog.title
+	assign blog_excerpt 		= cf.excerpt
+	assign blog_content 		= cf.content
+	assign blog_feat_image 	= cf.featured_image
+	if c_fields != blank
+		assign blog_images			= c_fields.images
+	endif
+	assign s = section.settings
   assign section_id = section.id
-
   assign section_custom_css = s.custom_css
   assign class = 'section--' | append: section_id
   assign css_class = '.' | append: class
-  assign category = article.tags | first
-
-  assign article_rte = article.content
-
-  assign mf = article.metafields.custom
-  render 'dump' with mf
+  assign category = blog.tags | first
+  assign blog_rte = blog.content
+  assign mf = blog.metafields.custom
   assign date_updated = mf.date_modified
+	
+	render 'dump' with blog_images
+	echo '<pre style="display:flex;flex-direction:column;">'
+	echo blog_title
+	echo '<br>'
+	echo blog_excerpt 
+		echo '<br>'
+	echo blog_content 
+		echo '<br>'
+	echo blog_feat_image
+		echo '<br>'
+	echo 'END TEST'
+	echo '</pre>'
 %}
-{% render 'dump' with category %}
+
 {% comment %}theme-check-disable NestedSnippet{% endcomment %}
-{% render 'snippet--article-includes' %}
+{% render 'snippet--article-includes',  %}
 {% comment %}theme-check-enable NestedSnippet{% endcomment %}
 
 <article class='article-template {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
-  
+	
+	{% comment %} excerpt {% endcomment %}
+  {% if blog.metafields["custom"]["excerpt"] != blank %}
+		<h3>{{ blog.metafields["custom"]["excerpt"] }}</h3>
+	{% endif %}
+	
+	{% comment %} content {% endcomment %}
+	{% if blog.metafields["custom"]["content"] != blank %}
+		<p>{{ blog.metafields["custom"]["content"] }}</p>
+	{% endif %}
+	
+	{% comment %} featured image {% endcomment %}
+	{% if blog.metafields["custom"]["featured_image"] != blank %}
+		{% assign type = blog.metafields["custom"]["featured_image"].value.media_type %}
+		{% case type %}
+			{% when "image" %}
+				{% comment %} {{ blog.metafields["custom"]["featured_image"].value | image_url: width: 500 | image_tag }} {% endcomment %}
+			{% when "video" %}
+				{{ blog.metafields["custom"]["featured_image"].value | video_tag: image_size: "500x", width: 500, autoplay: false, controls: true }}
+			{% else %}
+				{% assign file_url = blog.metafields["custom"]["featured_image"].value.url %}
+				<a target="_blank" href="{{ file_url }}">{{ blog.metafields["custom"]["featured_image"] | media_tag: image_size: "200x" }}</a>
+				<div>{{ file_url | split: '/' | last | split: '?v=' | first }}</div>
+		{% endcase %}
+	{% endif %}
+	
+	{% comment %} images {% endcomment %}
+	 {% assign articleImages = mf["images"] %}
+	{%- for item in article.metafields["custom_fields"]["two_grid"] -%}
+		{% liquid
+			assign img        = item["image"]
+			assign img_height = item["image_height"]
+			assign txt        = item["caption"]
+			assign offset     = item["enable_offset"]
+		%}
+	{% endfor %}
+	{% comment %}  {% endcomment %}
+	{% comment %} {% if blog.metafields["custom_fields"]["images"] != blank %}
+		<div class="custom-field custom-field__images custom-field__type--field-collection-json">
+			<div class="custom-field--value">
+				{% for item in blog.metafields["custom_fields"]["images"] %}
+					<div class="fc-item fc-index--{{ forloop.index0 }}">
+						 {% if item["group_name"] != blank %}
+							 <div class="fc-field field__group-name field-type--text">
+								 <div class="custom-field--value">
+									 {{ item["group_name"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["images_per_row"] != blank %}
+							 <div class="fc-field field__images-per-row field-type--number-list">
+								 <div class="custom-field--value">
+									 {{ item["images_per_row"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["image_height"] != blank %}
+							 <div class="fc-field field__image-height field-type--text">
+								 <div class="custom-field--value">
+									 {{ item["image_height"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["caption"] != blank %}
+							 <div class="fc-field field__caption field-type--html">
+								 <div class="custom-field--value">
+									 {{ item["caption"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["image"] != blank %}
+							 <div class="fc-field field__image field-type--image">
+								 <div class="custom-field--value">
+									 {{ item["image"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+						 {% if item["enable_offset"] != blank %}
+							 <div class="fc-field field__enable-offset field-type--checkbox">
+								 <div class="custom-field--value">
+									 {{ item["enable_offset"] }}
+								 </div>
+							 </div>
+						 {% endif %}
+					 </div>
+				 {% endfor %}
+			</div>
+		</div>
+	{% endif %} {% endcomment %}
+	
 	
 	{% comment %} {% if blog.metafields["custom_fields"]["two_grid"] != blank %}
 		<div class="two-grid-section custom-field__two-grid custom-field__type--field-collection-json">
@@ -87,32 +200,35 @@
           {% render block %}
         </div>
       {%- when 'featured_image' -%}
-				{% render 'dump' with article %}
-        {%- if article.image -%}
-          <div class='article-template__hero-container' {{ block.shopify_attributes }}>
+				{% comment %} <img src="{{ featured_image | image_url: width: 1200 }}" alt="{{ blog_title }}" width="1200" height="1200"> {% endcomment %}
+
+        {%- if featured_image -%}
+
+					<div class='article-template__hero-container' {{ block.shopify_attributes }}>
             <div
               class='article-template__hero-{{ block.settings.image_height }} media'
               itemprop='image'
-              {% if block.settings.image_height == 'adapt' and article.image %}
-                style='padding-bottom: {{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;'
+              {% if block.settings.image_height == 'adapt' and blog.image %}
+                style='padding-bottom: {{ 1 | divided_by: blog.image.aspect_ratio | times: 100 }}%;'
               {% endif %}
             >
+
               <img
                 srcset='
-                  {% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
-                  {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
-                  {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
-                  {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
-                  {% if article.image.width >= 2200 %}{{ article.image | image_url: width: 2200 }} 2200w,{% endif %}
-                  {% if article.image.width >= 3000 %}{{ article.image | image_url: width: 3000 }} 3000w,{% endif %}
-                  {{ article.image | image_url }} {{ article.image.width }}w
+                  {% if featured_image.width >= 350 %}{{ featured_image | image_url: width: 350 }} 350w,{% endif %}
+                  {% if featured_image.width >= 750 %}{{ featured_image | image_url: width: 750 }} 750w,{% endif %}
+                  {% if featured_image.width >= 1100 %}{{ featured_image | image_url: width: 1100 }} 1100w,{% endif %}
+                  {% if featured_image.width >= 1500 %}{{ featured_image | image_url: width: 1500 }} 1500w,{% endif %}
+                  {% if featured_image.width >= 2200 %}{{ featured_image | image_url: width: 2200 }} 2200w,{% endif %}
+                  {% if featured_image.width >= 3000 %}{{ featured_image | image_url: width: 3000 }} 3000w,{% endif %}
+                  {{ featured_image | image_url }} {{ featured_image.width }}w
                 '
                 sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw'
-                src='{{ article.image | image_url: 'x1500' }}'
+                src='{{ featured_image | image_url: 'x2500' }}'
                 loading='lazy'
-                width='{{ article.image.width }}'
-                height='{{ article.image.height }}'
-                alt='{{ article.image.alt | escape }}'
+                width='{{ featured_image.width }}'
+                height='{{ featured_image.height }}'
+                alt='{{ featured_image.alt | escape }}'
               >
             </div>
           </div>
@@ -120,17 +236,17 @@
 
       {%- when 'title' -%}
         <header class='page-width page-width--narrow' {{ block.shopify_attributes }}>
-          <h1 class='article-template__title' itemprop='headline'>{{ article.title | escape }}</h1>
+          {% comment %} <h1 class='article-template__title' itemprop='headline'>{{ blog.title | escape }}</h1> {% endcomment %}
           <div class='details'>
             {%- if block.settings.blog_show_author -%}
               <span class='caption-with-letter-spacing' itemprop='author' itemscope itemtype='http://schema.org/Person'>
-                <span itemprop='name'>By {{ article.author }}</span>
+                <span itemprop='name'>By {{ blog.author }}</span>
               </span>
             {%- endif -%}
             {%- if block.settings.blog_show_date -%}
               <span class=' caption-with-letter-spacing' itemprop='dateCreated pubdate datePublished'>
-                <time datetime='{{ article.published_at | date: '%T' }}'>
-                  {{- article.published_at | date: '%B %e, %Y' -}}
+                <time datetime='{{ blog.published_at | date: '%T' }}'>
+                  {{- blog.published_at | date: '%B %e, %Y' -}}
                 </time>
                 {% if date_updated != blank %}
                   <b> | </b
@@ -150,18 +266,18 @@
           itemprop='articleBody'
           {{ block.shopify_attributes }}
         >
-          {{ article_rte }}
+          {{ blog_rte }}
         </div>
 
       {%- when 'custom' -%}
         {{ block.settings.content }}
 
-      {%- when 'share' -%}
+      {% comment %} {%- when 'share' -%}
         <div class='article-template__social-sharing page-width page-width--narrow' {{ block.shopify_attributes }}>
           <span class='share-header'>
             <a
               target='_blank'
-              href='//www.facebook.com/sharer.php?u={{ shop.url | append: article.url }}'
+              href='//www.facebook.com/sharer.php?u={{ shop.url | append: blog.url }}'
               class='social-link'
             >
               {% render 'icon-facebook' %}
@@ -169,7 +285,7 @@
             </a>
             <a
               target='_blank'
-              href='//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: article.url }}'
+              href='//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: blog.url }}'
               class='social-link'
             >
               {% render 'icon-twitter' %}
@@ -177,7 +293,7 @@
             </a>
           </span>
           {% comment %} {% render 'snippet--js-output', defer: true, lazy: true, lnk: 'share.min.js' %} {% endcomment %}
-        </div>
+        </div> {% endcomment %}
     {%- endcase -%}
   {%- endfor -%}
 	{% render 'custom-css', css: section_custom_css, class: css_class %}
