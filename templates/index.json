@@ -153,6 +153,7 @@
         "products_per_page": 24,
         "columns_desktop": 3,
         "filter_on_tag": "",
+        "alternate_product_card": "",
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,
