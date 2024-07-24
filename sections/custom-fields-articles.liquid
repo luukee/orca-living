@@ -1,0 +1,121 @@
+{% render "blocks.custom_fields" with resource_type: "articles", blocks: section.blocks %}
+{% schema %}
+  {
+    "name": {
+        "en": "Custom Fields"
+    },
+    "settings": [
+        {
+            "type": "paragraph",
+            "content": "[View Documentation](https:\/\/custom-fields.docs.bonify.io\/)"
+        },
+        {
+            "type": "paragraph",
+            "content": "[Edit Custom Fields](https:\/\/customfields.bonify.io\/dashboard\/orcaliving.myshopify.com\/articles\/configure)"
+        }
+    ],
+    "templates": [
+        "article"
+    ],
+    "presets": [
+        {
+            "name": "Custom Fields",
+            "blocks": []
+        }
+    ],
+    "blocks": [
+        {
+            "type": "cf_f_lfrf",
+            "name": {
+                "en": "File Reference (List)"
+            },
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "key",
+                    "label": "Select a Field",
+                    "options": [
+                        {
+                            "value": "custom.gallery",
+                            "label": "Gallery"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "cf_f_lprf",
+            "name": {
+                "en": "Product Reference (List)"
+            },
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "key",
+                    "label": "Select a Field",
+                    "options": [
+                        {
+                            "value": "custom.featured_products",
+                            "label": "Featured Products"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "cf_f_sltf",
+            "name": {
+                "en": "Single Line Text"
+            },
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "key",
+                    "label": "Select a Field",
+                    "options": [
+                        {
+                            "value": "custom.location",
+                            "label": "Location"
+                        },
+                        {
+                            "value": "custom.plant_community",
+                            "label": "Plant Community"
+                        },
+                        {
+                            "value": "custom.type",
+                            "label": "Type"
+                        },
+                        {
+                            "value": "custom.featured_materials",
+                            "label": "Featured Materials"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "cf_f_fcj",
+            "name": {
+                "en": "Field Collection"
+            },
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "key",
+                    "label": "Select a Field Collection",
+                    "options": [
+                        {
+                            "value": "custom_fields.images",
+                            "label": "Images"
+                        },
+                        {
+                            "value": "custom_fields.two_grid",
+                            "label": "Two Grid"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

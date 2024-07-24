@@ -1,0 +1,87 @@
+<div class="custom-fields-section v2">
+  
+    {% if resource_type == "products" %}
+    <div class="custom-fields-section__products">
+      {% for block in blocks %}
+      {% if block.type contains "cf_" %}
+      <div {{ block.shopify_attributes }} class="custom-fields-section__item
+                  custom-fields-section__item--{{ block.type }}
+                  custom-fields-section__item--{{ block.type }}--{{ block.settings.key }}
+                  {% if block.settings.cols != blank %}{{ "cf-width-" | append: block.settings.cols | append: "-of-12" }}{% else %}cf-width-12-of-12{% endif %}">
+        {% case block.settings.key %}
+                  {% when "custom.first_tab_title" %}
+            {% render "custom.products.first_tab_title", block:block %}
+                  {% when "custom.first_tab_description" %}
+            {% render "custom.products.first_tab_description", block:block %}
+                  {% when "custom.second_tab_title" %}
+            {% render "custom.products.second_tab_title", block:block %}
+                  {% when "custom.second_tab_description" %}
+            {% render "custom.products.second_tab_description", block:block %}
+                  {% when "custom.third_tab_title" %}
+            {% render "custom.products.third_tab_title", block:block %}
+                  {% when "custom.third_tab_description" %}
+            {% render "custom.products.third_tab_description", block:block %}
+                  {% when "custom.footage_calculator" %}
+            {% render "custom.products.footage_calculator", block:block %}
+                  {% when "custom.product_bottom_banner" %}
+            {% render "custom.products.product_bottom_banner", block:block %}
+                  {% when "custom.banner_heading" %}
+            {% render "custom.products.banner_heading", block:block %}
+                  {% when "custom.product_banners" %}
+            {% render "custom.products.product_banners", block:block %}
+                  {% when "shopify--discovery--product_search_boost.queries" %}
+            {% render "shopify--discovery--product_search_boost.products.queries", block:block %}
+                  {% when "shopify--discovery--product_recommendation.related_products" %}
+            {% render "shopify--discovery--product_recommendation.products.related_products", block:block %}
+                  {% when "shopify--discovery--product_recommendation.related_products_display" %}
+            {% render "shopify--discovery--product_recommendation.products.related_products_display", block:block %}
+                  {% when "shopify--discovery--product_recommendation.complementary_products" %}
+            {% render "shopify--discovery--product_recommendation.products.complementary_products", block:block %}
+                  {% when "en_q_calculator.value_per_unit" %}
+            {% render "en_q_calculator.products.value_per_unit", block:block %}
+                  {% when "en_q_calculator.max_order_quantity" %}
+            {% render "en_q_calculator.products.max_order_quantity", block:block %}
+                  {% when "en_q_calculator.min_order_quantity" %}
+            {% render "en_q_calculator.products.min_order_quantity", block:block %}
+        
+        {% endcase %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  
+    {% if resource_type == "articles" %}
+    <div class="custom-fields-section__articles">
+      {% for block in blocks %}
+      {% if block.type contains "cf_" %}
+      <div {{ block.shopify_attributes }} class="custom-fields-section__item
+                  custom-fields-section__item--{{ block.type }}
+                  custom-fields-section__item--{{ block.type }}--{{ block.settings.key }}
+                  {% if block.settings.cols != blank %}{{ "cf-width-" | append: block.settings.cols | append: "-of-12" }}{% else %}cf-width-12-of-12{% endif %}">
+        {% case block.settings.key %}
+                  {% when "custom.gallery" %}
+            {% render "custom.articles.gallery", block:block %}
+                  {% when "custom.featured_products" %}
+            {% render "custom.articles.featured_products", block:block %}
+                  {% when "custom.location" %}
+            {% render "custom.articles.location", block:block %}
+                  {% when "custom.plant_community" %}
+            {% render "custom.articles.plant_community", block:block %}
+                  {% when "custom.type" %}
+            {% render "custom.articles.type", block:block %}
+                  {% when "custom.featured_materials" %}
+            {% render "custom.articles.featured_materials", block:block %}
+                  {% when "custom_fields.images" %}
+            {% render "custom_fields.articles.images", block:block %}
+                  {% when "custom_fields.two_grid" %}
+            {% render "custom_fields.articles.two_grid", block:block %}
+        
+        {% endcase %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  
+</div>

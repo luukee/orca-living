@@ -1,0 +1,9 @@
+{% if product.metafields["custom"]["first_tab_description"] != blank %}
+  <div class="custom-field custom-field__first-tab-description custom-field__type--multi-line-text-field">
+    <h3 class="custom-field--title">First tab description</h3>
+    <div class="custom-field--value">
+      {{ product.metafields["custom"]["first_tab_description"] }}
+
+    </div>
+  </div>
+{% endif %}

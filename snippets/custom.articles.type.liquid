@@ -1,0 +1,9 @@
+{% if article.metafields["custom"]["type"] != blank %}
+  <div class="custom-field custom-field__type custom-field__type--single-line-text-field">
+    <h3 class="custom-field--title">Type</h3>
+    <div class="custom-field--value">
+      {{ article.metafields["custom"]["type"] }}
+
+    </div>
+  </div>
+{% endif %}
