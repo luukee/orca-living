@@ -1,0 +1,9 @@
+{% if product.metafields["custom"]["banner_heading"] != blank %}
+  <div class="custom-field custom-field__banner-heading custom-field__type--single-line-text-field">
+    <h3 class="custom-field--title">Banner Heading</h3>
+    <div class="custom-field--value">
+      {{ product.metafields["custom"]["banner_heading"] }}
+
+    </div>
+  </div>
+{% endif %}

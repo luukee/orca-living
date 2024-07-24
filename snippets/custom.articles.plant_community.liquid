@@ -1,0 +1,9 @@
+{% if article.metafields["custom"]["plant_community"] != blank %}
+  <div class="custom-field custom-field__plant-community custom-field__type--single-line-text-field">
+    <h3 class="custom-field--title">Plant Community</h3>
+    <div class="custom-field--value">
+      {{ article.metafields["custom"]["plant_community"] }}
+
+    </div>
+  </div>
+{% endif %}

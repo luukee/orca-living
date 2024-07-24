@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "b9321e40-9a0b-456e-bb05-4e652513eb31": {
+      "type": "side-navigation",
+      "settings": {
+        "title": "{{ blog.title }}",
+        "make_h1": true,
+        "menu": "fieldnotes",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "97788c87-83e4-4118-924a-5f9a51de842a": {
+      "type": "feature-article",
+      "disabled": true,
+      "settings": {
+        "article": "field-notes\/plants-people-japan",
+        "custom_css": "== {\nmargin-top: 20px;\n}\n== .two-grid{\ndisplay: grid;\ngrid-template-columns: 1fr 1fr;\nbackground:#CDC4B8;\nalign-items: center;\n}\n== .feature-article-content{\npadding: 30px 60px;\nmargin: auto;\n}\n== .feature-article-image,\n== img{\nmax-height: 450px;\nobject-fit:cover;\nheight: 100%;\n}\n== h3{\nfont-size: 32px;\nmargin-bottom: 15px;\n}\n== .tag{\nfont-size:16px;\n}\n== article{\nmargin-top: 15px;\nmargin-bottom: 10px;\nfont-size: 15px;\n}\n\/medium-down\/{\n== .two-grid{\ngrid-template-columns: 1fr;\n}\n}"
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "disabled": true,
+      "custom_css": [
+        "h1 {display: none;}"
+      ],
+      "settings": {
+        "products_per_page": 48,
+        "layout": "grid",
+        "show_image": true,
+        "image_height": "adapt",
+        "show_date": false,
+        "show_author": false,
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "34126ca8-2fe0-4c92-8888-6b60e6878992": {
+      "type": "fieldnotes-blog",
+      "disabled": true,
+      "custom_css": [
+        ".article {align-items: start;}",
+        "article {font-size: 15px;}"
+      ],
+      "settings": {
+        "products_per_page": 16,
+        "layout": "collage",
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": true,
+        "show_author": false,
+        "padding_top": 36,
+        "padding_bottom": 68
+      }
+    },
+    "895e2c76-87a7-4bac-8ae5-344f946100e1": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
+        "color_scheme": "background-1",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "main_blog_ydraN9": {
+      "type": "main-blog",
+      "settings": {
+        "products_per_page": 16,
+        "layout": "collage",
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": true,
+        "show_author": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "b9321e40-9a0b-456e-bb05-4e652513eb31",
+    "97788c87-83e4-4118-924a-5f9a51de842a",
+    "main",
+    "34126ca8-2fe0-4c92-8888-6b60e6878992",
+    "895e2c76-87a7-4bac-8ae5-344f946100e1",
+    "main_blog_ydraN9"
+  ]
+}
