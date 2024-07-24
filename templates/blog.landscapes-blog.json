@@ -3,7 +3,7 @@
     "b9321e40-9a0b-456e-bb05-4e652513eb31": {
       "type": "side-navigation",
       "settings": {
-        "title": "{{ blog.title }}",
+        "title": "Landscapes Blog",
         "make_h1": true,
         "menu": "landscapes-menu",
         "padding_top": 16,
@@ -62,20 +62,20 @@
         "heading_WHWUEG": {
           "type": "heading",
           "settings": {
-            "heading": "{{ blog.title }}",
+            "heading": "Landscapes Blog",
             "heading_size": "h1"
           }
         },
         "text_RzK93V": {
           "type": "text",
           "settings": {
-            "text": "<h3>{{ blog.metafields.custom.excerpt.value }}<\/h3>"
+            "text": "<h3>Excerpt placeholder<\/h3>"
           }
         },
         "text_6pKfpW": {
           "type": "text",
           "settings": {
-            "text": "<p>{{ blog.metafields.custom.content | metafield_tag }}<\/p>"
+            "text": "<p>Content placeholder</p>"
           }
         }
       },
