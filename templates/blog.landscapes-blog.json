@@ -10,33 +10,100 @@
         "padding_bottom": 16
       }
     },
-    "feature_article_WjFWCK": {
-      "type": "feature-article",
-      "settings": {
-        "article": "landscapes\/moraga",
-        "custom_css": ""
-      }
-    },
-    "main": {
-      "type": "main-blog",
-      "custom_css": [
-        "h1 {display: none;}"
+    "rich_text_Are3fn": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_WHWUEG": {
+          "type": "heading",
+          "settings": {
+            "heading": "{{ blog.title }}",
+            "heading_size": "h1"
+          }
+        },
+        "text_RzK93V": {
+          "type": "text",
+          "settings": {
+            "text": "<h3>{{ blog.metafields.custom.excerpt.value }}<\/h3>"
+          }
+        },
+        "text_6pKfpW": {
+          "type": "text",
+          "settings": {
+            "text": "<p>{{ blog.metafields.custom.content | metafield_tag }}<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_WHWUEG",
+        "text_RzK93V",
+        "text_6pKfpW"
       ],
       "settings": {
-        "products_per_page": 48,
-        "layout": "grid",
-        "show_image": true,
-        "image_height": "adapt",
-        "show_date": false,
-        "show_author": false,
-        "padding_top": 16,
-        "padding_bottom": 16
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "background-1",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "slideshow_yhEkDD": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_qbAYUt": {
+          "type": "slide",
+          "settings": {
+            "image": "{{ blog.metafields.custom.featured_image.value }}",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": false,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        }
+      },
+      "block_order": [
+        "slide_qbAYUt"
+      ],
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "medium",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "image_behavior": "ambient",
+        "show_text_below": false,
+        "accessibility_info": "Slideshow about our landscapes"
+      }
+    },
+    "custom_fields_blogs_bnXXUL": {
+      "type": "custom-fields-blogs",
+      "blocks": {
+        "cf_f_fcj_FQUdnn": {
+          "type": "cf_f_fcj",
+          "settings": {
+            "key": "custom_fields.two_grid"
+          }
+        }
+      },
+      "block_order": [
+        "cf_f_fcj_FQUdnn"
+      ],
+      "settings": {
       }
     }
   },
   "order": [
     "b9321e40-9a0b-456e-bb05-4e652513eb31",
-    "feature_article_WjFWCK",
-    "main"
+    "rich_text_Are3fn",
+    "slideshow_yhEkDD",
+    "custom_fields_blogs_bnXXUL"
   ]
 }
