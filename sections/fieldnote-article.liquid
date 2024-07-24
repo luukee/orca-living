@@ -119,7 +119,7 @@
               <span class='visually-hidden'>Share on Twitter</span>
             </a>
           </span>
-          {% render 'snippet--js-output', defer: true, lazy: true, lnk: 'share.min.js' %}
+          {% comment %} {% render 'snippet--js-output', defer: true, lazy: true, lnk: 'share.min.js' %} {% endcomment %}
         </div>
     {%- endcase -%}
   {%- endfor -%}
@@ -129,19 +129,19 @@
       {% if blog.next_article or blog.previous_article %}
         {% if blog.previous_article != blank %}
           <span class='left'>
-            {% include 'back-arrow-article.liquid' %}
+            {% render 'back-arrow-article' %}
             <a class='link' href='{{blog.previous_article}}'>Back</a>
           </span>
         {% else %}
           <span class='left'>
-            {% include 'back-arrow-article.liquid' %}
+            {% render 'back-arrow-article' %}
             <a class='link' href='{{blog.next_article}}'>Back</a>
           </span>
         {% endif %}
         {% if blog.next_article %}
           <span class='right'>
             <a class='link' href='{{blog.next_article}}'>Next</a>
-            {% include 'back-arrow-article.liquid' %}
+            {% render 'back-arrow-article' %}
           </span>
         {% endif %}
       {% endif %}
