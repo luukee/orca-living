@@ -69,13 +69,13 @@
         "text_RzK93V": {
           "type": "text",
           "settings": {
-            "text": "<h3>Excerpt placeholder<\/h3>"
+            "text": "<h3>Hello<\/h3>"
           }
         },
         "text_6pKfpW": {
           "type": "text",
           "settings": {
-            "text": "<p>Content placeholder</p>"
+            "text": "<p>This<\/p>"
           }
         }
       },
@@ -99,7 +99,7 @@
         "slide_qbAYUt": {
           "type": "slide",
           "settings": {
-            "image": "{{ blog.metafields.custom.featured_image.value }}",
+            "image": "shopify:\/\/shop_images\/ScreenShot2024-06-17at1.14.11PM.png",
             "heading": "",
             "heading_size": "h1",
             "subheading": "",

@@ -15,7 +15,6 @@
   assign articleRTE = article.content
 
   assign mf = article.metafields.custom
-  render 'dump' with mf
   assign dateUpdated = mf.date_modified
 %}
 
