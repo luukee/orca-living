@@ -28,7 +28,6 @@
         "products_per_page": 24,
         "columns_desktop": 3,
         "filter_on_tag": "_Cobble",
-        "alternate_product_card": "_Cobble",
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,

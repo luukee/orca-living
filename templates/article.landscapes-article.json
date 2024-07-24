@@ -13,38 +13,31 @@
     "main": {
       "type": "main-article",
       "blocks": {
-        "featured_image": {
+        "title_WTf9QV": {
+          "type": "title",
+          "settings": {
+            "blog_show_date": false,
+            "blog_show_author": false
+          }
+        },
+        "custom_liquid_CxXyjF": {
+          "type": "custom_liquid",
+          "settings": {
+            "title": "Excerpt",
+            "custom_liquid": "<h3 class=\"article-excerpt\">{{ article.excerpt }}<\/h3>\n<p class=\"article-excerpt\">{{ article.content }}<\/p>"
+          }
+        },
+        "featured_image_iap7Yr": {
           "type": "featured_image",
           "settings": {
             "image_height": "adapt"
           }
-        },
-        "title": {
-          "type": "title",
-          "disabled": true,
-          "settings": {
-            "blog_show_date": true,
-            "blog_show_author": false
-          }
-        },
-        "share": {
-          "type": "share",
-          "disabled": true,
-          "settings": {
-            "share_label": "Share"
-          }
-        },
-        "content": {
-          "type": "content",
-          "settings": {
-          }
         }
       },
       "block_order": [
-        "featured_image",
-        "title",
-        "share",
-        "content"
+        "title_WTf9QV",
+        "custom_liquid_CxXyjF",
+        "featured_image_iap7Yr"
       ],
       "custom_css": [
         "> * {margin: var(--base-gutter--half) 0;}"
@@ -52,78 +45,19 @@
       "settings": {
       }
     },
-    "image_with_text_jjqEFU": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_6JVxBU": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image with text",
-            "heading_size": "h1"
-          }
-        },
-        "text_X8Ea4H": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "text_style": "body"
-          }
-        },
-        "button_RnUWKM": {
-          "type": "button",
-          "settings": {
-            "button_label": "Button label",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading_6JVxBU",
-        "text_X8Ea4H",
-        "button_RnUWKM"
-      ],
-      "disabled": true,
-      "settings": {
-        "image": "{{ article.image }}",
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "color_scheme": "background-1",
-        "image_behavior": "none",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "7b7a1dc6-7480-4a22-bf60-d2b44005951c": {
-      "type": "fieldnote-article",
-      "blocks": {
-        "aab91082-7601-4de7-bd18-adc418f7a802": {
-          "type": "content",
-          "settings": {
-          }
-        },
-        "featured_image_d8jazp": {
-          "type": "featured_image",
-          "settings": {
-            "image_height": "adapt"
-          }
-        }
-      },
-      "block_order": [
-        "aab91082-7601-4de7-bd18-adc418f7a802",
-        "featured_image_d8jazp"
-      ],
-      "disabled": true,
-      "settings": {
-        "custom_css": "== .rte{\nmargin-top: 25px;\n}"
-      }
-    },
     "custom_fields_articles_Bbt3yn": {
       "type": "custom-fields-articles",
+      "blocks": {
+        "cf_f_lfrf_VTYf6T": {
+          "type": "cf_f_lfrf",
+          "settings": {
+            "key": "custom.gallery"
+          }
+        }
+      },
+      "block_order": [
+        "cf_f_lfrf_VTYf6T"
+      ],
       "settings": {
       }
     }
@@ -131,8 +65,6 @@
   "order": [
     "cfdb8cb9-d999-49d1-8ca3-93714ea1812a",
     "main",
-    "image_with_text_jjqEFU",
-    "7b7a1dc6-7480-4a22-bf60-d2b44005951c",
     "custom_fields_articles_Bbt3yn"
   ]
 }
