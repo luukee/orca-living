@@ -18,7 +18,7 @@
     }
   }
 {%- endstyle -%}
-
+<!-- sections/fieldnotes-blog -->
 {%- paginate blog.articles by section.settings.products_per_page -%}
   <div class="main-blog {% if request.path contains 'tagged' %} no-banner {%endif%} page-width section-{{ section.id }}-padding">
     
