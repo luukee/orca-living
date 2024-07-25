@@ -13,6 +13,7 @@
 	assign blog_excerpt 		= cf.excerpt
 	assign blog_content 		= cf.content
 	assign blog_feat_image 	= cf.featured_image
+	assign blog_img_style 	= '--image--set-height: 56%;'
 	if c_fields != blank
 		assign blog_images			= c_fields.images
 	endif
@@ -26,60 +27,52 @@
   assign mf = blog.metafields.custom
   assign date_updated = mf.date_modified
 	
-	render 'dump' with blog_images
-	echo '<pre style="display:flex;flex-direction:column;">'
-	echo blog_title
-	echo '<br>'
-	echo blog_excerpt 
-		echo '<br>'
-	echo blog_content 
-		echo '<br>'
-	echo blog_feat_image
-		echo '<br>'
-	echo 'END TEST'
-	echo '</pre>'
+	## render 'dump' with blog_images
+
 %}
 
 {% comment %}theme-check-disable NestedSnippet{% endcomment %}
-{% render 'snippet--article-includes',  %}
+{% comment %} {% render 'snippet--article-includes',  %} {% endcomment %}
 {% comment %}theme-check-enable NestedSnippet{% endcomment %}
 
-<article class='article-template {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
-	
+<article class='article-template template--article-field-notes-article {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
+	{% comment %} title {% endcomment %}
+  <h1>{{ blog_title }}</h1>
 	{% comment %} excerpt {% endcomment %}
-  {% if blog.metafields["custom"]["excerpt"] != blank %}
-		<h3>{{ blog.metafields["custom"]["excerpt"] }}</h3>
+  {% if blog_excerpt != blank %}
+		<h3>{{ blog_excerpt }}</h3>
 	{% endif %}
 	
 	{% comment %} content {% endcomment %}
-	{% if blog.metafields["custom"]["content"] != blank %}
-		<p>{{ blog.metafields["custom"]["content"] }}</p>
+	{% if blog_content != blank %}
+		<p>{{ blog_content }}</p>
 	{% endif %}
 	
 	{% comment %} featured image {% endcomment %}
-	{% if blog.metafields["custom"]["featured_image"] != blank %}
-		{% assign type = blog.metafields["custom"]["featured_image"].value.media_type %}
+	{% if blog_feat_image != blank %}
+    {% assign type = blog_feat_image.value.media_type %}
 		{% case type %}
 			{% when "image" %}
-				{% comment %} {{ blog.metafields["custom"]["featured_image"].value | image_url: width: 500 | image_tag }} {% endcomment %}
+        {% assign blog_feat_image = blog_feat_image.value | image_url %}
+        {% render 'snippet--image', img: blog_feat_image, cf: true, customStyle: blog_img_style %}
 			{% when "video" %}
-				{{ blog.metafields["custom"]["featured_image"].value | video_tag: image_size: "500x", width: 500, autoplay: false, controls: true }}
+				{{ blog_feat_image.value | video_tag: image_size: "500x", width: 500, autoplay: false, controls: true }}
 			{% else %}
-				{% assign file_url = blog.metafields["custom"]["featured_image"].value.url %}
-				<a target="_blank" href="{{ file_url }}">{{ blog.metafields["custom"]["featured_image"] | media_tag: image_size: "200x" }}</a>
+				{% assign file_url = blog_feat_image.value.url %}
+				<a target="_blank" href="{{ file_url }}">{{ blog_feat_image | media_tag: image_size: "200x" }}</a>
 				<div>{{ file_url | split: '/' | last | split: '?v=' | first }}</div>
 		{% endcase %}
 	{% endif %}
 	
 	{% comment %} images {% endcomment %}
-	 {% assign articleImages = mf["images"] %}
-	{%- for item in article.metafields["custom_fields"]["two_grid"] -%}
-		{% liquid
+	{%- for item in blog_images -%}
+    {% render 'dump' with item %}
+		{% comment %} {% liquid
 			assign img        = item["image"]
 			assign img_height = item["image_height"]
 			assign txt        = item["caption"]
 			assign offset     = item["enable_offset"]
-		%}
+		%} {% endcomment %}
 	{% endfor %}
 	{% comment %}  {% endcomment %}
 	{% comment %} {% if blog.metafields["custom_fields"]["images"] != blank %}
@@ -193,7 +186,7 @@
 		</div>
 	{% endif %} {% endcomment %}
 	
-	{%- for block in section.blocks -%}
+	{% comment %} {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
         <div class='page-width page-width--narrow'>
@@ -295,7 +288,7 @@
           {% comment %} {% render 'snippet--js-output', defer: true, lazy: true, lnk: 'share.min.js' %} {% endcomment %}
         </div> {% endcomment %}
     {%- endcase -%}
-  {%- endfor -%}
+  {%- endfor -%} {% endcomment %}
 	{% render 'custom-css', css: section_custom_css, class: css_class %}
 </article>
 {% schema %}
@@ -304,6 +297,10 @@
   "tag": "section",
   "class": "section",
   "settings": [
+		{
+      "type": "header",
+      "content": "Custom Fields"
+    },
 		{
       "type": "header",
       "content": "Custom CSS Rules"
