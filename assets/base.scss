@@ -7,7 +7,8 @@
 // controls the spacing of the Header and MainContent 
 :root {
   --columns--gap: var(--base-gutter--half);
-
+  --header-height: 79px;
+  --view-height: 967px;
   @include mq($medium-up) {
     --columns--first: 30%;
     --columns--middle: 31%;

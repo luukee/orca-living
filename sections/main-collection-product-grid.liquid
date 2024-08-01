@@ -1,6 +1,7 @@
 <!-- sections/main-collection-product-grid -->
 
 {% liquid
+  assign on_filter_by_tag_page = false
   if section.settings.collection != '' and section.settings.collection != blank
     assign collection = collections[section.settings.collection]
   endif
@@ -10,7 +11,18 @@
     assign is_samples = true
     assign collection = collections['pavers']
     assign single_variant_quick_add = 'sample'
-  elsif request.path contains section.settings.filter_on_tag
+  ## check if filter_on_tag is not blank and the URL contains the filter_on_tag string
+  elsif section.settings.filter_on_tag != ' ' and request.path contains section.settings.filter_on_tag
+    assign on_filter_by_tag_page = true
+    ## check if filter_on_tag contains underscore
+    if section.settings.filter_on_tag contains "_"
+      ## if it does we need to remove/replace the underscore
+      assign selected_tag = section.settings.filter_on_tag
+      assign filter_by_this_tag = selected_tag | replace: "_", "" 
+    ## otherwise assign filter_on_tag string to filter_by_this_tag variable
+    else 
+      assign filter_by_this_tag = section.settings.filter_on_tag
+    endif
     assign is_samples = true
     assign single_variant_quick_add = 'sample'
   endif 
@@ -102,7 +114,7 @@
                 data-id="{{ section.id }}"
                 class="grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
                 {% assign index = 0 %}
-                {% assign filterTag = section.settings.filter_on_tag %}
+                {% assign filter_tag = section.settings.filter_on_tag %}
                 {% comment %} products array including only the products with the product type property value {% endcomment %}
                 {%- for product in same_type_products -%}
                   {% assign lazy_load = false %}
@@ -135,7 +147,7 @@
                             if is_samples
                               if displayed_variants contains p.id
                                 continue
-                              elsif request.path contains filterTag
+                              elsif request.path contains filter_tag
                                 unless p.metafields.custom.featured == true
                                   continue 
                                 endunless
@@ -264,7 +276,7 @@
                 data-id="{{ section.id }}"
                 class="grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
                 {% assign index = 0 %}
-                {% assign filterTag = section.settings.filter_on_tag %}
+                {% assign filter_tag = section.settings.filter_on_tag %}
                 {%- for product in collection.products -%}
                   {% assign lazy_load = false %}
                   {% assign product_expanded = false %}
@@ -293,10 +305,15 @@
                         {% for p in filtered_prods %}
 
                           {% liquid
-                            if is_samples
+                            ## filter by tag page
+                            if on_filter_by_tag_page
+                              unless p.title contains filter_by_this_tag
+                                continue 
+                              endunless
+                            elsif is_samples
                               if displayed_variants contains p.id
                                 continue
-                              elsif request.path contains filterTag
+                              elsif request.path contains filter_tag
                                 unless p.metafields.custom.featured == true
                                   continue 
                                 endunless
@@ -452,12 +469,6 @@
       {
         "type": "header",
         "content": "t:sections.main-collection-product-grid.settings.header__3.content"
-      },
-      {
-        "type": "text",
-        "id": "alternate_product_card",
-        "label": "Tag pages alternate product card",
-        "info": "Enter comma separated tag names here."
       },
       {
         "type": "select",
