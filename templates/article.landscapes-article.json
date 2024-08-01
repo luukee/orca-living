@@ -10,6 +10,48 @@
         "padding_bottom": 52
       }
     },
+    "landscapes_article_rcFiTt": {
+      "type": "landscapes-article",
+      "blocks": {
+        "image_with_caption_iWQcTP": {
+          "type": "image_with_caption",
+          "settings": {
+          }
+        },
+        "title_hDMFJQ": {
+          "type": "title",
+          "settings": {
+            "blog_show_date": true,
+            "blog_show_author": false
+          }
+        },
+        "excerpt_CnWeW7": {
+          "type": "excerpt",
+          "settings": {
+          }
+        },
+        "content_TpAFQW": {
+          "type": "content",
+          "settings": {
+          }
+        },
+        "gallery_list_JNqkgW": {
+          "type": "gallery_list",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "image_with_caption_iWQcTP",
+        "title_hDMFJQ",
+        "excerpt_CnWeW7",
+        "content_TpAFQW",
+        "gallery_list_JNqkgW"
+      ],
+      "settings": {
+        "custom_css": ""
+      }
+    },
     "main": {
       "type": "main-article",
       "blocks": {
@@ -39,6 +81,7 @@
         "custom_liquid_CxXyjF",
         "featured_image_iap7Yr"
       ],
+      "disabled": true,
       "custom_css": [
         "> * {margin: var(--base-gutter--half) 0;}"
       ],
@@ -58,12 +101,14 @@
       "block_order": [
         "cf_f_lfrf_VTYf6T"
       ],
+      "disabled": true,
       "settings": {
       }
     }
   },
   "order": [
     "cfdb8cb9-d999-49d1-8ca3-93714ea1812a",
+    "landscapes_article_rcFiTt",
     "main",
     "custom_fields_articles_Bbt3yn"
   ]

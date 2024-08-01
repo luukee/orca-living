@@ -1,11 +1,11 @@
-<!-- sections/main-article -->
+<!-- sections/landscapes-article -->
 
 {% render 'css-section-blog-post' %}
 
 {% liquid
   assign s = section.settings
   assign sID = section.id
-	render 'dump' with section.id
+
   assign sectionCustomCSS = s.custom_css
   assign class = 'section--' | append: sID
   assign cssClass = '.' | append: class
@@ -15,15 +15,15 @@
   assign articleRTE = article.content
 
   assign mf = article.metafields.custom
-  render 'dump' with mf
+
   assign dateUpdated = mf.date_modified
 %}
 
 {% comment %}theme-check-disable NestedSnippet{% endcomment %}
-{% include 'snippet--article-includes' %}
+{% comment %} {% include 'snippet--article-includes' %} {% endcomment %}
 {% comment %}theme-check-enable NestedSnippet{% endcomment %}
 
-<article class='article-template {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
+<article class='article-template template--article-field-notes-article {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
@@ -95,10 +95,37 @@
         >
           {{ articleRTE }}
         </div>
-
+      {%- when 'excerpt' -%}
+        <div
+          class='article-template__content page-width page-width--narrow rte'
+          itemprop='articleBody'
+          {{ block.shopify_attributes }}
+        >
+          <h3>{{ article.excerpt }}</h3>
+        </div>
       {%- when 'custom' -%}
         {{ block.settings.content }}
+      {%- when 'image_with_caption' -%}
+        {% render "custom_fields.articles.image_with_caption" %}
 
+      {% comment %} {% if article.metafields["custom_fields"]["image_with_caption"] != blank %}
+        <div class="two-grid-section">
+          <div class="cell  half_gutter vert-top">
+            <div class="cell__item">
+              <div class="two-grid">
+                <div class="caption">
+                  <p>caption</p>
+                </div>
+                <div class="image  ">
+                  <p>Image</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}  {% endcomment %}
+      {%- when 'gallery_list' -%}
+        {% render "custom.articles.gallery" %}
       {%- when 'share' -%}
         <div class='article-template__social-sharing page-width page-width--narrow' {{ block.shopify_attributes }}>
           <span class='share-header'>
@@ -481,6 +508,21 @@
       "type": "content",
       "name": "t:sections.main-article.blocks.content.name",
       "limit": 1
+    },
+    {
+      "type": "excerpt",
+      "name": "Excerpt",
+      "limit": 1
+    },
+    {
+      "type": "gallery_list",
+      "name": "Gallery list",
+      "limit": 1,
+    },
+    {
+      "type": "image_with_caption",
+      "name": "Image with caption",
+      "limit": 1,
     },
     {
       "type": "share",

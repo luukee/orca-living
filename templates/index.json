@@ -62,6 +62,7 @@
         "set_height": true,
         "mob_rel": false,
         "show_mobile_overlay_sooner": false,
+        "hide_menus": true,
         "image_height": "100vh",
         "image_height_mob": "",
         "auto_slide": true,
@@ -89,7 +90,8 @@
             "button_style_secondary": true,
             "button_label_2": "Shop",
             "button_link_2": "shopify:\/\/collections\/all",
-            "button_style_secondary_2": true
+            "button_style_secondary_2": true,
+            "button_mobile_menu": true
           }
         }
       },

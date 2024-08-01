@@ -1,0 +1,51 @@
+{% if article.metafields["custom_fields"]["image_with_caption"] != blank %}
+  {% for item in article.metafields["custom_fields"]["image_with_caption"] %}
+    <div class="two-grid-section">
+      <div class="cell half_gutter vert-top">
+        <div class="cell__item">
+          <div class="two-grid fc-index--{{ forloop.index0 }}">
+            {% if item["caption"] != blank %}
+              <div class="caption">
+                {{ item["caption"] }}
+              </div>
+           {% endif %}
+           {% if item["image"] != blank %}
+           {% liquid
+             assign image_id = item["image"] | hmac_sha1: key
+             assign image_src = item.image 
+             assign parts = image_src | split: 'src="'
+             assign parts = parts[1] | split: '"'
+             assign image_src_url = parts[0]
+             assign image_width = '100%'
+             assign padding_top = '100%'
+             if item["image_height"] != blank
+              assign image_height = item["image_height"]
+             endif
+           %}
+             <div class="image">
+               <div class="image--outer image--{{image_id}}">
+                 <div class="image--inner">
+                   {{ item["image"] }}
+                 </div>
+                 <style type="text/css">
+                  .image--{{image_id}} {
+                    --image--max-source: url('{{ image_src_url }}');
+                    --image--set-width:var(--image--natural-width);
+                    --image--set-height:var(--image--natural-height);
+                    --image--natural-width:{{image_width}};
+                    --image--natural-height:{{padding_top}};
+                    {%- if image_height -%}--image--set-height:{{image_height}};{%- endif -%}
+                  }
+                  .image--{{image_id}} .image--inner {
+                    padding-top:var(--image--set-height,56.6%);
+                  }
+                </style>
+               </div>
+             </div>
+           {% endif %}
+         </div>
+       </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}

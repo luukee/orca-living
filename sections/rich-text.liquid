@@ -81,15 +81,25 @@
                     // Select the <details> and <summary> elements
                     let detailsElement = document.getElementById('Details-menu-drawer-container')
                     let summaryElement = detailsElement.querySelector('summary')
-              
+                    let navULElement = detailsElement.querySelector('.menu-drawer__navigation > .list-menu')
+                    let navDetailsEl = navULElement.querySelector('#Details-menu-drawer-menu-item-1')
                     // Add the 'menu-opening' class
                     detailsElement.classList.add('menu-opening')
-              
+
                     // Add the 'open' attribute without a value
                     detailsElement.setAttribute('open', '')
-              
+
                     // Set the 'aria-expanded' attribute of the <summary> element to 'true'
                     summaryElement.setAttribute('aria-expanded', 'true')
+
+                    // Add the 'submenu-open' class to list
+                    navULElement.classList.add('submenu-open')
+
+                    // Add the 'menu-opening' class
+                    navDetailsEl.classList.add('menu-opening')
+
+                    // Add the 'open' attribute without a value
+                    navDetailsEl.setAttribute('open', '')
                   }
                   // Function to add event listener if device is mobile
                   function addEventListenerForMobile() {
@@ -98,21 +108,21 @@
                       document.getElementById('shop_click').addEventListener('click', openMenu)
                     }
                   }
-              
                   // Initial check when the script runs
                   addEventListenerForMobile()
-              
+
                   // Check if window is resized to mobile size
                   window.addEventListener('resize', addEventListenerForMobile)
                 </script>
                 <style>
-                  .template--index .header__icon--menu[aria-expanded=true]::before {
+                  .template--index .header__icon--menu[aria-expanded='true']::before {
                     top: 0;
                     bottom: 0;
                     left: 0;
                     height: calc(var(--viewport-height, 110vh) - var(--header-bottom-position, 100%));
                   }
                 </style>
+
               {% endif %}
           {%- endcase -%}
         {%- endfor -%}
