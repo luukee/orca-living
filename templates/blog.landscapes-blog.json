@@ -14,7 +14,7 @@
       "type": "feature-article",
       "settings": {
         "article": "landscapes\/fig",
-        "custom_css": ""
+        "custom_css": "== {\nmargin-top: 20px;\n}\n== .two-grid{\ndisplay: grid;\ngrid-template-columns: 1fr 1fr;\nbackground:#CDC4B8;\nalign-items: center;\n}\n== .feature-article-content{\npadding: 30px 60px;\nmargin: auto;\n}\n== .feature-article-image,\n== img{\nmax-height: 450px;\nobject-fit:cover;\nheight: 100%;\n}\n== h3{\nfont-size: 32px;\nmargin-bottom: 15px;\n}\n== .tag{\nfont-size:16px;\n}\n== article{\nmargin-top: 15px;\nmargin-bottom: 10px;\nfont-size: 15px;\n}\n\/medium-down\/{\n== .two-grid{\ngrid-template-columns: 1fr;\n}\n}"
       }
     },
     "landscapes_blog_landing_kUbQWW": {
