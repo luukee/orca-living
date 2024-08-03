@@ -19,6 +19,9 @@
     },
     "main_blog_c3bhep": {
       "type": "main-blog",
+      "custom_css": [
+        "article {font-size: 15px;}"
+      ],
       "settings": {
         "products_per_page": 16,
         "layout": "grid",
@@ -26,8 +29,10 @@
         "show_blog_title": false,
         "show_blog_view_options": false,
         "image_height": "medium",
-        "show_date": true,
+        "show_excerpt": true,
+        "show_date": false,
         "show_author": false,
+        "show_read_more": true,
         "padding_top": 36,
         "padding_bottom": 36
       }

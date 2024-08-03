@@ -39,7 +39,8 @@
             show_image: section.settings.show_image,
             show_date: section.settings.show_date,
             show_author: section.settings.show_author,
-            show_excerpt: true
+            show_read_more: section.settings.show_read_more,
+            show_excerpt: section.settings.show_excerpt
           -%}
         </div>
       {%- endfor -%}
@@ -132,6 +133,12 @@
     },
     {
       "type": "checkbox",
+      "id": "show_excerpt",
+      "default": false,
+      "label": "Show excerpt"
+    },
+    {
+      "type": "checkbox",
       "id": "show_date",
       "default": true,
       "label": "t:sections.main-blog.settings.show_date.label"
@@ -141,6 +148,12 @@
       "id": "show_author",
       "default": false,
       "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "default": false,
+      "label": "Show read more"
     },
     {
       "type": "paragraph",
