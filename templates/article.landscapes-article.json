@@ -13,15 +13,10 @@
     "landscapes_article_rcFiTt": {
       "type": "landscapes-article",
       "blocks": {
-        "image_with_caption_iWQcTP": {
-          "type": "image_with_caption",
-          "settings": {
-          }
-        },
         "title_hDMFJQ": {
           "type": "title",
           "settings": {
-            "blog_show_date": true,
+            "blog_show_date": false,
             "blog_show_author": false
           }
         },
@@ -35,6 +30,11 @@
           "settings": {
           }
         },
+        "image_with_caption_iWQcTP": {
+          "type": "image_with_caption",
+          "settings": {
+          }
+        },
         "gallery_list_JNqkgW": {
           "type": "gallery_list",
           "settings": {
@@ -42,10 +42,10 @@
         }
       },
       "block_order": [
-        "image_with_caption_iWQcTP",
         "title_hDMFJQ",
         "excerpt_CnWeW7",
         "content_TpAFQW",
+        "image_with_caption_iWQcTP",
         "gallery_list_JNqkgW"
       ],
       "settings": {
