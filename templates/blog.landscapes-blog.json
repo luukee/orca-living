@@ -10,6 +10,13 @@
         "padding_bottom": 16
       }
     },
+    "feature_article_4NCyMd": {
+      "type": "feature-article",
+      "settings": {
+        "article": "landscapes\/fig",
+        "custom_css": ""
+      }
+    },
     "landscapes_blog_landing_kUbQWW": {
       "type": "landscapes-blog-landing",
       "blocks": {
@@ -53,34 +60,27 @@
         "custom_RRJrrX"
       ],
       "settings": {
-        "custom_css": "== .rte{\nmargin-top: 25px;\n}"
+        "custom_css": ""
       }
     },
-    "main_blog_Y9gTYQ": {
+    "main_blog_c3bhep": {
       "type": "main-blog",
-      "disabled": true,
       "settings": {
         "products_per_page": 16,
         "layout": "grid",
         "show_image": true,
         "image_height": "medium",
-        "show_date": false,
+        "show_date": true,
         "show_author": false,
         "padding_top": 36,
         "padding_bottom": 36
-      }
-    },
-    "landscapes_blog_landing_rCtHDe": {
-      "type": "landscapes-blog-landing",
-      "settings": {
-        "custom_css": ""
       }
     }
   },
   "order": [
     "b9321e40-9a0b-456e-bb05-4e652513eb31",
+    "feature_article_4NCyMd",
     "landscapes_blog_landing_kUbQWW",
-    "main_blog_Y9gTYQ",
-    "landscapes_blog_landing_rCtHDe"
+    "main_blog_c3bhep"
   ]
 }

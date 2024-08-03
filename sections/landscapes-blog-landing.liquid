@@ -33,9 +33,9 @@
 %}
 
 {% comment %}theme-check-disable NestedSnippet{% endcomment %}
-{% render 'snippet--article-includes',  %}
+{% comment %} {% render 'snippet--article-includes',  %} {% endcomment %}
 {% comment %}theme-check-enable NestedSnippet{% endcomment %}
-<article class='article-template {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
+{% comment %} <article class='article-template {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
@@ -342,7 +342,7 @@
     {%- endif -%}
   </div>
   {% render 'custom-css', css: sectionCustomCSS, class: cssClass %}
-</article>
+</article> {% endcomment %}
 <article class='article-template template--article-field-notes-article {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
 	{% comment %} title {% endcomment %}
   <h1>{{ blog_title }}</h1>
