@@ -118,6 +118,13 @@
               {{ article.title | truncate: 50 | escape }}
             </a>
           </h3>
+          {% if show_article_tags %}
+            <div class="article-tags">
+              {% for tag in article.tags %}
+                <span class="tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          {%endif%}
           {%if show_excerpt and article.excerpt != blank %}
           <article>{{ article.excerpt | strip_html | truncate: 120 }}</article>
           {%else%}
