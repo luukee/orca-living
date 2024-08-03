@@ -17,59 +17,14 @@
         "custom_css": "== {\nmargin-top: 20px;\n}\n== .two-grid{\ndisplay: grid;\ngrid-template-columns: 1fr 1fr;\nbackground:#CDC4B8;\nalign-items: center;\n}\n== .feature-article-content{\npadding: 30px 60px;\nmargin: auto;\n}\n== .feature-article-image,\n== img{\nmax-height: 450px;\nobject-fit:cover;\nheight: 100%;\n}\n== h3{\nfont-size: 32px;\nmargin-bottom: 15px;\n}\n== .tag{\nfont-size:16px;\n}\n== article{\nmargin-top: 15px;\nmargin-bottom: 10px;\nfont-size: 15px;\n}\n\/medium-down\/{\n== .two-grid{\ngrid-template-columns: 1fr;\n}\n}"
       }
     },
-    "landscapes_blog_landing_kUbQWW": {
-      "type": "landscapes-blog-landing",
-      "blocks": {
-        "featured_image_hC7mJD": {
-          "type": "featured_image",
-          "settings": {
-            "image_height": "adapt"
-          }
-        },
-        "content_fgMgcy": {
-          "type": "content",
-          "settings": {
-          }
-        },
-        "title_VHQL9C": {
-          "type": "title",
-          "settings": {
-            "blog_show_date": true,
-            "blog_show_author": false
-          }
-        },
-        "share_L3pthm": {
-          "type": "share",
-          "disabled": true,
-          "settings": {
-            "share_label": "Share"
-          }
-        },
-        "custom_RRJrrX": {
-          "type": "custom",
-          "settings": {
-            "content": ""
-          }
-        }
-      },
-      "block_order": [
-        "featured_image_hC7mJD",
-        "content_fgMgcy",
-        "title_VHQL9C",
-        "share_L3pthm",
-        "custom_RRJrrX"
-      ],
-      "disabled": true,
-      "settings": {
-        "custom_css": ""
-      }
-    },
     "main_blog_c3bhep": {
       "type": "main-blog",
       "settings": {
         "products_per_page": 16,
         "layout": "grid",
         "show_image": true,
+        "show_blog_title": false,
+        "show_blog_view_options": false,
         "image_height": "medium",
         "show_date": true,
         "show_author": false,
@@ -81,7 +36,6 @@
   "order": [
     "b9321e40-9a0b-456e-bb05-4e652513eb31",
     "feature_article_4NCyMd",
-    "landscapes_blog_landing_kUbQWW",
     "main_blog_c3bhep"
   ]
 }
