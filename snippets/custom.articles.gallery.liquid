@@ -5,15 +5,15 @@
         {% assign type = item.value.media_type %}
         {% case type %}
           {% when 'image' %}
-            {{ item.value | image_url: width: 500 | image_tag }}
+            {% assign img_url = item.value | image_url: width: 500 %}
+            {% render 'snippet--gallery-image', img_url: img_url %}
           {% when 'video' %}
             {{ item.value | video_tag: image_size: '500x', width: 500, autoplay: false, controls: true }}
           {% else %}
-            {% assign file_url = item.value.url %}
-            <Li class='cell__item  medium-up--one-half'>
-              <a target='_blank' href='{{ file_url }}'>{{ item | media_tag: image_size: '200x' }}</a>
-              <div>{{ file_url | split: '/' | last | split: '?v=' | first }}</div>
-            </Li>
+            <li class='cell__item medium-up--one-half'>
+              {% assign img_url = item | image_url: width: 3000 %}
+              {% render 'snippet--gallery-image', img_url: img_url %}
+            </li>
         {% endcase %}
       {% endfor %}
     </ul>
