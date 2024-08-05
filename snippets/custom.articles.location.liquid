@@ -1,9 +1,6 @@
 {% if article.metafields["custom"]["location"] != blank %}
-  <div class="custom-field custom-field__location custom-field__type--single-line-text-field">
-    <h3 class="custom-field--title">Location</h3>
-    <div class="custom-field--value">
-      {{ article.metafields["custom"]["location"] }}
-
-    </div>
+  <div>
+    <span>Location: </span>
+    <span>{{ article.metafields["custom"]["location"] }}</span>
   </div>
 {% endif %}

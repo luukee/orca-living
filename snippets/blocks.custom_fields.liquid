@@ -78,6 +78,8 @@
             {% render "custom_fields.articles.two_grid", block:block %}
                   {% when "custom_fields.image_with_caption" %}
             {% render "custom_fields.articles.image_with_caption", block:block %}
+                  {% when "custom_fields.related_products" %}
+            {% render "custom_fields.articles.related_products", block:block %}
         
         {% endcase %}
       </div>

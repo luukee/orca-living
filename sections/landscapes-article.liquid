@@ -107,23 +107,8 @@
         {{ block.settings.content }}
       {%- when 'image_with_caption' -%}
         {% render "custom_fields.articles.image_with_caption" %}
-
-      {% comment %} {% if article.metafields["custom_fields"]["image_with_caption"] != blank %}
-        <div class="two-grid-section">
-          <div class="cell  half_gutter vert-top">
-            <div class="cell__item">
-              <div class="two-grid">
-                <div class="caption">
-                  <p>caption</p>
-                </div>
-                <div class="image  ">
-                  <p>Image</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      {% endif %}  {% endcomment %}
+      {%- when 'location_info' -%}
+        {% render "custom_fields.articles.location_info" %}
       {%- when 'gallery_list' -%}
         {% render "custom.articles.gallery" %}
         {% if block.settings.gallery_list_img_expand %}
@@ -534,6 +519,11 @@
     {
       "type": "image_with_caption",
       "name": "Image with caption",
+      "limit": 1,
+    },
+    {
+      "type": "location_info",
+      "name": "Location info",
       "limit": 1,
     },
     {

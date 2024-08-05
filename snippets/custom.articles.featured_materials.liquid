@@ -1,9 +1,8 @@
 {% if article.metafields["custom"]["featured_materials"] != blank %}
-  <div class="custom-field custom-field__featured-materials custom-field__type--single-line-text-field">
-    <h3 class="custom-field--title">Featured Materials</h3>
-    <div class="custom-field--value">
+  <div>
+    <span>Featured Materials: </span>
+    <span>
       {{ article.metafields["custom"]["featured_materials"] }}
-
-    </div>
+    </span>
   </div>
 {% endif %}

@@ -4,24 +4,26 @@
       <div class="cell half_gutter vert-top">
         <div class="cell__item">
           <div class="two-grid fc-index--{{ forloop.index0 }}">
+            {% render 'dump' with  item["flip_grid"] %}
+            {% assign flip = item['flip_grid'] %}
             {% if item["caption"] != blank %}
-              <div class="caption">
+              <div class="caption order-{{ flip }}">
                 {{ item["caption"] }}
               </div>
            {% endif %}
            {% if item["image"] != blank %}
-           {% liquid
-             assign image_id = item["image"] | hmac_sha1: key
-             assign image_src = item.image 
-             assign parts = image_src | split: 'src="'
-             assign parts = parts[1] | split: '"'
-             assign image_src_url = parts[0]
-             assign image_width = '100%'
-             assign padding_top = '100%'
-             if item["image_height"] != blank
-              assign image_height = item["image_height"]
-             endif
-           %}
+            {% liquid
+              assign image_id = item["image"] | hmac_sha1: key
+              assign image_src = item.image 
+              assign parts = image_src | split: 'src="'
+              assign parts = parts[1] | split: '"'
+              assign image_src_url = parts[0]
+              assign image_width = '100%'
+              assign padding_top = '100%'
+              if item["image_height"] != blank
+                assign image_height = item["image_height"]
+              endif
+            %}
              <div class="image">
                <div class="image--outer image--{{image_id}}">
                  <div class="image--inner">
