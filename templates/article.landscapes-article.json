@@ -57,7 +57,7 @@
         "gallery_list_JNqkgW"
       ],
       "settings": {
-        "custom_css": ""
+        "custom_css": "== .rte ul {\npadding-left: 0;\n}"
       }
     },
     "main": {
