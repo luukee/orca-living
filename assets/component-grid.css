@@ -16,10 +16,8 @@
     --grid-gutter: var(--grid-gutter--mobile);
   }
 }
-@media screen and (min-width: 750px) {
-  .cell > .cell__item {
-    padding-left: var(--grid-gutter);
-  }
+.cell > .cell__item {
+  padding-left: var(--grid-gutter);
 }
 .cell > .cell__item[class*='--push'] {
   position: relative;
