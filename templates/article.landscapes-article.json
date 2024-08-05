@@ -44,6 +44,7 @@
         "gallery_list_JNqkgW": {
           "type": "gallery_list",
           "settings": {
+            "gallery_list_img_expand": true
           }
         }
       },
