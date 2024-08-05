@@ -5105,12 +5105,14 @@ details-disclosure > details {
 .template--product.header-sticky {
   --sticky-top: calc(var(--header-height) + var(--sticky-top--offset));
 }
-@media only screen and (max-width: 749px) {
+/* hides side menu on mobile */
+/* also assets/side-navigation hides it */
+/* @media only screen and (max-width: 749px) {
   .template--article #MainContent > *:first-child,
   .template--article #MainContent > *:nth-child(2) {
     display: none;
   }
-}
+} */
 .template--article-portfolio {
   --sticky-top--offset: var(--base-gutter--half);
   --sticky-top: var(--sticky-top--offset);
