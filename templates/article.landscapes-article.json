@@ -164,7 +164,7 @@
     "custom_liquid_bUyRHW": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<style>\n.template--article #MainContent #shopify-section-template--15621879431286__custom_fields_articles_Bbt3yn {\ngrid-area: auto\/middle\/auto\/right;\n}\n<\/style>",
+        "custom_liquid": "<style>\n.template--article #MainContent #shopify-section-template--15621879431286__custom_fields_articles_Bbt3yn,\n#shopify-section-template--15621879431286__custom_liquid_YQiULp {\ngrid-area: auto\/middle\/auto\/right;\n}\n<\/style>",
         "color_scheme": "background-1",
         "padding_top": 40,
         "padding_bottom": 52
