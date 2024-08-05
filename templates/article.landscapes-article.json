@@ -1,12 +1,3 @@
-/*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
 {
   "sections": {
     "cfdb8cb9-d999-49d1-8ca3-93714ea1812a": {
@@ -17,6 +8,79 @@
         "menu": "landscapes-menu",
         "padding_top": 20,
         "padding_bottom": 52
+      }
+    },
+    "custom_fields_articles_Bbt3yn": {
+      "type": "custom-fields-articles",
+      "blocks": {
+        "cf_w_pr2_jceKAd": {
+          "type": "cf_w_pr2",
+          "settings": {
+            "key": "custom_fields.related_products",
+            "section_title_text": "",
+            "section_title_tag": "h2",
+            "section_title_margin_bottom": 1,
+            "section_title_color": "",
+            "cols": "12",
+            "margin_top": 5,
+            "margin_bottom": 5,
+            "block_bg_color": "",
+            "widget_grid_width": 3,
+            "widget_mobile_grid_width": 1,
+            "widget_hide_price": false,
+            "widget_hide_out_of_stock": false,
+            "widget_link_title": "View",
+            "column_gutter": 40,
+            "text_center": false,
+            "card_bg_color": "rgba(0,0,0,0)",
+            "card_border": "",
+            "card_border_radius": "",
+            "card_box_shadow": "",
+            "image_ratio": "square",
+            "image_size": "small",
+            "image_border": "",
+            "image_border_radius": "",
+            "image_box_shadow": "",
+            "title_font_size": 14,
+            "title_line_height": 1,
+            "title_font_color": "",
+            "title_font_custom": false,
+            "title_font": "helvetica_n4",
+            "title_margin_top": 1,
+            "title_margin_bottom": 1,
+            "body_margin_bottom": 2.5,
+            "body_font_size": 16,
+            "body_font_color": "",
+            "price_margin_bottom": 1,
+            "price_padding": "",
+            "price_bg_color": "",
+            "price_font_color": "",
+            "price_border": "",
+            "price_border_radius": "",
+            "price_font_size": 14,
+            "stock_margin_bottom": 2,
+            "stock_padding": "7px 10px",
+            "stock_bg_color": "#000000",
+            "stock_font_color": "#ffffff",
+            "stock_border": "",
+            "stock_border_radius": "20px",
+            "stock_font_size": 14,
+            "link_full_width": false,
+            "link_padding": "10px 25px",
+            "link_bg_color": "",
+            "link_hover_bg_color": "",
+            "link_border": "1px solid #6a6a6a",
+            "link_border_radius": "3px",
+            "link_font_size": 18,
+            "link_font_color": "#6a6a6a",
+            "link_hover_font_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "cf_w_pr2_jceKAd"
+      ],
+      "settings": {
       }
     },
     "landscapes_article_rcFiTt": {
@@ -36,6 +100,11 @@
         },
         "content_TpAFQW": {
           "type": "content",
+          "settings": {
+          }
+        },
+        "location_info_4jWBbr": {
+          "type": "location_info",
           "settings": {
           }
         },
@@ -61,6 +130,7 @@
         "title_hDMFJQ",
         "excerpt_CnWeW7",
         "content_TpAFQW",
+        "location_info_4jWBbr",
         "featured_image_kp8xAc",
         "image_with_caption_iWQcTP",
         "gallery_list_JNqkgW"
@@ -104,29 +174,12 @@
       ],
       "settings": {
       }
-    },
-    "custom_fields_articles_Bbt3yn": {
-      "type": "custom-fields-articles",
-      "blocks": {
-        "cf_f_lfrf_VTYf6T": {
-          "type": "cf_f_lfrf",
-          "settings": {
-            "key": "custom.gallery"
-          }
-        }
-      },
-      "block_order": [
-        "cf_f_lfrf_VTYf6T"
-      ],
-      "disabled": true,
-      "settings": {
-      }
     }
   },
   "order": [
     "cfdb8cb9-d999-49d1-8ca3-93714ea1812a",
+    "custom_fields_articles_Bbt3yn",
     "landscapes_article_rcFiTt",
-    "main",
-    "custom_fields_articles_Bbt3yn"
+    "main"
   ]
 }
