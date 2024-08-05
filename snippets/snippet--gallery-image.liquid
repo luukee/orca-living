@@ -4,10 +4,6 @@
   {% assign image_url_large = img_url | replace: '_500x500', '_large' %}
   {% assign image_url_master = img_url | replace: '_500x500', '' %}
 
-  <!-- Assuming known dimensions for the medium image size -->
-  {% assign image_width = 640 %}
-  {% assign image_height = 480 %}
-
   <img
     src="{{ image_url_medium }}"
     srcset="
@@ -20,8 +16,6 @@
       (max-width: 640px) 440px,
       (max-width: 1024px) 780px,
       100vw"
-    width="{{ image_width }}"
-    height="{{ image_height }}"
     alt="Gallery Image">
 {% else %}
   <!-- Handle case where img_url is not provided -->

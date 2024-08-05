@@ -1,14 +1,18 @@
 <div class='article-template__content page-width page-width--narrow rte'>
   <div class='article-template__image-gallery'>
-    <ul class='cell  half_gutter vert-top'>
+    <ul class='cell half_gutter vert-top'>
       {% for item in article.metafields.custom.gallery.value %}
         {% assign type = item.value.media_type %}
         {% case type %}
           {% when 'image' %}
             {% assign img_url = item.value | image_url: width: 500 %}
-            {% render 'snippet--gallery-image', img_url: img_url %}
+            <li class='cell__item medium-up--one-half'>
+              {% render 'snippet--gallery-image', img_url: img_url %}
+            </li>
           {% when 'video' %}
-            {{ item.value | video_tag: image_size: '500x', width: 500, autoplay: false, controls: true }}
+            <li class='cell__item medium-up--one-half'>
+              {{ item.value | video_tag: image_size: '500x', width: 500, autoplay: false, controls: true }}
+            </li>
           {% else %}
             <li class='cell__item medium-up--one-half'>
               {% assign img_url = item | image_url: width: 3000 %}

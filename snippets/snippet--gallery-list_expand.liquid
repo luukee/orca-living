@@ -1,0 +1,72 @@
+<!-- snippets/snippet--gallery-list_expand.liquid -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const images = document.querySelectorAll('.article-template__image-gallery img')
+    console.log(images)
+    function assignClassBasedOnAspectRatio(img) {
+      const width = img.naturalWidth
+      const height = img.naturalHeight
+
+      if (width && height) {
+        const aspectRatio = width / height
+        const li = img.closest('li')
+
+        if (aspectRatio > 1) {
+          li.classList.add('horizontal')
+        } else {
+          li.classList.add('vertical')
+        }
+      }
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target
+            if (img.complete) {
+              assignClassBasedOnAspectRatio(img)
+            } else {
+              img.onload = function () {
+                assignClassBasedOnAspectRatio(img)
+              }
+            }
+            observer.unobserve(img)
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    images.forEach((img) => {
+      observer.observe(img)
+    })
+  })
+</script>
+<style>
+  /*
+	.article-template__image-gallery {
+		display: flex;
+		flex-wrap: wrap;
+	}
+		*/
+  @media screen and (min-width: 750px) {
+    .template--article-field-notes-article .article-template__image-gallery .cell__item {
+      margin-bottom: 2rem;
+    }
+
+    .article-template__image-gallery .cell__item.horizontal {
+      width: 100%;
+    }
+
+    .article-template__image-gallery .cell__item.vertical {
+      width: calc(50% - 0.5rem);
+      margin-right: 0.5rem;
+    }
+
+    .article-template__image-gallery .cell__item.vertical:nth-child(even) {
+      margin-right: 0;
+    }
+  }
+</style>
