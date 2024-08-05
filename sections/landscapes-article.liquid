@@ -126,6 +126,9 @@
       {% endif %}  {% endcomment %}
       {%- when 'gallery_list' -%}
         {% render "custom.articles.gallery" %}
+        {% if block.settings.gallery_list_img_expand %}
+          {% render 'snippet--gallery-list_expand' %}
+        {% endif %}
       {%- when 'share' -%}
         <div class='article-template__social-sharing page-width page-width--narrow' {{ block.shopify_attributes }}>
           <span class='share-header'>
@@ -518,6 +521,15 @@
       "type": "gallery_list",
       "name": "Gallery list",
       "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "gallery_list_img_expand",
+          "default": false,
+          "label": "Horizontal images full width",
+          "info": "Desktop only. Stretches horizontal and square images full width. Vertical images are still 2x2."
+        }
+      ]
     },
     {
       "type": "image_with_caption",
