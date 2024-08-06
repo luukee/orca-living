@@ -126,8 +126,8 @@
             </div>
           {%endif%}
           {%if show_excerpt and article.excerpt != blank %}
-          <article>{{ article.excerpt | strip_html | truncate: 120 }}</article>
-          {%else%}
+            <article>{{ article.excerpt | strip_html | truncate: 120 }}</article>
+          {%elsif show_content and article.content != blank %}
             <article>{{ article.content | strip_html | truncate: 120 }}</article>
           {%endif%}
           {%- if show_date or show_author -%}
