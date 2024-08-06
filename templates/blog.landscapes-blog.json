@@ -12,7 +12,7 @@
     "b9321e40-9a0b-456e-bb05-4e652513eb31": {
       "type": "side-navigation",
       "settings": {
-        "title": "Landscapes Blog",
+        "title": "Landscapes",
         "make_h1": true,
         "menu": "landscapes-menu",
         "padding_top": 16,
