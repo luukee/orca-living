@@ -157,7 +157,7 @@
             </div>
           {%- endif -%} -->
         {%- if show_read_more -%}
-          <a href="{{ article.url }}" class="link-article link">Read More</a>
+          <a href="{{ article.url }}" class="link-article link">{%- if read_more_text != blank -%}{{ read_more_text }}{%- else -%}Read More{%- endif -%}</a>
         {%- endif -%}
         </div>
         {%- if show_badge -%}
