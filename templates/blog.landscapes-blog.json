@@ -40,7 +40,7 @@
         "show_blog_view_options": false,
         "image_height": "medium",
         "show_article_tags": true,
-        "show_excerpt": true,
+        "show_excerpt": false,
         "show_date": false,
         "show_author": false,
         "show_read_more": true,
