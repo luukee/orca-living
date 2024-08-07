@@ -1,9 +1,9 @@
 <!-- snippets/snippet--gallery-list_expand.liquid -->
-
+{% comment %} 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const images = document.querySelectorAll('.article-template__image-gallery img')
-    console.log(images)
+    // console.log(images)
     function assignClassBasedOnAspectRatio(img) {
       const width = img.naturalWidth
       const height = img.naturalHeight
@@ -43,14 +43,16 @@
       observer.observe(img)
     })
   })
-</script>
+</script> {% endcomment %}
 <style>
-  /*
+  li.img-fullwidth img {
+    width: 100%;
+}
 	.article-template__image-gallery {
 		display: flex;
 		flex-wrap: wrap;
 	}
-		*/
+	
   @media screen and (min-width: 750px) {
     .template--article-field-notes-article .article-template__image-gallery .cell__item {
       margin-bottom: 2rem;

@@ -1,3 +1,7 @@
+{% liquid
+  assign full_width_imgs = article.metafields.custom.gallery_image_full_width.value
+%}
+
 <div class='article-template__content page-width page-width--narrow rte'>
   <div class='article-template__image-gallery'>
     <ul class='cell half_gutter vert-top'>
@@ -14,8 +18,16 @@
               {{ item.value | video_tag: image_size: '500x', width: 500, autoplay: false, controls: true }}
             </li>
           {% else %}
-            <li class='cell__item medium-up--one-half'>
-              {% assign img_url = item | image_url: width: 3000 %}
+            {% liquid
+              assign img_url = item | image_url: width: 3000
+              assign class_fullwidth = false
+              for filename in full_width_imgs
+                if img_url contains filename
+                  assign class_fullwidth = true
+                endif
+              endfor
+            %}
+            <li class='cell__item {% if class_fullwidth %}{% else %}medium-up--one-half{% endif %}'>
               {% render 'snippet--gallery-image', img_url: img_url %}
             </li>
         {% endcase %}
