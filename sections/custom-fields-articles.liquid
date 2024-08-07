@@ -1,6 +1,4 @@
 {% render "blocks.custom_fields" with resource_type: "articles", blocks: section.blocks %}
-{{ 'custom-fields.css' | asset_url | stylesheet_tag }}
-
 {% schema %}
   {
     "name": {
@@ -117,6 +115,10 @@
                         {
                             "value": "custom_fields.image_with_caption",
                             "label": "Image with caption"
+                        },
+                        {
+                            "value": "custom_fields.gallery_advanced",
+                            "label": "Gallery Advanced"
                         }
                     ]
                 }
@@ -135,7 +137,7 @@
                     "options": [
                         {
                             "value": "custom_fields.related_products",
-                            "label": "Related products"
+                            "label": "Featured products (grid)"
                         }
                     ]
                 },
