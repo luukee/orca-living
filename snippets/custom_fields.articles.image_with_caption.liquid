@@ -6,7 +6,7 @@
       <div class="cell half_gutter vert-top">
         <div class="cell__item">
           <div class="two-grid fc-index--{{ forloop.index0 }}">
-            {% render 'dump' with  item["flip_grid"] %}
+            {% comment %} {% render 'dump' with  item["flip_grid"] %} {% endcomment %}
             {% assign flip = item['flip_grid'] %}
             {% if item["caption"] != blank %}
               <div class="caption order-{{ flip }}">

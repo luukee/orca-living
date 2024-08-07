@@ -113,7 +113,7 @@
             >
               <div class="inner-container">
                 <!-- include 'snippet--image' -->
-                {% render 'dump' with img %}
+                {% comment %} {% render 'dump' with img %} {% endcomment %}
                 {% include 'snippet--image', img: img, cf: true, customStyle: style %}
                 {% if txt != blank and txt != '' %}
                   <div class="caption">{{txt}}</div>
