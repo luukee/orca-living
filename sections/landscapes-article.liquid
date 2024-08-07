@@ -106,11 +106,12 @@
       {%- when 'custom' -%}
         {{ block.settings.content }}
       {%- when 'image_with_caption' -%}
-        {% render "custom_fields.articles.image_with_caption" %}
+        {% comment %} {% render 'custom_fields.articles.image_with_caption' %} {% endcomment %}
+        {% render 'metaobject--image-with-caption' %}
       {%- when 'location_info' -%}
-        {% render "custom_fields.articles.location_info" %}
+        {% render 'custom_fields.articles.location_info' %}
       {%- when 'gallery_list' -%}
-        {% render "custom.articles.gallery" %}
+        {% render 'custom.articles.gallery' %}
         {% if block.settings.gallery_list_img_expand %}
           {% render 'snippet--gallery-list_expand' %}
         {% endif %}
@@ -519,12 +520,12 @@
     {
       "type": "image_with_caption",
       "name": "Image with caption",
-      "limit": 1,
+      "limit": 1
     },
     {
       "type": "location_info",
       "name": "Location info",
-      "limit": 1,
+      "limit": 1
     },
     {
       "type": "share",
