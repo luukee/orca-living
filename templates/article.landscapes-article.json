@@ -13,11 +13,6 @@
     "landscapes_article_rcFiTt": {
       "type": "landscapes-article",
       "blocks": {
-        "gallery_advanced_tPfGmz": {
-          "type": "gallery_advanced",
-          "settings": {
-          }
-        },
         "title_hDMFJQ": {
           "type": "title",
           "settings": {
@@ -59,7 +54,6 @@
         }
       },
       "block_order": [
-        "gallery_advanced_tPfGmz",
         "title_hDMFJQ",
         "excerpt_CnWeW7",
         "content_TpAFQW",

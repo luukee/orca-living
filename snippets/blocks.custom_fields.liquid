@@ -80,6 +80,8 @@
             {% render "custom_fields.articles.image_with_caption", block:block %}
                   {% when "custom_fields.related_products" %}
             {% render "custom_fields.articles.related_products", block:block %}
+                  {% when "custom.gallery_image_full_width" %}
+            {% render "custom.articles.gallery_image_full_width", block:block %}
         
         {% endcase %}
       </div>
