@@ -10,7 +10,7 @@
       assign image_id = item.image | hmac_sha1: key
       assign image_src_url = item.image | file_url
       assign image_width = '100%'
-      assign image_height = '100%'
+      ## assign image_height = '100%'
       assign padding_top = '100%'
     %}
     {% comment %} {% render 'dump' with reference %} {% endcomment %}
@@ -23,7 +23,7 @@
             <div class='image order-{% if flip %}2{% else %}1{% endif %}'>
               <div class='image--outer image--{{image_id}}'>
                 <div class='image--inner'>
-                  <img src='{{ item.image | file_url }}' width='100' height='100' alt='{{ item.caption }}'>
+                  <img src='{{ item.image | file_url }}' width='400px' height='400px' alt='{{ item.caption }}'>
                 </div>
                 <style type='text/css'>
                   .image--{{image_id}} {
@@ -32,7 +32,6 @@
                     --image--set-height:var(--image--natural-height);
                     --image--natural-width:{{image_width}};
                     --image--natural-height:{{padding_top}};
-                    --image--set-height:{{image_height}};
                   }
                   .image--{{image_id}} .image--inner {
                     padding-top:var(--image--set-height,56.6%);
@@ -42,7 +41,7 @@
             </div>
 
             <div class='caption order-{% if flip %}1{% else %}2{% endif %}'>
-              <p>Caption: {{ caption }}</p>
+              <p>{{ caption }}</p>
             </div>
           </div>
         </div>
