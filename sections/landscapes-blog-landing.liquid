@@ -374,7 +374,7 @@
 	
 	{% comment %} images {% endcomment %}
 	{%- for item in blog_images -%}
-    {% render 'dump' with item %}
+    {% comment %} {% render 'dump' with item %} {% endcomment %}
     {% if item["group_name"] != blank %}
           {{ item["group_name"] }}
     {% endif %}
