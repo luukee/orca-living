@@ -35,15 +35,15 @@
           "settings": {
           }
         },
+        "image_with_caption_iWQcTP": {
+          "type": "image_with_caption",
+          "settings": {
+          }
+        },
         "featured_image_kp8xAc": {
           "type": "featured_image",
           "settings": {
             "image_height": "medium"
-          }
-        },
-        "image_with_caption_iWQcTP": {
-          "type": "image_with_caption",
-          "settings": {
           }
         },
         "gallery_list_JNqkgW": {
@@ -58,8 +58,8 @@
         "excerpt_CnWeW7",
         "content_TpAFQW",
         "location_info_4jWBbr",
-        "featured_image_kp8xAc",
         "image_with_caption_iWQcTP",
+        "featured_image_kp8xAc",
         "gallery_list_JNqkgW"
       ],
       "settings": {
