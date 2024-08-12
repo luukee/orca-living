@@ -68,6 +68,12 @@
 .cell_no_gutter.half_gutter {
   --grid-gutter: var(--base-gutter--half);
 }
+@media only screen and (min-width: 750px) {
+  .article-template__image-gallery .cell.half_gutter {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
 .cell.double_gutter,
 .cell_no_gutter.double_gutter {
   --grid-gutter: var(--base-gutter--double);
