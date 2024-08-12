@@ -6750,9 +6750,6 @@ details-disclosure > details {
 .template--article-field-notes-article h4 strong {
   font-size: 17px;
 }
-.template--article-field-notes-article .article-template__image-gallery {
-  margin: 60px 0;
-}
 @media only screen and (min-width: 750px) {
   .template--article-field-notes-article
     .article-template__image-gallery
@@ -7312,9 +7309,6 @@ details-disclosure > details {
 }
 .template--article-field-notes-article h4 strong {
   font-size: 17px;
-}
-.template--article-field-notes-article .article-template__image-gallery {
-  margin: 60px 0;
 }
 @media only screen and (min-width: 750px) {
   .template--article-field-notes-article
