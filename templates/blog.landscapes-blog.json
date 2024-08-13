@@ -33,7 +33,7 @@
         "article {font-size: 15px;}"
       ],
       "settings": {
-        "products_per_page": 18,
+        "products_per_page": 16,
         "layout": "grid",
         "show_image": true,
         "show_blog_title": false,
