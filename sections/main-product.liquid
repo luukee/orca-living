@@ -32,8 +32,8 @@
     <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
-  {%- assign first_three_d_model = product.media | where: 'media_type', 'model' | first -%}
-  {%- if first_three_d_model -%}
+  {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
+  {%- if first_3d_model -%}
     {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
     <link
       id="ModelViewerStyle"
@@ -54,11 +54,11 @@
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
 
   {% liquid
-    assign match_found = false
+    assign matchFound      = false
     for collection in product.collections
-      assign collection_handle = collection.handle
-      if collection_handle == 'pavers'
-        assign match_found  = true
+      assign colHndl = collection.handle
+      if colHndl == 'pavers'
+        assign matchFound  = true
         break
       endif
     endfor
@@ -226,37 +226,37 @@
               {{ block.settings.custom_liquid }}
             {%- when 'collapsible_tab' -%}
               {% liquid 
-                assign show_accordion = false
-                assign acc_heading = block.settings.heading
-                assign acc_content = block.settings.content
+                assign showAccordion      = false
+                assign accHeading         = block.settings.heading
+                assign accContent         = block.settings.content
 
-                capture acc_content
-                  echo acc_content
+                capture accContent
+                  echo accContent
                 endcapture 
 
-                assign acc_page_content     = block.settings.page.content
-                if acc_heading != blank and acc_heading != '' and acc_content != blank and acc_content != '' 
-                  assign show_accordion    = true
+                assign accPageContent     = block.settings.page.content
+                if accHeading != blank and accHeading != '' and accContent != blank and accContent != '' 
+                  assign showAccordion    = true
                 endif 
-                if acc_page_content != blank and acc_page_content != ''
-                  assign acc_heading       = acc_heading | default: block.settings.page.title
+                if accPageContent != blank and accPageContent != ''
+                  assign accHeading       = accHeading | default: block.settings.page.title
                 endif 
               %}
-              {% if show_accordion %}
+              {% if showAccordion %}
                 <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
                   <details id="Details-{{ block.id }}-{{ section.id }}">
                     <summary>
                       <div class="summary__title">
                         {% render 'icon-accordion', icon: block.settings.icon %}
                         <h2 class="h4 accordion__title inline-richtext">
-                          {{ acc_heading }}
+                          {{ accHeading }}
                         </h2>
                       </div>
                       {% render 'icon-caret' %}
                     </summary>
                     <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
-                      {{ acc_content }}
-                      {{ acc_page_content }}
+                      {{ accContent }}
+                      {{ accPageContent }}
                     </div>
                   </details>
                 </div>
@@ -463,7 +463,7 @@
     <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
-  {%- if first_three_d_model -%}
+  {%- if first_3d_model -%}
     <script type="application/json" id="ProductJSON-{{ product.id }}">
       {{ product.media | where: 'media_type', 'model' | json }}
     </script>

@@ -1,9 +1,0 @@
-{% if product.metafields["custom"]["footage_calculator"] != blank %}
-  <div class="custom-field custom-field__footage-calculator custom-field__type--boolean">
-    <h3 class="custom-field--title">Footage Calculator</h3>
-    <div class="custom-field--value">
-{{ product.metafields["custom"]["footage_calculator"] | metafield_tag }}
-
-    </div>
-  </div>
-{% endif %}

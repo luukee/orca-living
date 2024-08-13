@@ -61,17 +61,10 @@
           "type": "content",
           "settings": {
           }
-        },
-        "featured_image_d8jazp": {
-          "type": "featured_image",
-          "settings": {
-            "image_height": "adapt"
-          }
         }
       },
       "block_order": [
-        "aab91082-7601-4de7-bd18-adc418f7a802",
-        "featured_image_d8jazp"
+        "aab91082-7601-4de7-bd18-adc418f7a802"
       ],
       "settings": {
         "custom_css": "== .rte{\nmargin-top: 25px;\n}"

@@ -1,167 +1,147 @@
 <!-- sections/nine15--slider -->
 
 {% include 'master--slider' %}
-{% if section.settings.hide_menus == true %}
-  <style>
-    .header__icon--menu .icon,
-    .section-header .header__cart__mobile,
-    .section-header .header__inline-menu {
-      display: none !important;
-    }
-    .section-header .header__cart {
-      display: none;
-    }
-    .section-header .header__inline-menu {
-      display: none;
-    }
-  </style>
-{% endif %}
+
 {% schema %}
-{
-  "name": "Slider - NINE15",
-  "class": "index-section",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "leaf",
-      "label": "Enable leaf icons for RTE"
-    },
-    {
-      "type": "header",
-      "content": "Height Rules"
-    },
-    {
-      "type": "checkbox",
-      "id": "set_height",
-      "label": "Set Specific Height",
-      "default": true,
-      "info": "Unchecking this will make all images and videos inline instead of background."
-    },
-    {
-      "type": "checkbox",
-      "id": "mob_rel",
-      "label": "Separate content from background on mobile",
-      "default": false,
-      "info": "Check this if your text content is getting cutoff on mobile. It will place the content below the image/video."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mobile_overlay_sooner",
-      "label": "Show Mobile overlay at Tablet size.",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "hide_menus",
-      "label": "Hide menus",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "image_height",
-      "label": "Slider Height",
-      "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
-      "default": "clamp(500px,54%,100vh)"
-    },
-    {
-      "type": "text",
-      "id": "image_height_mob",
-      "label": "Slider Height on Mobile",
-      "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
-      "info": "Leave at empty to ignore."
-    },
-    {
-      "type": "header",
-      "content": "Slide Timing Rules"
-    },
-    {
-      "type": "checkbox",
-      "id": "auto_slide",
-      "label": "Auto Slide",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "use_arrows",
-      "label": "Use Arrows"
-    },
-    {
-      "type": "checkbox",
-      "id": "use_dots",
-      "label": "Use Dots",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "pause",
-      "label": "Time between slides",
-      "options": [
-        {
-          "value": "3000",
-          "label": "3 Seconds"
-        },
-        {
-          "value": "4000",
-          "label": "4 Seconds"
-        },
-        {
-          "value": "5000",
-          "label": "5 Seconds"
-        },
-        {
-          "value": "6000",
-          "label": "6 Seconds"
-        },
-        {
-          "value": "7000",
-          "label": "7 Seconds"
-        },
-        {
-          "value": "8000",
-          "label": "8 Seconds"
-        }
-      ],
-      "default": "5000"
-    },
-    {
-      "type": "header",
-      "content": "Custom CSS Rules"
-    },
-    {
-      "type": "paragraph",
-      "content": "Explanation of Custom CSS rules below input."
-    },
-    {
-      "type": "liquid",
-      "id": "custom_css",
-      "label": "Custom CSS"
-    },
-    {
-      "type": "paragraph",
-      "content": "Use '==' to reference this block's parent container, that way the css you use only applies to this container. The example below applies font size to only the h2 element in the current block's container."
-    },
-    {
-      "type": "paragraph",
-      "content": "Ex: '== h2 { font-size: 20px; }'"
-    },
-    {
-      "type": "paragraph",
-      "content": "Use '/MEDIA_QUERY/' to create media queries that match css defaults. The example below would output '@media screen and (max-width: 749px)' before the css."
-    },
-    {
-      "type": "paragraph",
-      "content": "Ex: '/small/ { == h2 { font-size: 20px; } }'"
-    },
-    {
-      "type": "paragraph",
-      "content": "Media Queries: narrow, not-narrow, small, medium, medium-up, medium-down, large, large-up, large-down, ex-large, ex-large-up, ex-large-down, widescreen"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "slider",
-      "name": "Slide",
-      "settings": [
+  {
+    "name": "Slider - NINE15",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "leaf",
+        "label": "Enable leaf icons for RTE"
+      },
+      {
+        "type": "header",
+        "content": "Height Rules"
+      },
+      {
+        "type": "checkbox",
+        "id": "set_height",
+        "label": "Set Specific Height",
+        "default": true,
+        "info": "Unchecking this will make all images and videos inline instead of background."
+      },
+      {
+        "type": "checkbox",
+        "id": "mob_rel",
+        "label": "Separate content from background on mobile",
+        "default": false,
+        "info": "Check this if your text content is getting cutoff on mobile. It will place the content below the image/video."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_mobile_overlay_sooner",
+        "label": "Show Mobile overlay at Tablet size.",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "image_height",
+        "label": "Slider Height",
+        "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
+        "default": "clamp(500px,54%,100vh)"
+      },
+      {
+        "type": "text",
+        "id": "image_height_mob",
+        "label": "Slider Height on Mobile",
+        "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
+        "info": "Leave at empty to ignore."
+      },
+      {
+        "type": "header",
+        "content": "Slide Timing Rules"
+      },
+      {
+        "type": "checkbox",
+        "id": "auto_slide",
+        "label": "Auto Slide",
+        "default": true
+      },
+     {
+        "type":"checkbox",
+        "id":"use_arrows",
+        "label":"Use Arrows"
+      },
+      {
+        "type":"checkbox",
+        "id":"use_dots",
+        "label":"Use Dots",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "pause",
+        "label": "Time between slides",
+        "options": [
+          {
+            "value": "3000",
+            "label": "3 Seconds"
+          },
+          {
+            "value": "4000",
+            "label": "4 Seconds"
+          },
+          {
+            "value": "5000",
+            "label": "5 Seconds"
+          },
+          {
+            "value": "6000",
+            "label": "6 Seconds"
+          },
+          {
+            "value": "7000",
+            "label": "7 Seconds"
+          },
+          {
+            "value": "8000",
+            "label": "8 Seconds"
+          }
+        ],
+        "default": "5000"
+      },
+      {
+        "type": "header",
+        "content": "Custom CSS Rules"
+      },
+      {
+        "type": "paragraph",
+        "content": "Explanation of Custom CSS rules below input."
+      },
+      {
+        "type": "liquid",
+        "id": "custom_css",
+        "label": "Custom CSS"
+      },
+      {
+        "type": "paragraph",
+        "content": "Use '==' to reference this block's parent container, that way the css you use only applies to this container. The example below applies font size to only the h2 element in the current block's container."
+      },
+      {
+        "type": "paragraph",
+        "content": "Ex: '== h2 { font-size: 20px; }'"
+      },
+      {
+        "type": "paragraph",
+        "content": "Use '/MEDIA_QUERY/' to create media queries that match css defaults. The example below would output '@media screen and (max-width: 749px)' before the css."
+      },
+      {
+        "type": "paragraph",
+        "content": "Ex: '/small/ { == h2 { font-size: 20px; } }'"
+      },
+      {
+        "type": "paragraph",
+        "content": "Media Queries: narrow, not-narrow, small, medium, medium-up, medium-down, large, large-up, large-down, ex-large, ex-large-up, ex-large-down, widescreen"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slide",
+        "settings": [
         {
           "type": "header",
           "content": "Image Settings"
@@ -218,6 +198,7 @@
               "value": "bottom right",
               "label": "Right Bottom"
             }
+
           ],
           "default": "center"
         },
@@ -290,6 +271,7 @@
               "value": "bottom right",
               "label": "Right Bottom"
             }
+
           ],
           "default": "center"
         },
@@ -354,8 +336,8 @@
           "default": "Title Goes Here"
         },
         {
-          "type": "checkbox",
-          "id": "make_h1",
+          "type":"checkbox",
+          "id":"make_h1",
           "label": "Make title an H1"
         },
         {
@@ -488,7 +470,8 @@
           ],
           "default": "primary"
         },
-
+        
+        
         {
           "type": "paragraph",
           "content": "Button Type must be set to Custom to use custom button colors below."
@@ -595,7 +578,10 @@
           "type": "video_url",
           "id": "video_url",
           "label": "Video url",
-          "accept": ["youtube", "vimeo"]
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
         },
         {
           "type": "text",
@@ -612,7 +598,10 @@
           "type": "video_url",
           "id": "video_modal",
           "label": "Video url for Modal (optional)",
-          "accept": ["youtube", "vimeo"]
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
         },
         {
           "type": "paragraph",
@@ -652,7 +641,7 @@
           "content": "Media Queries: narrow, not-narrow, small, medium, medium-up, medium-down, large, large-up, large-down, ex-large, ex-large-up, ex-large-down, widescreen"
         },
         {
-          "type": "header",
+          "type":"header",
           "content": "Developer Only"
         },
         {
@@ -668,11 +657,11 @@
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "Slider - NINE15",
-      "category": "1 - NINE15"
-    }
-  ]
-}
+    "presets": [
+      {
+        "name": "Slider - NINE15",
+        "category": "1 - NINE15"
+      }
+    ]
+  }
 {% endschema %}

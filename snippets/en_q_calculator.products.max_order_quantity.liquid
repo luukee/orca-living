@@ -1,9 +1,0 @@
-{% if product.metafields["en_q_calculator"]["max_order_quantity"] != blank %}
-  <div class="custom-field custom-field__max-order-quantity custom-field__type--number-integer">
-    <h3 class="custom-field--title">Maximum order quantity</h3>
-    <div class="custom-field--value">
-{{ product.metafields["en_q_calculator"]["max_order_quantity"] | metafield_tag }}
-
-    </div>
-  </div>
-{% endif %}

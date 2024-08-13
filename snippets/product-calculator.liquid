@@ -1,18 +1,18 @@
 {% liquid 
 
-  assign match_found = false
+  assign matchFound      = false
 
   for collection in product.collections
-    assign collection_handle = collection.handle
-    if collection_handle == 'pavers'
-      assign match_found = true
+    assign colHndl = collection.handle
+    if colHndl == 'pavers'
+      assign matchFound  = true
       break
     endif
   endfor
 
 %}
 
-{% if match_found %}
+{% if matchFound %}
   <!-- snippets/product-calculator -->
 
   {{ 'calculator-module.css' | asset_url | stylesheet_tag }}

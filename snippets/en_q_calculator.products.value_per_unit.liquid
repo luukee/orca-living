@@ -1,9 +1,0 @@
-{% if product.metafields["en_q_calculator"]["value_per_unit"] != blank %}
-  <div class="custom-field custom-field__value-per-unit custom-field__type--number-decimal">
-    <h3 class="custom-field--title">Coverage per unit</h3>
-    <div class="custom-field--value">
-{{ product.metafields["en_q_calculator"]["value_per_unit"] | metafield_tag }}
-
-    </div>
-  </div>
-{% endif %}

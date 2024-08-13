@@ -38,17 +38,6 @@
       assign money_price = 'products.product.price.from_price_html' | t: price: money_price
     endif
   endcomment
-  
-  assign product_is_sample = false
-  assign product_price_max = ''
-  ## if is sample variant 
-  ## get the product max price and
-  ## set this price as the add to cart button's price
-  ## see 'price-item price-item--regular' class element below
-  if product.selected_or_first_available_variant.option1 contains 'Sample'
-    assign product_is_sample = true
-    assign product_price_max = product.price_max | money
-  endif
 -%}
 {% capture pricesCleaned %}
   <div class="
@@ -68,11 +57,7 @@
       <div class="price__regular">
         <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
         <span class="price-item price-item--regular" data-price="{{ price }}">
-          {% if product_is_sample %}
-            {{ product_price_max }}
-          {% else %}
-            {{ money_price }}
-          {% endif %}
+          {{ money_price }}
         </span>
       </div>
       <div class="price__sale">

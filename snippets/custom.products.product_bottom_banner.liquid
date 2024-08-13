@@ -1,9 +1,0 @@
-{% if product.metafields["custom"]["product_bottom_banner"] != blank %}
-  <div class="custom-field custom-field__product-bottom-banner custom-field__type--url">
-    <h3 class="custom-field--title">Product Bottom banner</h3>
-    <div class="custom-field--value">
-{{ product.metafields["custom"]["product_bottom_banner"] | metafield_tag }}
-
-    </div>
-  </div>
-{% endif %}

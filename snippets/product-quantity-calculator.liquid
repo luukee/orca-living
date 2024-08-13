@@ -2,18 +2,18 @@
 
 {% liquid 
 
-  assign is_pavers      = false
+  assign isPavers      = false
   for collection in product.collections
-    assign collection_handle = collection.handle
-    if collection_handle == 'pavers'
-      assign is_pavers  = true
+    assign colHndl = collection.handle
+    if colHndl == 'pavers'
+      assign isPavers  = true
       break
     endif
   endfor
 
 %}
 
-<div class="product__calc-qty {% unless is_pavers %}show-qty-buttons{% endunless %}">
+<div class="product__calc-qty {% unless isPavers %}show-qty-buttons{% endunless %}">
   
   <div class="product__calc-title">
     Quantity:
@@ -23,7 +23,7 @@
 
     {% comment %} {% render 'product-calculator' %} {% endcomment %}
 
-    {% render 'product-quantity', is_pavers: is_pavers, product_form_id: product_form_id %}
+    {% render 'product-quantity', isPavers: isPavers, product_form_id: product_form_id %}
 
   </div>
 

@@ -147,13 +147,13 @@
       </div>
     {%- endunless -%}
   </slider-component>
-  {%- if first_three_d_model -%}
+  {%- if first_3d_model -%}
     <button
       class="button button--full-width product__xr-button"
       type="button"
       aria-label="{{ 'products.product.xr_button_label' | t }}"
       data-shopify-xr
-      data-shopify-model3d-id="{{ first_three_d_model.id }}"
+      data-shopify-model3d-id="{{ first_3d_model.id }}"
       data-shopify-title="{{ product.title | escape }}"
       data-shopify-xr-hidden
     >

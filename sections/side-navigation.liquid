@@ -72,12 +72,6 @@
           endfor 
 
           assign ChildLinkSize      = link.links | size
-          
-          assign path = request.path
-          assign show_nav_child_links = false
-          if path contains 'pavers'
-            assign show_nav_child_links = true
-          endif
         %}
         <li>
           <a href="{{ linkURL }}" class=" list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
@@ -85,10 +79,8 @@
             {{ link.title | escape }}
             {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
           </a>
-          {% comment %} <pre>{{ isCurrent }}</pre>
-          <pre>{{ ChildLinkSize }}</pre> {% endcomment %}
           {% if isCurrent %}
-            {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
+            {%- if ChildLinkSize > 0 and template.name == 'collection' -%}
               <ul class="menu-drawer__menu list-menu medium-down--hide" role="list">
                 {%- for childlink in link.links -%}
                   {% liquid 
@@ -107,17 +99,13 @@
                       assign showChildLink    = true 
                     endif 
                   %}
-                  {% comment %} {% if showChildLink %} {% endcomment %}
-                   {% comment %} 
-                    Info: 
-                    "if showChildLink" prevented new navigation items from displying on the front end on the collections-menu navigation menu
-                   {% endcomment %}
+                  {% if showChildLink %}
                     <li>
                       <a href="{{ childlink.url }}" class=" list-menu__item link link--text focus-inset {% if isCurrentInner %} menu-item--active{% endif %}">
                         {{ childlink.title | escape }}
                       </a>
                     </li>
-                  {% comment %} {% endif %} {% endcomment %}
+                  {% endif %}
                 {%- endfor -%}  
               </ul>          
             {%- endif -%}            
