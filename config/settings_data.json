@@ -318,5 +318,10 @@
         }
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": [
+      "div#shop-hcaptcha-badge-container {display: none;}"
+    ]
   }
 }
