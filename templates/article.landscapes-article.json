@@ -6,8 +6,24 @@
         "title": "Landscapes",
         "make_h1": false,
         "menu": "landscapes-menu",
-        "padding_top": 20,
-        "padding_bottom": 52
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "main_blog_tgGg8L": {
+      "type": "main-blog",
+      "custom_css": [
+        "h1 {display: none;}"
+      ],
+      "settings": {
+        "products_per_page": 50,
+        "layout": "grid",
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": false,
+        "show_author": false,
+        "padding_top": 16,
+        "padding_bottom": 16
       }
     },
     "main": {
@@ -21,30 +37,37 @@
         },
         "title": {
           "type": "title",
-          "disabled": true,
           "settings": {
-            "blog_show_date": true,
+            "blog_show_date": false,
             "blog_show_author": false
           }
         },
-        "share": {
-          "type": "share",
-          "disabled": true,
+        "custom_liquid_Wn3wi6": {
+          "type": "custom_liquid",
           "settings": {
-            "share_label": "Share"
+            "title": "Metafields",
+            "custom_liquid": "{% liquid \n  assign mf = article.metafields.custom\n  assign loc  = mf.location\n  assign com  = mf.plant_community\n  assign typ  = mf.type\n  assign mat  = mf.featured_materials\n%}\n\n{% if loc != blank %}\n  <div>\n    <span>Location: <\/span> <span>{{loc}}<\/span>\n  <\/div>\n{% endif %}\n\n{% if com != blank %}\n  <div>\n    <span>Plant Community: <\/span> <span>{{com}}<\/span>\n  <\/div>\n{% endif %}\n\n{% if typ != blank %}\n  <div>\n    <span>Type: <\/span> <span>{{typ}}<\/span>\n  <\/div>\n{% endif %}\n\n{% if mat != blank %}\n  <div>\n    <span>Featured Materials: <\/span> <span>{{mat}}<\/span>\n  <\/div>\n{% endif %}\n\n<div class=\"inline-products\">\n{% render 'snippet--article-products' %}\n<\/div>"
           }
         },
         "content": {
           "type": "content",
           "settings": {
           }
+        },
+        "custom_liquid_UkdBmm": {
+          "type": "custom_liquid",
+          "settings": {
+            "title": "Metafield Images",
+            "custom_liquid": "{% render 'snippet--article-gallery' %}"
+          }
         }
       },
       "block_order": [
         "featured_image",
         "title",
-        "share",
-        "content"
+        "custom_liquid_Wn3wi6",
+        "content",
+        "custom_liquid_UkdBmm"
       ],
       "custom_css": [
         "> * {margin: var(--base-gutter--half) 0;}"
@@ -130,6 +153,7 @@
   },
   "order": [
     "cfdb8cb9-d999-49d1-8ca3-93714ea1812a",
+    "main_blog_tgGg8L",
     "main",
     "image_with_text_jjqEFU",
     "7b7a1dc6-7480-4a22-bf60-d2b44005951c",
