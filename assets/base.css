@@ -7488,4 +7488,7 @@ details-disclosure > details {
     margin-inline: 10px;
   }
 }
+div#shop-hcaptcha-badge-container {
+  display: none;
+}
 /*# sourceMappingURL=base.css.map */
