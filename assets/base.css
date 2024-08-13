@@ -1895,6 +1895,9 @@ input[type='checkbox'] {
   width: auto;
   margin-right: 0.5rem;
 }
+input[type="file"]::file-selector-button {
+  color: #000;
+}
 .form__label {
   display: block;
   margin-bottom: 0.6rem;
@@ -3741,6 +3744,7 @@ details-disclosure > details {
 .simple-footer button .icon {
   height: 0.6rem;
   transform: rotate(-90deg);
+  color: var(--gradient-base-accent-1);
 }
 .simple-footer .newsletter__input {
   width: 19ch;
