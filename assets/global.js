@@ -2103,3 +2103,30 @@ $(document).on('touch click', '.acc-btn', function () {
   }
 });
 
+// Homepage button click handler
+document.addEventListener('DOMContentLoaded', function () {
+  var shopButton = document.getElementById('shop_click');
+
+  if (shopButton) {
+    shopButton.addEventListener('click', function () {
+      // Ensure this only runs on mobile
+      if (window.innerWidth <= 768) {
+        openMenuDrawer();
+      }
+    });
+  }
+});
+
+function openMenuDrawer() {
+  const menuDrawerElement = document.querySelector('menu-drawer');
+
+  if (menuDrawerElement) {
+    const mainDetailsToggle = menuDrawerElement.querySelector('details');
+    if (mainDetailsToggle) {
+      const summaryElement = mainDetailsToggle.querySelector('summary');
+      if (summaryElement) {
+        summaryElement.click();
+      }
+    }
+  }
+}

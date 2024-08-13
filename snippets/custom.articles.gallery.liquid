@@ -1,22 +1,37 @@
-<div class="article-template__content page-width page-width--narrow rte">
-  <div class="article-template__image-gallery">
-    <ul class="cell  half_gutter vert-top">
-{% for item in article.metafields["custom"]["gallery"].value %}
-      {% assign type = item.value.media_type %}
-      {% case type %}
-        {% when "image" %}
-          {{ item.value | image_url: width: 500 | image_tag }}
-        {% when "video" %}
-          {{ item.value | video_tag: image_size: "500x", width: 500, autoplay: false, controls: true }}
-        {% else %}
-          {% assign file_url = item.value.url %}
-          <Li class="cell__item  medium-up--one-half">
-          <a target="_blank" href="{{ file_url }}">{{ item | media_tag: image_size: "200x" }}</a>
-          <div>{{ file_url | split: '/' | last | split: '?v=' | first }}</div>
-          </Li>
-      {% endcase %}
-{% endfor %}
+{% liquid
+  assign full_width_imgs = article.metafields.custom.gallery_image_full_width.value
+%}
+
+<div class='article-template__content page-width page-width--narrow rte'>
+  <div class='article-template__image-gallery'>
+    <ul class='cell half_gutter vert-top'>
+      {% for item in article.metafields.custom.gallery.value %}
+        {% assign type = item.value.media_type %}
+        {% case type %}
+          {% when 'image' %}
+            {% assign img_url = item.value | image_url: width: 500 %}
+            <li class='cell__item medium-up--one-half'>
+              {% render 'snippet--gallery-image', img_url: img_url %}
+            </li>
+          {% when 'video' %}
+            <li class='cell__item medium-up--one-half'>
+              {{ item.value | video_tag: image_size: '500x', width: 500, autoplay: false, controls: true }}
+            </li>
+          {% else %}
+            {% liquid
+              assign img_url = item | image_url: width: 3000
+              assign class_fullwidth = false
+              for filename in full_width_imgs
+                if img_url contains filename
+                  assign class_fullwidth = true
+                endif
+              endfor
+            %}
+            <li class='cell__item {% if class_fullwidth %}{% else %}medium-up--one-half{% endif %}'>
+              {% render 'snippet--gallery-image', img_url: img_url %}
+            </li>
+        {% endcase %}
+      {% endfor %}
     </ul>
   </div>
 </div>
-

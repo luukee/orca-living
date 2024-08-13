@@ -1,0 +1,28 @@
+{% render "blocks.custom_fields" with resource_type: "blogs", blocks: section.blocks %}
+{% schema %}
+  {
+    "name": {
+        "en": "Custom Fields"
+    },
+    "settings": [
+        {
+            "type": "paragraph",
+            "content": "[View Documentation](https:\/\/custom-fields.docs.bonify.io\/)"
+        },
+        {
+            "type": "paragraph",
+            "content": "[Edit Custom Fields](https:\/\/customfields.bonify.io\/dashboard\/orcaliving.myshopify.com\/blogs\/configure)"
+        }
+    ],
+    "templates": [
+        "blog"
+    ],
+    "presets": [
+        {
+            "name": "Custom Fields",
+            "blocks": []
+        }
+    ],
+    "blocks": []
+}
+{% endschema %}

@@ -18,11 +18,11 @@
     }
   }
 {%- endstyle -%}
-
+<!-- sections/fieldnotes-blog -->
 {%- paginate blog.articles by section.settings.products_per_page -%}
   <div class="main-blog {% if request.path contains 'tagged' %} no-banner {%endif%} page-width section-{{ section.id }}-padding">
     
-    <div class="blog-articles feed-view {% if section.settings.layout == 'collage' %}blog-articles--collage {% endif %}">
+    <div class="{% if section.settings.desktop_columns == 'two_columns' %}blog-articles blog-articles__two-cols{% else %}blog-articles{% endif %} feed-view {% if section.settings.layout == 'collage' %}blog-articles--collage {% endif %}">
       {%- for article in blog.articles -%}
         <div class="blog-articles__article article">
           <div class="feature-article-section">
@@ -95,6 +95,22 @@
       "id": "show_image",
       "default": true,
       "label": "t:sections.main-blog.settings.show_image.label"
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "options": [
+        {
+          "value": "three_columns",
+          "label": "Three columns"
+        },
+        {
+          "value": "two_columns",
+          "label": "Two columns"
+        }
+      ],
+      "default": "three_columns",
+      "label": "Desktop columns"
     },
     {
       "type": "select",

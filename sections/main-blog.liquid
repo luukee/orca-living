@@ -1,3 +1,4 @@
+<!-- sections/blog-posts-->
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
@@ -18,14 +19,16 @@
 
 {%- paginate blog.articles by section.settings.products_per_page -%}
   <div class="main-blog page-width section-{{ section.id }}-padding">
-    <h1 class="title--primary">{{ blog.title | escape }}</h1>
-
-    <div class="feed--view-type">
-      <span>View: </span>
-      <a href="#images" data-type="images" class="current">Images</a>,
-      <a href="#list" data-type="list">List</a>
-    </div>
-
+    {% if section.settings.show_blog_title %}
+      <h1 class="title--primary">{{ blog.title | escape }}</h1>
+    {% endif %}
+    {% if section.settings.show_blog_view_options %}
+      <div class="feed--view-type">
+        <span>View: </span>
+        <a href="#images" data-type="images" class="current">Images</a>,
+        <a href="#list" data-type="list">List</a>
+      </div>
+    {% endif %}
     <div class="blog-articles feed-view {% if section.settings.layout == 'collage' %}blog-articles--collage {% endif %}">
       {%- for article in blog.articles -%}
         <div class="blog-articles__article article">
@@ -35,8 +38,12 @@
             media_aspect_ratio: article.image.aspect_ratio,
             show_image: section.settings.show_image,
             show_date: section.settings.show_date,
+            show_article_tags: section.settings.show_article_tags,
             show_author: section.settings.show_author,
-            show_excerpt: true
+            show_read_more: section.settings.show_read_more,
+            show_excerpt: section.settings.show_excerpt,
+            read_more_text: section.settings.read_more_text,
+            show_content: section.settings.show_content
           -%}
         </div>
       {%- endfor -%}
@@ -91,6 +98,18 @@
       "label": "t:sections.main-blog.settings.show_image.label"
     },
     {
+      "type": "checkbox",
+      "id": "show_blog_title",
+      "default": true,
+      "label": "Show blog title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blog_view_options",
+      "default": true,
+      "label": "Show blog view options"
+    },
+    {
       "type": "select",
       "id": "image_height",
       "options": [
@@ -117,6 +136,24 @@
     },
     {
       "type": "checkbox",
+      "id": "show_article_tags",
+      "default": false,
+      "label": "Show article tags"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "default": false,
+      "label": "Show excerpt"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "default": true,
+      "label": "Show content"
+    },
+    {
+      "type": "checkbox",
       "id": "show_date",
       "default": true,
       "label": "t:sections.main-blog.settings.show_date.label"
@@ -126,6 +163,19 @@
       "id": "show_author",
       "default": false,
       "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "default": false,
+      "label": "Show read more"
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read more custom text",
+      "info": "Change to \"View\" for example. Or leave blank to leave as \"Read More\".",
+      "placeholder": "View"
     },
     {
       "type": "paragraph",

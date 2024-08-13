@@ -76,6 +76,39 @@
             {% render "custom_fields.articles.images", block:block %}
                   {% when "custom_fields.two_grid" %}
             {% render "custom_fields.articles.two_grid", block:block %}
+                  {% when "custom_fields.image_with_caption" %}
+            {% render "custom_fields.articles.image_with_caption", block:block %}
+                  {% when "custom_fields.related_products" %}
+            {% render "custom_fields.articles.related_products", block:block %}
+                  {% when "custom.gallery_image_full_width" %}
+            {% render "custom.articles.gallery_image_full_width", block:block %}
+        
+        {% endcase %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  
+    {% if resource_type == "blogs" %}
+    <div class="custom-fields-section__blogs">
+      {% for block in blocks %}
+      {% if block.type contains "cf_" %}
+      <div {{ block.shopify_attributes }} class="custom-fields-section__item
+                  custom-fields-section__item--{{ block.type }}
+                  custom-fields-section__item--{{ block.type }}--{{ block.settings.key }}
+                  {% if block.settings.cols != blank %}{{ "cf-width-" | append: block.settings.cols | append: "-of-12" }}{% else %}cf-width-12-of-12{% endif %}">
+        {% case block.settings.key %}
+                  {% when "custom.content" %}
+            {% render "custom.blogs.content", block:block %}
+                  {% when "custom.excerpt" %}
+            {% render "custom.blogs.excerpt", block:block %}
+                  {% when "custom.featured_image" %}
+            {% render "custom.blogs.featured_image", block:block %}
+                  {% when "custom_fields.images" %}
+            {% render "custom_fields.blogs.images", block:block %}
+                  {% when "custom_fields.two_grid" %}
+            {% render "custom_fields.blogs.two_grid", block:block %}
         
         {% endcase %}
       </div>

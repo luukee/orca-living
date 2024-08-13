@@ -1,7 +1,6 @@
 <!-- snippets/snippets--article-includes -->
 
 {% liquid 
-  
   assign mf                     = article.metafields.custom_fields
 
   assign H6isWrong              = '<h6><span>'
@@ -86,7 +85,6 @@
             assign showImage        = true
 
             unless imageGroups contains imgRplc 
-              
               assign imageGroups    = imageGroups | append: imgRplc 
               assign imgsFullWidth  = false
               assign imgsUseSlider  = false
@@ -114,7 +112,8 @@
               {% if imgsFullWidth == true %}{{pageWidthData}}{% endif %}
             >
               <div class="inner-container">
-
+                <!-- include 'snippet--image' -->
+                {% comment %} {% render 'dump' with img %} {% endcomment %}
                 {% include 'snippet--image', img: img, cf: true, customStyle: style %}
                 {% if txt != blank and txt != '' %}
                   <div class="caption">{{txt}}</div>
@@ -150,6 +149,7 @@
             capture width 
               include 'snippet--grid-widths', perRow: itemLength 
             endcapture 
+
             assign groupWithWidth   = group | replace: wdthRplc, width | replace: wdthData, itemLength
           -%}
 

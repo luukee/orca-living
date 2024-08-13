@@ -7,12 +7,11 @@
 %}
 
 {% style %}
-
   :root,
-  :after, 
+  :after,
   :before {
     --base-gutter           : 32px;
-  
+
     --base-gutter--double   : calc( var(--base-gutter) * 2 );
     --base-gutter--trip     : calc( var(--base-gutter) * 3 );
     --base-gutter--quad     : calc( var(--base-gutter) * 4 );
@@ -36,21 +35,21 @@
 
   @font-face {
     font-family: 'MonumentGrotesk';
-    src: 
+    src:
       url('{{ "MonumentGrotesk-Regular.woff2" | asset_url }}') format('woff2');
     font-weight: 400;
     font-style: normal;
   }
    @font-face {
     font-family: 'MonumentGrotesk-mono';
-    src: 
+    src:
       url('{{ "MonumentGroteskTrial-Mono.woff" | asset_url }}') format('woff2');
     font-weight: 400;
     font-style: normal;
   }
 
   :root,
-  :after, 
+  :after,
   :before {
     --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     --font-body-style: {{ settings.type_body_font.style }};
@@ -192,7 +191,7 @@
   }
 
   :root,
-  :after, 
+  :after,
   :before {
 
     /* Overrides */
@@ -261,27 +260,28 @@
     }
   }
 {% endstyle %}
+{{ 'component-grid.css' | asset_url | stylesheet_tag }}
+{{ 'base.css' | asset_url | stylesheet_tag }}
 
-{% liquid 
-
-  render 'css-component-grid' 
-  render 'css-base' 
-  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-price.css' 
-  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-rating.css' 
-  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-loading-overlay.css' 
-  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-deferred-media.css' 
-
+{% liquid
+  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-price.css'
+  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-rating.css'
+  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-loading-overlay.css'
+  render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-deferred-media.css'
 %}
 
-
-
 {%- unless settings.type_body_font.system? -%}
-  <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+  <link rel='preload' as='font' href='{{ settings.type_body_font | font_url }}' type='font/woff2' crossorigin>
 {%- endunless -%}
 {%- unless settings.type_header_font.system? -%}
-  <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+  <link rel='preload' as='font' href='{{ settings.type_header_font | font_url }}' type='font/woff2' crossorigin>
 {%- endunless -%}
 
 {%- if settings.predictive_search_enabled -%}
-  <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link
+    rel='stylesheet'
+    href='{{ 'component-predictive-search.css' | asset_url }}'
+    media='print'
+    onload="this.media='all'"
+  >
 {%- endif -%}

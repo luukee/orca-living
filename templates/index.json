@@ -7,11 +7,11 @@
           "type": "slider",
           "settings": {
             "show_image": true,
-            "image": "shopify:\/\/shop_images\/ORCA_home_page_july.png",
+            "image": "shopify:\/\/shop_images\/Cliff_May_RT_TP_Hero.jpg",
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 0,
-            "image_mob": "shopify:\/\/shop_images\/orca_home_page_under_the_maple_tree.png",
+            "image_mob": "shopify:\/\/shop_images\/Cliff_May_RT_TP_Hero.jpg",
             "align_bg_mob": "center",
             "bg_color_mob": "#000000",
             "opacity_mob": 10,
@@ -48,7 +48,7 @@
             "video_hosted": "",
             "btn_txt_modal": "Watch Video",
             "video_modal": "",
-            "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
+            "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  \/\/ background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
             "metafield_image": "",
             "metafield_image_alt": ""
           }
@@ -62,13 +62,14 @@
         "set_height": true,
         "mob_rel": false,
         "show_mobile_overlay_sooner": false,
+        "hide_menus": true,
         "image_height": "100vh",
         "image_height_mob": "",
         "auto_slide": true,
         "use_arrows": false,
         "use_dots": true,
         "pause": "5000",
-        "custom_css": ".shopify-section-group-header-group {\n  position: fixed;\n  z-index: 10000;\n  width: 100%;\n}\n.header__menu-item,\n.header__cart,\n.header__heading-logo,\nheader-drawer .cart_mobile,\n.header__icon > span > svg\n{\n  filter: invert(1);\n}\n\n.gradient {\n  background: transparent;\n  border: none;\n}\n\n\/*.shopify-section-group-header-group,*\/\n.shopify-section-group-footer-group {\n  display: none;\n}\n\/* LUKE CSS *\/\n\/* mobile menu *\/\n.section-header header-drawer {\n  display: none;\n}\n\/* cart *\/\n.section-header .header__cart {\n  display: none;\n}\n\/* desktop menu *\/\n.section-header .header__inline-menu {\n  display: none;\n}"
+        "custom_css": ".shopify-section-group-header-group {\n  position: fixed;\n  z-index: 10000;\n  width: 100%;\n}\n.header__menu-item,\n.header__cart,\n.header__heading-logo,\nheader-drawer .cart_mobile,\n.header__icon > span > svg\n{\n  filter: invert(1);\n}\n\n.gradient {\n  background: transparent;\n  border: none;\n}\n\n\/*.shopify-section-group-header-group,*\/\n.shopify-section-group-footer-group {\n  display: none;\n}\n\/* LUKE CSS *\/\n\/* mobile menu *\/\n\/*\n.section-header header-drawer {\n  display: none;\n}\n*\/\n\/* cart *\/\n.section-header .header__cart {\n  display: none;\n}\n\/* desktop menu *\/\n.section-header .header__inline-menu {\n  display: none;\n}"
       }
     },
     "rich_text_iptR9Q": {
@@ -89,7 +90,8 @@
             "button_style_secondary": true,
             "button_label_2": "Shop",
             "button_link_2": "shopify:\/\/collections\/all",
-            "button_style_secondary_2": true
+            "button_style_secondary_2": true,
+            "button_mobile_menu": true
           }
         }
       },
@@ -153,7 +155,6 @@
         "products_per_page": 24,
         "columns_desktop": 3,
         "filter_on_tag": "",
-        "alternate_product_card": "",
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,

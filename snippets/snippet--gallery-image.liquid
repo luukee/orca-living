@@ -1,0 +1,24 @@
+<!-- snippets/snippet--gallery-image.liquid -->
+
+{% if img_url %}
+  {% assign image_url_small = img_url | replace: '_500x500', '_small' %}
+  {% assign image_url_medium = img_url | replace: '_500x500', '_medium' %}
+  {% assign image_url_large = img_url | replace: '_500x500', '_large' %}
+  {% assign image_url_master = img_url | replace: '_500x500', '' %}
+
+  <img
+    src="{{ image_url_medium }}"
+    srcset="
+      {{ image_url_small }} 320w,
+      {{ image_url_medium }} 640w,
+      {{ image_url_large }} 1024w,
+      {{ image_url_master }} 2048w"
+    sizes="
+      (max-width: 320px) 280px,
+      (max-width: 640px) 440px,
+      (max-width: 1024px) 780px,
+      100vw"
+    alt="Gallery Image">
+{% else %}
+  <!-- Handle case where img_url is not provided -->
+{% endif %}

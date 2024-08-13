@@ -3,42 +3,48 @@
     "b9321e40-9a0b-456e-bb05-4e652513eb31": {
       "type": "side-navigation",
       "settings": {
-        "title": "{{ blog.title }}",
+        "title": "Landscapes",
         "make_h1": true,
         "menu": "landscapes-menu",
         "padding_top": 16,
         "padding_bottom": 16
       }
     },
-    "main": {
-      "type": "main-blog",
-      "custom_css": [
-        "h1 {display: none;}"
-      ],
+    "feature_article_4NCyMd": {
+      "type": "feature-article",
+      "disabled": true,
       "settings": {
-        "products_per_page": 48,
-        "layout": "grid",
-        "show_image": true,
-        "image_height": "adapt",
-        "show_date": false,
-        "show_author": false,
-        "padding_top": 16,
-        "padding_bottom": 16
+        "article": "landscapes\/fig",
+        "custom_css": "== {\nmargin-top: 20px;\n}\n== .two-grid{\ndisplay: grid;\ngrid-template-columns: 1fr 1fr;\nbackground:#CDC4B8;\nalign-items: center;\n}\n== .feature-article-content{\npadding: 30px 60px;\nmargin: auto;\n}\n== .feature-article-image,\n== img{\nmax-height: 450px;\nobject-fit:cover;\nheight: 100%;\n}\n\/medium-up\/ {\n== .feature-article-image,\n== img{\nheight: 450px;\n}\n}\n== h3{\nfont-size: 32px;\nmargin-bottom: 15px;\n}\n== .tag{\nfont-size:16px;\n}\n== article{\nmargin-top: 15px;\nmargin-bottom: 10px;\nfont-size: 15px;\n}\n\/medium-down\/{\n== .two-grid{\ngrid-template-columns: 1fr;\n}\n}"
       }
     },
-    "895e2c76-87a7-4bac-8ae5-344f946100e1": {
-      "type": "custom-liquid",
+    "main_blog_c3bhep": {
+      "type": "main-blog",
+      "custom_css": [
+        "article {font-size: 15px;}"
+      ],
       "settings": {
-        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
-        "color_scheme": "background-1",
-        "padding_top": 16,
-        "padding_bottom": 16
+        "products_per_page": 18,
+        "layout": "grid",
+        "show_image": true,
+        "show_blog_title": false,
+        "show_blog_view_options": false,
+        "image_height": "medium",
+        "show_article_tags": false,
+        "show_excerpt": true,
+        "show_content": false,
+        "show_date": false,
+        "show_author": false,
+        "show_read_more": true,
+        "read_more_text": "View",
+        "padding_top": 48,
+        "padding_bottom": 36
       }
     }
   },
   "order": [
     "b9321e40-9a0b-456e-bb05-4e652513eb31",
-    "main",
-    "895e2c76-87a7-4bac-8ae5-344f946100e1"
+    "feature_article_4NCyMd",
+    "main_blog_c3bhep"
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "name": "orca-living",
+  "version": "1.0.0",
+  "description": "## CLI Commands",
+  "main": "index.js",
+  "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.5.0",
+    "prettier": "^3.3.3"
+  },
+  "scripts": {
+    "prettier": "prettier",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

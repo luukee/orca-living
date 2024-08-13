@@ -1,3 +1,4 @@
+<!-- sections/featured-blog -->
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
@@ -25,7 +26,7 @@
   endif
 -%}
 <div class="blog color-{{ section.settings.color_scheme }} gradient{% if section.settings.heading == blank %} no-heading{% endif %}">
-  <div class="page-width-desktop isolate{% if posts_displayed < 3 %} page-width-tablet{% endif %} section-{{ section.id }}-padding">
+  <div class="{%  if section.settings.desktop_remove_padding %}page-width-desktop__full{% else %}page-width-desktop{% endif %} isolate{% if posts_displayed < 3 %} page-width-tablet{% endif %} section-{{ section.id }}-padding">
     {%- unless section.settings.heading == blank -%}
       <div class="title-wrapper-with-link{% if posts_displayed > 2 %} title-wrapper--self-padded-tablet-down{% else %} title-wrapper--self-padded-mobile{% endif %} title-wrapper--no-top-margin">
         <h2 id="SectionHeading-{{ section.id }}" class="blog__title inline-richtext {{ section.settings.heading_size }}">
@@ -170,7 +171,7 @@
       "type": "range",
       "id": "post_limit",
       "min": 2,
-      "max": 25,
+      "max": 40,
       "step": 1,
       "default": 3,
       "label": "t:sections.featured-blog.settings.post_limit.label"
@@ -212,6 +213,12 @@
       "default": "background-1",
       "label": "t:sections.all.colors.label",
       "info": "t:sections.all.colors.has_cards_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_remove_padding",
+      "default": false,
+      "label": "Desktop remove padding"
     },
     {
       "type": "checkbox",

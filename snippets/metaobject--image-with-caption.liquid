@@ -1,0 +1,51 @@
+<!-- snippets/metaobject--image-with-caption.liquid -->
+
+{% assign image_with_caption_section = article.metafields.custom.image_with_caption_section %}
+{% if image_with_caption_section %}
+  {% for reference in image_with_caption_section.value %}
+    {% liquid
+      assign item = reference
+      assign caption = item.caption
+      assign flip = item.flip.value
+      assign image_id = item.image | hmac_sha1: key
+      assign image_src_url = item.image | file_url
+      assign image_width = '100%'
+      ## assign image_height = '100%'
+      assign padding_top = '100%'
+    %}
+    {% comment %} {% render 'dump' with reference %} {% endcomment %}
+
+    <div class='two-grid-section rte'>
+      <div class='cell half_gutter vert-top'>
+        <div class='cell__item'>
+          <div class='two-grid'>
+						
+            <div class='image order-{% if flip %}2{% else %}1{% endif %}'>
+              <div class='image--outer image--{{image_id}}'>
+                <div class='image--inner'>
+                  <img src='{{ item.image | file_url }}' width='400px' height='400px' alt='{{ item.caption }}'>
+                </div>
+                <style type='text/css'>
+                  .image--{{image_id}} {
+                    --image--max-source: url('{{ image_src_url }}');
+                    --image--set-width:var(--image--natural-width);
+                    --image--set-height:var(--image--natural-height);
+                    --image--natural-width:{{image_width}};
+                    --image--natural-height:{{padding_top}};
+                  }
+                  .image--{{image_id}} .image--inner {
+                    padding-top:var(--image--set-height,56.6%);
+                  }
+                </style>
+              </div>
+            </div>
+
+            <div class='caption order-{% if flip %}1{% else %}2{% endif %}'>
+              <p>{{ caption }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
