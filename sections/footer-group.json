@@ -34,20 +34,12 @@
             "heading": "About",
             "menu": "about-mobile"
           }
-        },
-        "link_list_nfdMf8": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Search",
-            "menu": "search"
-          }
         }
       },
       "block_order": [
         "link_list_bqw989",
         "link_list_RcEbEa",
-        "link_list_J7AjwP",
-        "link_list_nfdMf8"
+        "link_list_J7AjwP"
       ],
       "settings": {
         "color_scheme": "background-1",
