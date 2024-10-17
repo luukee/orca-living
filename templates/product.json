@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "91ad0562-5950-45d5-9d81-d10644f33243": {
@@ -74,8 +83,8 @@
         "d9b7944e-b2a7-481d-9a47-bca4d6393c24": {
           "type": "custom_liquid",
           "settings": {
-            "title": "Title \/ Price",
-            "custom_liquid": "<div class=\"product__title-price\">\n\n  <h1 class=\"h4\">{{product.title}}<\/h1>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    <\/div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">\/sqft.<\/span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"><\/span>\n    {% endif %}\n\n  <\/div>\n<\/div>"
+            "title": "Title / Price",
+            "custom_liquid": "<div class=\"product__title-price\">\n\n  <h1 class=\"h4\">{{product.title}}</h1>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    </div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">/sqft.</span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"></span>\n    {% endif %}\n\n  </div>\n</div>"
           }
         },
         "variant_picker": {
@@ -96,7 +105,7 @@
           }
         },
         "37c16ae2-8059-4ef5-bc28-e6e8934d1b25": {
-          "type": "shopify:\/\/apps\/diy-quantity-calculator\/blocks\/app-block\/a5d912db-c503-44a8-b562-fb0cc09650a4",
+          "type": "shopify://apps/diy-quantity-calculator/blocks/app-block/a5d912db-c503-44a8-b562-fb0cc09650a4",
           "settings": {
             "label_1": "Area to cover",
             "label_2": "Quantity Needed",
@@ -129,21 +138,22 @@
           "type": "custom_liquid",
           "settings": {
             "title": "Paver Quantity Message",
-            "custom_liquid": "{% if product.type == 'Paver' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com<\/a>\n.<\/p>\n{% endif %}"
+            "custom_liquid": "{% if product.type == 'Paver' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n{% endif %}"
           }
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false,
-            "show_gift_card_recipient": false
+            "show_gift_card_recipient": false,
+            "quick_ship_text": "Quick Ship | Ships within 2-3 weeks"
           }
         },
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72": {
           "type": "custom_liquid",
           "settings": {
             "title": "Trade Customer Message",
-            "custom_liquid": "{% if customer and customer.tags contains \"trade\" %}\n<p style=\"text-align:center\">\nTrade pricing will be automatically applied at checkout.\n<\/p>\n{% endif %}"
+            "custom_liquid": "{% if customer and customer.tags contains \"trade\" %}\n<p style=\"text-align:center\">\nTrade pricing will be automatically applied at checkout.\n</p>\n{% endif %}"
           }
         },
         "351e9119-7dce-482d-92e8-1e70ca0a9bf9": {
@@ -175,7 +185,7 @@
           "settings": {
             "heading": "{{ product.metafields.custom.first_tab_title.value }}",
             "icon": "none",
-            "content": "<p>{{ product.metafields.custom.first_tab_description.value}}<\/p>",
+            "content": "<p>{{ product.metafields.custom.first_tab_description.value}}</p>",
             "page": ""
           }
         },
@@ -184,7 +194,7 @@
           "settings": {
             "heading": "{{ product.metafields.custom.second_tab_title.value }}",
             "icon": "none",
-            "content": "<p>{{ product.metafields.custom.second_tab_description.value}}<\/p>",
+            "content": "<p>{{ product.metafields.custom.second_tab_description.value}}</p>",
             "page": ""
           }
         },
@@ -193,7 +203,7 @@
           "settings": {
             "heading": "{{ product.metafields.custom.third_tab_title.value }}",
             "icon": "none",
-            "content": "<p>{{ product.metafields.custom.third_tab_description.value}}<\/p>",
+            "content": "<p>{{ product.metafields.custom.third_tab_description.value}}</p>",
             "page": ""
           }
         },
