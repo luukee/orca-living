@@ -66,11 +66,8 @@
 
 {% comment %} grid is on product page {% endcomment %}
 {% if product %}
-  {% comment %} {% render 'dump' with product %} {% endcomment %}
-  {% comment %} include only products with the same type {% endcomment %}
-  {% comment %} set the product type {% endcomment %}
-  {% assign product_type = product.type %}
-  {% assign same_type_products = collection.products | where: "type", product_type %}
+  {% comment %} include only products with the same variant {% endcomment %}
+  {% assign product_variants = product.variants %}
   {% comment %} END include only products with the same type {% endcomment %}
   <div class="section-{{ section.id }}-padding">
     {%- paginate collection.products by section.settings.products_per_page -%}
@@ -116,7 +113,7 @@
                 {% assign index = 0 %}
                 {% assign filter_tag = section.settings.filter_on_tag %}
                 {% comment %} products array including only the products with the product type property value {% endcomment %}
-                {%- for product in same_type_products -%}
+                {%- for product in product_variants -%}
                   {% assign lazy_load = false %}
                   {% assign product_expanded = false %}
                   {%- if forloop.index > 2 -%}
