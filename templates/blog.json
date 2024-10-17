@@ -29,7 +29,7 @@
     "895e2c76-87a7-4bac-8ae5-344f946100e1": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
+        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
         "color_scheme": "background-1",
         "padding_top": 16,
         "padding_bottom": 16

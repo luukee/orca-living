@@ -3,7 +3,7 @@
     "1c6f66c9-dd5e-4f82-8c46-8a0ec72431d9": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<h1 class=\"page-title\">{{ 'customer.addresses.title' | t }}</h1><a href=\"{{ routes.account_url }}\" class=\"link\">{{ 'customer.account.return' | t }}</a>",
+        "custom_liquid": "<h1 class=\"page-title\">{{ 'customer.addresses.title' | t }}<\/h1><a href=\"{{ routes.account_url }}\" class=\"link\">{{ 'customer.account.return' | t }}<\/a>",
         "color_scheme": "background-1",
         "padding_top": 40,
         "padding_bottom": 52

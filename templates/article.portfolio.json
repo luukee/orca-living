@@ -56,7 +56,7 @@
           "type": "custom_liquid",
           "settings": {
             "title": "Metafields",
-            "custom_liquid": "{% liquid \n  assign mf = article.metafields.custom\n  assign loc  = mf.location\n  assign com  = mf.plant_community\n  assign typ  = mf.type\n  assign mat  = mf.featured_materials\n%}\n\n{% if loc != blank %}\n  <div>\n    <span>Location: </span> <span>{{loc}}</span>\n  </div>\n{% endif %}\n\n{% if com != blank %}\n  <div>\n    <span>Plant Community: </span> <span>{{com}}</span>\n  </div>\n{% endif %}\n\n{% if typ != blank %}\n  <div>\n    <span>Type: </span> <span>{{typ}}</span>\n  </div>\n{% endif %}\n\n{% if mat != blank %}\n  <div>\n    <span>Featured Materials: </span> <span>{{mat}}</span>\n  </div>\n{% endif %}\n\n<div class=\"inline-products\">\n{% render 'snippet--article-products' %}\n</div>"
+            "custom_liquid": "{% liquid \n  assign mf = article.metafields.custom\n  assign loc  = mf.location\n  assign com  = mf.plant_community\n  assign typ  = mf.type\n  assign mat  = mf.featured_materials\n%}\n\n{% if loc != blank %}\n  <div>\n    <span>Location: <\/span> <span>{{loc}}<\/span>\n  <\/div>\n{% endif %}\n\n{% if com != blank %}\n  <div>\n    <span>Plant Community: <\/span> <span>{{com}}<\/span>\n  <\/div>\n{% endif %}\n\n{% if typ != blank %}\n  <div>\n    <span>Type: <\/span> <span>{{typ}}<\/span>\n  <\/div>\n{% endif %}\n\n{% if mat != blank %}\n  <div>\n    <span>Featured Materials: <\/span> <span>{{mat}}<\/span>\n  <\/div>\n{% endif %}\n\n<div class=\"inline-products\">\n{% render 'snippet--article-products' %}\n<\/div>"
           }
         },
         "content": {

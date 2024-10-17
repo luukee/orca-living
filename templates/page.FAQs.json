@@ -14,7 +14,7 @@
       "type": "apps",
       "blocks": {
         "1df9c741-d910-46c5-aefd-50dd5bb0645a": {
-          "type": "shopify://apps/helium-customer-fields/blocks/app-block/bab58598-3e6a-4377-aaaa-97189b15f131",
+          "type": "shopify:\/\/apps\/helium-customer-fields\/blocks\/app-block\/bab58598-3e6a-4377-aaaa-97189b15f131",
           "settings": {
             "form_id": "PytVkY",
             "width": 600,
