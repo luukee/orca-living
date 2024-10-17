@@ -10,7 +10,7 @@
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
-<div {{ block.shopify_attributes }}>
+<div {{ block.shopify_attributes }} class="buy-buttons_wrap">
   {%- if product != blank -%}
     {%- liquid
       assign gift_card_recipient_feature_active = false
@@ -190,6 +190,20 @@
           {%- if show_dynamic_checkout -%}
             {{ form | payment_button }}
           {%- endif -%}
+          
+          {% liquid
+            assign quick_ship = false
+            assign current_variant = product.selected_or_first_available_variant
+            if current_variant.metafields.custom.quick_ship
+              assign quick_ship = true
+            endif
+           %}
+          {% if quick_ship %}
+            <p style="text-align: center; margin-top: 0; margin-bottom: 10px">
+              {{ block.settings.quick_ship_text }}
+            </p>
+          {% endif %}
+          
         </div>
       {%- endform -%}
     </product-form>

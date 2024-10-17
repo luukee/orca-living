@@ -28,7 +28,12 @@
   assign priceVariant = card_product
   assign productType = priceVariant.type | handleize
   assign holdVariant = blank
-
+  assign quick_ship = false
+  
+  if priceVariant.metafields.custom.quick_ship
+    assign quick_ship = true
+  endif
+  
   if productType contains 'paver'
     for variant in card_product.variants
       if variant.title contains 'Standard'
@@ -189,6 +194,11 @@
           </div>
         {%- endif -%}
         <div class="card__content">
+          {% if quick_ship %}
+            <div class="button_quick-ship button--hover-effect">
+              <button class="button--xsmall">Quick Ship</button>
+            </div>
+          {% endif %}
           <div class="card__information">
             <h3
               class="card__heading"
