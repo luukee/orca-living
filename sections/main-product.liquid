@@ -4,7 +4,9 @@
   data-section="{{ section.id }}"
 > 
   {% liquid 
-    render 'css-section-main-product' 
+    # render 'css-section-main-product' 
+    echo '<!-- assets/section-main-product.css -->'
+    echo 'section-main-product.css' | asset_url | stylesheet_tag
     render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-accordion.css' 
     render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-slider.css' 
   %}

@@ -1444,6 +1444,18 @@ button.shopify-payment-button__button--unbranded {
 .button--small {
   padding: 1.2rem 2.6rem;
 }
+.button_quick-ship {
+  position: absolute;
+  z-index: 1;
+  right: 8px;
+  top: 7px;
+}
+.button--xsmall {
+  padding: 0.5rem;
+  line-height: 10px;
+  font-size: 12px;
+  background-color: transparent;
+}
 .button:disabled,
 .button[aria-disabled='true'],
 .button.disabled,
