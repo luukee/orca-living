@@ -1,0 +1,19 @@
+{% if blog.metafields["custom"]["featured_image"] != blank %}
+  <div class="custom-field custom-field__featured-image custom-field__type--file-reference">
+    <h3 class="custom-field--title">Featured image</h3>
+    <div class="custom-field--value">
+      {% assign type = blog.metafields["custom"]["featured_image"].value.media_type %}
+      {% case type %}
+        {% when "image" %}
+          {{ blog.metafields["custom"]["featured_image"].value | image_url: width: 500 | image_tag }}
+        {% when "video" %}
+          {{ blog.metafields["custom"]["featured_image"].value | video_tag: image_size: "500x", width: 500, autoplay: false, controls: true }}
+        {% else %}
+          {% assign file_url = blog.metafields["custom"]["featured_image"].value.url %}
+          <a target="_blank" href="{{ file_url }}">{{ blog.metafields["custom"]["featured_image"] | media_tag: image_size: "200x" }}</a>
+          <div>{{ file_url | split: '/' | last | split: '?v=' | first }}</div>
+      {% endcase %}
+
+    </div>
+  </div>
+{% endif %}
