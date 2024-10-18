@@ -1,0 +1,9 @@
+{% if blog.metafields["custom"]["content"] != blank %}
+  <div class="custom-field custom-field__content custom-field__type--multi-line-text-field">
+    <h3 class="custom-field--title">Content</h3>
+    <div class="custom-field--value">
+      {{ blog.metafields["custom"]["content"] }}
+
+    </div>
+  </div>
+{% endif %}
