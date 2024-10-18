@@ -1,0 +1,6 @@
+
+<ul>
+{% for item in collection.metafields["custom_fields"]["quick_ship"].value %}
+<li><a href="{{ item.url }}" class="metafield-variant_reference">{{ item.title }}</a></li>
+{% endfor %}
+</ul>
