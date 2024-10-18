@@ -43,6 +43,10 @@
             {% render "en_q_calculator.products.max_order_quantity", block:block %}
                   {% when "en_q_calculator.min_order_quantity" %}
             {% render "en_q_calculator.products.min_order_quantity", block:block %}
+                  {% when "mm-google-shopping.custom_product" %}
+            {% render "mm-google-shopping.products.custom_product", block:block %}
+                  {% when "custom.featured" %}
+            {% render "custom.products.featured", block:block %}
         
         {% endcase %}
       </div>

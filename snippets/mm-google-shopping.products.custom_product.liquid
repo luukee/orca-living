@@ -1,0 +1,9 @@
+{% if product.metafields["mm-google-shopping"]["custom_product"] != blank %}
+  <div class="custom-field custom-field__custom-product custom-field__type--boolean">
+    <h3 class="custom-field--title">Google: Custom Product</h3>
+    <div class="custom-field--value">
+{{ product.metafields["mm-google-shopping"]["custom_product"] | metafield_tag }}
+
+    </div>
+  </div>
+{% endif %}
