@@ -68,7 +68,14 @@
         {%- if gift_card_recipient_feature_active -%}
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
-
+        {% if product.type == 'Book' %}
+          <!-- External link for books -->
+          <div class="product-form__buttons">
+          <a href="https://example.com/external-page" class="product-form__submit button button--full-width button--primary" target="_blank">
+            Shop
+          </a>
+          </div>
+        {% else %}
         <div class="product-form__buttons">
           {% comment %} Nine15 - UPDATE THIS IN GLOBAL.JS FILE IN THE toggleOutOfStockForm function if you decide to change something here {% endcomment %}
           {%- liquid
@@ -205,6 +212,7 @@
           {% endif %}
           
         </div>
+      {% endif %}
       {%- endform -%}
     </product-form>
     {% render 'native-sold-out', product: product %}
