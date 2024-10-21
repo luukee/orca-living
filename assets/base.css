@@ -1452,8 +1452,9 @@ button.shopify-payment-button__button--unbranded {
 }
 .button--xsmall {
   padding: 0.5rem;
-  line-height: 10px;
+  line-height: 8px;
   font-size: 12px;
+  border-width: 1px;
   background-color: transparent;
 }
 .button:disabled,
