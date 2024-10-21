@@ -1451,6 +1451,7 @@ button.shopify-payment-button__button--unbranded {
   top: 7px;
 }
 .button--xsmall {
+  color: #000;
   padding: 0.5rem;
   line-height: 8px;
   font-size: 12px;
