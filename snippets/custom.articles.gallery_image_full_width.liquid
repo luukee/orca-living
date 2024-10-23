@@ -1,0 +1,6 @@
+
+<ul>
+{% for item in article.metafields["custom"]["gallery_image_full_width"].value %}
+<li><span class="metafield-single-line-text-field">{{ item }}</span></li>
+{% endfor %}
+</ul>

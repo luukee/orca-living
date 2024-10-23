@@ -1,0 +1,9 @@
+{% if blog.metafields["custom"]["excerpt"] != blank %}
+  <div class="custom-field custom-field__excerpt custom-field__type--single-line-text-field">
+    <h3 class="custom-field--title">Excerpt</h3>
+    <div class="custom-field--value">
+      {{ blog.metafields["custom"]["excerpt"] }}
+
+    </div>
+  </div>
+{% endif %}

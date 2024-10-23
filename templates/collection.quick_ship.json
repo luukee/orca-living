@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "banner": {
@@ -23,7 +14,7 @@
       "settings": {
         "title": "Shop",
         "make_h1": true,
-        "menu": "collections-menu",
+        "menu": "collections-menu-dev",
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -57,7 +48,7 @@
 
       ],
       "settings": {
-        "custom_liquid": "<div class=\"hovered-item small--hide\" data-preview-collection>\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
+        "custom_liquid": "<div class=\"hovered-item small--hide\" data-preview-collection>\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
         "color_scheme": "background-1",
         "padding_top": 16,
         "padding_bottom": 16
@@ -69,22 +60,22 @@
         "two_grid_tVAwfb": {
           "type": "two-grid",
           "settings": {
-            "image": "shopify://shop_images/Enduring-through-time.jpg",
-            "text": "<p><strong>Clay for the ages</strong></p><p>Newly added to the Worn collection is Cobble: a palm-sized block with ancient origins. A timeless square evokes both old world charm and modernist gridlines. Made from local California clay, our Cobble is  permeable when sand set. </p>"
+            "image": "shopify:\/\/shop_images\/Enduring-through-time.jpg",
+            "text": "<p><strong>Clay for the ages<\/strong><\/p><p>Newly added to the Worn collection is Cobble: a palm-sized block with ancient origins. A timeless square evokes both old world charm and modernist gridlines. Made from local California clay, our Cobble is  permeable when sand set. <\/p>"
           }
         },
         "two_grid_eRLH4g": {
           "type": "two-grid",
           "settings": {
-            "image": "shopify://shop_images/Paver_Worn_Char_Cobble_edit2_e2328f3a-5e3a-43c9-930b-485147e23cfa.png",
-            "text": "<p><strong>Permeable surfaces</strong></p><p>Our Cobble is inherently permeable and allows rainwater to pass through to the earth beneath it to replenish the land's natural aquifers. This cycle of naturally aggregating the earth and allowing the land to breathe is a part of our ethos of reconnecting humans to earth.</p>"
+            "image": "shopify:\/\/shop_images\/Paver_Worn_Char_Cobble_edit2_e2328f3a-5e3a-43c9-930b-485147e23cfa.png",
+            "text": "<p><strong>Permeable surfaces<\/strong><\/p><p>Our Cobble is inherently permeable and allows rainwater to pass through to the earth beneath it to replenish the land's natural aquifers. This cycle of naturally aggregating the earth and allowing the land to breathe is a part of our ethos of reconnecting humans to earth.<\/p>"
           }
         },
         "two_grid_MWaQra": {
           "type": "two-grid",
           "settings": {
-            "image": "shopify://shop_images/Made-in-California.jpg",
-            "text": "<p><strong>Made in California</strong></p><p>Our Cobble pavers are made locally from California clay. Our mission is to source materials with a light footprint and a substantial story. </p>"
+            "image": "shopify:\/\/shop_images\/Made-in-California.jpg",
+            "text": "<p><strong>Made in California<\/strong><\/p><p>Our Cobble pavers are made locally from California clay. Our mission is to source materials with a light footprint and a substantial story. <\/p>"
           }
         }
       },
@@ -95,7 +86,7 @@
       ],
       "settings": {
         "banner_show_for_tag": "_Cobble",
-        "banner_image": "shopify://shop_images/Frame_1_429196b9-66b5-43c5-b536-0988164e3a67.png",
+        "banner_image": "shopify:\/\/shop_images\/Frame_1_429196b9-66b5-43c5-b536-0988164e3a67.png",
         "banner_overlay_text": "cobble clay"
       }
     },
@@ -106,24 +97,24 @@
           "type": "two-grid",
           "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/worn-retouched.jpg",
-            "text": "<p><strong>Worn Clay</strong></p><p>The Worn Clay Paver is hand-antiqued in the spirit of the aged terracotta earthenware. Characterized by unfinished edges and a patinated appearance, this paver lends tactile warmth to its surroundings.</p>"
+            "image": "shopify:\/\/shop_images\/worn-retouched.jpg",
+            "text": "<p><strong>Worn Clay<\/strong><\/p><p>The Worn Clay Paver is hand-antiqued in the spirit of the aged terracotta earthenware. Characterized by unfinished edges and a patinated appearance, this paver lends tactile warmth to its surroundings.<\/p>"
           }
         },
         "586575a9-b1b8-42f9-990a-da3dd8f51bc6": {
           "type": "two-grid",
           "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/Earth_be9496e7-c2cf-442e-8655-bb1d24a4c6d7.png",
-            "text": "<p><strong>Clay Paver<br/><br/></strong>The Clay Paver shapes locally-sourced California clay into familiar form. Defined by a naturally textured surface, its minimalist profile lends a thoughtfully tactile element suited for outdoor pathways, patios, driveways, exterior cladding and interior applications.</p>"
+            "image": "shopify:\/\/shop_images\/Earth_be9496e7-c2cf-442e-8655-bb1d24a4c6d7.png",
+            "text": "<p><strong>Clay Paver<br\/><br\/><\/strong>The Clay Paver shapes locally-sourced California clay into familiar form. Defined by a naturally textured surface, its minimalist profile lends a thoughtfully tactile element suited for outdoor pathways, patios, driveways, exterior cladding and interior applications.<\/p>"
           }
         },
         "e64aacb9-049a-45d5-93a6-7d274b43903b": {
           "type": "two-grid",
           "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/Earth_Terrazzo_Edited_copy_1.png",
-            "text": "<p><strong>Recycled Terrazzo<br/><br/></strong>The Recycled Terrazzo Paver is a mosaic of natural shapes, sediments and geological textures. Sustainable by design, this paver is comprised of rock offcuts suspended in recycled concrete and softened to a textured matte finish.</p>"
+            "image": "shopify:\/\/shop_images\/Earth_Terrazzo_Edited_copy_1.png",
+            "text": "<p><strong>Recycled Terrazzo<br\/><br\/><\/strong>The Recycled Terrazzo Paver is a mosaic of natural shapes, sediments and geological textures. Sustainable by design, this paver is comprised of rock offcuts suspended in recycled concrete and softened to a textured matte finish.<\/p>"
           }
         },
         "two_grid_YjDDiM": {
@@ -145,14 +136,14 @@
       ],
       "settings": {
         "banner_show_for_tag": "_Samples",
-        "banner_image": "shopify://shop_images/Paver_Mud_Family_Paver_Flatlay.jpg",
+        "banner_image": "shopify:\/\/shop_images\/Paver_Mud_Family_Paver_Flatlay.jpg",
         "banner_overlay_text": "of earth"
       }
     },
     "custom_liquid_UmhWAa": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<style>\n.section-paver-banner:not(:has(div)) {\n    display: none;\n}\n</style>",
+        "custom_liquid": "<style>\n.section-paver-banner:not(:has(div)) {\n    display: none;\n}\n<\/style>",
         "color_scheme": "background-1",
         "padding_top": 40,
         "padding_bottom": 52

@@ -1,0 +1,9 @@
+{% if product.metafields["custom"]["featured"] != blank %}
+  <div class="custom-field custom-field__featured custom-field__type--boolean">
+    <h3 class="custom-field--title">Featured</h3>
+    <div class="custom-field--value">
+{{ product.metafields["custom"]["featured"] | metafield_tag }}
+
+    </div>
+  </div>
+{% endif %}
