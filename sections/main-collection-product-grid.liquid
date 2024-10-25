@@ -66,11 +66,17 @@
 
 {% comment %} grid is on product page {% endcomment %}
 {% if product %}
-  {% comment %} include only products with the same variant {% endcomment %}
-  {% assign product_variants = product.variants %}
-  {% comment %} END include only products with the same type {% endcomment %}
+  {% assign primary_collection = nil %}
+
+  {% for collection in product.collections %}
+    {% if collection.handle != 'all' %}
+      {% assign primary_collection = collection %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  
   <div class="section-{{ section.id }}-padding">
-    {%- paginate collection.products by section.settings.products_per_page -%}
+    {% comment %} {%- paginate collection.products by section.settings.products_per_page -%} {% endcomment %}
         <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}">
         {% unless is_samples %}
           <div class="feed--view-type">
@@ -103,6 +109,10 @@
               </div>
             </div>
           {%- else -%}
+            {% comment %} {% assign primary_collection = product.collections %}
+            {% if primary_collection.handle != 'all' %}
+            {% render 'dump' with primary_collection %}
+            {% endif %} {% endcomment %}
             <div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
               <div class="loading-overlay gradient"></div>
 
@@ -113,7 +123,17 @@
                 {% assign index = 0 %}
                 {% assign filter_tag = section.settings.filter_on_tag %}
                 {% comment %} products array including only the products with the product type property value {% endcomment %}
-                {%- for product in product_variants -%}
+                {%- for product in primary_collection.products -%}
+                  
+                  {% assign has_matching_tag = false %}
+
+                  {% for tag in product.tags %}
+                    {% if product.tags contains tag %}
+                      {% assign has_matching_tag = true %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                  
                   {% assign lazy_load = false %}
                   {% assign product_expanded = false %}
                   {%- if forloop.index > 2 -%}
@@ -228,7 +248,7 @@
           {%- endif -%}
         </div>
       </div>
-    {%- endpaginate -%}
+    {% comment %} {%- endpaginate -%} {% endcomment %}
   </div>
 {% elsif collection %}
   {% liquid
