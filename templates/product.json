@@ -169,7 +169,6 @@
         },
         "99abcc6b-4e08-4fd7-8b9f-da6286c76e03": {
           "type": "custom_liquid",
-          "disabled": true,
           "settings": {
             "title": "First Image",
             "custom_liquid": "{% if product.selected_variant and product.selected_variant.featured_media  %}\n          {%- assign featured_media = product.selected_or_first_available_variant.featured_media -%}\n        {% elsif product.featured_media %}\n          {%- assign featured_media = product.featured_media -%}\n        {% endif %}\n        {% render 'snippet--image', img: featured_media %}"
