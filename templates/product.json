@@ -163,6 +163,7 @@
         },
         "dfe8e3ca-f35a-4e19-bce3-d5c059ebeea2": {
           "type": "selected_product_media",
+          "disabled": true,
           "settings": {
           }
         },
