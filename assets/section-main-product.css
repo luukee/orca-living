@@ -389,6 +389,10 @@ fieldset.product-form__input .form__label {
 	margin: 2.5rem 0
 }
 
+.product__info-container .product-form__gift-card {
+	margin: 0 0 2.5rem 0;
+}
+
 .product__info-container .product-form,
 .product .product__info-container .buy-buttons_wrap {
 	margin-bottom: 0
@@ -1533,13 +1537,18 @@ a.product__text {
 		display: none
 	}
 }
-
+.customer__gift-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center
+}
 .recipient-form {
 	--recipient-checkbox-margin-top: 0.64rem;
 	display: block;
 	position: relative;
 	max-width: 44rem;
-	margin-bottom: 2.5rem
+	margin-bottom: 2.5rem;
+	width: 100%
 }
 
 .recipient-form-field-label {
