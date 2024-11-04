@@ -146,6 +146,40 @@
         </div>
       </div>
 
+      <div class="recipient-fields__field"> {% comment %} From {% endcomment %}
+        <div class="field">
+          <input
+            class="field__input"
+            autocomplete="name"
+            type="text"
+            id="From-{{ section.id }}"
+            name="properties[From]"
+            placeholder="{{ 'recipient.form.from' | t }}"
+            value="{{ form.from }}"
+            {% if form.errors contains 'name' %}
+              aria-invalid="true"
+              aria-describedby="From-error-{{ section.id }}"
+            {% endif %}
+          >
+          <label class="field__label" for="From-{{ section.id }}">
+            {{- 'recipient.form.from_label' | t -}}
+          </label>
+        </div>
+
+        <div
+          id="From-name-error-{{ section.id }}"
+          class="form__message{% unless form.errors contains 'name' %} hidden{% endunless %}"
+        >
+          {% render 'icon-error' %}
+          <span class="error-message">
+            {%- if form.errors contains 'name' -%}
+              {{ form.errors.translated_fields.name | capitalize }}
+              {{ form.errors.messages.name }}.
+            {%- endif -%}
+          </span>
+        </div>
+      </div>
+      
       <div class="recipient-fields__field">
         {%- assign max_chars_message = 200 -%}
         {%- assign max_chars_message_rendered = 'recipient.form.max_characters' | t: max_chars: max_chars_message -%}

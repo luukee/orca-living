@@ -475,6 +475,8 @@
       "email": "Email",
       "name_label": "Recipient name (optional)",
       "name": "Name",
+      "from_label": "From name (optional)",
+      "from": "From",
       "message_label": "Message (optional)",
       "message": "Message",
       "max_characters": "{{ max_chars }} characters max"
