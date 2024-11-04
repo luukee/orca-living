@@ -475,7 +475,7 @@
       "email": "Email",
       "name_label": "Recipient name (optional)",
       "name": "Name",
-      "from_label": "From",
+      "from_label": "From name (optional)",
       "from": "Name",
       "message_label": "Message (optional)",
       "message": "Message",
