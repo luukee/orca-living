@@ -484,7 +484,7 @@
       "email": "Email",
       "name_label": "Recipient name",
       "name": "Name",
-      "from_label": "From name",
+      "from_label": "From",
       "from": "Name",
       "message_label": "Message (optional)",
       "message": "Message",
