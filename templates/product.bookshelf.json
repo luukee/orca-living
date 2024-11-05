@@ -141,8 +141,16 @@
             "custom_liquid": "{% if product.type == 'Paver' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n{% endif %}"
           }
         },
+        "custom_liquid_BTz9HH": {
+          "type": "custom_liquid",
+          "settings": {
+            "title": "",
+            "custom_liquid": ""
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
+          "disabled": true,
           "settings": {
             "show_dynamic_checkout": false,
             "show_gift_card_recipient": false,
@@ -224,6 +232,7 @@
         "990496b9-45f5-4d28-8fac-28cde7981284",
         "37c16ae2-8059-4ef5-bc28-e6e8934d1b25",
         "280b22a8-63c8-4d97-be23-ea1752259cd1",
+        "custom_liquid_BTz9HH",
         "buy_buttons",
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72",
         "351e9119-7dce-482d-92e8-1e70ca0a9bf9",
