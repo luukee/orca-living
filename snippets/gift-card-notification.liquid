@@ -1,0 +1,533 @@
+{% comment %} 
+ Email Subject 
+ Includes the gift card "from" name
+{% endcomment %}
+{% comment %}
+ {%- for prop in gift_card.properties -%}{% assign from_name = prop.last %}{%- endfor -%}{{ shop.name }} {{ gift_card.initial_value | money_without_trailing_zeros }} gift card{% if gift_card.recipient and gift_card.customer %} from {% if from_name != blank -%}{{- from_name -}}{% elsif gift_card.customer.name != blank %}{{ gift_card.customer.name }}{% elsif gift_card.customer.email != blank %}{{ gift_card.customer.email }}{% else %}{{ gift_card.customer.phone }}{% endif %}{% endif %}
+{% endcomment %}
+
+{% unless gift_card.properties == empty %}
+  {%- for prop in gift_card.properties -%}
+    {% assign prop_last = prop.last %}
+  {%- endfor -%}
+{% endunless %}
+
+{% if gift_card.recipient %}
+  {% if gift_card.customer %}
+    {% if prop_last != blank %}
+      {% assign sender_name = prop_last %}
+    {% elsif gift_card.customer.name != blank %}
+      {% assign sender_name = gift_card.customer.name %}
+    {% elsif gift_card.customer.email != blank %}
+      {% assign sender_name = gift_card.customer.email %}
+    {% else %}
+      {% assign sender_name = gift_card.customer.phone %}
+    {% endif %}
+  {% else %}
+    {% assign sender_name = shop.name %}
+  {% endif %}
+
+  {% if gift_card.recipient.nickname != blank %}
+    {% assign recipient_name = gift_card.recipient.nickname %}
+  {% elsif gift_card.recipient.name != blank %}
+    {% assign recipient_name = gift_card.recipient.name %}
+  {% else %}
+    {% assign recipient_name = gift_card.recipient.email %}
+  {% endif %}
+
+  {% capture email_title %}
+    Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
+  {% endcapture %}
+{% endif %}
+
+<!doctype html>
+<html lang='en'>
+  <head>
+    <title>{{ email_title }}</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <link rel='stylesheet' type='text/css' href='/assets/notifications/styles.css'>
+    <style>
+      .button__cell { background: {{ shop.email_accent_color }}; }
+      a, a:hover, a:active, a:visited { color: {{ shop.email_accent_color }}; }
+    </style>
+  </head>
+
+  <body>
+    <table class='body giftcard__body'>
+      <tr>
+        <td class='empty-line'>&nbsp;</td>
+      </tr>
+      <tr>
+        <td class='empty-line'>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <table class='row content'>
+            <tr>
+              <td class='content__cell'>
+                <table class='container'>
+                  <tr>
+                    <td>
+                      {% if gift_card.recipient %}
+                        {% if shop.email_logo_url %}
+                          <table class='giftcard__doubletopmargin'>
+                            <tr>
+                              <td>
+                                <img
+                                  src='{{shop.email_logo_url}}'
+                                  alt='{{ shop.name }}'
+                                  class='giftcard__logosize'
+                                  width='{{ shop.email_logo_width }}'
+                                >
+                              </td>
+                            </tr>
+                          </table>
+                        {% endif %}
+
+                        {% comment %}
+													<table class='row giftcard__topmargin'>
+														<tr>
+															<td class='giftcard__title'>{{ email_title }}</td>
+														</tr>
+													</table> 
+												{% endcomment %}
+
+												{% comment %} Gift card Image {% endcomment %}
+												<table class='giftcard__doubletopmargin'>
+													<tr>
+														<td>
+															<img
+																src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card.jpg?v=1730674081'
+																alt='Gift card image'
+																width='500'
+																height='335'
+															>
+														</td>
+													</tr>
+												</table>
+												
+												{% comment %} Orca message {% endcomment %}
+												<table class='row giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__tagline' style='text-align:left;font-size:20px'>
+                              ENJOY THE GIFT OF NATURE
+                            </td>
+                          </tr>
+                        </table>
+												
+												{% comment %} MESSAGE {% endcomment %}
+                        {% if gift_card.recipient and gift_card.message != blank %}
+                          <table class='row giftcard__topmargin'>
+                            <tr>
+                              <td class='giftcard__message' style='text-align:left'>"{{ gift_card.message }}"</td>
+                            </tr>
+                          </table>
+                        {% endif %}
+
+												{% comment %} AMOUNT {% endcomment %}
+												<table class='giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>Amount:</td>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>
+                              {{ gift_card.initial_value | money_with_currency }}
+                            </td>
+                          </tr>
+                          {% if gift_card.expires_on %}
+                            <tr>
+                              <td class='giftcard__smalltext'>
+                                Expires {{ gift_card.expires_on | date: '%B %e, %Y' }}
+                              </td>
+                            </tr>
+                          {% endif %}
+                        </table>
+
+												{% comment %} From name {% endcomment %}
+												<table class='giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>From:</td>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>
+                              {{ sender_name }}
+                            </td>
+                          </tr>
+                        </table>
+
+												{% comment %} Use code {% endcomment %}
+												<table class='row giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__smalltext' style='font-size:15px;color:#000;text-align:left'>
+                              Use the following code at checkout:
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class='giftcard__code' style='text-align:left'>
+                              {{ gift_card.code | format_code }}
+                            </td>
+                          </tr>
+                        </table>
+
+												{% comment %} Buttons {% endcomment %}
+                        <table class='row actions'>
+                          <tr>
+                            <td class='actions__cell' align='center'>
+                              <table class='button'>
+                                <tr>
+                                  <td
+                                    class='button__cell'
+                                    align='center'
+                                    style='border-radius:50px;min-height:27px;background-color:#000'
+                                  >
+                                    <a
+                                      href='{{ shop.url }}'
+                                      class='button__text'
+                                      style='text-align: center;font-size:15px;padding:0 30px;min-height:27px;line-height:27px'
+                                      >Shop</a
+                                    >
+                                  </td>
+                                </tr>
+                              </table>
+                              <table class='button'>
+                                <tr>
+                                  <td class='link__cell' align='center'>
+                                    <a href='{{ gift_card.url }}' class='link__text' style='font-size:15px;color:#000;'
+                                      >View gift card balance</a
+                                    >
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+
+                        {% if gift_card.pass_url %}
+                          <table class='row'>
+                            <tr>
+                              <td class='giftcard__textcenter'>
+                                <a href='{{ gift_card.pass_url }}' class='apple-wallet-button'>
+                                  <img
+                                    src='{{ 'gift-card/add-to-apple-wallet.png' | shopify_asset_url }}'
+                                    alt='Add to Apple Wallet'
+                                    width='120'
+                                    height='40'
+                                  >
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                        {% endif %}
+
+                      {% else %}
+                        {% comment %} Customer {% endcomment %}
+                        {% if shop.email_logo_url %}
+                          <table class='giftcard__doubletopmargin'>
+                            <tr>
+                              <td>
+                                <img
+                                  src='{{shop.email_logo_url}}'
+                                  alt='{{ shop.name }}'
+                                  class='giftcard__logosize'
+                                  width='{{ shop.email_logo_width }}'
+                                >
+                              </td>
+                            </tr>
+                          </table>
+                        {% endif %}
+
+                        {% comment %} Gift card Image {% endcomment %}
+                        <table class='giftcard__doubletopmargin'>
+                          <tr>
+                            <td>
+                              <img
+                                src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card.jpg?v=1730674081'
+                                alt='Gift card image'
+                                width='500'
+                                height='335'
+                              >
+                            </td>
+                          </tr>
+                        </table>
+
+                        <table class='row giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__tagline' style='text-align:left;font-size:20px'>
+                              ENJOY THE GIFT OF NATURE
+                            </td>
+                          </tr>
+                        </table>
+
+												{% comment %} MESSAGE {% endcomment %}
+                        {% if gift_card.recipient and gift_card.message != blank %}
+                          <table class='row giftcard__topmargin'>
+                            <tr>
+                              <td class='giftcard__message' style='text-align:left'>{{ gift_card.message }}"</td>
+                            </tr>
+                          </table>
+                        {% endif %}
+
+												{% comment %} AMOUNT {% endcomment %}
+												<table class='giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>Amount:</td>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>
+                              {{ gift_card.initial_value | money_with_currency }}
+                            </td>
+                          </tr>
+                          {% if gift_card.expires_on %}
+                            <tr>
+                              <td class='giftcard__smalltext'>
+                                Expires {{ gift_card.expires_on | date: '%B %e, %Y' }}
+                              </td>
+                            </tr>
+                          {% endif %}
+                        </table>
+
+												{% comment %} From name {% endcomment %}
+												<table class='giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>From:</td>
+                            <td class='giftcard__balance' style='font-size:initial;font-weight:400'>
+                              {{ sender_name }}
+                            </td>
+                          </tr>
+                        </table>
+
+												{% comment %} Use code {% endcomment %}
+												<table class='row giftcard__topmargin'>
+                          <tr>
+                            <td class='giftcard__smalltext' style='font-size:15px;color:#000;text-align:left'>
+                              Use the following code at checkout:
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class='giftcard__code' style='text-align:left'>
+                              {{ gift_card.code | format_code }}
+                            </td>
+                          </tr>
+                        </table>
+
+												{% comment %} Buttons {% endcomment %}
+                        <table class='row actions'>
+                          <tr>
+                            <td class='actions__cell' align='center'>
+                              <table class='button'>
+                                <tr>
+                                  <td
+                                    class='button__cell'
+                                    align='center'
+                                    style='border-radius:50px;min-height:27px;background-color:#000'
+                                  >
+                                    <a
+                                      href='{{ shop.url }}'
+                                      class='button__text'
+                                      style='text-align: center;font-size:15px;padding:0 30px;min-height:27px;line-height:27px'
+                                      >Shop</a
+                                    >
+                                  </td>
+                                </tr>
+                              </table>
+                              <table class='button'>
+                                <tr>
+                                  <td class='link__cell' align='center'>
+                                    <a href='{{ gift_card.url }}' class='link__text' style='font-size:15px;color:#000;'
+                                      >View gift card balance</a
+                                    >
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+
+                        {% if gift_card.pass_url %}
+                          <table class='row'>
+                            <tr>
+                              <td class='giftcard__textcenter'>
+                                <a href='{{ gift_card.pass_url }}' class='apple-wallet-button'>
+                                  <img
+                                    src='{{ 'gift-card/add-to-apple-wallet.png' | shopify_asset_url }}'
+                                    alt='Add to Apple Wallet'
+                                    width='120'
+                                    height='40'
+                                  >
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                        {% endif %}
+                      {% endif %}
+
+                      <!-- Additional Content Start -->
+                      <table class='row giftcard__topmargin' style='width: 100%; margin-top: 40px;'>
+                        <!-- "Made for the Outdoors" Section -->
+                        <tr>
+                          <td class='extra-section-title' style='text-align: left; font-size: 20px; padding-top: 20px;'>
+                            MADE FOR THE OUTDOORS
+                          </td>
+                        </tr>
+
+                        <!-- Images with Labels (4 Columns) -->
+                        <tr>
+                          <td>
+                            <table style='width: 100%; text-align: center;'>
+                              <tr>
+                                <td style='width: 50%; padding: 10px;'>
+                                  <a href='https://www.orcaliving.com/collections/plumbing'>
+                                    <img
+                                      src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card-plumbing.jpg?v=1730671078'
+                                      alt='Plumbing'
+                                      width='100%'
+                                    >
+                                  </a>
+                                  <a href='https://www.orcaliving.com/collections/plumbing'>
+                                    <div style='text-align: center; font-size: 12px; padding-top: 5px; color: #000;'>
+                                      PLUMBING
+                                    </div>
+                                  </a>
+                                </td>
+                                <td style='width: 50%; padding: 10px;'>
+                                  <a href='https://www.orcaliving.com/collections/shop-hardware'>
+                                    <img
+                                      src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card-gate-hardware.jpg?v=1730671403'
+                                      alt='Gate Hardware'
+                                      width='100%'
+                                    >
+                                  </a>
+                                  <a href='https://www.orcaliving.com/collections/shop-hardware'>
+                                    <div style='text-align: center; font-size: 12px; padding-top: 5px; color: #000;'>
+                                      GATE HARDWARE
+                                    </div>
+                                  </a>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style='width: 50%; padding: 10px;'>
+                                  <a href='https://www.orcaliving.com/collections/pavers'>
+                                    <img
+                                      src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card-pavers.jpg?v=1730671185'
+                                      alt='Pavers'
+                                      width='100%'
+                                    >
+                                  </a>
+                                  <a href='https://www.orcaliving.com/collections/pavers'>
+                                    <div style='text-align: center; font-size: 12px; padding-top: 5px; color: #000;'>
+                                      PAVERS
+                                    </div>
+                                  </a>
+                                </td>
+                                <td style='width: 50%; padding: 10px;'>
+                                  <a href='https://www.orcaliving.com/collections/furnishings'>
+                                    <img
+                                      src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card-furnishings.jpg?v=1730671077'
+                                      alt='Furnishings'
+                                      width='100%'
+                                    >
+                                  </a>
+                                  <a href='https://www.orcaliving.com/collections/furnishings'>
+                                    <div style='text-align: center; font-size: 12px; padding-top: 5px; color: #000;'>
+                                      FURNISHINGS
+                                    </div>
+                                  </a>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+
+                        <!-- Shop Button -->
+                        <tr>
+                          <td style='text-align: center; padding-top: 20px;'>
+                            <table class='button' style='margin: auto;'>
+                              <tr>
+                                <td
+                                  class='button__cell'
+                                  style='border-radius:50px; min-height:27px; background-color:#000;'
+                                >
+                                  <a
+                                    href='{{ shop.url }}'
+                                    class='button__text'
+                                    style='font-size:15px; padding:0 30px; min-height:27px; line-height:27px; color: #fff; text-decoration: none;'
+                                    >Shop</a
+                                  >
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+
+                        <!-- Links Section -->
+                        <tr>
+                          <td style='text-align: center; padding-top: 20px; padding-bottom: 20px;'>
+                            <table style='width: 100%;'>
+                              <tr>
+                                <td style='padding: 5px; border-top: 1px solid #000;'>
+                                  <a
+                                    href='{{ shop.url }}/blogs/landscapes'
+                                    style='text-decoration: none; color: #000; font-size: 14px;'
+                                    >EXPLORE LANDSCAPES</a
+                                  >
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style='padding: 5px; border-top: 1px solid #000;'>
+                                  <a
+                                    href='{{ shop.url }}/collections/all'
+                                    style='text-decoration: none; color: #000; font-size: 14px;'
+                                    >SHOP OUTDOOR PRODUCTS</a
+                                  >
+                                </td>
+                              </tr>
+                              <tr style='padding: 5px; border-bottom: 1px solid #000;'>
+                                <td style='padding: 5px; border-top: 1px solid #000;'>
+                                  <a
+                                    href='{{ shop.url }}/account/register'
+                                    style='text-decoration: none; color: #000; font-size: 14px;'
+                                    >JOIN OUR TRADE COMMUNITY</a
+                                  >
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+
+                        <!-- Footer Logo -->
+                        <tr>
+                          <td style='text-align: center; padding-top: 20px;'>
+                            <img
+                              src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-material-studies.png?v=1730675294'
+                              alt='Material Studies Logo'
+                              width='150'
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- Additional Content End -->
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <table class='row footer'>
+            <tr>
+              <td class='footer__cell'>
+                <table class='container'>
+                  <tr>
+                    <td>
+                      <p class='disclaimer__subtext'>
+                        If you have any questions, reply to this email or contact us at
+                        <a href='mailto:{{ shop.email }}'>{{ shop.email }}</a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <img src='{{ 'notifications/spacer.png' | shopify_asset_url }}' class='spacer' height='1'>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
