@@ -5,7 +5,6 @@
 {% comment %}
  {%- for prop in gift_card.properties -%}{% assign from_name = prop.last %}{%- endfor -%}{{ shop.name }} {{ gift_card.initial_value | money_without_trailing_zeros }} gift card{% if gift_card.recipient and gift_card.customer %} from {% if from_name != blank -%}{{- from_name -}}{% elsif gift_card.customer.name != blank %}{{ gift_card.customer.name }}{% elsif gift_card.customer.email != blank %}{{ gift_card.customer.email }}{% else %}{{ gift_card.customer.phone }}{% endif %}{% endif %}
 {% endcomment %}
-
 {% unless gift_card.properties == empty %}
   {%- for prop in gift_card.properties -%}
     {% assign prop_last = prop.last %}
@@ -98,7 +97,7 @@
 													<tr>
 														<td>
 															<img
-																src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card.jpg?v=1730674081'
+																src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/Email-header-image.png?v=1730843928'
 																alt='Gift card image'
 																width='500'
 																height='335'
@@ -155,7 +154,7 @@
 												{% comment %} Use code {% endcomment %}
 												<table class='row giftcard__topmargin'>
                           <tr>
-                            <td class='giftcard__smalltext' style='font-size:15px;color:#000;text-align:left'>
+                            <td class='giftcard__smalltext' style='font-size:14px;color:#000;text-align:left'>
                               Use the following code at checkout:
                             </td>
                           </tr>
@@ -170,18 +169,18 @@
                         <table class='row actions'>
                           <tr>
                             <td class='actions__cell' align='center'>
-                              <table class='button'>
+                              <table class='button' style='width: 500px;margin: auto; text-align: center'>
                                 <tr>
                                   <td
                                     class='button__cell'
                                     align='center'
-                                    style='border-radius:50px;min-height:27px;background-color:#000'
+                                    style='border-radius:50px;min-height:27px;background-color:#000; width: 100%'
                                   >
                                     <a
                                       href='{{ shop.url }}'
                                       class='button__text'
-                                      style='text-align: center;font-size:15px;padding:0 30px;min-height:27px;line-height:27px'
-                                      >Shop</a
+                                      style='font-size:14px; padding:0 30px; min-height:27px; line-height:27px; color: #fff; text-decoration: none; display: block; width: 100%; text-align: center;'
+                                    >Shop</a
                                     >
                                   </td>
                                 </tr>
@@ -189,7 +188,7 @@
                               <table class='button'>
                                 <tr>
                                   <td class='link__cell' align='center'>
-                                    <a href='{{ gift_card.url }}' class='link__text' style='font-size:15px;color:#000;'
+                                    <a href='{{ gift_card.url }}' class='link__text' style='font-size:14px;color:#000;'
                                       >View gift card balance</a
                                     >
                                   </td>
@@ -202,7 +201,7 @@
                         {% if gift_card.pass_url %}
                           <table class='row'>
                             <tr>
-                              <td class='giftcard__textcenter'>
+                              <td class='whatisthis giftcard__textcenter'>
                                 <a href='{{ gift_card.pass_url }}' class='apple-wallet-button'>
                                   <img
                                     src='{{ 'gift-card/add-to-apple-wallet.png' | shopify_asset_url }}'
@@ -238,7 +237,7 @@
                           <tr>
                             <td>
                               <img
-                                src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/orca-gift-card.jpg?v=1730674081'
+                                src='https://cdn.shopify.com/s/files/1/0550/1367/1030/files/Email-header-image.png?v=1730843928'
                                 alt='Gift card image'
                                 width='500'
                                 height='335'
@@ -294,7 +293,7 @@
 												{% comment %} Use code {% endcomment %}
 												<table class='row giftcard__topmargin'>
                           <tr>
-                            <td class='giftcard__smalltext' style='font-size:15px;color:#000;text-align:left'>
+                            <td class='giftcard__smalltext' style='font-size:14px;color:#000;text-align:left'>
                               Use the following code at checkout:
                             </td>
                           </tr>
@@ -309,17 +308,17 @@
                         <table class='row actions'>
                           <tr>
                             <td class='actions__cell' align='center'>
-                              <table class='button'>
+                              <table class='button' style='width: 100%;margin: auto;'>
                                 <tr>
                                   <td
                                     class='button__cell'
                                     align='center'
-                                    style='border-radius:50px;min-height:27px;background-color:#000'
+                                    style='border-radius:50px; min-height:27px; background-color:#000; width: 100%'
                                   >
                                     <a
                                       href='{{ shop.url }}'
                                       class='button__text'
-                                      style='text-align: center;font-size:15px;padding:0 30px;min-height:27px;line-height:27px'
+                                      style='text-align: center;font-size:14px;padding:0 30px;min-height:27px;line-height:27px display: block; width: 100%; text-align: center;'
                                       >Shop</a
                                     >
                                   </td>
@@ -328,7 +327,7 @@
                               <table class='button'>
                                 <tr>
                                   <td class='link__cell' align='center'>
-                                    <a href='{{ gift_card.url }}' class='link__text' style='font-size:15px;color:#000;'
+                                    <a href='{{ gift_card.url }}' class='link__text' style='font-size:14px;color:#000;'
                                       >View gift card balance</a
                                     >
                                   </td>
@@ -436,16 +435,16 @@
                         <!-- Shop Button -->
                         <tr>
                           <td style='text-align: center; padding-top: 20px;'>
-                            <table class='button' style='margin: auto;'>
+                            <table class='button' style='width: 100%;margin: auto;'>
                               <tr>
                                 <td
                                   class='button__cell'
-                                  style='border-radius:50px; min-height:27px; background-color:#000;'
+                                  style='border-radius:50px; min-height:27px; background-color:#000; width: 100%'
                                 >
                                   <a
                                     href='{{ shop.url }}'
                                     class='button__text'
-                                    style='font-size:15px; padding:0 30px; min-height:27px; line-height:27px; color: #fff; text-decoration: none;'
+                                    style='font-size:14px; padding:0 30px; min-height:27px; line-height:27px; color: #fff; text-decoration: none; display: block; width: 100%; text-align: center;'
                                     >Shop</a
                                   >
                                 </td>
