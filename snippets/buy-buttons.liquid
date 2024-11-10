@@ -80,63 +80,67 @@
               assign quantity_rule_soldout = true
             endif
           -%}
-          <button
-            id="ProductSubmitButton-{{ section_id }}"
-            type="submit"
-            name="add"
-            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
-            {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
-              disabled
-            {% endif %}
-          >
-            <span>
+          {% if external %}
+            <a href="{{ external_link }}" class="product-form__submit button button--full-width button--primary" target="_blank">Buy</a>
+          {% else %}
+            <button
+              id="ProductSubmitButton-{{ section_id }}"
+              type="submit"
+              name="add"
+              class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+              {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
+                disabled
+              {% endif %}
+            >
               <span>
-                {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-                  {{ 'products.product.sold_out' | t }}
-                {%- else -%}
-                  {{ 'products.product.add_to_cart' | t }}
-                {%- endif -%}
-              </span>
+                <span>
+                  {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- else -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- endif -%}
+                </span>
 
-              {% comment %}
-              {% endcomment %}
-              <span> - </span>
-              {% liquid
-                assign target = product.selected_or_first_available_variant
-                assign price = target.price | default: 1999
-                assign money_price = price | money
-                if settings.currency_code_enabled
-                  assign money_price = price | money_with_currency
-                endif
-
-                if customer and customer.tags contains 'trade'
-                  assign price = price | times: 0.9
+                {% comment %}
+                {% endcomment %}
+                <span> - </span>
+                {% liquid
+                  assign target = product.selected_or_first_available_variant
+                  assign price = target.price | default: 1999
                   assign money_price = price | money
-                endif
-              %}
-              <span class="price-item price-item--regular" data-price="{{ price }}">
-                {% if product_is_sample %}
-                  {{ product_price_max }}
-                {% else %}
-                  {{ money_price }}
-                {% endif %}
-                
-              </span>
-              {% comment %} {% render 'price', product: product, use_variant: true, show_sale: false %} {% endcomment %}
-            </span>
+                  if settings.currency_code_enabled
+                    assign money_price = price | money_with_currency
+                  endif
 
-            <div class="loading-overlay__spinner hidden">
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                class="spinner"
-                viewBox="0 0 66 66"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-              </svg>
-            </div>
-          </button>
+                  if customer and customer.tags contains 'trade'
+                    assign price = price | times: 0.9
+                    assign money_price = price | money
+                  endif
+                %}
+                <span class="price-item price-item--regular" data-price="{{ price }}">
+                  {% if product_is_sample %}
+                    {{ product_price_max }}
+                  {% else %}
+                    {{ money_price }}
+                  {% endif %}
+                  
+                </span>
+                {% comment %} {% render 'price', product: product, use_variant: true, show_sale: false %} {% endcomment %}
+              </span>
+
+              <div class="loading-overlay__spinner hidden">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  class="spinner"
+                  viewBox="0 0 66 66"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+              </div>
+            </button>
+          {% endif %}
           {% liquid
             assign selected_product = product.selected_or_first_available_variant
             assign sample_variant = blank

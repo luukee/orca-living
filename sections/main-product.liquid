@@ -64,6 +64,12 @@
         break
       endif
     endfor
+    
+    assign external = false
+    if product.metafields.custom.book_external_url
+      assign external = true
+      assign external_link = product.metafields.custom.book_external_url
+    endif
   %}
 
   {% unless false %}
@@ -264,9 +270,9 @@
                 </div>
               {% endif %}
             {%- when 'calculator_quantity' -%}
-              {% render 'product-quantity-calculator', product_form_id: product_form_id %}
+              {% render 'product-quantity-calculator', product_form_id: product_form_id, external: external %}
             {%- when 'quantity_selector' -%}
-              {% render 'product-quantity', product_form_id: product_form_id %}
+              {% render 'product-quantity', product_form_id: product_form_id, external: external %}
             {%- when 'popup' -%}
               <modal-opener
                 class="product-popup-modal__opener no-js-hidden quick-add-hidden"
@@ -294,7 +300,7 @@
             {%- when 'variant_picker' -%}
               {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
             {%- when 'buy_buttons' -%}
-              {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true -%}
+              {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}
             {%- when 'rating' -%}
               {%- if product.metafields.reviews.rating.value != blank -%}
                 {% liquid

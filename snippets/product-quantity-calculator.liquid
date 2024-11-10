@@ -12,19 +12,20 @@
   endfor
 
 %}
+{% unless external %}
+  <div class="product__calc-qty {% unless is_pavers %}show-qty-buttons{% endunless %}">
+    
+    <div class="product__calc-title">
+      Quantity:
+    </div>
 
-<div class="product__calc-qty {% unless is_pavers %}show-qty-buttons{% endunless %}">
-  
-  <div class="product__calc-title">
-    Quantity:
+    <div class="calculator-module--container">
+
+      {% comment %} {% render 'product-calculator' %} {% endcomment %}
+
+      {% render 'product-quantity', is_pavers: is_pavers, product_form_id: product_form_id %}
+
+    </div>
+
   </div>
-
-  <div class="calculator-module--container">
-
-    {% comment %} {% render 'product-calculator' %} {% endcomment %}
-
-    {% render 'product-quantity', is_pavers: is_pavers, product_form_id: product_form_id %}
-
-  </div>
-
-</div>
+{% endunless %}
