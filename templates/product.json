@@ -14,7 +14,7 @@
       "settings": {
         "title": "Shop",
         "make_h1": false,
-        "menu": "collections-menu-dev",
+        "menu": "collections-menu",
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -95,14 +95,12 @@
         },
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133": {
           "type": "calculator_quantity",
-          "settings": {
-          }
+          "settings": {}
         },
         "990496b9-45f5-4d28-8fac-28cde7981284": {
           "type": "quantity_selector",
           "disabled": true,
-          "settings": {
-          }
+          "settings": {}
         },
         "37c16ae2-8059-4ef5-bc28-e6e8934d1b25": {
           "type": "shopify://apps/diy-quantity-calculator/blocks/app-block/a5d912db-c503-44a8-b562-fb0cc09650a4",
@@ -158,14 +156,12 @@
         },
         "351e9119-7dce-482d-92e8-1e70ca0a9bf9": {
           "type": "selected_color_carousel",
-          "settings": {
-          }
+          "settings": {}
         },
         "dfe8e3ca-f35a-4e19-bce3-d5c059ebeea2": {
           "type": "selected_product_media",
           "disabled": true,
-          "settings": {
-          }
+          "settings": {}
         },
         "99abcc6b-4e08-4fd7-8b9f-da6286c76e03": {
           "type": "custom_liquid",
@@ -177,8 +173,7 @@
         },
         "description": {
           "type": "description",
-          "settings": {
-          }
+          "settings": {}
         },
         "632b5178-719f-4860-942b-84d82a7ad73d": {
           "type": "collapsible_tab",
