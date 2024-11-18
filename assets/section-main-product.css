@@ -1900,13 +1900,17 @@ a.product__text {
 	max-width: 100%
 }
 
-.product .product-form__buttons button {
+.product .product-form__buttons button,
+.product .product-form__buttons a {
 	min-height: calc(2.5rem + var(--buttons-border-width) * 2)
 }
 
 .product .product-form__buttons button,
 .product .product-form__buttons button:before,
-.product .product-form__buttons button:after {
+.product .product-form__buttons button:after,
+.product .product-form__buttons a,
+.product .product-form__buttons a:before,
+.product .product-form__buttons a:after {
 	border-radius: 50px
 }
 
