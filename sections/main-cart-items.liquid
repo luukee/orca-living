@@ -122,35 +122,6 @@
                       </div>
                     {%- endif -%}
 
-                    {% comment %} Pavers special note {% endcomment %}
-                    {% comment %} {% render 'dump' with item.product %} {% endcomment %}
-                    {% liquid
-                      if section.settings.product_note_enable
-                        # Assign customizer values
-                        assign product_type = section.settings.product_note_type
-                        assign product_note = section.settings.product_note
-                        assign product_note_tag_excp = section.settings.product_note_tag_excp
-                        assign product_note_tag_excp_note = section.settings.product_note_tag_excp_note
-                        assign product_excp = false
-                        assign paver_note = ''
-                        assign product_tags = item.product.tags
-                        
-                        # Logic
-                        # Set product_excp true if product tag exception has a value
-                        for product_tag in product_tags
-                          if product_tag contains product_note_tag_excp
-                            assign product_excp = true
-                          endif
-                        endfor
-                        if product_excp
-                          assign paver_note = product_note_tag_excp_note
-                        else
-                          assign paver_note = product_note
-                        endif
-                      # END section.settings.product_note_enable
-                      endif
-                    %}
-                    
                     {%- if item.product.has_only_default_variant == false
                       or item.properties.size != 0
                       or item.selling_plan_allocation != null
@@ -163,14 +134,30 @@
                               <dd>{{ option.value }}</dd>
                             </div>
                           {%- endfor -%}
-                          {% comment %} Add the product note {% endcomment %}
-                          {%- if item.product.type == product_type -%}
-                            <div class="product-option">
-                                <dd style="font-style:italic;">{{ paver_note }}</dd>
-                            </div>
-                          {%- endif -%}
                         {%- endif -%}
-
+                        {% comment %} Custom metafield cart notes {% endcomment %}
+                        {% if section.settings.product_note_enable %}
+                          {% liquid
+                            # Assign metafield values
+                            assign product_cart_note_meta = item.product.metafields.custom.cart_product_note
+                            assign product_sample_cart_note_meta = item.product.metafields.custom.cart_sample_product_note
+                          %}
+                        
+                          {%- for option in item.options_with_values -%}
+                            <div class="product-option">
+                              {% if option.value == 'Sample' %}
+                                <dd style="font-style:italic">
+                                  {{ product_sample_cart_note_meta }}
+                                </dd>
+                              {% else %}
+                                <dd style="font-style:italic">
+                                  {{ product_cart_note_meta }}
+                                </dd>
+                              {% endif %}
+                            </div>
+                            {% break %}
+                          {%- endfor -%}
+                        {% endif %}
                         {%- for property in item.properties -%}
                           {%- assign property_first_char = property.first | slice: 0 -%}
                           {%- if property.last != blank and property_first_char != '_' -%}
@@ -460,40 +447,8 @@
       "id": "product_note_enable",
       "label": "Enable product note",
       "default": false,
-      "info": "Enable if you want to show a note on a product in the cart list. Based on product type."
-    },
-    {
-      "type": "text",
-      "id": "product_note_type",
-      "label": "Product type",
-      "placeholder": "ex. Paver",
-      "default": "Paver",
-      "info": "Add product type you'd like to show the note on. *required if Enable product note is checked"
-    },
-    {
-      "type": "textarea",
-      "id": "product_note",
-      "label": "Product note",
-      "default": "*Please note, when sampling our clay pavers, you will receive a tile size.",
-      "placeholder": "ex. *Please note...",
-      "info": "Default product note."
-    },
-    {
-      "type": "text",
-      "id": "product_note_tag_excp",
-      "label": "Product tag exception",
-      "placeholder": "ex. _Recycled",
-      "default": "_Recycled",
-      "info": "Add the product tag you'd like to change the note on."
-    },
-    {
-      "type": "textarea",
-      "id": "product_note_tag_excp_note",
-      "label": "Product tag exception note",
-      "default": "*Please note, when sampling Recycled Block Pavers, you will receive a split size.",
-      "placeholder": "ex. *Please note...",
-      "info": "Tag exception note."
-    },
+      "info": "Enable if you want to show the product cart note from product metafields."
+    }
   ]
 }
 {% endschema %}
