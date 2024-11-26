@@ -1540,7 +1540,6 @@ a.product__text {
 .customer__gift-card {
 	display: flex;
 	flex-direction: column;
-	align-items: center
 }
 .recipient-form {
 	--recipient-checkbox-margin-top: 0.64rem;
