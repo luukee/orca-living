@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "cart-items": {
@@ -5,11 +14,7 @@
       "settings": {
         "padding_top": 16,
         "padding_bottom": 16,
-        "product_note_enable": true,
-        "product_note_type": "Paver",
-        "product_note": "*Please note, when sampling our Clay Pavers, you will receive a tile size.",
-        "product_note_tag_excp": "_Recycled",
-        "product_note_tag_excp_note": "*Please note, when sampling Recycled Block Pavers, you will receive a split size."
+        "product_note_enable": true
       }
     },
     "cart-footer": {

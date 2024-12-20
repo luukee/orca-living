@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -11,7 +20,7 @@
       "type": "contact-form",
       "settings": {
         "heading": "",
-        "text": "<p>If you're interested in our design services, please complete our client inquiry form <a href=\"https:\/\/fw946bppuui.typeform.com\/to\/lJcc57K2\"><span style=\"text-decoration:underline\">here<\/span><\/a>. We will follow up within 5-7 business days to schedule a phone consultation to review the project.<\/p><p>For all other product questions or general inquiries, please fill out the form below or email <a href=\"mailto:hello@orcaliving.com\">hello@orcaliving.com<\/a>.<\/p><p><\/p>",
+        "text": "<p>If you're interested in our design services, please complete our client inquiry form <span data-tf-live=\"01J7EG61RERFXG6FP7TS3TZY0H\"></span>. We will follow up within 5-7 business days to schedule a phone consultation to review the project.</p><p>For all other product questions or general inquiries, please fill out the form below or email <a href=\"mailto:hello@orcaliving.com\">hello@orcaliving.com</a>.</p><p></p><script src=\"//embed.typeform.com/next/embed.js\"></script>",
         "heading_size": "h1",
         "color_scheme": "background-1",
         "select_title": "Subject",
