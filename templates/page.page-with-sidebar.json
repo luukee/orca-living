@@ -9,6 +9,16 @@
  */
 {
   "sections": {
+    "side_navigation_wW4wtt": {
+      "type": "side-navigation",
+      "settings": {
+        "title": "",
+        "make_h1": false,
+        "menu": "collections-menu",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "main": {
       "type": "main-page",
       "custom_css": [
@@ -17,16 +27,6 @@
       "settings": {
         "padding_top": 32,
         "padding_bottom": 32
-      }
-    },
-    "side_navigation_wW4wtt": {
-      "type": "side-navigation",
-      "settings": {
-        "title": "",
-        "make_h1": false,
-        "menu": "main-menu",
-        "padding_top": 40,
-        "padding_bottom": 52
       }
     }
   },
