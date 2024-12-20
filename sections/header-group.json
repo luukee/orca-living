@@ -5,8 +5,7 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "disabled": true,
-      "settings": {
-      }
+      "settings": {}
     },
     "header": {
       "type": "header",

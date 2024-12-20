@@ -22,23 +22,19 @@
         },
         "excerpt_CnWeW7": {
           "type": "excerpt",
-          "settings": {
-          }
+          "settings": {}
         },
         "content_TpAFQW": {
           "type": "content",
-          "settings": {
-          }
+          "settings": {}
         },
         "location_info_4jWBbr": {
           "type": "location_info",
-          "settings": {
-          }
+          "settings": {}
         },
         "image_with_caption_iWQcTP": {
           "type": "image_with_caption",
-          "settings": {
-          }
+          "settings": {}
         },
         "featured_image_kp8xAc": {
           "type": "featured_image",
@@ -99,8 +95,7 @@
       "custom_css": [
         "> * {margin: var(--base-gutter--half) 0;}"
       ],
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [

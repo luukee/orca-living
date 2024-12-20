@@ -33,8 +33,7 @@
         },
         "content": {
           "type": "content",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -46,8 +45,7 @@
       "custom_css": [
         "> * {margin: var(--base-gutter--half) 0;}"
       ],
-      "settings": {
-      }
+      "settings": {}
     },
     "2e29f856-a629-41cb-9b51-49b8164a7b82": {
       "type": "custom-liquid",

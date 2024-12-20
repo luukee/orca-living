@@ -61,8 +61,7 @@
         },
         "content": {
           "type": "content",
-          "settings": {
-          }
+          "settings": {}
         },
         "9f228047-83f2-442b-8b2a-3bdc09f83b4a": {
           "type": "custom_liquid",
@@ -88,11 +87,8 @@
         "9f228047-83f2-442b-8b2a-3bdc09f83b4a",
         "e0295ff1-4dbf-4cd5-b3bc-e7425b7899a5"
       ],
-      "custom_css": [
-
-      ],
-      "settings": {
-      }
+      "custom_css": [],
+      "settings": {}
     },
     "2e29f856-a629-41cb-9b51-49b8164a7b82": {
       "type": "custom-liquid",

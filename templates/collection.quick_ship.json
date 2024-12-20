@@ -44,9 +44,7 @@
     },
     "be769056-a616-4653-a32a-74f9b612fbc4": {
       "type": "custom-liquid",
-      "custom_css": [
-
-      ],
+      "custom_css": [],
       "settings": {
         "custom_liquid": "<div class=\"hovered-item small--hide\" data-preview-collection>\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
         "color_scheme": "background-1",
@@ -131,9 +129,7 @@
         "e64aacb9-049a-45d5-93a6-7d274b43903b",
         "two_grid_YjDDiM"
       ],
-      "custom_css": [
-
-      ],
+      "custom_css": [],
       "settings": {
         "banner_show_for_tag": "_Samples",
         "banner_image": "shopify:\/\/shop_images\/Paver_Mud_Family_Paver_Flatlay.jpg",
