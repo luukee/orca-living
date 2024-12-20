@@ -18,9 +18,20 @@
         "padding_top": 32,
         "padding_bottom": 32
       }
+    },
+    "side_navigation_wW4wtt": {
+      "type": "side-navigation",
+      "settings": {
+        "title": "",
+        "make_h1": false,
+        "menu": "main-menu",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
+    "side_navigation_wW4wtt",
     "main"
   ]
 }

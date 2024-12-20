@@ -4936,6 +4936,7 @@ details-disclosure > details {
   .template--collection .simple-footer,
   .template--page-contact #MainContent,
   .template--page-contact .simple-footer,
+  .template--page-page-with-sidebar #MainContent,
   .template--register #MainContent,
   .template--register .simple-footer,
   .template--addresses #MainContent,
@@ -5073,14 +5074,16 @@ details-disclosure > details {
 }
 @media only screen and (min-width: 750px) {
   .template--collection #MainContent > *:nth-child(1) > *,
+  .template--page-page-with-sidebar #MainContent > *:nth-child(1) > *,
   .template--collection #MainContent > *:nth-child(3) > *,
   .template--blog #MainContent > *:nth-child(1) > *,
   .template--blog #MainContent > *:nth-child(3) > * {
     position: sticky;
-    top: var(--sticky-top);
+    top: 95px;
     transition: top 0.15s ease-out;
   }
   .template--collection #MainContent > *:nth-child(1) > * > *:first-child,
+  .template--page-page-with-sidebar #MainContent > *:nth-child(1) > * > *:first-child,
   .template--collection #MainContent > *:nth-child(3) > * > *:first-child,
   .template--blog #MainContent > *:nth-child(1) > * > *:first-child,
   .template--blog #MainContent > *:nth-child(3) > * > *:first-child {
