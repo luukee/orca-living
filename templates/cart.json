@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "cart-items": {
@@ -7,6 +16,11 @@
         "padding_bottom": 16,
         "product_note_enable": true
       }
+    },
+    "cart-hear-about-us": {
+      "type": "cart-hear-about-us",
+      "disabled": true,
+      "settings": {}
     },
     "cart-footer": {
       "type": "main-cart-footer",
@@ -25,14 +39,11 @@
         "buttons"
       ],
       "settings": {}
-    },
-    "cart-hear-about-us": {
-      "type": "cart-hear-about-us"
     }
   },
   "order": [
     "cart-items",
-        "cart-hear-about-us",
+    "cart-hear-about-us",
     "cart-footer"
   ]
 }
