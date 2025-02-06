@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "29db9ca7-acdf-4494-97cc-e78c6a58cae8": {
@@ -7,10 +16,11 @@
           "type": "slider",
           "settings": {
             "show_image": true,
+            "image": "shopify://shop_images/ORCA_Home_page.png",
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 25,
-            "image_mob": "shopify:\/\/shop_images\/ORCA_home_page_mobile.png",
+            "image_mob": "shopify://shop_images/ORCA_home_page_mobile.png",
             "align_bg_mob": "center",
             "bg_color_mob": "#000000",
             "opacity_mob": 10,
@@ -45,11 +55,11 @@
             "hor_align": 10,
             "width": "450px",
             "video_ratio": "56",
-            "video_url": "https:\/\/youtu.be\/9O6g9ZUlYsY?si=9HEabvyqgBD1SABW",
+            "video_url": "",
             "video_hosted": "",
             "btn_txt_modal": "Watch Video",
             "video_modal": "",
-            "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  \/\/ background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
+            "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  // background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
             "metafield_image": "",
             "metafield_image_alt": ""
           }
@@ -70,7 +80,7 @@
         "use_arrows": false,
         "use_dots": true,
         "pause": "5000",
-        "custom_css": ".shopify-section-group-header-group {\n  position: fixed;\n  z-index: 10000;\n  width: 100%;\n}\n.header__menu-item,\n.header__cart,\n.header__heading-logo,\nheader-drawer .cart_mobile,\n.header__icon > span > svg\n{\n  filter: invert(1);\n}\n\n.gradient {\n  background: transparent;\n  border: none;\n}\n\n\/*.shopify-section-group-header-group,*\/\n.shopify-section-group-footer-group {\n  display: none;\n}\n\/* LUKE CSS *\/\n\/* mobile menu *\/\n\/*\n.section-header header-drawer {\n  display: none;\n}\n*\/\n\/* cart *\/\n.section-header .header__cart {\n  display: none;\n}\n\/* desktop menu *\/\n.section-header .header__inline-menu {\n  display: none;\n}"
+        "custom_css": ".shopify-section-group-header-group {\n  position: fixed;\n  z-index: 10000;\n  width: 100%;\n}\n.header__menu-item,\n.header__cart,\n.header__heading-logo,\nheader-drawer .cart_mobile,\n.header__icon > span > svg\n{\n  filter: invert(1);\n}\n\n.gradient {\n  background: transparent;\n  border: none;\n}\n\n/*.shopify-section-group-header-group,*/\n.shopify-section-group-footer-group {\n  display: none;\n}\n/* LUKE CSS */\n/* mobile menu */\n/*\n.section-header header-drawer {\n  display: none;\n}\n*/\n/* cart */\n.section-header .header__cart {\n  display: none;\n}\n/* desktop menu */\n.section-header .header__inline-menu {\n  display: none;\n}"
       }
     },
     "rich_text_iptR9Q": {
@@ -79,7 +89,7 @@
         "heading_QMmrx8": {
           "type": "heading",
           "settings": {
-            "heading": "Outdoor design and product studio re\/connecting humans to earth.",
+            "heading": "Outdoor design and product studio re/connecting humans to earth.",
             "heading_size": "h1"
           }
         },
@@ -87,10 +97,10 @@
           "type": "button",
           "settings": {
             "button_label": "Landscapes",
-            "button_link": "shopify:\/\/blogs\/landscapes",
+            "button_link": "shopify://blogs/landscapes",
             "button_style_secondary": true,
             "button_label_2": "Shop",
-            "button_link_2": "shopify:\/\/collections\/all",
+            "button_link_2": "shopify://collections/all",
             "button_style_secondary_2": true,
             "button_mobile_menu": true
           }
@@ -116,7 +126,7 @@
         "div {bottom: 0;}"
       ],
       "settings": {
-        "custom_liquid": "<style>\n@media only screen and (min-width: 750px) {\n  .rich-text:not(.rich-text--full-width) .rich-text__wrapper {\n    width: calc(100% - 21rem \/ var(--font-body-scale));\n  }\n}\n.template--index #MainContent>*:not(#shopify-section-template--15281807065206__custom_liquid_jzJyUM):nth-child(2) {\n    bottom: 45vh !important;\n  }\n.rich-text__buttons {\n  gap: 2em;\n}\n.rich-text__heading,\n.button {\n  color: #fff;\n}\n.button {\n  font-size: 2rem;\n  background-color: transparent;\n  padding: 0;\n  justify-content: flex-start;\n  flex-grow: 0;\n  min-width: unset;\n  min-height: 1.5em\n}\n.button::before,\n.button::after {\n  box-shadow: none;\n}\n.button::after {\n  content: \"\";\n  border-bottom: 1px solid #fff !important;\n}\n.button:not([disabled]):hover::after {\n  box-shadow: none;\n  border-bottom-width: 2px !important;\n}\n#shopify-section-template--15267871654006__custom_liquid_jzJyUM {\n    top: 60vh;\n}\n<\/style>",
+        "custom_liquid": "<style>\n@media only screen and (min-width: 750px) {\n  .rich-text:not(.rich-text--full-width) .rich-text__wrapper {\n    width: calc(100% - 21rem / var(--font-body-scale));\n  }\n}\n.template--index #MainContent>*:not(#shopify-section-template--15281807065206__custom_liquid_jzJyUM):nth-child(2) {\n    bottom: 45vh !important;\n  }\n.rich-text__buttons {\n  gap: 2em;\n}\n.rich-text__heading,\n.button {\n  color: #fff;\n}\n.button {\n  font-size: 2rem;\n  background-color: transparent;\n  padding: 0;\n  justify-content: flex-start;\n  flex-grow: 0;\n  min-width: unset;\n  min-height: 1.5em\n}\n.button::before,\n.button::after {\n  box-shadow: none;\n}\n.button::after {\n  content: \"\";\n  border-bottom: 1px solid #fff !important;\n}\n.button:not([disabled]):hover::after {\n  box-shadow: none;\n  border-bottom-width: 2px !important;\n}\n#shopify-section-template--15267871654006__custom_liquid_jzJyUM {\n    top: 60vh;\n}\n</style>",
         "color_scheme": "background-1",
         "padding_top": 0,
         "padding_bottom": 52
@@ -172,7 +182,7 @@
       "type": "custom-liquid",
       "disabled": true,
       "settings": {
-        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
+        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
         "color_scheme": "background-1",
         "padding_top": 16,
         "padding_bottom": 16
