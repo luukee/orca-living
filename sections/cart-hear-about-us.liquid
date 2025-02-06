@@ -1,0 +1,47 @@
+{% comment %}
+  "How did you hear about us?" dropdown for the cart page
+  This saves the selected value as a cart attribute
+{% endcomment %}
+
+<div class="cart__attribute">
+  <label for="cart-attribute-referral">How did you hear about us?</label>
+  <select name="attributes[How did you hear about us?]" id="cart-attribute-referral">
+    <option value="">Select an option</option>
+    <option value="Google Search">Google Search</option>
+    <option value="Social Media">Social Media</option>
+    <option value="Friend/Family">Friend/Family</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+
+{% comment %}
+  If a user has already selected an option, pre-fill it
+{% endcomment %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const referralSelect = document.getElementById("cart-attribute-referral");
+    if (referralSelect) {
+      fetch('/cart.js')
+        .then(response => response.json())
+        .then(data => {
+          if (data.attributes && data.attributes["How did you hear about us?"]) {
+            referralSelect.value = data.attributes["How did you hear about us?"];
+          }
+        });
+
+      referralSelect.addEventListener("change", function () {
+        fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            attributes: {
+              "How did you hear about us?": referralSelect.value
+            }
+          })
+        });
+      });
+    }
+  });
+</script>

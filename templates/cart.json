@@ -25,10 +25,14 @@
         "buttons"
       ],
       "settings": {}
+    },
+    "cart-hear-about-us": {
+      "type": "cart-hear-about-us"
     }
   },
   "order": [
     "cart-items",
+        "cart-hear-about-us",
     "cart-footer"
   ]
 }
