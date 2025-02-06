@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "29db9ca7-acdf-4494-97cc-e78c6a58cae8": {
@@ -16,10 +7,9 @@
           "type": "slider",
           "settings": {
             "show_image": true,
-            "image": "shopify:\/\/shop_images\/ORCA_Home_page.png",
             "align_bg": "center",
             "bg_color": "#000000",
-            "opacity": 0,
+            "opacity": 25,
             "image_mob": "shopify:\/\/shop_images\/ORCA_home_page_mobile.png",
             "align_bg_mob": "center",
             "bg_color_mob": "#000000",
@@ -42,7 +32,9 @@
             "btn_txt2": "Shop Now",
             "btn_url2": "",
             "btn_style2": "primary",
-            "color_button_text": "",
+            "btn_custom_inline": true,
+            "btn_size_text": 20,
+            "color_button_text": "#ffffff",
             "color_button": "",
             "color_button_border": "",
             "color_button_text_hover": "",
@@ -53,7 +45,7 @@
             "hor_align": 10,
             "width": "450px",
             "video_ratio": "56",
-            "video_url": "",
+            "video_url": "https:\/\/youtu.be\/9O6g9ZUlYsY?si=9HEabvyqgBD1SABW",
             "video_hosted": "",
             "btn_txt_modal": "Watch Video",
             "video_modal": "",
