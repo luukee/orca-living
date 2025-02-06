@@ -8,6 +8,52 @@
     "theme_support_url": "https:\/\/support.shopify.com\/"
   },
   {
+    "name": "Hear About Us",
+    "settings": [
+        {
+            "type": "text",
+            "id": "hau_form_options",
+            "label": "Form options",
+            "default": "Facebook, Twitter, Google, Instagram, Youtube",
+            "info": "Separate each option with a comma"
+        },
+        {
+            "type": "header",
+            "content": "Form validation"
+        },
+        {
+            "type": "checkbox",
+            "id": "hau_form_validation",
+            "label": "Enable form validation",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "hau_error_message",
+            "label": "Error message",
+            "info": "The error message that is displayed when no selection is made",
+            "default": "Please select an option below"
+        },
+        {
+            "type": "text",
+            "id": "hau_error_message_other",
+            "label": "Other field error message",
+            "info": "The error message that is displayed when there is no input in the 'Other' field",
+            "default": "Please fill the text field below"
+        },
+        {
+            "type": "header",
+            "content": "Error styling"
+        },
+        {
+            "type": "color",
+            "id": "hau_error_color",
+            "label": "Color",
+            "default": "#ff0000"
+        }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {

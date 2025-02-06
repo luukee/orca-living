@@ -3,45 +3,102 @@
   This saves the selected value as a cart attribute
 {% endcomment %}
 
-<div class="cart__attribute">
-  <label for="cart-attribute-referral">How did you hear about us?</label>
-  <select name="attributes[How did you hear about us?]" id="cart-attribute-referral">
-    <option value="">Select an option</option>
-    <option value="Google Search">Google Search</option>
-    <option value="Social Media">Social Media</option>
-    <option value="Friend/Family">Friend/Family</option>
+<div class='cart__attribute'>
+  <label for='cart-attribute-referral'>How did you hear about us?</label>
+  <select name='attributes[How did you hear about us?]' id='cart-attribute-referral'>
+    {% comment %} 2.0 {% endcomment %}
+    {% comment %}
+      <option value="">Select an option</option>
+      <option value="Google Search">Google Search</option>
+      <option value="Social Media">Social Media</option>
+      <option value="Friend/Family">Friend/Family</option>
+      <option value="Other">Other</option>
+    {% endcomment %}
+    {% comment %} 2.0 {% endcomment %}
+    <option
+      value=''
+      {% if cart.attributes['how-did-you-hear-about-us'] == '' %}
+        selected
+      {% endif %}
+    >
+      Please make a selection
+    </option>
+    {% assign options_array = settings.hau_form_options | split: ',' %}
+    {% for o in options_array %}
+      {% assign option = o | strip %}
+      <option
+        value='{{ option }}'
+        {% if cart.attributes['how-did-you-hear-about-us'] == option %}
+          selected
+        {% endif %}
+      >
+        {{ option }}
+      </option>
+    {% endfor %}
     <option value="Other">Other</option>
   </select>
+  
+  {% comment %}
+    "Other" input field (hidden by default)
+  {% endcomment %}
+  <div id="other-input-container" style="display: none; margin-top: 10px;">
+    <label for="cart-attribute-other">Please specify:</label>
+    <input type="text" id="cart-attribute-other" name="attributes[Other Source]" placeholder="Enter source" />
+  </div>
 </div>
 
 {% comment %}
   If a user has already selected an option, pre-fill it
 {% endcomment %}
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const referralSelect = document.getElementById("cart-attribute-referral");
-    if (referralSelect) {
-      fetch('/cart.js')
-        .then(response => response.json())
-        .then(data => {
-          if (data.attributes && data.attributes["How did you hear about us?"]) {
-            referralSelect.value = data.attributes["How did you hear about us?"];
-          }
-        });
+  document.addEventListener('DOMContentLoaded', function () {
+    const referralSelect = document.getElementById('cart-attribute-referral')
+    const otherInputContainer = document.getElementById('other-input-container')
+    const otherInput = document.getElementById('cart-attribute-other')
 
-      referralSelect.addEventListener("change", function () {
-        fetch('/cart/update.js', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            attributes: {
-              "How did you hear about us?": referralSelect.value
-            }
-          })
-        });
-      });
+    function updateCartAttributes() {
+      let attributes = {
+        'How did you hear about us?': referralSelect.value
+      }
+
+      if (referralSelect.value === 'Other' && otherInput.value.trim() !== '') {
+        attributes['Other Source'] = otherInput.value.trim()
+      } else {
+        delete attributes['Other Source'] // Remove if not needed
+      }
+
+      fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attributes })
+      })
     }
-  });
+
+    referralSelect.addEventListener('change', function () {
+      if (referralSelect.value === 'Other') {
+        otherInputContainer.style.display = 'block'
+      } else {
+        otherInputContainer.style.display = 'none'
+        otherInput.value = '' // Clear input when hidden
+      }
+      updateCartAttributes()
+    })
+
+    otherInput.addEventListener('input', function () {
+      updateCartAttributes()
+    })
+
+    // Restore values when the page loads
+    fetch('/cart.js')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.attributes) {
+          referralSelect.value = data.attributes['How did you hear about us?'] || ''
+          if (referralSelect.value === 'Other') {
+            otherInputContainer.style.display = 'block'
+            otherInput.value = data.attributes['Other Source'] || ''
+          }
+        }
+      })
+  })
 </script>
