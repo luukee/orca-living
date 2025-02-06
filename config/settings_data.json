@@ -10,8 +10,8 @@
 {
   "current": {
     "hau_form_options": "Client Referral, Designer Referral, Google, Social Media, Flora Grubb LA, Flora Grubb SF",
-    "hau_error_message": "Please select an option below TEST",
-    "hau_error_message_other": "Please fill the text field below TEST",
+    "hau_error_message": "Please enter a value",
+    "hau_error_message_other": "Please select an option",
     "logo": "shopify://shop_images/ORCA_logo_stacked.png",
     "logo_width": 90,
     "favicon": "shopify://shop_images/Group_459705.png",
