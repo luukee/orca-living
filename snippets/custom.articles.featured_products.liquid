@@ -1,6 +1,42 @@
+{% comment %}
+  Featured Products Snippet
+  
+  This snippet displays a list of both internal (Shopify) and external products associated with an article.
+  Products are separated by commas and display differently based on their source:
+  - Internal products: Regular links to Shopify products
+  - External products: Links with target="_blank" and external class
+  
+  Required Metafields:
+  - article.metafields.custom.featured_products: List of Shopify product references
+  - article.metafields.custom.featured_external_products: List of external product references with title and URL
+{% endcomment %}
 
-<ul>
-{% for item in article.metafields["custom"]["featured_products"].value %}
-<li><a href="{{ item.url }}" class="metafield-product_reference">{{ item.title }}</a></li>
-{% endfor %}
-</ul>
+{% if article.metafields.custom.featured_products != blank or article.metafields.custom.featured_external_products != blank %}
+  <div class='article-featured-products'>
+    <span>Featured Products:&nbsp;</span>
+    
+    {% comment %}Initialize boolean flags to track which types of products we have{% endcomment %}
+    {% assign has_internal = false %}
+    {% assign has_external = false %}
+    {% if article.metafields.custom.featured_products != blank %}{% assign has_internal = true %}{% endif %}
+    {% if article.metafields.custom.featured_external_products != blank %}{% assign has_external = true %}{% endif %}
+    
+    {% comment %}First, handle internal Shopify products{% endcomment %}
+    {% if has_internal %}
+      {% assign internal_products = article.metafields.custom.featured_products.value %}
+      {% for product in internal_products %}
+        <a href='{{ product.url }}' class='metafield-product_reference'>{{ product.title }}</a>{% unless forloop.last %},&nbsp;{% endunless %}
+      {% endfor %}
+    {% endif %}
+    
+    {% comment %}Then, handle external products{% endcomment %}
+    {% if has_external %}
+      {% assign external_products = article.metafields.custom.featured_external_products.value %}
+      {% for product in external_products %}
+        {% comment %}Add comma if we're the first external product and there were internal products{% endcomment %}
+        {% if has_internal and forloop.first %},&nbsp;{% endif %}
+        <a href='{{ product.url }}' class='metafield-product_reference external' target='_blank'>{{ product.title }}</a>{% unless forloop.last %},&nbsp;{% endunless %}
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endif %}

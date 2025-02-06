@@ -7346,6 +7346,16 @@ details-disclosure > details {
 .template--article-field-notes-article h4 strong {
   font-size: 17px;
 }
+.article-featured-products {
+  display: inline-flex;
+}
+.article-featured-products a {
+  text-decoration: none;
+  color: rgba(var(--color-foreground), 1);
+}
+.article-featured-products a:hover {
+  text-decoration: underline;
+}
 @media only screen and (min-width: 750px) {
   .template--article-field-notes-article
     .article-template__image-gallery
