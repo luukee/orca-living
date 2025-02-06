@@ -2,51 +2,58 @@
   "How did you hear about us?" dropdown for the cart page
   This saves the selected value as a cart attribute
 {% endcomment %}
-
-<div class='cart__attribute'>
-  <label for='cart-attribute-referral'>How did you hear about us?</label>
-  <select name='attributes[How did you hear about us?]' id='cart-attribute-referral'>
-    {% comment %} 2.0 {% endcomment %}
+<div class='page-width'>
+  <div class='cart__attribute hau'>
+    <div class='select'>
+      <select class='select__select' name='attributes[How did you hear about us?]' id='cart-attribute-referral'>
+        <option
+          value=''
+          {% if cart.attributes['how-did-you-hear-about-us'] == '' %}
+            selected
+          {% endif %}
+        >
+          How did you hear about us?
+        </option>
+        {% assign options_array = settings.hau_form_options | split: ',' %}
+        {% for o in options_array %}
+          {% assign option = o | strip %}
+          <option
+            value='{{ option }}'
+            {% if cart.attributes['how-did-you-hear-about-us'] == option %}
+              selected
+            {% endif %}
+          >
+            {{ option }}
+          </option>
+        {% endfor %}
+        <option value='Other'>Other</option>
+      </select>
+      {% render 'icon-caret' %}
+      <label for='cart-attribute-referral' hidden>How did you hear about us?*</label>
+    </div>
     {% comment %}
-      <option value="">Select an option</option>
-      <option value="Google Search">Google Search</option>
-      <option value="Social Media">Social Media</option>
-      <option value="Friend/Family">Friend/Family</option>
-      <option value="Other">Other</option>
+      "Other" input field (hidden by default)
     {% endcomment %}
-    {% comment %} 2.0 {% endcomment %}
-    <option
-      value=''
-      {% if cart.attributes['how-did-you-hear-about-us'] == '' %}
-        selected
-      {% endif %}
-    >
-      Please make a selection
-    </option>
-    {% assign options_array = settings.hau_form_options | split: ',' %}
-    {% for o in options_array %}
-      {% assign option = o | strip %}
-      <option
-        value='{{ option }}'
-        {% if cart.attributes['how-did-you-hear-about-us'] == option %}
-          selected
-        {% endif %}
+    <div class='field' id='other-input-container' style='display: none; margin-top: 10px;'>
+      <input
+        class='field__input'
+        type='text'
+        id='cart-attribute-other'
+        name='attributes[Other Source]'
+        placeholder='Enter source'
+        value='{{ cart.attributes.how-did-you-hear-about-us-other }}'
       >
-        {{ option }}
-      </option>
-    {% endfor %}
-    <option value="Other">Other</option>
-  </select>
-  
-  {% comment %}
-    "Other" input field (hidden by default)
-  {% endcomment %}
-  <div id="other-input-container" style="display: none; margin-top: 10px;">
-    <label for="cart-attribute-other">Please specify:</label>
-    <input type="text" id="cart-attribute-other" name="attributes[Other Source]" placeholder="Enter source" />
+      <label class='field__label' for='cart-attribute-other'>Please specify:</label>
+    </div>
+
+    {% comment %}
+      Error message placeholder
+    {% endcomment %}
+    <p id='cart-referral-error' style='display: none; margin-top: 5px; color: {{ settings.hau_error_color }};'>
+      {{ settings.hau_error_message_other }}
+    </p>
   </div>
 </div>
-
 {% comment %}
   If a user has already selected an option, pre-fill it
 {% endcomment %}
@@ -55,6 +62,8 @@
     const referralSelect = document.getElementById('cart-attribute-referral')
     const otherInputContainer = document.getElementById('other-input-container')
     const otherInput = document.getElementById('cart-attribute-other')
+    const checkoutButton = document.querySelector('[name="checkout"], [href$="/checkout"]')
+    const errorMessage = document.getElementById('cart-referral-error')
 
     function updateCartAttributes() {
       let attributes = {
@@ -64,7 +73,7 @@
       if (referralSelect.value === 'Other' && otherInput.value.trim() !== '') {
         attributes['Other Source'] = otherInput.value.trim()
       } else {
-        delete attributes['Other Source'] // Remove if not needed
+        delete attributes['Other Source'] // Remove if empty
       }
 
       fetch('/cart/update.js', {
@@ -81,6 +90,7 @@
         otherInputContainer.style.display = 'none'
         otherInput.value = '' // Clear input when hidden
       }
+      errorMessage.style.display = 'none' // Hide error when a selection is made
       updateCartAttributes()
     })
 
@@ -100,5 +110,24 @@
           }
         }
       })
+
+    // Prevent checkout if no selection is made or if "Other" is selected but empty
+		{% if settings.hau_form_validation %}
+			if (checkoutButton) {
+				checkoutButton.addEventListener('click', function (event) {
+					if (referralSelect.value === '' || (referralSelect.value === 'Other' && otherInput.value.trim() === '')) {
+						event.preventDefault()
+						errorMessage.style.display = 'block'
+						errorMessage.textContent =
+							referralSelect.value === 'Other' ? '{{ settings.hau_error_message_other }}' : '{{ settings.hau_error_message }}'
+						if (referralSelect.value === 'Other') {
+							otherInput.focus()
+						} else {
+							referralSelect.focus()
+						}
+					}
+				})
+      }
+    {% endif %}
   })
 </script>
