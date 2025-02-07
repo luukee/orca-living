@@ -14,6 +14,42 @@
     .section-header .header__inline-menu {
       display: none;
     }
+    {% if section.settings.show_nav != true %}
+      .shopify-section-group-header-group {
+        position: fixed;
+        z-index: 10000;
+        width: 100%;
+      }
+      .header__menu-item,
+      .header__cart,
+      .header__heading-logo,
+      header-drawer .cart_mobile,
+      .header__icon > span > svg
+      {
+        filter: invert(1);
+      }
+
+      .gradient {
+        background: transparent;
+        border: none;
+      }
+
+      /*.shopify-section-group-header-group,*/
+      .shopify-section-group-footer-group {
+        display: none;
+      }
+      /* cart */
+      .section-header .header__cart {
+        display: none;
+      }
+      /* desktop menu */
+      .section-header .header__inline-menu {
+        display: none;
+      }
+      .section-header .header-wrapper--border-bottom {
+        border-bottom: none;
+      }
+    {% endif %}
   </style>
 {% endif %}
 {% schema %}
@@ -68,6 +104,16 @@
       "id": "image_height_mob",
       "label": "Slider Height on Mobile",
       "info": "Leave at empty to ignore."
+    },
+    {
+      "type": "header",
+      "content": "Navigation Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_nav",
+      "label": "Show Navigation",
+      "default": true
     },
     {
       "type": "header",

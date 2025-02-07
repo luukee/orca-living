@@ -8,6 +8,11 @@
         "product_note_enable": true
       }
     },
+    "cart-hear-about-us": {
+      "type": "cart-hear-about-us",
+      "disabled": true,
+      "settings": {}
+    },
     "cart-footer": {
       "type": "main-cart-footer",
       "blocks": {
@@ -25,14 +30,11 @@
         "buttons"
       ],
       "settings": {}
-    },
-    "cart-hear-about-us": {
-      "type": "cart-hear-about-us"
     }
   },
   "order": [
     "cart-items",
-        "cart-hear-about-us",
+    "cart-hear-about-us",
     "cart-footer"
   ]
 }
