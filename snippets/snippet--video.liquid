@@ -70,9 +70,9 @@
     endif 
 
     if hostedThumb != blank 
-      assign thmbPoster       = hostedThumb
+      assign thmbPoster       = hostedThumb | prepend: '//orcaliving.myshopify.com/cdn/shop/'
       if cF != true 
-        assign thmbPoster     = hostedThumb | img_url: 'master'
+        assign thmbPoster     = hostedThumb | prepend: '//orcaliving.myshopify.com/cdn/shop/'
       endif 
     endif 
 
@@ -182,16 +182,22 @@
     {% endif %}
     {% comment %} if Self-Hosted {% endcomment %}
     {% if vidType == 'video' %}
+      {% comment %} {% unless designMode %}lazyload{% endunless %} {% endcomment %}
+       {% comment %} 
+          {% if thmbPoster == blank %}
+          preload="auto"
+          {% else %}
+          poster="{{thmbPoster}}"
+          {% endif %}
+       {% endcomment %}
       <video 
-        class="{% unless designMode %}lazyload{% endunless %} html-video {{hideAutoplay}}" 
+        class="html-video {{- hideAutoplay -}}" 
         width="800" 
         height="480" 
-        {% if thmbPoster == blank %}
-        preload="metadata"
-        {% else %}
-        poster="{{thmbPoster}}"
-        {% endif %}
+        preload="auto"
+        poster="https:{{ thmbPoster }}"
         id="video{{section.id}}{{block.id}}" 
+        style="object-fit: cover; object-position: center center;"
         {% unless autoPlay == false %}
         autoplay muted loop playsinline
         {% else %}
@@ -200,7 +206,9 @@
         {% if useBG == true and videoRatio != blank%}
         data-video-ratio="{{videoRatio}}"
         {% endif %}
-        {% unless designMode %}data-{% endunless %}src="{{vidHosted}}{% if thmbPoster == blank %}#t=0.5{% endif %}"></video>
+        src="{{vidHosted}}">Your browser does not support HTML5 video. Please update your browser.</video>
+        {% comment %} {% if thmbPoster == blank %}#t=0.5{% endif %} {% endcomment %}
+        {% comment %} {% unless designMode %}data-{% endunless %} {% endcomment %}
       {% comment %} Show a version of video on mobile that allows user to press play. {% endcomment %}
       {% if showMobile == true %}
         <video 

@@ -102,7 +102,7 @@
 
         assign vidEmbd          = b.video_url
         assign vidHost          = b.video_hosted
-        
+        assign hostedThumb      = b.video_hosted_thumbnail
         assign vidRatio         = blank
 
         if b.video_ratio != blank 
@@ -193,6 +193,10 @@
             width:95%;
             z-index: 2;
             {{alignment}}
+        }
+        {{slideCls}} .but-div {
+            display: flex;
+            gap: 2em;
         }
 
         {% if mobOvSooner %}/medium-down/{% else %}/small/{% endif %} {
@@ -430,6 +434,7 @@
         {% include 'snippet--video', 
             vidExt: vidEmbd, 
             vidHosted: vidHost, 
+            hostedThumb: hostedThumb,
             vidClass: sectionClass, 
             normalMobile: normMob,
             useBG: useBgImg,
