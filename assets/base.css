@@ -4877,7 +4877,7 @@ details-disclosure > details {
   .template--blog .simple-footer > *:nth-child(2),
   .template--article #MainContent > *:nth-child(2),
   .template--article .simple-footer > *:nth-child(2) {
-    grid-area: middle;
+    grid-area: banner;
   }
   .template--article-landscapes-article #MainContent > *:nth-child(2) {
     grid-area: banner;
@@ -4904,7 +4904,9 @@ details-disclosure > details {
   .template--blog .simple-footer > *:nth-child(3),
   .template--article #MainContent > *:nth-child(3),
   .template--article .simple-footer > *:nth-child(3) {
-    grid-area: right;
+    /* grid-area: right; */
+    grid-column-start: middle;
+    grid-column-end: right;
   }
   .template--collection #MainContent > *:nth-child(n + 4),
   .template--collection .simple-footer > *:nth-child(n + 4),
@@ -5006,7 +5008,7 @@ details-disclosure > details {
   .template--blog .simple-footer > *:nth-child(n + 4),
   .template--article #MainContent > *:nth-child(n + 4),
   .template--article .simple-footer > *:nth-child(n + 4) {
-    grid-column: span 3;
+    grid-column: 2 / -1;
   }
 }
 @media only screen and (min-width: 1200px) {
