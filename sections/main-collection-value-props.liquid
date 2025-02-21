@@ -39,14 +39,14 @@
                 Image rendering with:
                 - Lazy loading for performance
                 - 800px width for quality
-                - Square aspect ratio (800x800)
+                - Portrait aspect ratio (4:5 ratio)
                 - Alt text from title for accessibility
               {% endcomment %}
               {{ prop.image | image_url: width: 800 | image_tag: 
                 loading: 'lazy',
                 alt: prop.title,
                 width: 800,
-                height: 800
+                height: 1000
               }}
             </div>
           {% endif %}
@@ -135,7 +135,7 @@
 }
 
 .value-prop-image {
-  aspect-ratio: 1;
+  aspect-ratio: 4/5;
   overflow: hidden;
 }
 
