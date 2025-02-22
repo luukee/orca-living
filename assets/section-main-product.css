@@ -1,5 +1,6 @@
 .product {
-	margin: 0
+	margin: 0;
+	margin-top: 10px;
 }
 
 .product.grid {
@@ -54,14 +55,17 @@
 
 @media only screen and (min-width: 990px) {
 	.product--large:not(.product--no-media) .product__media-wrapper {
-		max-width: 65%;
-		width: calc(65% - var(--grid-desktop-horizontal-spacing) / 2)
+		max-width: 50%;
+		width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2)
 	}
 
 	.product--large:not(.product--no-media) .product__info-wrapper {
-		padding: 0 0 0 4rem;
+		/* padding: 0 0 0 4rem;
 		max-width: 35%;
-		width: calc(35% - var(--grid-desktop-horizontal-spacing) / 2)
+		width: calc(35% - var(--grid-desktop-horizontal-spacing) / 2) */
+		padding-left: 3rem;
+		max-width: 50%;
+		width: calc(50% - 1rem / 2);
 	}
 
 	.product--large:not(.product--no-media).product--right .product__info-wrapper {
@@ -1667,14 +1671,14 @@ a.product__text {
 	}
 }
 
-.product .product__media-wrapper {
+/* .product .product__media-wrapper {
 	display: none !important
-}
+} */
 
 .product .product__info-wrapper {
-	width: 100% !important;
-	max-width: 100% !important;
-	padding: 0 !important
+	width: calc(50% - .5rem);
+	max-width: 50%;
+	padding-left: 6rem
 }
 
 .product .product__info-container {
@@ -1938,7 +1942,8 @@ a.product__text {
 
 .q-calculator-fieldset input {
 	background: transparent;
-	width: 13ch
+	width: 13ch;
+	margin-right: 3rem;
 }
 
 .q-calculator-fieldset::after {
@@ -1949,5 +1954,8 @@ a.product__text {
 	width: 20px;
 	height: 20px;
 	z-index: 100;
-	transform: translate(-140%, 4px)
+	transform: translate(0, 4px)
+}
+.q-calculator-wrapper {
+	position: relative;
 }
