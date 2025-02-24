@@ -4877,6 +4877,10 @@ details-disclosure > details {
   .template--blog .simple-footer > *:nth-child(2),
   .template--article #MainContent > *:nth-child(2),
   .template--article .simple-footer > *:nth-child(2) {
+    grid-area: middle;
+  }
+  .template--collection-updated-seo-collection #MainContent > *:nth-child(2),
+  .template--collection-updated-seo-collection .simple-footer > *:nth-child(2) {
     grid-area: banner;
   }
   .template--article-landscapes-article #MainContent > *:nth-child(2) {
@@ -4904,7 +4908,10 @@ details-disclosure > details {
   .template--blog .simple-footer > *:nth-child(3),
   .template--article #MainContent > *:nth-child(3),
   .template--article .simple-footer > *:nth-child(3) {
-    /* grid-area: right; */
+    grid-area: right;
+  }
+  .template--collection-updated-seo-collection #MainContent > *:nth-child(3),
+  .template--collection-updated-seo-collection .simple-footer > *:nth-child(3) {
     grid-column-start: middle;
     grid-column-end: right;
   }
