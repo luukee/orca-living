@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "91ad0562-5950-45d5-9d81-d10644f33243": {
@@ -47,50 +38,25 @@
         "padding_bottom": 16
       }
     },
-    "286763a8-0ff1-4341-b4b8-a2f74befd3dc": {
-      "type": "main-collection-product-grid",
-      "custom_css": [
-        ".product-grid-container {padding-bottom: 1em;}"
-      ],
-      "settings": {
-        "products_per_page": 24,
-        "columns_desktop": 3,
-        "filter_on_tag": "_Cobble",
-        "image_ratio": "portrait",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "enable_quick_add": false,
-        "enable_filtering": false,
-        "filter_type": "horizontal",
-        "enable_sorting": false,
-        "columns_mobile": "2",
-        "padding_top": 16,
-        "padding_bottom": 16,
-        "collection": "{%- liquid\n  \n  capture collectionURL \n    render 'snippet--url-query', queryString: 'collection'\n  endcapture\n\n  if collectionURL == ''\n    assign collectionURL = 'all'\n  endif \n\n  echo collectionURL\n  \n-%}"
-      }
-    },
     "main": {
       "type": "main-product-updated-seo-product",
       "blocks": {
-        "d7916f60-0347-456e-9d3c-a15686ad4703": {
-          "type": "custom_liquid",
-          "settings": {
-            "title": "DO NOT MOVE BLOCKS",
-            "custom_liquid": "{% comment %}\n\nThe content in these sections is order dependent. \n\nPlease contact NINE15 for questions.\n\n{% endcomment %}"
-          }
-        },
         "d9b7944e-b2a7-481d-9a47-bca4d6393c24": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
-            "title": "Title / Price",
-            "custom_liquid": "<div class=\"product__title-price\">\n\n  <h1 class=\"h4\">{{product.title}}</h1>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    </div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">/sqft.</span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"></span>\n    {% endif %}\n\n  </div>\n</div>"
+            "custom_liquid": "<div class=\"product__title-price\">\n\n  <h1 class=\"h4\">{{product.title}}<\/h1>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    <\/div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">\/sqft.<\/span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"><\/span>\n    {% endif %}\n\n  <\/div>\n<\/div>"
           }
+        },
+        "title_and_price_9JX6kM": {
+          "type": "title_and_price",
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
-            "picker_type": "button"
+            "picker_type": "button",
+            "swatch_shape": "circle"
           }
         },
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133": {
@@ -103,7 +69,7 @@
           "settings": {}
         },
         "37c16ae2-8059-4ef5-bc28-e6e8934d1b25": {
-          "type": "shopify://apps/diy-quantity-calculator/blocks/app-block/a5d912db-c503-44a8-b562-fb0cc09650a4",
+          "type": "shopify:\/\/apps\/diy-quantity-calculator\/blocks\/app-block\/a5d912db-c503-44a8-b562-fb0cc09650a4",
           "settings": {
             "label_1": "Area to cover",
             "label_2": "Quantity Needed",
@@ -135,26 +101,25 @@
         "280b22a8-63c8-4d97-be23-ea1752259cd1": {
           "type": "custom_liquid",
           "settings": {
-            "title": "Paver Quantity Message",
-            "custom_liquid": "{% if product.type == 'Paver' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n{% endif %}"
+            "custom_liquid": "{% if product.type == 'Paver' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com<\/a>\n.<\/p>\n{% endif %}"
           }
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false,
-            "quick_ship_text": "Quick Ship | Ships within 1-3 weeks"
+            "show_gift_card_recipient": true
           }
         },
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72": {
           "type": "custom_liquid",
           "settings": {
-            "title": "Trade Customer Message",
-            "custom_liquid": "{% if customer and customer.tags contains \"trade\" %}\n<p style=\"text-align:center\">\nTrade pricing will be automatically applied at checkout.\n</p>\n{% endif %}"
+            "custom_liquid": "{% if customer and customer.tags contains \"trade\" %}\n<p style=\"text-align:center\">\nTrade pricing will be automatically applied at checkout.\n<\/p>\n{% endif %}"
           }
         },
         "351e9119-7dce-482d-92e8-1e70ca0a9bf9": {
           "type": "selected_color_carousel",
+          "disabled": true,
           "settings": {}
         },
         "dfe8e3ca-f35a-4e19-bce3-d5c059ebeea2": {
@@ -166,7 +131,6 @@
           "type": "custom_liquid",
           "disabled": true,
           "settings": {
-            "title": "First Image",
             "custom_liquid": "{% if product.selected_variant and product.selected_variant.featured_media  %}\n          {%- assign featured_media = product.selected_or_first_available_variant.featured_media -%}\n        {% elsif product.featured_media %}\n          {%- assign featured_media = product.featured_media -%}\n        {% endif %}\n        {% render 'snippet--image', img: featured_media %}"
           }
         },
@@ -186,7 +150,7 @@
           "settings": {
             "heading": "{{ product.metafields.custom.first_tab_title.value }}",
             "icon": "none",
-            "content": "<p>{{ product.metafields.custom.first_tab_description.value}}</p>",
+            "content": "<p>{{ product.metafields.custom.first_tab_description.value }}<\/p>",
             "page": ""
           }
         },
@@ -195,7 +159,7 @@
           "settings": {
             "heading": "{{ product.metafields.custom.second_tab_title.value }}",
             "icon": "none",
-            "content": "<p>{{ product.metafields.custom.second_tab_description.value}}</p>",
+            "content": "<p>{{ product.metafields.custom.second_tab_description.value }}<\/p>",
             "page": ""
           }
         },
@@ -204,22 +168,14 @@
           "settings": {
             "heading": "{{ product.metafields.custom.third_tab_title.value }}",
             "icon": "none",
-            "content": "<p>{{ product.metafields.custom.third_tab_description.value}}</p>",
+            "content": "<p>{{ product.metafields.custom.third_tab_description.value}}<\/p>",
             "page": ""
-          }
-        },
-        "0fcbd653-2d74-498a-bc58-b25c07a3fb92": {
-          "type": "custom_liquid",
-          "disabled": true,
-          "settings": {
-            "title": "Other Images",
-            "custom_liquid": "{%- for media in product.media -%}\n  {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}\n    {% render 'snippet--image', img: media %}\n  {%- endunless -%}\n{%- endfor -%}"
           }
         }
       },
       "block_order": [
-        "d7916f60-0347-456e-9d3c-a15686ad4703",
         "d9b7944e-b2a7-481d-9a47-bca4d6393c24",
+        "title_and_price_9JX6kM",
         "variant_picker",
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133",
         "990496b9-45f5-4d28-8fac-28cde7981284",
@@ -234,27 +190,49 @@
         "buy_buttons_gift_card_GUhCrJ",
         "632b5178-719f-4860-942b-84d82a7ad73d",
         "77103b87-1a07-4800-8ebb-ac2a40e39caf",
-        "09c49608-3846-4f9f-9a8a-68d415bf1e4f",
-        "0fcbd653-2d74-498a-bc58-b25c07a3fb92"
+        "09c49608-3846-4f9f-9a8a-68d415bf1e4f"
       ],
       "settings": {
         "enable_sticky_info": false,
+        "color_scheme": "background-1",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
         "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "hide",
         "media_position": "left",
         "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 16,
         "padding_bottom": 28
       }
     },
+    "286763a8-0ff1-4341-b4b8-a2f74befd3dc": {
+      "type": "main-collection-product-grid",
+      "custom_css": [
+        ".product-grid-container {padding-bottom: 1em;}"
+      ],
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 3,
+        "filter_on_tag": "_Cobble",
+        "image_ratio": "portrait",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": false,
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": false,
+        "columns_mobile": "2",
+        "padding_top": 16,
+        "padding_bottom": 16,
+        "collection": "{%- liquid\n  \n  capture collectionURL \n    render 'snippet--url-query', queryString: 'collection'\n  endcapture\n\n  if collectionURL == ''\n    assign collectionURL = 'all'\n  endif \n\n  echo collectionURL\n  \n-%}"
+      }
+    },
     "related-products": {
       "type": "related-products",
-      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -274,8 +252,8 @@
   "order": [
     "91ad0562-5950-45d5-9d81-d10644f33243",
     "fd4e82d6-bb9f-448d-a14c-1889cfadcb98",
-    "286763a8-0ff1-4341-b4b8-a2f74befd3dc",
     "main",
+    "286763a8-0ff1-4341-b4b8-a2f74befd3dc",
     "related-products"
   ]
 }
