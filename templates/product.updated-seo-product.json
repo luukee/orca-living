@@ -71,7 +71,7 @@
       }
     },
     "main": {
-      "type": "main-product",
+      "type": "main-product-updated-seo-product",
       "blocks": {
         "d7916f60-0347-456e-9d3c-a15686ad4703": {
           "type": "custom_liquid",
