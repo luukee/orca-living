@@ -7561,4 +7561,8 @@ pre {
   font-size: 18px;
   background-color: cadetblue;
 }
+/* Hide collection value props if empty */
+.collection-value-props:has(>div[hidden]) {
+  display: none;
+}
 /*# sourceMappingURL=base.css.map */
