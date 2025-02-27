@@ -42,8 +42,14 @@
       id="Quantity-{{ section.id }}"
       {% if is_pavers %}
         data-paver
-        min= "80"
-        data-min="80"
+        {% if is_recycled %}
+          data-recycled
+          min="180"
+          data-min="180"
+        {% else %}
+          min= "80"
+          data-min="80"
+        {% endif %}
         max= "400"
         data-max="400"
       {% else %}

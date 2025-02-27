@@ -3,6 +3,8 @@
 {% liquid 
 
   assign is_pavers      = false
+  assign is_recycled    = false
+  
   for collection in product.collections
     assign collection_handle = collection.handle
     if collection_handle == 'pavers'
@@ -10,7 +12,11 @@
       break
     endif
   endfor
-
+  # min quantity for recycled pavers
+  assign product_title = product.title
+  if product_title contains 'Recycled'
+    assign is_recycled = true
+  endif
 %}
 
 <div class="product__calc-qty {% unless is_pavers %}show-qty-buttons{% endunless %}">
@@ -23,7 +29,7 @@
 
     {% comment %} {% render 'product-calculator' %} {% endcomment %}
 
-    {% render 'product-quantity', is_pavers: is_pavers, product_form_id: product_form_id %}
+    {% render 'product-quantity', is_pavers: is_pavers, is_recycled: is_recycled, product_form_id: product_form_id %}
 
   </div>
 
