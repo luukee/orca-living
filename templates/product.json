@@ -136,7 +136,7 @@
           "type": "custom_liquid",
           "settings": {
             "title": "Paver Quantity Message",
-            "custom_liquid": "{% if product.type == 'Paver' %}\n{% if product_title contains 'Recycled' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 180sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n{% else %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n  {% endif %}\n{% endif %}"
+            "custom_liquid": "{% if product.type == 'Paver' %}\n{% if product.title contains 'Recycled' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 180sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n{% else %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n  {% endif %}\n{% endif %}"
           }
         },
         "buy_buttons": {
