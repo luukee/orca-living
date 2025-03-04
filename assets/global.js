@@ -1257,8 +1257,13 @@ class VariantSelects extends HTMLElement {
         product_option = product_option.concat('_')
       }
     }
-    document.querySelector('.splide').setAttribute('data-current',product_option);
-    updateCarouselSlides();
+
+    // Add null check before accessing .splide
+    const splideElement = document.querySelector('.splide');
+    if (splideElement) {
+      splideElement.setAttribute('data-current', product_option);
+      updateCarouselSlides(); // Only call this if splide exists
+    }
   }
   updateOptions() {
     this.options = Array.from(
@@ -1560,10 +1565,9 @@ class VariantSelects extends HTMLElement {
   }
 
   toggleAddButton(disable = true, text, modifyClass = true) {
-    const productForm = document.getElementById(
-      `product-form-${this.dataset.section}`
-    );
+    const productForm = document.getElementById(`product-form-${this.dataset.section}`);
     if (!productForm) return;
+    
     const addButton = productForm.querySelector('[name="add"]');
     const addButtonText = productForm.querySelector('[name="add"] > span');
     if (!addButton) return;
@@ -1574,11 +1578,14 @@ class VariantSelects extends HTMLElement {
     } else {
       addButton.removeAttribute('disabled');
       addButtonText.textContent = window.variantStrings.addToCart;
-      const currentPrice = document
-        .getElementById(`price-${this.dataset.section}`)
-        .querySelector('.price__container').innerHTML;
-      if (currentPrice) {
-        addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>${currentPrice}</span>`;
+      
+      // Add null checks for price element
+      const priceElement = document.getElementById(`price-${this.dataset.section}`);
+      if (priceElement) {
+        const priceContainer = priceElement.querySelector('.price__container');
+        if (priceContainer) {
+          addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>${priceContainer.innerHTML}</span>`;
+        }
       }
     }
 
