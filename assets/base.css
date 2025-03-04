@@ -60,7 +60,7 @@
 }
 @media only screen and (min-width: 1200px) {
   :root {
-    --columns--first: 25%;
+    --columns--first: 15%;
   }
 }
 #MainContent {
@@ -5026,7 +5026,7 @@ details-disclosure > details {
     grid-column: 2 / -1;
   }
 }
-@media only screen and (min-width: 1200px) {
+/* @media only screen and (min-width: 1200px) {
   .template--collection #MainContent > *:nth-child(2),
   .template--collection .simple-footer > *:nth-child(2),
   .template--page-contact #MainContent > *:nth-child(2),
@@ -5051,7 +5051,7 @@ details-disclosure > details {
   .template--article .simple-footer > *:nth-child(2) {
     padding-right: var(--base-gutter--double);
   }
-}
+} */
 @media only screen and (max-width: 1199px) {
   .template--collection .simple-footer .menus,
   .template--product .simple-footer .menus {
