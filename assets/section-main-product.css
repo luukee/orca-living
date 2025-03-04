@@ -1,6 +1,6 @@
 .product {
 	margin: 0;
-	margin-top: 10px;
+	margin-top: 15px;
 }
 
 .product.grid {
@@ -170,6 +170,10 @@
 variant-radios,
 variant-selects {
 	display: block
+}
+
+variant-radios {
+	margin-bottom: 1rem;
 }
 
 .product-form__input--dropdown {
@@ -415,7 +419,11 @@ a.product__text {
 
 .product__title {
 	word-break: break-word;
-	margin-bottom: 1.5rem
+	margin-bottom: 1rem
+}
+
+.product__title--left {
+	margin-top: 0;
 }
 
 .product__title>* {
