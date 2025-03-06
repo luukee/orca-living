@@ -22,7 +22,6 @@
     render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-slider.css' 
   %}
 
-  <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
   {%- if product.quantity_price_breaks_configured? -%}
