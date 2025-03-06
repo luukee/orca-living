@@ -149,7 +149,7 @@
         "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> in cart"
       },
       "pickup_availability": {
-        "view_store_info": "View store information",
+        "view_store_info": "",
         "check_other_stores": "Check availability at other stores",
         "pick_up_available": "Pickup available",
         "pick_up_available_at_html": "Available for local pick-up - Los Angeles.",
@@ -492,9 +492,9 @@
     }
   },
   "shopify": {
-    "checkout": {
-      "delivery_options": {
-        "pick_up_in_five_or_more_days": " "
+    "store_availability": {
+      "pick_up_time": {
+        "five_or_more_days": " "
       }
     }
   }
