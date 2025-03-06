@@ -222,6 +222,7 @@
     },
     "286763a8-0ff1-4341-b4b8-a2f74befd3dc": {
       "type": "main-collection-product-grid",
+      "disabled": true,
       "custom_css": [
         ".product-grid-container {padding-bottom: 1em;}"
       ],
