@@ -323,9 +323,17 @@ class QuantityInput extends HTMLElement {
     this.changeEvent = new Event('change', { bubbles: true });
     this.atcButton = document.querySelector('.product-form__submit');
 
-    if (this.atcButton && parseInt(this.input.value) < 1) {
-      this.atcButton.setAttribute('disabled','true')
+    // Initialize with default value of 1 if no value set
+    if (!this.input.value) {
+      this.input.value = 1;
     }
+
+    // Debugging disabled button state
+    // console.log('QuantityInput init:', {
+    //   value: this.input.value,
+    //   min: this.input.min,
+    //   buttonState: this.atcButton ? this.atcButton.disabled : 'no button'
+    // });
 
     this.input.addEventListener('change', this.onInputChange.bind(this));
     this.querySelectorAll('button').forEach((button) =>
@@ -394,9 +402,17 @@ class QuantityInput extends HTMLElement {
 
   validateQtyRules() {
     const value = parseInt(this.input.value) || 0;
-    const min = parseInt(this.input.min) ?? 1;
+    const min = parseInt(this.input.min) || 1;
     const max = Number.isNaN(parseInt(this.input.max))? Number.MAX_VALUE : parseInt(this.input.max);
       
+    // Debugging disabled button state
+    // console.log('validateQtyRules:', {
+    //   value,
+    //   min,
+    //   max,
+    //   buttonState: this.atcButton ? this.atcButton.disabled : 'no button'
+    // });
+
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']");
       buttonMinus.classList.toggle('disabled', value <= min);
@@ -406,10 +422,14 @@ class QuantityInput extends HTMLElement {
       buttonPlus.classList.toggle('disabled', value >= max);
     }
 
-    if (value >= min && value <= max) {
-      this.atcButton?.removeAttribute('disabled')
-    }else {
-      this.atcButton?.setAttribute('disabled','true')
+    // Only disable button if quantity is invalid
+    if (value >= min) {
+      this.atcButton?.removeAttribute('disabled');
+      // Debugging disabled button state
+      // console.log('Enabling button - quantity valid');
+    } else {
+      this.atcButton?.setAttribute('disabled','true');
+      console.log('Disabling button - quantity invalid');
     }
   }
 }
@@ -1182,7 +1202,37 @@ class VariantSelects extends HTMLElement {
   onVariantChange() {
     this.updateOptions();
     this.updateMasterId();
-    this.toggleAddButton(true, '', false);
+    
+    console.log('Variant change:', {
+      currentVariant: this.currentVariant ? {
+        available: this.currentVariant.available,
+        id: this.currentVariant.id,
+        inventory_policy: this.currentVariant.inventory_policy,
+        inventory_management: this.currentVariant.inventory_management
+      } : 'no variant'
+    });
+
+    // Check inventory policy
+    const checkAgainstInventory = this.currentVariant && 
+      this.currentVariant.inventory_management === 'shopify' && 
+      this.currentVariant.inventory_policy !== 'continue';
+    
+    const quantityRuleSoldout = checkAgainstInventory && 
+      this.currentVariant.quantity_rule?.min > this.currentVariant.inventory_quantity;
+
+    // Only disable if variant is unavailable or quantity rule is violated
+    const shouldDisable = !this.currentVariant || 
+      !this.currentVariant.available || 
+      quantityRuleSoldout;
+
+    console.log('Button state:', {
+      checkAgainstInventory,
+      quantityRuleSoldout,
+      shouldDisable
+    });
+
+    this.toggleAddButton(shouldDisable, '', false);
+    
     this.updatePickupAvailability();
     this.updateQuickShipAvailability();
     this.removeErrorMessage();
@@ -1190,7 +1240,6 @@ class VariantSelects extends HTMLElement {
     this.updateQtyUnit();
 
     if (!this.currentVariant) {
-      this.toggleAddButton(true, '', true);
       this.setUnavailable();
       this.updateFormVisibility();
     } else {
@@ -1593,6 +1642,13 @@ class VariantSelects extends HTMLElement {
     const addButtonText = productForm.querySelector('[name="add"] > span');
     if (!addButton) return;
 
+    console.log('toggleAddButton:', {
+      disable,
+      text,
+      modifyClass,
+      currentState: addButton.disabled
+    });
+
     if (disable) {
       addButton.setAttribute('disabled', 'disabled');
       if (text) addButtonText.textContent = text;
@@ -1600,7 +1656,6 @@ class VariantSelects extends HTMLElement {
       addButton.removeAttribute('disabled');
       addButtonText.textContent = window.variantStrings.addToCart;
       
-      // Add null checks for price element
       const priceElement = document.getElementById(`price-${this.dataset.section}`);
       if (priceElement) {
         const priceContainer = priceElement.querySelector('.price__container');
@@ -1828,7 +1883,6 @@ customElements.define('product-recommendations', ProductRecommendations);
 //       this.calculatorContainer.classList.add('open');
 //     } else {
 //       event.target.removeAttribute('readonly');
-//     }
 //   }
 
 //   onUpdateQtyBtnClick(event) {
