@@ -19,7 +19,7 @@
             | t: location_name: closest_location.location.name
           }}
         </p>
-        <p class="caption">{{ closest_location.pick_up_time }}</p>
+        {% comment %} <p class="caption">{{ closest_location.pick_up_time }}</p>
         <button
           id="ShowPickupAvailabilityDrawer"
           class="pickup-availability-button link link--text underlined-link"
@@ -30,7 +30,7 @@
           {%- else -%}
             {{ 'products.product.pickup_availability.check_other_stores' | t }}
           {%- endif -%}
-        </button>
+        </button> {% endcomment %}
       {%- else -%}
         <p class="caption-large">
           {{
