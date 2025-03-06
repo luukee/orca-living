@@ -118,7 +118,7 @@
           "settings": {
             "show_dynamic_checkout": false,
             "show_gift_card_recipient": true,
-            "quick_ship_text": "Quick Ship | Ships within 1-3 weeks"
+            "quick_ship_text": "In Stock | Ships within 1-3 weeks"
           }
         },
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72": {
@@ -225,7 +225,7 @@
       ],
       "settings": {
         "products_per_page": 24,
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "filter_on_tag": "_Cobble",
         "image_ratio": "portrait",
         "show_secondary_image": false,
