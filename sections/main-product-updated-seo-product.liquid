@@ -514,17 +514,31 @@
                 %}
 
               {%- when 'variant_picker' -%}
-                {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+                {%- render 'product-variant-picker', 
+                  product: product, 
+                  block: block, 
+                  product_form_id: product_form_id 
+                -%}
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
                   product: product,
                   product_form_id: product_form_id,
                   section_id: section.id,
-                  show_pickup_availability: true
+                  show_pickup_availability: true,
+                  external: external, 
+                  external_link: external_link
                 -%}
               {%- when 'buy_buttons_gift_card' -%}
-                {%- render 'buy-buttons_gift-card', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}
+                {%- render 'buy-buttons_gift-card', 
+                  block: block, 
+                  product: product, 
+                  product_form_id: product_form_id, 
+                  section_id: section.id, 
+                  show_pickup_availability: true, 
+                  external: external, 
+                  external_link: external_link 
+                -%}
               {%- when 'rating' -%}
                 {%- if product.metafields.reviews.rating.value != blank -%}
                   <div class="rating-wrapper">
@@ -1006,6 +1020,13 @@
           "default": true,
           "label": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.label",
           "info": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.info"
+        },
+        {
+          "type": "text",
+          "id": "quick_ship_text",
+          "placeholder": "Quick Ship | Ships within 2-3 weeks",
+          "label": "Quick ship text",
+          "info": "Any variants with Quick Ship set to true will display this below their Add To Cart buttons."
         }
       ]
     },

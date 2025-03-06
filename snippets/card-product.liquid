@@ -238,6 +238,11 @@
         </div>
       </div>
       <div class="card__content">
+        {% if quick_ship %}
+          <div class="button_quick-ship button--hover-effect">
+            <button class="button--xsmall">Quick Ship</button>
+          </div>
+        {% endif %}
         <div class="card__information">
           <h3
             class="card__heading{% if mainImage or settings.card_style == 'standard' %} h5{% endif %}"
@@ -245,7 +250,6 @@
               id="title-{{ section_id }}-{{ card_product.id }}"
             {% endif %}
           >
-            {% if hide_overlay_link == false %}
                 <a
                 href="{{ productURL }}"
                 id="CardLink-{{ section_id }}-{{ card_product.id }}"
@@ -254,9 +258,6 @@
               >
                 {{ product_title | escape }}
               </a>
-            {% else %}
-              {{ product_title | escape }}
-            {% endif %}
           </h3>
           <div class="card-information">
             {%- if show_vendor -%}

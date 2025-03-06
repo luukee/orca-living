@@ -204,11 +204,10 @@
               assign quick_ship = true
             endif
            %}
-          {% if quick_ship %}
-            <p style="text-align: center; margin-top: 0; margin-bottom: 10px">
-              {{ block.settings.quick_ship_text }}
-            </p>
-          {% endif %}
+          <quickship-availability {% if quick_ship %}available{% endif %}></quickship-availability>
+          <quickship-text style="text-align: center; margin-top: 0; margin-bottom: 10px; display: {% if quick_ship %}block{% else %}none{% endif %}">
+            {{ block.settings.quick_ship_text }}
+          </quickship-text>
           
         </div>
       {%- endform -%}

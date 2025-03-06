@@ -1184,6 +1184,7 @@ class VariantSelects extends HTMLElement {
     this.updateMasterId();
     this.toggleAddButton(true, '', false);
     this.updatePickupAvailability();
+    this.updateQuickShipAvailability();
     this.removeErrorMessage();
     this.updateVariantStatuses();
     this.updateQtyUnit();
@@ -1381,6 +1382,26 @@ class VariantSelects extends HTMLElement {
     } else {
       pickUpAvailability.removeAttribute('available');
       pickUpAvailability.innerHTML = '';
+    }
+  }
+
+  updateQuickShipAvailability() {
+    const quickShipAvailability = document.querySelector('quickship-availability');
+    const quickShipText = document.querySelector('quickship-text');
+    if (!quickShipAvailability) return;
+    if (this.currentVariant && this.currentVariant.available) {
+      // Check if the current variant has quickship property
+      const isQuickShip = this.currentVariant.quick_ship || false;
+      console.log(isQuickShip);
+      quickShipAvailability.setAvailability(isQuickShip);
+      if (quickShipText) {
+        quickShipText.setVisibility(isQuickShip);
+      }
+    } else {
+      quickShipAvailability.removeAttribute('available');
+      if (quickShipText) {
+        quickShipText.setVisibility(false);
+      }
     }
   }
 
@@ -2137,3 +2158,35 @@ function openMenuDrawer() {
     }
   }
 }
+
+class QuickShipAvailability extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  setAvailability(isQuickShip) {
+    if (isQuickShip) {
+      this.setAttribute('available', '');
+    } else {
+      this.removeAttribute('available');
+    }
+  }
+}
+
+customElements.define('quickship-availability', QuickShipAvailability);
+
+class QuickShipText extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  setVisibility(isVisible) {
+    if (isVisible) {
+      this.style.display = 'block';
+    } else {
+      this.style.display = 'none';
+    }
+  }
+}
+
+customElements.define('quickship-text', QuickShipText);
