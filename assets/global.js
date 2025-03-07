@@ -323,24 +323,9 @@ class QuantityInput extends HTMLElement {
     this.changeEvent = new Event('change', { bubbles: true });
     this.atcButton = document.querySelector('.product-form__submit');
 
-    // For pavers, use data-min attribute, otherwise use min attribute or default to 1
-    const isPaver = this.input.hasAttribute('data-paver');
-    const minValue = isPaver ? 
-      parseInt(this.input.dataset.min) : 
-      (parseInt(this.input.min) || 1);
-
-    // Initialize with default value of 1 for non-pavers
-    if (!this.input.value) {
-      this.input.value = isPaver ? 0 : 1;
+    if (this.atcButton && parseInt(this.input.value) < 1) {
+      this.atcButton.setAttribute('disabled','true')
     }
-
-    // Log initial state
-    // console.log('QuantityInput init:', {
-    //   value: this.input.value,
-    //   min: minValue,
-    //   isPaver,
-    //   buttonState: this.atcButton ? this.atcButton.disabled : 'no button'
-    // });
 
     this.input.addEventListener('change', this.onInputChange.bind(this));
     this.querySelectorAll('button').forEach((button) =>
@@ -392,13 +377,11 @@ class QuantityInput extends HTMLElement {
       const atcButtonPrice = this.atcButton.querySelector('.price-item--regular');
       var price = atcButtonPrice.getAttribute('data-price');
       price = parseFloat(price) * value;
-      // Format price to always show cents even if they're zero
-      price = (price / 100).toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
+      price = (price / 100).toFixed(2);
       atcButtonPrice.textContent = `$${price}`;
     }
+
+    //   console.log(value);
   }
 
   onButtonClick(event) {
@@ -410,24 +393,10 @@ class QuantityInput extends HTMLElement {
   }
 
   validateQtyRules() {
-    const isPaver = this.input.hasAttribute('data-paver');
     const value = parseInt(this.input.value) || 0;
-    const min = isPaver ? 
-      parseInt(this.input.dataset.min) : 
-      (parseInt(this.input.min) || 1);
-    const max = Number.isNaN(parseInt(this.input.max)) ? 
-      Number.MAX_VALUE : 
-      parseInt(this.input.max);
+    const min = parseInt(this.input.min) ?? 1;
+    const max = Number.isNaN(parseInt(this.input.max))? Number.MAX_VALUE : parseInt(this.input.max);
       
-    // Log initial state
-    // console.log('validateQtyRules:', {
-    //   value,
-    //   min,
-    //   max,
-    //   isPaver,
-    //   buttonState: this.atcButton ? this.atcButton.disabled : 'no button'
-    // });
-
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']");
       buttonMinus.classList.toggle('disabled', value <= min);
@@ -437,28 +406,10 @@ class QuantityInput extends HTMLElement {
       buttonPlus.classList.toggle('disabled', value >= max);
     }
 
-    // For pavers, require minimum quantity to enable button
-    if (isPaver) {
-      if (value >= min) {
-        this.atcButton?.removeAttribute('disabled');
-        // atc button debugging
-        // console.log('Enabling button - paver quantity valid');
-      } else {
-        this.atcButton?.setAttribute('disabled', 'true');
-        // atc button debugging
-        // console.log('Disabling button - paver quantity invalid');
-      }
-    } else {
-      // For non-pavers, enable if any valid quantity
-      if (value > 0) {
-        this.atcButton?.removeAttribute('disabled');
-        // atc button debugging
-        // console.log('Enabling button - quantity valid');
-      } else {
-        this.atcButton?.setAttribute('disabled', 'true');
-        // atc button debugging
-        // console.log('Disabling button - quantity invalid');
-      }
+    if (value >= min && value <= max) {
+      this.atcButton?.removeAttribute('disabled')
+    }else {
+      this.atcButton?.setAttribute('disabled','true')
     }
   }
 }
@@ -1228,85 +1179,17 @@ class VariantSelects extends HTMLElement {
     this.addEventListener('change', this.onVariantChange);
   }
 
-  connectedCallback() {
-    // Format all prices on initial load
-    const priceElement = document.getElementById(`price-${this.dataset.section}`);
-    if (priceElement) {
-      const priceElements = priceElement.querySelectorAll('.price-item');
-      priceElements.forEach(priceElement => {
-        if (priceElement.hasAttribute('data-price')) {
-          const price = parseFloat(priceElement.getAttribute('data-price')) / 100;
-          const formattedPrice = price.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-          });
-          // Update both the price element and button text
-          priceElement.textContent = `$${formattedPrice}`;
-          
-          // Update Add to Cart button text if it exists
-          const addButton = document.querySelector(`#product-form-${this.dataset.section} [name="add"] > span`);
-          if (addButton) {
-            addButton.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>$${formattedPrice}</span>`;
-          }
-        }
-      });
-    }
-  }
-
-  validatePaverQuantity() {
-    const quantityInput = document.querySelector('.quantity__input');
-    const isPaver = quantityInput?.hasAttribute('data-paver');
-    const currentQty = parseInt(quantityInput?.value) || 0;
-    const minQty = isPaver ? parseInt(quantityInput?.dataset.min) || 80 : 1;
-
-    return {
-      isPaver,
-      currentQty,
-      minQty,
-      isValid: !isPaver || (isPaver && currentQty >= minQty)
-    };
-  }
-
   onVariantChange() {
     this.updateOptions();
     this.updateMasterId();
-    
-    // Variant change logging
-    // console.log('Variant change:', {
-    //   currentVariant: this.currentVariant ? {
-    //     available: this.currentVariant.available,
-    //     id: this.currentVariant.id,
-    //     inventory_policy: this.currentVariant.inventory_policy,
-    //     inventory_management: this.currentVariant.inventory_management
-    //   } : 'no variant'
-    // });
 
-    const paverValidation = this.validatePaverQuantity();
+    // Check if this is a paver product
+    const quantityInput = document.querySelector('.quantity__input');
+    const isPaver = quantityInput?.hasAttribute('data-paver');
 
-    // Check inventory policy
-    const checkAgainstInventory = this.currentVariant && 
-      this.currentVariant.inventory_management === 'shopify' && 
-      this.currentVariant.inventory_policy !== 'continue';
-    
-    const quantityRuleSoldout = checkAgainstInventory && 
-      this.currentVariant.quantity_rule?.min > this.currentVariant.inventory_quantity;
+    // Only disable the button if it's a paver product
+    this.toggleAddButton(isPaver, '', false);
 
-    // For pavers, also check if quantity meets minimum requirement
-    const shouldDisable = !this.currentVariant || 
-      !this.currentVariant.available || 
-      quantityRuleSoldout ||
-      !paverValidation.isValid;
-
-    // Log button state
-    // console.log('Button state:', {
-    //   checkAgainstInventory,
-    //   quantityRuleSoldout,
-    //   shouldDisable,
-    //   paverValidation
-    // });
-
-    this.toggleAddButton(shouldDisable, '', false);
-    
     this.updatePickupAvailability();
     this.updateQuickShipAvailability();
     this.removeErrorMessage();
@@ -1314,6 +1197,7 @@ class VariantSelects extends HTMLElement {
     this.updateQtyUnit();
 
     if (!this.currentVariant) {
+      this.toggleAddButton(isPaver, '', true);
       this.setUnavailable();
       this.updateFormVisibility();
     } else {
@@ -1381,13 +1265,8 @@ class VariantSelects extends HTMLElement {
         product_option = product_option.concat('_')
       }
     }
-
-    // Add null check before accessing .splide
-    const splideElement = document.querySelector('.splide');
-    if (splideElement) {
-      splideElement.setAttribute('data-current', product_option);
-      updateCarouselSlides(); // Only call this if splide exists
-    }
+    document.querySelector('.splide').setAttribute('data-current',product_option);
+    updateCarouselSlides();
   }
   updateOptions() {
     this.options = Array.from(
@@ -1575,79 +1454,102 @@ class VariantSelects extends HTMLElement {
 
   renderProductInfo() {
     const requestedVariantId = this.currentVariant.id;
-    const sectionId = this.dataset.originalSection ? this.dataset.originalSection : this.dataset.section;
+    const sectionId = this.dataset.originalSection
+      ? this.dataset.originalSection
+      : this.dataset.section;
 
-    fetch(`${this.dataset.url}?variant=${requestedVariantId}&section_id=${this.dataset.originalSection ? this.dataset.originalSection : this.dataset.section}`)
+    fetch(
+      `${this.dataset.url}?variant=${requestedVariantId}&section_id=${
+        this.dataset.originalSection
+          ? this.dataset.originalSection
+          : this.dataset.section
+      }`
+    )
       .then((response) => response.text())
       .then((responseText) => {
         // prevent unnecessary ui changes from abandoned selections
         if (this.currentVariant.id !== requestedVariantId) return;
 
         const html = new DOMParser().parseFromString(responseText, 'text/html');
-        const destination = document.getElementById(`price-${this.dataset.section}`);
-        const source = html.getElementById(`price-${this.dataset.originalSection ? this.dataset.originalSection : this.dataset.section}`);
+        const destination = document.getElementById(
+          `price-${this.dataset.section}`
+        );
+        const source = html.getElementById(
+          `price-${
+            this.dataset.originalSection
+              ? this.dataset.originalSection
+              : this.dataset.section
+          }`
+        );
+        const skuSource = html.getElementById(
+          `Sku-${
+            this.dataset.originalSection
+              ? this.dataset.originalSection
+              : this.dataset.section
+          }`
+        );
+        const skuDestination = document.getElementById(
+          `Sku-${this.dataset.section}`
+        );
+        const inventorySource = html.getElementById(
+          `Inventory-${
+            this.dataset.originalSection
+              ? this.dataset.originalSection
+              : this.dataset.section
+          }`
+        );
+        const inventoryDestination = document.getElementById(
+          `Inventory-${this.dataset.section}`
+        );
 
-        // Pre-format all prices in the source HTML before updating the DOM
-        if (source) {
-          const priceElements = source.querySelectorAll('.price-item');
-          priceElements.forEach(priceElement => {
-            if (priceElement.hasAttribute('data-price')) {
-              const price = parseFloat(priceElement.getAttribute('data-price')) / 100;
-              const formattedPrice = price.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              });
-              priceElement.textContent = `$${formattedPrice}`;
-            }
-          });
-        }
-
-        // Now update the DOM with pre-formatted prices
         if (source && destination) destination.innerHTML = source.innerHTML;
-
-        const skuSource = html.getElementById(`Sku-${this.dataset.originalSection ? this.dataset.originalSection : this.dataset.section}`);
-        const skuDestination = document.getElementById(`Sku-${this.dataset.section}`);
-        const inventorySource = html.getElementById(`Inventory-${this.dataset.originalSection ? this.dataset.originalSection : this.dataset.section}`);
-        const inventoryDestination = document.getElementById(`Inventory-${this.dataset.section}`);
-
-        if (inventorySource && inventoryDestination) inventoryDestination.innerHTML = inventorySource.innerHTML;
+        if (inventorySource && inventoryDestination)
+          inventoryDestination.innerHTML = inventorySource.innerHTML;
         if (skuSource && skuDestination) {
           skuDestination.innerHTML = skuSource.innerHTML;
-          skuDestination.classList.toggle('visibility-hidden', skuSource.classList.contains('visibility-hidden'));
+          skuDestination.classList.toggle(
+            'visibility-hidden',
+            skuSource.classList.contains('visibility-hidden')
+          );
         }
 
         const price = document.getElementById(`price-${this.dataset.section}`);
+
         if (price) price.classList.remove('visibility-hidden');
 
-        if (inventoryDestination) inventoryDestination.classList.toggle('visibility-hidden', inventorySource.innerText === '');
+        if (inventoryDestination)
+          inventoryDestination.classList.toggle(
+            'visibility-hidden',
+            inventorySource.innerText === ''
+          );
 
-        const addButtonUpdated = html.getElementById(`ProductSubmitButton-${sectionId}`);
+        const addButtonUpdated = html.getElementById(
+          `ProductSubmitButton-${sectionId}`
+        );
 
-        // Re-validate paver quantity after render
-        const paverValidation = this.validatePaverQuantity();
-        const shouldDisable = (addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true) || !paverValidation.isValid;
+        // Check if this is a paver product
+        const quantityInput = document.querySelector('.quantity__input');
+        const isPaver = quantityInput?.hasAttribute('data-paver');
+        console.log('paver? ==> ', isPaver);
+        // Only disable the button if it's a paver product and the button should be disabled
+        const shouldDisable = isPaver && (addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true);
 
-        // Format the button price consistently
-        const buttonPrice = this.currentVariant.price / 100;
-        const formattedButtonPrice = buttonPrice.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
+        this.toggleAddButton(
+          shouldDisable,
+          window.variantStrings.soldOut
+        );
 
-        // Only pass "Sold out" text if the variant itself is unavailable
-        const buttonText = (!this.currentVariant || !this.currentVariant.available) ? 
-          window.variantStrings.soldOut : 
-          `${window.variantStrings.addToCart} - $${formattedButtonPrice}`;
+        const sampleButtonUpdated = html.getElementById(
+          `SampleOrderButton-${sectionId}`
+        );
 
-        this.toggleAddButton(shouldDisable, buttonText, true);
-
-        const sampleButtonUpdated = html.getElementById(`SampleOrderButton-${sectionId}`);
         const sampleButton = document.getElementById(`SampleOrderButton-${sectionId}`)
         if (sampleButton) {
           if (!sampleButtonUpdated) {
             sampleButton.style.display = 'none'
-          } else {
-            sampleButton.setAttribute('data-value', sampleButtonUpdated.getAttribute('data-value'))
+          }
+          else {
+            sampleButton.setAttribute('data-value',sampleButtonUpdated.getAttribute('data-value'))
             sampleButton.innerHTML = sampleButtonUpdated.innerHTML
             sampleButton.disabled = sampleButtonUpdated.hasAttribute('disabled')
           }
@@ -1694,51 +1596,25 @@ class VariantSelects extends HTMLElement {
   }
 
   toggleAddButton(disable = true, text, modifyClass = true) {
-    const productForm = document.getElementById(`product-form-${this.dataset.section}`);
+    const productForm = document.getElementById(
+      `product-form-${this.dataset.section}`
+    );
     if (!productForm) return;
-    
     const addButton = productForm.querySelector('[name="add"]');
     const addButtonText = productForm.querySelector('[name="add"] > span');
     if (!addButton) return;
 
-    // Log button state
-    // console.log('toggleAddButton:', {
-    //   disable,
-    //   text,
-    //   modifyClass,
-    //   currentState: addButton.disabled
-    // });
-
     if (disable) {
       addButton.setAttribute('disabled', 'disabled');
-      // Only update text if explicitly provided and not empty
-      if (text && text.trim() !== '') {
-        addButtonText.textContent = text;
-      }
+      if (text) addButtonText.textContent = text;
     } else {
       addButton.removeAttribute('disabled');
-      // Get the price from the price element and ensure it's formatted with decimals
-      const priceElement = document.getElementById(`price-${this.dataset.section}`);
-      if (priceElement) {
-        const priceContainer = priceElement.querySelector('.price__container');
-        if (priceContainer) {
-          // Format the price with decimals
-          const priceItem = priceContainer.querySelector('.price-item--regular');
-          if (priceItem && priceItem.hasAttribute('data-price')) {
-            const price = parseFloat(priceItem.getAttribute('data-price')) / 100;
-            const formattedPrice = price.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            });
-            addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>$${formattedPrice}</span>`;
-          } else {
-            addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>${priceContainer.innerHTML}</span>`;
-          }
-        } else {
-          addButtonText.textContent = window.variantStrings.addToCart;
-        }
-      } else {
-        addButtonText.textContent = window.variantStrings.addToCart;
+      addButtonText.textContent = window.variantStrings.addToCart;
+      const currentPrice = document
+        .getElementById(`price-${this.dataset.section}`)
+        .querySelector('.price__container').innerHTML;
+      if (currentPrice) {
+        addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>${currentPrice}</span>`;
       }
     }
 
@@ -2321,3 +2197,4 @@ class QuickShipText extends HTMLElement {
 }
 
 customElements.define('quickship-text', QuickShipText);
+
