@@ -342,7 +342,8 @@ class QuantityInput extends HTMLElement {
     this.changeEvent = new Event('change', { bubbles: true })
     this.atcButton = document.querySelector('.product-form__submit')
 
-    if (this.atcButton && parseInt(this.input.value) < 1) {
+    const isPaver = this.input.hasAttribute('data-paver')
+    if (isPaver && this.atcButton && parseInt(this.input.value) < 1) {
       this.atcButton.setAttribute('disabled', 'true')
     }
 
@@ -433,10 +434,18 @@ class QuantityInput extends HTMLElement {
       buttonPlus.classList.toggle('disabled', value >= max)
     }
 
-    if (value >= min && value <= max) {
-      this.atcButton?.removeAttribute('disabled')
+    const isPaver = this.input.hasAttribute('data-paver');
+    
+    // Only apply quantity validation for paver products
+    if (isPaver) {
+      if (value >= min && value <= max) {
+        this.atcButton?.removeAttribute('disabled');
+      } else {
+        this.atcButton?.setAttribute('disabled', 'true');
+      }
     } else {
-      this.atcButton?.setAttribute('disabled', 'true')
+      // For non-paver products, always enable the button
+      this.atcButton?.removeAttribute('disabled');
     }
   }
 }
@@ -1209,8 +1218,10 @@ class VariantSelects extends HTMLElement {
     const quantityInput = document.querySelector('.quantity__input')
     const isPaver = quantityInput?.hasAttribute('data-paver')
 
-    // Only disable the button if it's a paver product
-    this.toggleAddButton(isPaver, '', false)
+    // For non-paver products, never disable the button in this step
+    if (!isPaver) {
+      this.toggleAddButton(false, '', false)
+    }
 
     this.updatePickupAvailability()
     this.updateQuickShipAvailability()
@@ -1228,7 +1239,7 @@ class VariantSelects extends HTMLElement {
       this.updateVariantInput()
       this.renderProductInfo()
       this.updateShareUrl()
-      this.updateCarousel()
+      // this.updateCarousel()
     }
   }
 
@@ -1554,11 +1565,14 @@ class VariantSelects extends HTMLElement {
         // Check if this is a paver product
         const quantityInput = document.querySelector('.quantity__input')
         const isPaver = quantityInput?.hasAttribute('data-paver')
-        console.log('paver? ==> ', isPaver)
-        // Only disable the button if it's a paver product and the button should be disabled
-        const shouldDisable =
-          isPaver &&
-          (addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true)
+
+        // For non-paver products, never disable the button
+        let shouldDisable = false;
+        
+        if (isPaver) {
+          // For pavers, check if the button should be disabled based on the HTML response
+          shouldDisable = addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true;
+        }
 
         this.toggleAddButton(shouldDisable, window.variantStrings.soldOut)
 
@@ -1631,6 +1645,15 @@ class VariantSelects extends HTMLElement {
     const addButtonText = productForm.querySelector('[name="add"] > span')
     if (!addButton) return
 
+    // Check if this is a paver product
+    const quantityInput = document.querySelector('.quantity__input');
+    const isPaver = quantityInput?.hasAttribute('data-paver');
+
+    // Only allow disabling for paver products
+    if (!isPaver) {
+      disable = false;
+    }
+
     if (disable) {
       addButton.setAttribute('disabled', 'disabled')
       if (text) addButtonText.textContent = text
@@ -1680,6 +1703,11 @@ customElements.define('variant-selects', VariantSelects)
 class VariantRadios extends VariantSelects {
   constructor() {
     super()
+    this.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        this.onVariantChange();
+      });
+    });
   }
 
   setInputAvailability(listOfOptions, listOfAvailableOptions) {
@@ -1699,6 +1727,16 @@ class VariantRadios extends VariantSelects {
         (radio) => radio.checked
       ).value
     })
+    
+    // Check if current selection is a paver
+    const isPaver = this.options[0] === 'Paver';
+    const quantityInput = document.querySelector('.quantity__input');
+    
+    if (isPaver) {
+      quantityInput?.setAttribute('data-paver', '');
+    } else {
+      quantityInput?.removeAttribute('data-paver');
+    }
   }
 }
 
