@@ -1,0 +1,39 @@
+{% comment %}
+  Renders calculated price based on variant and quantity
+  Accepts:
+  - variant: {Object} product variant
+  - quantity: {Integer} current quantity
+  - is_paver: {Boolean} whether product is a paver
+  - show_quantity: {Boolean} whether to show quantity in calculation
+{% endcomment %}
+
+{%- liquid
+  # Get base price
+  assign price = variant.price
+  
+  # Apply trade discount if applicable
+  if customer and customer.tags contains 'trade'
+    assign price = price | times: 0.9
+  endif
+
+  # Calculate total if showing quantity
+  if show_quantity
+    assign price = price | times: quantity
+  endif
+
+  # Format price according to settings
+  if settings.currency_code_enabled
+    assign formatted_price = price | money_with_currency
+  else
+    assign formatted_price = price | money
+  endif
+-%}
+
+<span class="price-item price-item--regular" 
+  data-price="{{ price }}"
+  data-base-price="{{ variant.price }}"
+  data-quantity="{{ quantity }}"
+  data-is-paver="{{ is_paver }}"
+>
+  {{ formatted_price }}
+</span>
