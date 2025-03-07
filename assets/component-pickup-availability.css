@@ -13,7 +13,7 @@ pickup-availability[available] {
 .pickup-availability-preview .icon {
   flex-shrink: 0;
   height: 1.8rem;
-  margin-right: 0.5rem;
+
 }
 .pickup-availability-preview .icon-unavailable {
   height: 1.6rem;
