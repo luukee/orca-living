@@ -409,42 +409,76 @@ function onKeyUpEscape(event) {
   summaryElement.focus()
 }
 
+/**
+ * Custom element that implements sticky header functionality with scroll-based behavior.
+ * 
+ * @class
+ * @extends HTMLElement
+ * 
+ * @description
+ * This class manages a sticky header that can:
+ * - Always remain sticky based on data-sticky-type attribute
+ * - Hide/show based on scroll direction
+ * - Adjust height responsively
+ * - Handle predictive search interactions
+ * - Manage menu and search modal states
+ * 
+ * Sticky Types:
+ * - 'always': Header always remains sticky
+ * - 'reduce-logo-size': Header remains sticky with reduced logo size
+ * - default: Header shows/hides based on scroll direction
+ * 
+ * @example
+ * // HTML usage
+ * <sticky-header data-sticky-type="always">
+ *   <!-- Header content -->
+ * </sticky-header>
+ */
 class StickyHeader extends HTMLElement {
   constructor() {
     super()
   }
 
   connectedCallback() {
+    // Initialize header elements and state
     this.header = document.querySelector('.section-header')
     this.headerIsAlwaysSticky =
       this.getAttribute('data-sticky-type') === 'always' ||
       this.getAttribute('data-sticky-type') === 'reduce-logo-size'
     this.headerBounds = {}
 
+    // Set initial header height and listen for viewport changes
     this.setHeaderHeight()
-
     window
       .matchMedia('(max-width: 990px)')
       .addEventListener('change', this.setHeaderHeight.bind(this))
 
+    // If header should always be sticky, set appropriate classes
     if (this.headerIsAlwaysSticky) {
       this.header.classList.add('shopify-section-header-sticky')
       document.body.classList.add('header-sticky')
     }
 
+    // Initialize scroll tracking variables
     this.currentScrollTop = 0
     this.preventReveal = false
     this.predictiveSearch = this.querySelector('predictive-search')
 
+    // Bind event handlers
     this.onScrollHandler = this.onScroll.bind(this)
     this.hideHeaderOnScrollUp = () => (this.preventReveal = true)
 
+    // Add event listeners for scroll and header reveal prevention
     this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp)
     window.addEventListener('scroll', this.onScrollHandler, false)
 
+    // Set up intersection observer to track header position
     this.createObserver()
   }
 
+  /**
+   * Sets the header height CSS variable for responsive layouts
+   */
   setHeaderHeight() {
     document.documentElement.style.setProperty(
       '--header-height',
@@ -452,11 +486,17 @@ class StickyHeader extends HTMLElement {
     )
   }
 
+  /**
+   * Cleanup event listeners when element is removed
+   */
   disconnectedCallback() {
     this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp)
     window.removeEventListener('scroll', this.onScrollHandler)
   }
 
+  /**
+   * Creates an IntersectionObserver to track header position relative to viewport
+   */
   createObserver() {
     let observer = new IntersectionObserver((entries, observer) => {
       this.headerBounds = entries[0].intersectionRect
@@ -466,11 +506,16 @@ class StickyHeader extends HTMLElement {
     observer.observe(this.header)
   }
 
+  /**
+   * Handles scroll events to show/hide header based on scroll direction
+   */
   onScroll() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop
 
+    // Don't process scroll if predictive search is open
     if (this.predictiveSearch && this.predictiveSearch.isOpen) return
 
+    // Scrolling down past header
     if (
       scrollTop > this.currentScrollTop &&
       scrollTop > this.headerBounds.bottom
@@ -478,7 +523,9 @@ class StickyHeader extends HTMLElement {
       this.header.classList.add('scrolled-past-header')
       if (this.preventHide) return
       requestAnimationFrame(this.hide.bind(this))
-    } else if (
+    } 
+    // Scrolling up while past header
+    else if (
       scrollTop < this.currentScrollTop &&
       scrollTop > this.headerBounds.bottom
     ) {
@@ -486,22 +533,28 @@ class StickyHeader extends HTMLElement {
       if (!this.preventReveal) {
         requestAnimationFrame(this.reveal.bind(this))
       } else {
+        // Reset preventReveal after a short delay
         window.clearTimeout(this.isScrolling)
-
         this.isScrolling = setTimeout(() => {
           this.preventReveal = false
         }, 66)
 
         requestAnimationFrame(this.hide.bind(this))
       }
-    } else if (scrollTop <= this.headerBounds.top) {
+    } 
+    // Scrolled to top of page
+    else if (scrollTop <= this.headerBounds.top) {
       this.header.classList.remove('scrolled-past-header')
       requestAnimationFrame(this.reset.bind(this))
     }
 
+    // Update current scroll position
     this.currentScrollTop = scrollTop
   }
 
+  /**
+   * Hides the header when scrolling down
+   */
   hide() {
     if (this.headerIsAlwaysSticky) return
     document.body.classList.remove('header-sticky')
@@ -509,10 +562,14 @@ class StickyHeader extends HTMLElement {
       'shopify-section-header-hidden',
       'shopify-section-header-sticky'
     )
+    // Close any open menus/modals when hiding header
     this.closeMenuDisclosure()
     this.closeSearchModal()
   }
 
+  /**
+   * Shows the header when scrolling up
+   */
   reveal() {
     if (this.headerIsAlwaysSticky) return
     document.body.classList.add('header-sticky')
@@ -520,6 +577,9 @@ class StickyHeader extends HTMLElement {
     this.header.classList.remove('shopify-section-header-hidden')
   }
 
+  /**
+   * Resets header state when at top of page
+   */
   reset() {
     if (this.headerIsAlwaysSticky) return
     document.body.classList.remove('header-sticky')
@@ -530,13 +590,21 @@ class StickyHeader extends HTMLElement {
     )
   }
 
+  /**
+   * Closes all menu disclosures in the header
+   */
   closeMenuDisclosure() {
+    // Cache disclosures for performance
     this.disclosures =
       this.disclosures || this.header.querySelectorAll('header-menu')
     this.disclosures.forEach((disclosure) => disclosure.close())
   }
 
+  /**
+   * Closes the search modal if open
+   */
   closeSearchModal() {
+    // Cache search modal for performance
     this.searchModal =
       this.searchModal || this.header.querySelector('details-modal')
     this.searchModal.close(false)
@@ -545,18 +613,48 @@ class StickyHeader extends HTMLElement {
 
 customElements.define('sticky-header', StickyHeader)
 
+/**
+ * Custom element that manages quantity input functionality with special handling for paver products.
+ * 
+ * @class
+ * @extends HTMLElement
+ * 
+ * @description
+ * This class manages a quantity input component that:
+ * - Handles quantity validation for paver and non-paver products
+ * - Updates Add to Cart button state based on quantity rules
+ * - Calculates and displays total price based on quantity
+ * - Shows/hides quantity validation messages
+ * - Manages increment/decrement buttons
+ * 
+ * Special Features for Paver Products:
+ * - Enforces minimum/maximum quantity limits
+ * - Shows validation messages for invalid quantities
+ * - Disables Add to Cart button when quantity is invalid
+ * 
+ * @example
+ * <!-- HTML usage -->
+ * <quantity-input>
+ *   <input type="number" data-paver min="1" max="100">
+ *   <button name="plus">+</button>
+ *   <button name="minus">-</button>
+ * </quantity-input>
+ */
 class QuantityInput extends HTMLElement {
   constructor() {
     super()
+    // Initialize core elements
     this.input = this.querySelector('input')
     this.changeEvent = new Event('change', { bubbles: true })
     this.atcButton = document.querySelector('.product-form__submit')
 
+    // Check if this is a paver product and handle initial state
     const isPaver = this.input.hasAttribute('data-paver')
     if (isPaver && this.atcButton && parseInt(this.input.value) < 1) {
       this.atcButton.setAttribute('disabled', 'true')
     }
 
+    // Set up event listeners
     this.input.addEventListener('change', this.onInputChange.bind(this))
     this.querySelectorAll('button').forEach((button) =>
       button.addEventListener('click', this.onButtonClick.bind(this))
@@ -566,6 +664,9 @@ class QuantityInput extends HTMLElement {
 
   quantityUpdateUnsubscriber = undefined
 
+  /**
+   * Sets up initial state and subscribes to quantity update events
+   */
   connectedCallback() {
     this.validateQtyRules()
     this.quantityUpdateUnsubscriber = subscribe(
@@ -574,27 +675,38 @@ class QuantityInput extends HTMLElement {
     )
   }
 
+  /**
+   * Cleans up event subscriptions when element is removed
+   */
   disconnectedCallback() {
     if (this.quantityUpdateUnsubscriber) {
       this.quantityUpdateUnsubscriber()
     }
   }
 
+  /**
+   * Handles quantity input changes by validating rules and updating price display
+   * @param {Event} event - The change event
+   */
   onInputChange(event) {
+    // Validate quantity rules first
     this.validateQtyRules()
     
     // Get the variant selects instance to access the current variant
     const variantSelects = document.querySelector('variant-selects, variant-radios')
     if (variantSelects) {
-      // Update the button text with current quantity and price
+      // Calculate and update the total price based on quantity
       const value = parseInt(this.input.value) || 0
       const currentPrice = document
         .getElementById(`price-${variantSelects.dataset.section}`)
         ?.querySelector('.price__container')
       
       if (currentPrice) {
+        // Get base price and calculate total
         const basePrice = parseFloat(currentPrice.querySelector('.price-item--regular').getAttribute('data-price')) || 0
         const totalPrice = ((basePrice * value) / 100).toFixed(2)
+        
+        // Update Add to Cart button text with total price if button is enabled
         const addButton = document.querySelector('.product-form__submit span')
         if (addButton && !this.atcButton.hasAttribute('disabled')) {
           addButton.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>$${totalPrice}</span>`
@@ -602,16 +714,23 @@ class QuantityInput extends HTMLElement {
       }
     }
     
+    // Toggle validation message if needed
     this.toggleMessage()
   }
 
+  /**
+   * Toggles visibility of quantity validation message for paver products
+   */
   toggleMessage() {
     const value = parseInt(this.input.value)
     const min = parseInt(this.input.dataset.min)
     const max = parseInt(this.input.dataset.max)
     const isPaver = this.input.hasAttribute('data-paver')
 
+    // Only show messages for paver products
     if (!isPaver) return
+
+    // Show/hide message based on quantity validation
     if (value > max || value < min) {
       document
         .querySelector('[data-paver-qty-message]')
@@ -623,25 +742,37 @@ class QuantityInput extends HTMLElement {
     }
   }
 
+  /**
+   * Handles increment/decrement button clicks
+   * @param {Event} event - The click event
+   */
   onButtonClick(event) {
     event.preventDefault()
     const previousValue = this.input.value
+    // Increment or decrement based on button name
     event.target.name === 'plus' ? this.input.stepUp() : this.input.stepDown()
+    // Only dispatch change event if value actually changed
     if (previousValue !== this.input.value)
       this.input.dispatchEvent(this.changeEvent)
   }
 
+  /**
+   * Validates quantity rules and updates UI accordingly
+   */
   validateQtyRules() {
+    // Parse input values with fallbacks
     const value = parseInt(this.input.value) || 0
     const min = parseInt(this.input.min) ?? 1
     const max = Number.isNaN(parseInt(this.input.max))
       ? Number.MAX_VALUE
       : parseInt(this.input.max)
 
+    // Disable minus button if at minimum
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']")
       buttonMinus.classList.toggle('disabled', value <= min)
     }
+    // Disable plus button if at maximum
     if (this.input.max) {
       const buttonPlus = this.querySelector(".quantity__button[name='plus']")
       buttonPlus.classList.toggle('disabled', value >= max)
@@ -649,15 +780,16 @@ class QuantityInput extends HTMLElement {
 
     const isPaver = this.input.hasAttribute('data-paver');
     
-    // Only apply quantity validation for paver products
+    // Handle Add to Cart button state differently for paver vs non-paver products
     if (isPaver) {
+      // For pavers: disable button if quantity is invalid
       if (value >= min && value <= max) {
         this.atcButton?.removeAttribute('disabled');
       } else {
         this.atcButton?.setAttribute('disabled', 'true');
       }
     } else {
-      // For non-paver products, always enable the button
+      // For non-pavers: always enable the button
       this.atcButton?.removeAttribute('disabled');
     }
   }
