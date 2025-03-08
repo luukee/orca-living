@@ -156,8 +156,8 @@ document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
  * @see {@link getFocusableElements} - Used internally to find focusable elements
  * @see {@link removeTrapFocus} - Call this to remove the focus trap
  */
+const trapFocusHandlers = {}
 function trapFocus(container, elementToFocus = container) {
-  const trapFocusHandlers = {}
   var elements = getFocusableElements(container)
   var first = elements[0]
   var last = elements[elements.length - 1]
@@ -218,6 +218,37 @@ try {
   focusVisiblePolyfill()
 }
 
+/**
+ * Polyfills the :focus-visible pseudo-class functionality for browsers that don't support it.
+ * 
+ * @description
+ * This function implements a polyfill for the :focus-visible selector by:
+ * - Tracking keyboard navigation vs mouse interactions
+ * - Adding/removing a 'focused' class to elements based on interaction type
+ * - Only showing focus rings when navigating via keyboard
+ * 
+ * The function monitors:
+ * - Keyboard events for navigation keys (arrows, tab, etc.)
+ * - Mouse events to detect click interactions
+ * - Focus events to manage focus states
+ * 
+ * Navigation keys tracked:
+ * - Arrow keys (Up, Down, Left, Right)
+ * - Tab, Enter, Space
+ * - Escape
+ * - Home, End
+ * - PageUp, PageDown
+ * 
+ * @example
+ * // Usage in browser feature detection
+ * try {
+ *   document.querySelector(':focus-visible');
+ * } catch (e) {
+ *   focusVisiblePolyfill();
+ * }
+ * 
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible}
+ */
 function focusVisiblePolyfill() {
   const navKeys = [
     'ARROWUP',
@@ -261,39 +292,120 @@ function focusVisiblePolyfill() {
   )
 }
 
+/**
+ * Pauses all media elements on the page including YouTube, Vimeo, HTML5 video, and 3D models.
+ * 
+ * @description
+ * This function handles pausing different types of media players by:
+ * - Using postMessage API for embedded YouTube and Vimeo iframes
+ * - Directly calling pause() on HTML5 video elements
+ * - Pausing Shopify 3D model viewers if present
+ * 
+ * This is typically used when:
+ * - Opening modals or overlays
+ * - Switching between sections
+ * - Changing product variants
+ * - Any time multiple media elements need to be synchronized
+ * 
+ * @example
+ * // Pause all media when opening a modal
+ * modal.addEventListener('open', () => {
+ *   pauseAllMedia();
+ * });
+ */
 function pauseAllMedia() {
+  // Pause YouTube videos using iframe postMessage API
   document.querySelectorAll('.js-youtube').forEach((video) => {
+    // YouTube requires a specific JSON structure for player commands
     video.contentWindow.postMessage(
       '{"event":"command","func":"' + 'pauseVideo' + '","args":""}',
-      '*'
+      '*' // Allow cross-origin communication
     )
   })
+
+  // Pause Vimeo videos using their player API
   document.querySelectorAll('.js-vimeo').forEach((video) => {
+    // Vimeo uses a simpler JSON message structure
     video.contentWindow.postMessage('{"method":"pause"}', '*')
   })
+
+  // Pause native HTML5 video elements
   document.querySelectorAll('video').forEach((video) => video.pause())
+
+  // Pause Shopify 3D model viewers if they exist
   document.querySelectorAll('product-model').forEach((model) => {
+    // Only pause if the model viewer UI is initialized
     if (model.modelViewerUI) model.modelViewerUI.pause()
   })
 }
 
+/**
+ * Removes the focus trap event listeners and optionally focuses on a specified element.
+ * 
+ * @param {HTMLElement} [elementToFocus=null] - Optional element to receive focus after removing the trap
+ * 
+ * @description
+ * This function cleans up the focus trap by:
+ * - Removing all event listeners that were set up by trapFocus
+ * - Optionally shifting focus to a specified element
+ * 
+ * This is typically called when:
+ * - Closing modals or overlays
+ * - Dismissing dropdown menus
+ * - Any time you need to restore normal page focus behavior
+ * 
+ * @see {@link trapFocus} - The function that sets up the focus trap initially
+ */
 function removeTrapFocus(elementToFocus = null) {
+  // Remove all event listeners that were managing the focus trap
   document.removeEventListener('focusin', trapFocusHandlers.focusin)
   document.removeEventListener('focusout', trapFocusHandlers.focusout)
   document.removeEventListener('keydown', trapFocusHandlers.keydown)
 
+  // If an element was specified, move focus to it
+  // This is useful for maintaining a logical focus flow after closing a modal/overlay
   if (elementToFocus) elementToFocus.focus()
 }
 
+/**
+ * Handles the escape key press event for details/summary elements, providing accessible collapse functionality.
+ * 
+ * @param {KeyboardEvent} event - The keyboard event object
+ * 
+ * @description
+ * This function provides keyboard accessibility for collapsible details elements by:
+ * - Detecting escape key presses
+ * - Finding and closing the nearest open details element
+ * - Updating ARIA states for accessibility
+ * - Managing focus for keyboard navigation
+ * 
+ * This is typically used for:
+ * - Navigation menus
+ * - Accordion interfaces
+ * - Dropdown components
+ * 
+ * @example
+ * // Add escape key handling to a details element
+ * detailsElement.addEventListener('keyup', onKeyUpEscape);
+ */
 function onKeyUpEscape(event) {
+  // Only proceed if the Escape key was pressed
   if (event.code.toUpperCase() !== 'ESCAPE') return
 
+  // Find the nearest parent details element that is currently open
   const openDetailsElement = event.target.closest('details[open]')
   if (!openDetailsElement) return
 
+  // Get the summary element to manage its state and focus
   const summaryElement = openDetailsElement.querySelector('summary')
+  
+  // Close the details element by removing the open attribute
   openDetailsElement.removeAttribute('open')
+  
+  // Update ARIA state for accessibility
   summaryElement.setAttribute('aria-expanded', false)
+  
+  // Move focus to the summary element for keyboard navigation
   summaryElement.focus()
 }
 
