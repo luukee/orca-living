@@ -67,7 +67,6 @@
           "type": "variant_picker",
           "settings": {
             "picker_type": "button",
-            "swatch_shape": "circle"
           }
         },
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133": {
