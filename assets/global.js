@@ -1,17 +1,17 @@
 /**
  * Checks for Liquid template errors in DOM elements by searching for specific error strings
  * across multiple element properties.
- * 
+ *
  * @param {Array<Element>} arr - Array of DOM elements to check for Liquid errors
  * @param {string} string - The error string to search for in the elements
- * 
+ *
  * @description
  * This function performs a thorough check for Liquid template errors by:
  * - Converting the search string to lowercase for case-insensitive matching
  * - Checking multiple DOM element properties (textContent, outerText, outerHTML, innerText, innerHTML)
  * - Stopping the search when first error is found
  * - Providing visual console output indicating whether errors were found
- * 
+ *
  * @example
  * // Check for Liquid errors in all paragraph elements
  * const elements = document.getElementsByTagName('p');
@@ -51,10 +51,10 @@ function LiquidErrorCheck(arr, string) {
 
 /**
  * Returns an array of all focusable elements within a container element.
- * 
+ *
  * @param {HTMLElement} container - The container element to search within
  * @returns {Array<HTMLElement>} Array of focusable elements
- * 
+ *
  * @description
  * This function finds all interactive elements that can receive keyboard focus, including:
  * - summary elements
@@ -68,7 +68,7 @@ function LiquidErrorCheck(arr, string) {
  * - enabled textareas
  * - object elements
  * - iframe elements
- * 
+ *
  * @example
  * // Get all focusable elements in a modal
  * const modal = document.querySelector('.modal');
@@ -84,21 +84,21 @@ function getFocusableElements(container) {
 
 /**
  * Initializes accessibility attributes and event handlers for all summary elements within details components.
- * 
+ *
  * @description
  * This code enhances the accessibility and interactivity of HTML details/summary elements by:
  * - Setting appropriate ARIA roles and states
  * - Handling expand/collapse states
  * - Managing keyboard interactions
  * - Connecting summary elements with their controlled content
- * 
+ *
  * The following modifications are made to each summary element:
  * - Adds role="button" for proper semantic meaning
  * - Sets aria-expanded based on details open state
  * - Establishes aria-controls relationship with content
  * - Adds click handler to update aria-expanded state
  * - Adds escape key handler (except for header-drawer elements)
- * 
+ *
  * @example
  * <!-- HTML structure this code expects -->
  * <details id="Details-1">
@@ -127,10 +127,10 @@ document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
 
 /**
  * Traps keyboard focus within a specified container element for improved accessibility.
- * 
+ *
  * @param {HTMLElement} container - The container element to trap focus within
  * @param {HTMLElement} [elementToFocus=container] - The element to receive initial focus, defaults to container
- * 
+ *
  * @description
  * This function implements a focus trap for modal-like interfaces, ensuring keyboard navigation
  * remains within the specified container. It:
@@ -141,18 +141,18 @@ document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
  *   - focusout: Cleans up keydown listeners when focus leaves
  *   - keydown: Handles Tab key navigation
  * - Automatically selects text in text input elements when focused
- * 
+ *
  * Focus trapping is essential for:
  * - Modal dialogs
  * - Dropdown menus
  * - Other temporary overlays
- * 
+ *
  * @example
  * // Trap focus in a modal dialog
  * const modal = document.querySelector('.modal-dialog');
  * const firstInput = modal.querySelector('input');
  * trapFocus(modal, firstInput);
- * 
+ *
  * @see {@link getFocusableElements} - Used internally to find focusable elements
  * @see {@link removeTrapFocus} - Call this to remove the focus trap
  */
@@ -220,25 +220,25 @@ try {
 
 /**
  * Polyfills the :focus-visible pseudo-class functionality for browsers that don't support it.
- * 
+ *
  * @description
  * This function implements a polyfill for the :focus-visible selector by:
  * - Tracking keyboard navigation vs mouse interactions
  * - Adding/removing a 'focused' class to elements based on interaction type
  * - Only showing focus rings when navigating via keyboard
- * 
+ *
  * The function monitors:
  * - Keyboard events for navigation keys (arrows, tab, etc.)
  * - Mouse events to detect click interactions
  * - Focus events to manage focus states
- * 
+ *
  * Navigation keys tracked:
  * - Arrow keys (Up, Down, Left, Right)
  * - Tab, Enter, Space
  * - Escape
  * - Home, End
  * - PageUp, PageDown
- * 
+ *
  * @example
  * // Usage in browser feature detection
  * try {
@@ -246,7 +246,7 @@ try {
  * } catch (e) {
  *   focusVisiblePolyfill();
  * }
- * 
+ *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible}
  */
 function focusVisiblePolyfill() {
@@ -294,19 +294,19 @@ function focusVisiblePolyfill() {
 
 /**
  * Pauses all media elements on the page including YouTube, Vimeo, HTML5 video, and 3D models.
- * 
+ *
  * @description
  * This function handles pausing different types of media players by:
  * - Using postMessage API for embedded YouTube and Vimeo iframes
  * - Directly calling pause() on HTML5 video elements
  * - Pausing Shopify 3D model viewers if present
- * 
+ *
  * This is typically used when:
  * - Opening modals or overlays
  * - Switching between sections
  * - Changing product variants
  * - Any time multiple media elements need to be synchronized
- * 
+ *
  * @example
  * // Pause all media when opening a modal
  * modal.addEventListener('open', () => {
@@ -341,19 +341,19 @@ function pauseAllMedia() {
 
 /**
  * Removes the focus trap event listeners and optionally focuses on a specified element.
- * 
+ *
  * @param {HTMLElement} [elementToFocus=null] - Optional element to receive focus after removing the trap
- * 
+ *
  * @description
  * This function cleans up the focus trap by:
  * - Removing all event listeners that were set up by trapFocus
  * - Optionally shifting focus to a specified element
- * 
+ *
  * This is typically called when:
  * - Closing modals or overlays
  * - Dismissing dropdown menus
  * - Any time you need to restore normal page focus behavior
- * 
+ *
  * @see {@link trapFocus} - The function that sets up the focus trap initially
  */
 function removeTrapFocus(elementToFocus = null) {
@@ -369,21 +369,21 @@ function removeTrapFocus(elementToFocus = null) {
 
 /**
  * Handles the escape key press event for details/summary elements, providing accessible collapse functionality.
- * 
+ *
  * @param {KeyboardEvent} event - The keyboard event object
- * 
+ *
  * @description
  * This function provides keyboard accessibility for collapsible details elements by:
  * - Detecting escape key presses
  * - Finding and closing the nearest open details element
  * - Updating ARIA states for accessibility
  * - Managing focus for keyboard navigation
- * 
+ *
  * This is typically used for:
  * - Navigation menus
  * - Accordion interfaces
  * - Dropdown components
- * 
+ *
  * @example
  * // Add escape key handling to a details element
  * detailsElement.addEventListener('keyup', onKeyUpEscape);
@@ -398,23 +398,23 @@ function onKeyUpEscape(event) {
 
   // Get the summary element to manage its state and focus
   const summaryElement = openDetailsElement.querySelector('summary')
-  
+
   // Close the details element by removing the open attribute
   openDetailsElement.removeAttribute('open')
-  
+
   // Update ARIA state for accessibility
   summaryElement.setAttribute('aria-expanded', false)
-  
+
   // Move focus to the summary element for keyboard navigation
   summaryElement.focus()
 }
 
 /**
  * Custom element that implements sticky header functionality with scroll-based behavior.
- * 
+ *
  * @class
  * @extends HTMLElement
- * 
+ *
  * @description
  * This class manages a sticky header that can:
  * - Always remain sticky based on data-sticky-type attribute
@@ -422,12 +422,12 @@ function onKeyUpEscape(event) {
  * - Adjust height responsively
  * - Handle predictive search interactions
  * - Manage menu and search modal states
- * 
+ *
  * Sticky Types:
  * - 'always': Header always remains sticky
  * - 'reduce-logo-size': Header remains sticky with reduced logo size
  * - default: Header shows/hides based on scroll direction
- * 
+ *
  * @example
  * // HTML usage
  * <sticky-header data-sticky-type="always">
@@ -523,7 +523,7 @@ class StickyHeader extends HTMLElement {
       this.header.classList.add('scrolled-past-header')
       if (this.preventHide) return
       requestAnimationFrame(this.hide.bind(this))
-    } 
+    }
     // Scrolling up while past header
     else if (
       scrollTop < this.currentScrollTop &&
@@ -541,7 +541,7 @@ class StickyHeader extends HTMLElement {
 
         requestAnimationFrame(this.hide.bind(this))
       }
-    } 
+    }
     // Scrolled to top of page
     else if (scrollTop <= this.headerBounds.top) {
       this.header.classList.remove('scrolled-past-header')
@@ -615,10 +615,10 @@ customElements.define('sticky-header', StickyHeader)
 
 /**
  * Custom element that manages quantity input functionality with special handling for paver products.
- * 
+ *
  * @class
  * @extends HTMLElement
- * 
+ *
  * @description
  * This class manages a quantity input component that:
  * - Handles quantity validation for paver and non-paver products
@@ -626,12 +626,12 @@ customElements.define('sticky-header', StickyHeader)
  * - Calculates and displays total price based on quantity
  * - Shows/hides quantity validation messages
  * - Manages increment/decrement buttons
- * 
+ *
  * Special Features for Paver Products:
  * - Enforces minimum/maximum quantity limits
  * - Shows validation messages for invalid quantities
  * - Disables Add to Cart button when quantity is invalid
- * 
+ *
  * @example
  * <!-- HTML usage -->
  * <quantity-input>
@@ -691,21 +691,28 @@ class QuantityInput extends HTMLElement {
   onInputChange(event) {
     // Validate quantity rules first
     this.validateQtyRules()
-    
+
     // Get the variant selects instance to access the current variant
-    const variantSelects = document.querySelector('variant-selects, variant-radios')
+    const variantSelects = document.querySelector(
+      'variant-selects, variant-radios'
+    )
     if (variantSelects) {
       // Calculate and update the total price based on quantity
       const value = parseInt(this.input.value) || 0
       const currentPrice = document
         .getElementById(`price-${variantSelects.dataset.section}`)
         ?.querySelector('.price__container')
-      
+
       if (currentPrice) {
         // Get base price and calculate total
-        const basePrice = parseFloat(currentPrice.querySelector('.price-item--regular').getAttribute('data-price')) || 0
+        const basePrice =
+          parseFloat(
+            currentPrice
+              .querySelector('.price-item--regular')
+              .getAttribute('data-price')
+          ) || 0
         const totalPrice = ((basePrice * value) / 100).toFixed(2)
-        
+
         // Update Add to Cart button text with total price if button is enabled
         const addButton = document.querySelector('.product-form__submit span')
         if (addButton && !this.atcButton.hasAttribute('disabled')) {
@@ -713,7 +720,7 @@ class QuantityInput extends HTMLElement {
         }
       }
     }
-    
+
     // Toggle validation message if needed
     this.toggleMessage()
   }
@@ -778,19 +785,19 @@ class QuantityInput extends HTMLElement {
       buttonPlus.classList.toggle('disabled', value >= max)
     }
 
-    const isPaver = this.input.hasAttribute('data-paver');
-    
+    const isPaver = this.input.hasAttribute('data-paver')
+
     // Handle Add to Cart button state differently for paver vs non-paver products
     if (isPaver) {
       // For pavers: disable button if quantity is invalid
       if (value >= min && value <= max) {
-        this.atcButton?.removeAttribute('disabled');
+        this.atcButton?.removeAttribute('disabled')
       } else {
-        this.atcButton?.setAttribute('disabled', 'true');
+        this.atcButton?.setAttribute('disabled', 'true')
       }
     } else {
       // For non-pavers: always enable the button
-      this.atcButton?.removeAttribute('disabled');
+      this.atcButton?.removeAttribute('disabled')
     }
   }
 }
@@ -799,34 +806,34 @@ customElements.define('quantity-input', QuantityInput)
 
 /**
  * Creates a debounced version of a function that delays its execution until after a specified wait time.
- * 
+ *
  * @param {Function} fn - The function to debounce
  * @param {number} wait - The number of milliseconds to wait before executing the function
  * @returns {Function} A debounced version of the input function
- * 
+ *
  * @description
  * This utility function creates a debounced version of a function that:
  * - Delays execution until after the specified wait time
  * - Cancels pending executions when called again within the wait period
  * - Useful for rate-limiting expensive operations (e.g., API calls, DOM updates)
- * 
+ *
  * @example
  * // Debounce a search input handler to prevent excessive API calls
  * const debouncedSearch = debounce((searchTerm) => {
  *   // Perform search operation
  * }, 300);
- * 
+ *
  * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
  */
 function debounce(fn, wait) {
   // Store the timeout ID for clearing
   let t
-  
+
   // Return a wrapped function that handles the debouncing
   return (...args) => {
     // Clear any existing timeout to cancel pending executions
     clearTimeout(t)
-    
+
     // Set a new timeout that will execute the function after the wait period
     t = setTimeout(() => fn.apply(this, args), wait)
   }
@@ -844,7 +851,7 @@ function fetchConfig(type = 'json') {
 
 /**
  * Shopify Common JavaScript Library
- * 
+ *
  * @description
  * This section contains core utility functions and objects provided by Shopify that are used
  * across their platform. These utilities help with:
@@ -852,7 +859,7 @@ function fetchConfig(type = 'json') {
  * - Event handling
  * - Form submissions
  * - Country/Province selector functionality
- * 
+ *
  * These functions are part of Shopify's standard JavaScript library and are commonly
  * used in themes and custom implementations.
  */
@@ -909,8 +916,7 @@ Shopify.CountryProvinceSelector = function (
   country_domid,
   province_domid,
   options
-) {
-}
+) {}
 
 Shopify.CountryProvinceSelector.prototype = {
   initCountry: function () {
@@ -964,10 +970,10 @@ Shopify.CountryProvinceSelector.prototype = {
 
 /**
  * Custom element that implements a sliding menu drawer with submenu support and accessibility features.
- * 
+ *
  * @class
  * @extends HTMLElement
- * 
+ *
  * @description
  * This class manages a menu drawer component that:
  * - Handles opening/closing of the main menu and submenus
@@ -975,14 +981,14 @@ Shopify.CountryProvinceSelector.prototype = {
  * - Manages focus trapping within the menu
  * - Handles animations and transitions
  * - Supports reduced motion preferences
- * 
+ *
  * Features:
  * - Keyboard support (Escape to close)
  * - Focus management
  * - ARIA attribute handling
  * - Submenu support
  * - Responsive behavior
- * 
+ *
  * @example
  * <!-- HTML usage -->
  * <menu-drawer data-breakpoint="tablet">
@@ -1076,7 +1082,7 @@ class MenuDrawer extends HTMLElement {
         detailsElement.classList.add('menu-opening')
         summaryElement.setAttribute('aria-expanded', true)
         parentMenuElement && parentMenuElement.classList.add('submenu-open')
-        
+
         // Respect reduced motion preferences for focus handling
         !reducedMotion || reducedMotion.matches
           ? addTrapFocus()
@@ -1093,11 +1099,11 @@ class MenuDrawer extends HTMLElement {
     setTimeout(() => {
       this.mainDetailsToggle.classList.add('menu-opening')
     })
-    
+
     // Update ARIA state and set up focus management
     summaryElement.setAttribute('aria-expanded', true)
     trapFocus(this.mainDetailsToggle, summaryElement)
-    
+
     // Prevent page scrolling while menu is open
     document.body.classList.add(`overflow-hidden-${this.dataset.breakpoint}`)
   }
@@ -1111,14 +1117,14 @@ class MenuDrawer extends HTMLElement {
       details.removeAttribute('open')
       details.classList.remove('menu-opening')
     })
-    
+
     // Close all open submenus
     this.mainDetailsToggle
       .querySelectorAll('.submenu-open')
       .forEach((submenu) => {
         submenu.classList.remove('submenu-open')
       })
-    
+
     // Restore page scrolling and focus management
     document.body.classList.remove(`overflow-hidden-${this.dataset.breakpoint}`)
     removeTrapFocus(elementToFocus)
@@ -1147,7 +1153,7 @@ class MenuDrawer extends HTMLElement {
     parentMenuElement && parentMenuElement.classList.remove('submenu-open')
     detailsElement.classList.remove('menu-opening')
     detailsElement.querySelector('summary').setAttribute('aria-expanded', false)
-    
+
     // Update focus management and trigger closing animation
     removeTrapFocus(detailsElement.querySelector('summary'))
     this.closeAnimation(detailsElement)
@@ -1653,14 +1659,14 @@ class VariantSelects extends HTMLElement {
 
     // If it's a paver, validate the quantity immediately
     if (isPaver) {
-        const value = parseInt(quantityInput.value) || 0
-        const min = parseInt(quantityInput.dataset.min) ?? 1
-        const max = Number.isNaN(parseInt(quantityInput.dataset.max))
-            ? Number.MAX_VALUE
-            : parseInt(quantityInput.dataset.max)
-        // Set initial disabled state based on quantity validation
-        const shouldDisable = value < min || value > max
-        this.toggleAddButton(shouldDisable, '', false)
+      const value = parseInt(quantityInput.value) || 0
+      const min = parseInt(quantityInput.dataset.min) ?? 1
+      const max = Number.isNaN(parseInt(quantityInput.dataset.max))
+        ? Number.MAX_VALUE
+        : parseInt(quantityInput.dataset.max)
+      // Set initial disabled state based on quantity validation
+      const shouldDisable = value < min || value > max
+      this.toggleAddButton(shouldDisable, '', false)
     }
 
     this.updatePickupAvailability()
@@ -1670,15 +1676,15 @@ class VariantSelects extends HTMLElement {
     this.updateQtyUnit()
 
     if (!this.currentVariant) {
-        this.toggleAddButton(true, '', true)
-        this.setUnavailable()
-        this.updateFormVisibility()
+      this.toggleAddButton(true, '', true)
+      this.setUnavailable()
+      this.updateFormVisibility()
     } else {
-        this.updateMedia()
-        this.updateURL()
-        this.updateVariantInput()
-        this.renderProductInfo()
-        this.updateShareUrl()
+      this.updateMedia()
+      this.updateURL()
+      this.updateVariantInput()
+      this.renderProductInfo()
+      this.updateShareUrl()
     }
   }
 
@@ -1892,12 +1898,12 @@ class VariantSelects extends HTMLElement {
   updateQtyUnit() {
     const section = this.closest('section')
     if (!section || !this.currentVariant) return
-    
+
     const quantityInput = section.querySelector('.quantity__input')
     const currentQty = quantityInput.value
     // Only reset to 1 if there's no current quantity
     if (!currentQty) {
-        quantityInput.value = 1
+      quantityInput.value = 1
     }
     // const productInfo = section.querySelector('product-info');
 
@@ -1943,14 +1949,14 @@ class VariantSelects extends HTMLElement {
     const quantityInput = document.querySelector('.quantity__input')
     const isPaver = quantityInput?.hasAttribute('data-paver')
     let initialShouldDisable = false
-    
+
     if (isPaver) {
-        const value = parseInt(quantityInput.value) || 0
-        const min = parseInt(quantityInput.dataset.min) ?? 1
-        const max = Number.isNaN(parseInt(quantityInput.dataset.max))
-            ? Number.MAX_VALUE
-            : parseInt(quantityInput.dataset.max)
-        initialShouldDisable = value < min || value > max
+      const value = parseInt(quantityInput.value) || 0
+      const min = parseInt(quantityInput.dataset.min) ?? 1
+      const max = Number.isNaN(parseInt(quantityInput.dataset.max))
+        ? Number.MAX_VALUE
+        : parseInt(quantityInput.dataset.max)
+      initialShouldDisable = value < min || value > max
     }
 
     fetch(
@@ -2023,17 +2029,21 @@ class VariantSelects extends HTMLElement {
         )
 
         // For paver products, respect both the quantity validation and server response
-        let shouldDisable = initialShouldDisable;
-        let buttonText = '';
-        
+        let shouldDisable = initialShouldDisable
+        let buttonText = ''
+
         if (isPaver) {
-            shouldDisable = shouldDisable || (addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true);
-            // Only pass "Sold out" text if the variant itself is unavailable
-            if (!this.currentVariant.available) {
-                buttonText = window.variantStrings.soldOut;
-            }
+          shouldDisable =
+            shouldDisable ||
+            (addButtonUpdated
+              ? addButtonUpdated.hasAttribute('disabled')
+              : true)
+          // Only pass "Sold out" text if the variant itself is unavailable
+          if (!this.currentVariant.available) {
+            buttonText = window.variantStrings.soldOut
+          }
         } else {
-            buttonText = window.variantStrings.soldOut;
+          buttonText = window.variantStrings.soldOut
         }
 
         this.toggleAddButton(shouldDisable, buttonText)
@@ -2100,11 +2110,11 @@ class VariantSelects extends HTMLElement {
 
   /**
    * Toggles the state and text of the Add to Cart button.
-   * 
+   *
    * @param {boolean} [disable=true] - Whether to disable the button
    * @param {string} text - Text to display on the button (if empty, preserves existing text)
    * @param {boolean} [modifyClass=true] - Whether to modify button classes
-   * 
+   *
    * @description
    * This method manages the Add to Cart button state by:
    * - Enabling/disabling the button
@@ -2122,8 +2132,8 @@ class VariantSelects extends HTMLElement {
     if (!addButton) return
 
     // Check if this is a paver product
-    const quantityInput = document.querySelector('.quantity__input');
-    const isPaver = quantityInput?.hasAttribute('data-paver');
+    const quantityInput = document.querySelector('.quantity__input')
+    const isPaver = quantityInput?.hasAttribute('data-paver')
 
     if (disable) {
       addButton.setAttribute('disabled', 'disabled')
@@ -2139,9 +2149,14 @@ class VariantSelects extends HTMLElement {
         .getElementById(`price-${this.dataset.section}`)
         .querySelector('.price__container')
       if (currentPrice) {
-        const basePrice = parseFloat(currentPrice.querySelector('.price-item--regular').getAttribute('data-price')) || 0;
-        const quantity = parseInt(quantityInput?.value) || 1;
-        const totalPrice = ((basePrice * quantity) / 100).toFixed(2);
+        const basePrice =
+          parseFloat(
+            currentPrice
+              .querySelector('.price-item--regular')
+              .getAttribute('data-price')
+          ) || 0
+        const quantity = parseInt(quantityInput?.value) || 1
+        const totalPrice = ((basePrice * quantity) / 100).toFixed(2)
         addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>$${totalPrice}</span>`
       }
     }
@@ -2181,11 +2196,11 @@ customElements.define('variant-selects', VariantSelects)
 class VariantRadios extends VariantSelects {
   constructor() {
     super()
-    this.querySelectorAll('input[type="radio"]').forEach(radio => {
+    this.querySelectorAll('input[type="radio"]').forEach((radio) => {
       radio.addEventListener('change', () => {
-        this.onVariantChange();
-      });
-    });
+        this.onVariantChange()
+      })
+    })
   }
 
   setInputAvailability(listOfOptions, listOfAvailableOptions) {
@@ -2205,11 +2220,11 @@ class VariantRadios extends VariantSelects {
         (radio) => radio.checked
       ).value
     })
-    
+
     // // Check if current selection is a paver
     // const isPaver = this.options[0] === 'Paver';
     // const quantityInput = document.querySelector('.quantity__input');
-    
+
     // if (isPaver) {
     //   quantityInput?.setAttribute('data-paver', '');
     // } else {
