@@ -842,10 +842,22 @@ function fetchConfig(type = 'json') {
   }
 }
 
-/*
- * Shopify Common JS
- *
+/**
+ * Shopify Common JavaScript Library
+ * 
+ * @description
+ * This section contains core utility functions and objects provided by Shopify that are used
+ * across their platform. These utilities help with:
+ * - DOM manipulation
+ * - Event handling
+ * - Form submissions
+ * - Country/Province selector functionality
+ * 
+ * These functions are part of Shopify's standard JavaScript library and are commonly
+ * used in themes and custom implementations.
  */
+
+/* Initialize Shopify namespace if it doesn't exist */
 if (typeof window.Shopify == 'undefined') {
   window.Shopify = {}
 }
@@ -950,21 +962,57 @@ Shopify.CountryProvinceSelector.prototype = {
   }
 }
 
+/**
+ * Custom element that implements a sliding menu drawer with submenu support and accessibility features.
+ * 
+ * @class
+ * @extends HTMLElement
+ * 
+ * @description
+ * This class manages a menu drawer component that:
+ * - Handles opening/closing of the main menu and submenus
+ * - Implements keyboard navigation and accessibility
+ * - Manages focus trapping within the menu
+ * - Handles animations and transitions
+ * - Supports reduced motion preferences
+ * 
+ * Features:
+ * - Keyboard support (Escape to close)
+ * - Focus management
+ * - ARIA attribute handling
+ * - Submenu support
+ * - Responsive behavior
+ * 
+ * @example
+ * <!-- HTML usage -->
+ * <menu-drawer data-breakpoint="tablet">
+ *   <details>
+ *     <summary>Menu</summary>
+ *     <div class="menu-drawer">
+ *       <!-- Menu content -->
+ *     </div>
+ *   </details>
+ * </menu-drawer>
+ */
 class MenuDrawer extends HTMLElement {
   constructor() {
     super()
 
+    // Get the main details element that controls the menu drawer
     this.mainDetailsToggle = this.querySelector('details')
 
+    // Set up event listeners for keyboard and focus management
     this.addEventListener('keyup', this.onKeyUp.bind(this))
     this.addEventListener('focusout', this.onFocusOut.bind(this))
     this.bindEvents()
   }
 
   bindEvents() {
+    // Add click handlers to all summary elements (menu toggles)
     this.querySelectorAll('summary').forEach((summary) =>
       summary.addEventListener('click', this.onSummaryClick.bind(this))
     )
+    // Add click handlers to close buttons (excluding localization selector)
     this.querySelectorAll('button:not(.localization-selector)').forEach(
       (button) =>
         button.addEventListener('click', this.onCloseButtonClick.bind(this))
@@ -972,11 +1020,15 @@ class MenuDrawer extends HTMLElement {
   }
 
   onKeyUp(event) {
+    // Only handle Escape key presses
     if (event.code.toUpperCase() !== 'ESCAPE') return
 
+    // Find the nearest open details element
     const openDetailsElement = event.target.closest('details[open]')
     if (!openDetailsElement) return
 
+    // If it's the main menu, close the entire drawer
+    // Otherwise, just close the submenu
     openDetailsElement === this.mainDetailsToggle
       ? this.closeMenuDrawer(
           event,
@@ -992,6 +1044,7 @@ class MenuDrawer extends HTMLElement {
     const isOpen = detailsElement.hasAttribute('open')
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 
+    // Helper function to set up focus trapping after transition
     function addTrapFocus() {
       trapFocus(
         summaryElement.nextElementSibling,
@@ -1003,12 +1056,14 @@ class MenuDrawer extends HTMLElement {
       )
     }
 
+    // Handle main menu toggle differently from submenus
     if (detailsElement === this.mainDetailsToggle) {
       if (isOpen) event.preventDefault()
       isOpen
         ? this.closeMenuDrawer(event, summaryElement)
         : this.openMenuDrawer(summaryElement)
 
+      // Update viewport height for mobile devices
       if (window.matchMedia('(max-width: 990px)')) {
         document.documentElement.style.setProperty(
           '--viewport-height',
@@ -1016,10 +1071,13 @@ class MenuDrawer extends HTMLElement {
         )
       }
     } else {
+      // Handle submenu opening with animation
       setTimeout(() => {
         detailsElement.classList.add('menu-opening')
         summaryElement.setAttribute('aria-expanded', true)
         parentMenuElement && parentMenuElement.classList.add('submenu-open')
+        
+        // Respect reduced motion preferences for focus handling
         !reducedMotion || reducedMotion.matches
           ? addTrapFocus()
           : summaryElement.nextElementSibling.addEventListener(
@@ -1031,33 +1089,44 @@ class MenuDrawer extends HTMLElement {
   }
 
   openMenuDrawer(summaryElement) {
+    // Add opening animation class after a brief delay
     setTimeout(() => {
       this.mainDetailsToggle.classList.add('menu-opening')
     })
+    
+    // Update ARIA state and set up focus management
     summaryElement.setAttribute('aria-expanded', true)
     trapFocus(this.mainDetailsToggle, summaryElement)
+    
+    // Prevent page scrolling while menu is open
     document.body.classList.add(`overflow-hidden-${this.dataset.breakpoint}`)
   }
 
   closeMenuDrawer(event, elementToFocus = false) {
     if (event === undefined) return
 
+    // Remove opening state and reset all submenus
     this.mainDetailsToggle.classList.remove('menu-opening')
     this.mainDetailsToggle.querySelectorAll('details').forEach((details) => {
       details.removeAttribute('open')
       details.classList.remove('menu-opening')
     })
+    
+    // Close all open submenus
     this.mainDetailsToggle
       .querySelectorAll('.submenu-open')
       .forEach((submenu) => {
         submenu.classList.remove('submenu-open')
       })
+    
+    // Restore page scrolling and focus management
     document.body.classList.remove(`overflow-hidden-${this.dataset.breakpoint}`)
     removeTrapFocus(elementToFocus)
     this.closeAnimation(this.mainDetailsToggle)
   }
 
   onFocusOut() {
+    // Close menu if focus moves outside the menu drawer
     setTimeout(() => {
       if (
         this.mainDetailsToggle.hasAttribute('open') &&
@@ -1073,10 +1142,13 @@ class MenuDrawer extends HTMLElement {
   }
 
   closeSubmenu(detailsElement) {
+    // Remove submenu open states and update ARIA attributes
     const parentMenuElement = detailsElement.closest('.submenu-open')
     parentMenuElement && parentMenuElement.classList.remove('submenu-open')
     detailsElement.classList.remove('menu-opening')
     detailsElement.querySelector('summary').setAttribute('aria-expanded', false)
+    
+    // Update focus management and trigger closing animation
     removeTrapFocus(detailsElement.querySelector('summary'))
     this.closeAnimation(detailsElement)
   }
@@ -1084,6 +1156,7 @@ class MenuDrawer extends HTMLElement {
   closeAnimation(detailsElement) {
     let animationStart
 
+    // Handle closing animation using requestAnimationFrame
     const handleAnimation = (time) => {
       if (animationStart === undefined) {
         animationStart = time
@@ -1091,9 +1164,11 @@ class MenuDrawer extends HTMLElement {
 
       const elapsedTime = time - animationStart
 
+      // Continue animation for 400ms
       if (elapsedTime < 400) {
         window.requestAnimationFrame(handleAnimation)
       } else {
+        // After animation, remove open state and update focus if needed
         detailsElement.removeAttribute('open')
         if (detailsElement.closest('details[open]')) {
           trapFocus(
