@@ -1188,7 +1188,6 @@ class MenuDrawer extends HTMLElement {
     window.requestAnimationFrame(handleAnimation)
   }
 }
-
 customElements.define('menu-drawer', MenuDrawer)
 
 class HeaderDrawer extends MenuDrawer {
@@ -1244,7 +1243,6 @@ class HeaderDrawer extends MenuDrawer {
     )
   }
 }
-
 customElements.define('header-drawer', HeaderDrawer)
 
 class ModalDialog extends HTMLElement {
@@ -1344,7 +1342,6 @@ class DeferredMedia extends HTMLElement {
     }
   }
 }
-
 customElements.define('deferred-media', DeferredMedia)
 
 class SliderComponent extends HTMLElement {
@@ -1458,7 +1455,6 @@ class SliderComponent extends HTMLElement {
     })
   }
 }
-
 customElements.define('slider-component', SliderComponent)
 
 class SlideshowComponent extends SliderComponent {
@@ -1640,7 +1636,6 @@ class SlideshowComponent extends SliderComponent {
     })
   }
 }
-
 customElements.define('slideshow-component', SlideshowComponent)
 
 class VariantSelects extends HTMLElement {
@@ -2190,7 +2185,6 @@ class VariantSelects extends HTMLElement {
     return this.variantData
   }
 }
-
 customElements.define('variant-selects', VariantSelects)
 
 class VariantRadios extends VariantSelects {
@@ -2232,7 +2226,6 @@ class VariantRadios extends VariantSelects {
     // }
   }
 }
-
 customElements.define('variant-radios', VariantRadios)
 
 class ProductRecommendations extends HTMLElement {
@@ -2277,7 +2270,6 @@ class ProductRecommendations extends HTMLElement {
     }).observe(this)
   }
 }
-
 customElements.define('product-recommendations', ProductRecommendations)
 
 // class CalculatorModule extends HTMLElement {
@@ -2439,6 +2431,36 @@ customElements.define('product-recommendations', ProductRecommendations)
 // }
 
 // customElements.define('calculator-module', CalculatorModule);
+
+class QuickShipAvailability extends HTMLElement {
+  constructor() {
+    super()
+  }
+
+  setAvailability(isQuickShip) {
+    if (isQuickShip) {
+      this.setAttribute('available', '')
+    } else {
+      this.removeAttribute('available')
+    }
+  }
+}
+customElements.define('quickship-availability', QuickShipAvailability)
+
+class QuickShipText extends HTMLElement {
+  constructor() {
+    super()
+  }
+
+  setVisibility(isVisible) {
+    if (isVisible) {
+      this.style.display = 'block'
+    } else {
+      this.style.display = 'none'
+    }
+  }
+}
+customElements.define('quickship-text', QuickShipText)
 
 VideoRatio()
 
@@ -2723,35 +2745,3 @@ function openMenuDrawer() {
     }
   }
 }
-
-class QuickShipAvailability extends HTMLElement {
-  constructor() {
-    super()
-  }
-
-  setAvailability(isQuickShip) {
-    if (isQuickShip) {
-      this.setAttribute('available', '')
-    } else {
-      this.removeAttribute('available')
-    }
-  }
-}
-
-customElements.define('quickship-availability', QuickShipAvailability)
-
-class QuickShipText extends HTMLElement {
-  constructor() {
-    super()
-  }
-
-  setVisibility(isVisible) {
-    if (isVisible) {
-      this.style.display = 'block'
-    } else {
-      this.style.display = 'none'
-    }
-  }
-}
-
-customElements.define('quickship-text', QuickShipText)
