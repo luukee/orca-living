@@ -200,15 +200,19 @@
           {% liquid
             assign quick_ship = false
             assign current_variant = product.selected_or_first_available_variant
-            if current_variant.metafields.custom.quick_ship
+            if current_variant.metafields.custom.quick_ship.value == "True"
               assign quick_ship = true
             endif
            %}
-          <quickship-availability {% if quick_ship %}available{% endif %}></quickship-availability>
-          <quickship-text style="text-align: center; margin-top: 0; margin-bottom: 10px; display: {% if quick_ship %}block{% else %}none{% endif %}">
-            {{ block.settings.quick_ship_text }}
-          </quickship-text>
-          
+           <span style="text-align: center; margin-top: 0; margin-bottom: 10px;">
+            <quick-ship-text 
+              class="quick-ship-text" 
+              data-quick-ship-text="{{ section_id }}" 
+              data-quick-ship-state="{{ quick_ship }}"
+            >
+              {{ block.settings.quick_ship_text }}
+            </quick-ship-text>
+          </span>
         </div>
       {%- endform -%}
     </product-form>
