@@ -441,7 +441,6 @@ class QuantityInput extends HTMLElement {
     
     // Only apply quantity validation for paver products
     if (isPaver) {
-      console.log('isPaver==> ', isPaver);
       if (value >= min && value <= max) {
         this.atcButton?.removeAttribute('disabled');
       } else {
@@ -1225,13 +1224,10 @@ class VariantSelects extends HTMLElement {
     // If it's a paver, validate the quantity immediately
     if (isPaver) {
         const value = parseInt(quantityInput.value) || 0
-        console.log('VALUE==> ', value);
         const min = parseInt(quantityInput.dataset.min) ?? 1
-        console.log('MIN==> ', min);
         const max = Number.isNaN(parseInt(quantityInput.dataset.max))
             ? Number.MAX_VALUE
             : parseInt(quantityInput.dataset.max)
-        console.log('MAX==> ', max);
         // Set initial disabled state based on quantity validation
         const shouldDisable = value < min || value > max
         this.toggleAddButton(shouldDisable, '', false)
