@@ -2463,7 +2463,6 @@ class QuickShipText extends HTMLElement {
 customElements.define('quickship-text', QuickShipText)
 
 VideoRatio()
-
 function VideoRatio() {
   var videos = [].slice.call(
     document.querySelectorAll(
@@ -2591,6 +2590,20 @@ function anchorScrolls(argument) {
   }
 }
 
+function openMenuDrawer() {
+  const menuDrawerElement = document.querySelector('menu-drawer')
+
+  if (menuDrawerElement) {
+    const mainDetailsToggle = menuDrawerElement.querySelector('details')
+    if (mainDetailsToggle) {
+      const summaryElement = mainDetailsToggle.querySelector('summary')
+      if (summaryElement) {
+        summaryElement.click()
+      }
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   anchorScrolls()
 
@@ -2599,7 +2612,7 @@ document.addEventListener('DOMContentLoaded', function () {
   feedDisplay()
 })
 
-// Accordian
+// Accordian scroll behavior
 $('#tabs-select').on('change', function () {
   var url = $(this).val() // get selected value
   if (url) {
@@ -2614,13 +2627,14 @@ $('#tabs-select').on('change', function () {
   return false
 })
 
-// sidebar links
+// Accordian sidebar links
 $('.sidebar-link').on('click  touch', function () {
   // body...
   $('.sidebar-link').removeClass('active')
   $(this).addClass('active')
 })
-// Accordian
+
+// Accordian click handler
 $(document).on('touch click', '.acc-btn', function () {
   var btn = '.acc-btn',
     animTime = 300,
@@ -2731,17 +2745,3 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   }
 })
-
-function openMenuDrawer() {
-  const menuDrawerElement = document.querySelector('menu-drawer')
-
-  if (menuDrawerElement) {
-    const mainDetailsToggle = menuDrawerElement.querySelector('details')
-    if (mainDetailsToggle) {
-      const summaryElement = mainDetailsToggle.querySelector('summary')
-      if (summaryElement) {
-        summaryElement.click()
-      }
-    }
-  }
-}
