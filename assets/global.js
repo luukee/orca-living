@@ -1,3 +1,22 @@
+/**
+ * Checks for Liquid template errors in DOM elements by searching for specific error strings
+ * across multiple element properties.
+ * 
+ * @param {Array<Element>} arr - Array of DOM elements to check for Liquid errors
+ * @param {string} string - The error string to search for in the elements
+ * 
+ * @description
+ * This function performs a thorough check for Liquid template errors by:
+ * - Converting the search string to lowercase for case-insensitive matching
+ * - Checking multiple DOM element properties (textContent, outerText, outerHTML, innerText, innerHTML)
+ * - Stopping the search when first error is found
+ * - Providing visual console output indicating whether errors were found
+ * 
+ * @example
+ * // Check for Liquid errors in all paragraph elements
+ * const elements = document.getElementsByTagName('p');
+ * LiquidErrorCheck(elements, 'Liquid error');
+ */
 function LiquidErrorCheck(arr, string) {
   var checkingFor = string.toLowerCase().toString(),
     hasError
@@ -30,6 +49,31 @@ function LiquidErrorCheck(arr, string) {
   }
 }
 
+/**
+ * Returns an array of all focusable elements within a container element.
+ * 
+ * @param {HTMLElement} container - The container element to search within
+ * @returns {Array<HTMLElement>} Array of focusable elements
+ * 
+ * @description
+ * This function finds all interactive elements that can receive keyboard focus, including:
+ * - summary elements
+ * - links with href attributes
+ * - enabled buttons
+ * - elements with non-negative tabindex
+ * - draggable elements
+ * - area elements
+ * - enabled form inputs (excluding hidden inputs)
+ * - enabled select dropdowns
+ * - enabled textareas
+ * - object elements
+ * - iframe elements
+ * 
+ * @example
+ * // Get all focusable elements in a modal
+ * const modal = document.querySelector('.modal');
+ * const focusableElements = getFocusableElements(modal);
+ */
 function getFocusableElements(container) {
   return Array.from(
     container.querySelectorAll(
@@ -38,6 +82,30 @@ function getFocusableElements(container) {
   )
 }
 
+/**
+ * Initializes accessibility attributes and event handlers for all summary elements within details components.
+ * 
+ * @description
+ * This code enhances the accessibility and interactivity of HTML details/summary elements by:
+ * - Setting appropriate ARIA roles and states
+ * - Handling expand/collapse states
+ * - Managing keyboard interactions
+ * - Connecting summary elements with their controlled content
+ * 
+ * The following modifications are made to each summary element:
+ * - Adds role="button" for proper semantic meaning
+ * - Sets aria-expanded based on details open state
+ * - Establishes aria-controls relationship with content
+ * - Adds click handler to update aria-expanded state
+ * - Adds escape key handler (except for header-drawer elements)
+ * 
+ * @example
+ * <!-- HTML structure this code expects -->
+ * <details id="Details-1">
+ *   <summary>Click me</summary>
+ *   <div id="content-1">Content</div>
+ * </details>
+ */
 document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
   summary.setAttribute('role', 'button')
   summary.setAttribute('aria-expanded', summary.parentNode.hasAttribute('open'))
@@ -57,9 +125,39 @@ document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
   summary.parentElement.addEventListener('keyup', onKeyUpEscape)
 })
 
-const trapFocusHandlers = {}
-
+/**
+ * Traps keyboard focus within a specified container element for improved accessibility.
+ * 
+ * @param {HTMLElement} container - The container element to trap focus within
+ * @param {HTMLElement} [elementToFocus=container] - The element to receive initial focus, defaults to container
+ * 
+ * @description
+ * This function implements a focus trap for modal-like interfaces, ensuring keyboard navigation
+ * remains within the specified container. It:
+ * - Prevents focus from leaving the container when using Tab or Shift+Tab
+ * - Creates a circular tab navigation within the container
+ * - Sets up event handlers for focus management:
+ *   - focusin: Monitors when focus enters boundary elements
+ *   - focusout: Cleans up keydown listeners when focus leaves
+ *   - keydown: Handles Tab key navigation
+ * - Automatically selects text in text input elements when focused
+ * 
+ * Focus trapping is essential for:
+ * - Modal dialogs
+ * - Dropdown menus
+ * - Other temporary overlays
+ * 
+ * @example
+ * // Trap focus in a modal dialog
+ * const modal = document.querySelector('.modal-dialog');
+ * const firstInput = modal.querySelector('input');
+ * trapFocus(modal, firstInput);
+ * 
+ * @see {@link getFocusableElements} - Used internally to find focusable elements
+ * @see {@link removeTrapFocus} - Call this to remove the focus trap
+ */
 function trapFocus(container, elementToFocus = container) {
+  const trapFocusHandlers = {}
   var elements = getFocusableElements(container)
   var first = elements[0]
   var last = elements[elements.length - 1]
@@ -1668,6 +1766,20 @@ class VariantSelects extends HTMLElement {
     }
   }
 
+  /**
+   * Toggles the state and text of the Add to Cart button.
+   * 
+   * @param {boolean} [disable=true] - Whether to disable the button
+   * @param {string} text - Text to display on the button (if empty, preserves existing text)
+   * @param {boolean} [modifyClass=true] - Whether to modify button classes
+   * 
+   * @description
+   * This method manages the Add to Cart button state by:
+   * - Enabling/disabling the button
+   * - Updating button text (if provided)
+   * - For paver products: shows price calculation
+   * - For non-paver products: shows standard text
+   */
   toggleAddButton(disable = true, text, modifyClass = true) {
     const productForm = document.getElementById(
       `product-form-${this.dataset.section}`
@@ -1683,8 +1795,10 @@ class VariantSelects extends HTMLElement {
 
     if (disable) {
       addButton.setAttribute('disabled', 'disabled')
-      // Only update text if it's not a paver product or if we have explicit text to show
-      if ((!isPaver && text) || text) {
+      // Only update text if provided and either:
+      // 1. It's a non-paver product, or
+      // 2. It's a specific message (like "Sold out")
+      if (text && (!isPaver || text === window.variantStrings.soldOut)) {
         addButtonText.textContent = text
       }
     } else {
