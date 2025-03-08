@@ -1519,6 +1519,25 @@ class VariantSelects extends HTMLElement {
           }
         }
         
+        // Update quick ship text visibility based on variant metafield
+        const quickShipTextElement = document.querySelector(`[data-quick-ship-text="${sectionId}"]`);
+        const quickShipTextSourceElement = html.querySelector(`[data-quick-ship-text="${sectionId}"]`);
+        console.log('Quick Ship Elements:', {
+          current: quickShipTextElement,
+          source: quickShipTextSourceElement
+        });
+        
+        if (quickShipTextElement && quickShipTextSourceElement) {
+          const sourceState = quickShipTextSourceElement.getAttribute('data-quick-ship-state');
+          const hasQuickShip = sourceState.toLowerCase() === 'true';
+          console.log('Quick Ship State:', {
+            sourceState,
+            hasQuickShip
+          });
+          quickShipTextElement.style.display = hasQuickShip ? 'block' : 'none';
+          quickShipTextElement.setAttribute('data-quick-ship-state', sourceState);
+        }
+        
         this.updateFormVisibility();
         this.updateVariantMetafields(html);
         publish(PUB_SUB_EVENTS.variantChange, {
@@ -1800,7 +1819,6 @@ customElements.define('product-recommendations', ProductRecommendations);
 //       this.calculatorContainer.classList.add('open');
 //     } else {
 //       event.target.removeAttribute('readonly');
-//     }
 //   }
 
 //   onUpdateQtyBtnClick(event) {

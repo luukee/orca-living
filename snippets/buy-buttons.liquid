@@ -204,11 +204,14 @@
               assign quick_ship = true
             endif
            %}
-          {% if quick_ship %}
-            <p style="text-align: center; margin-top: 0; margin-bottom: 10px">
-              {{ block.settings.quick_ship_text }}
-            </p>
-          {% endif %}
+          <p 
+            class="quick-ship-text" 
+            data-quick-ship-text="{{ section_id }}" 
+            data-quick-ship-state="{% if current_variant.metafields.custom.quick_ship %}true{% else %}false{% endif %}"
+            style="text-align: center; margin-top: 0; margin-bottom: 10px; {% unless quick_ship %}display: none;{% endunless %}"
+          >
+            {{ block.settings.quick_ship_text }}
+          </p>
           
         </div>
       {%- endform -%}
