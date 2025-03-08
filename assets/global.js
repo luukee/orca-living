@@ -372,7 +372,26 @@ class QuantityInput extends HTMLElement {
 
   onInputChange(event) {
     this.validateQtyRules()
-    this.updateAtcPrice()
+    
+    // Get the variant selects instance to access the current variant
+    const variantSelects = document.querySelector('variant-selects, variant-radios')
+    if (variantSelects) {
+      // Update the button text with current quantity and price
+      const value = parseInt(this.input.value) || 0
+      const currentPrice = document
+        .getElementById(`price-${variantSelects.dataset.section}`)
+        ?.querySelector('.price__container')
+      
+      if (currentPrice) {
+        const basePrice = parseFloat(currentPrice.querySelector('.price-item--regular').getAttribute('data-price')) || 0
+        const totalPrice = ((basePrice * value) / 100).toFixed(2)
+        const addButton = document.querySelector('.product-form__submit span')
+        if (addButton && !this.atcButton.hasAttribute('disabled')) {
+          addButton.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>$${totalPrice}</span>`
+        }
+      }
+    }
+    
     this.toggleMessage()
   }
 
@@ -392,22 +411,6 @@ class QuantityInput extends HTMLElement {
         .querySelector('[data-paver-qty-message]')
         ?.classList.add('hidden')
     }
-  }
-
-  updateAtcPrice() {
-    const value = parseInt(this.input.value)
-
-    if (this.atcButton) {
-      const atcButtonPrice = this.atcButton.querySelector(
-        '.price-item--regular'
-      )
-      var price = atcButtonPrice.getAttribute('data-price')
-      price = parseFloat(price) * value
-      price = (price / 100).toFixed(2)
-      atcButtonPrice.textContent = `$${price}`
-    }
-
-    //   console.log(value);
   }
 
   onButtonClick(event) {
@@ -438,6 +441,7 @@ class QuantityInput extends HTMLElement {
     
     // Only apply quantity validation for paver products
     if (isPaver) {
+      console.log('isPaver==> ', isPaver);
       if (value >= min && value <= max) {
         this.atcButton?.removeAttribute('disabled');
       } else {
@@ -1218,9 +1222,19 @@ class VariantSelects extends HTMLElement {
     const quantityInput = document.querySelector('.quantity__input')
     const isPaver = quantityInput?.hasAttribute('data-paver')
 
-    // For non-paver products, never disable the button in this step
-    if (!isPaver) {
-      this.toggleAddButton(false, '', false)
+    // If it's a paver, validate the quantity immediately
+    if (isPaver) {
+        const value = parseInt(quantityInput.value) || 0
+        console.log('VALUE==> ', value);
+        const min = parseInt(quantityInput.dataset.min) ?? 1
+        console.log('MIN==> ', min);
+        const max = Number.isNaN(parseInt(quantityInput.dataset.max))
+            ? Number.MAX_VALUE
+            : parseInt(quantityInput.dataset.max)
+        console.log('MAX==> ', max);
+        // Set initial disabled state based on quantity validation
+        const shouldDisable = value < min || value > max
+        this.toggleAddButton(shouldDisable, '', false)
     }
 
     this.updatePickupAvailability()
@@ -1230,16 +1244,15 @@ class VariantSelects extends HTMLElement {
     this.updateQtyUnit()
 
     if (!this.currentVariant) {
-      this.toggleAddButton(isPaver, '', true)
-      this.setUnavailable()
-      this.updateFormVisibility()
+        this.toggleAddButton(true, '', true)
+        this.setUnavailable()
+        this.updateFormVisibility()
     } else {
-      this.updateMedia()
-      this.updateURL()
-      this.updateVariantInput()
-      this.renderProductInfo()
-      this.updateShareUrl()
-      // this.updateCarousel()
+        this.updateMedia()
+        this.updateURL()
+        this.updateVariantInput()
+        this.renderProductInfo()
+        this.updateShareUrl()
     }
   }
 
@@ -1453,6 +1466,13 @@ class VariantSelects extends HTMLElement {
   updateQtyUnit() {
     const section = this.closest('section')
     if (!section || !this.currentVariant) return
+    
+    const quantityInput = section.querySelector('.quantity__input')
+    const currentQty = quantityInput.value
+    // Only reset to 1 if there's no current quantity
+    if (!currentQty) {
+        quantityInput.value = 1
+    }
     // const productInfo = section.querySelector('product-info');
 
     // const varTitle = this.currentVariant.name;
@@ -1484,7 +1504,7 @@ class VariantSelects extends HTMLElement {
     //   });
     // }
 
-    section.querySelector('.quantity__input').value = 1
+    // section.querySelector('.quantity__input').value = 1
   }
 
   renderProductInfo() {
@@ -1492,6 +1512,20 @@ class VariantSelects extends HTMLElement {
     const sectionId = this.dataset.originalSection
       ? this.dataset.originalSection
       : this.dataset.section
+
+    // Check if this is a paver product and get initial validation state
+    const quantityInput = document.querySelector('.quantity__input')
+    const isPaver = quantityInput?.hasAttribute('data-paver')
+    let initialShouldDisable = false
+    
+    if (isPaver) {
+        const value = parseInt(quantityInput.value) || 0
+        const min = parseInt(quantityInput.dataset.min) ?? 1
+        const max = Number.isNaN(parseInt(quantityInput.dataset.max))
+            ? Number.MAX_VALUE
+            : parseInt(quantityInput.dataset.max)
+        initialShouldDisable = value < min || value > max
+    }
 
     fetch(
       `${this.dataset.url}?variant=${requestedVariantId}&section_id=${
@@ -1562,19 +1596,21 @@ class VariantSelects extends HTMLElement {
           `ProductSubmitButton-${sectionId}`
         )
 
-        // Check if this is a paver product
-        const quantityInput = document.querySelector('.quantity__input')
-        const isPaver = quantityInput?.hasAttribute('data-paver')
-
-        // For non-paver products, never disable the button
-        let shouldDisable = false;
+        // For paver products, respect both the quantity validation and server response
+        let shouldDisable = initialShouldDisable;
+        let buttonText = '';
         
         if (isPaver) {
-          // For pavers, check if the button should be disabled based on the HTML response
-          shouldDisable = addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true;
+            shouldDisable = shouldDisable || (addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true);
+            // Only pass "Sold out" text if the variant itself is unavailable
+            if (!this.currentVariant.available) {
+                buttonText = window.variantStrings.soldOut;
+            }
+        } else {
+            buttonText = window.variantStrings.soldOut;
         }
 
-        this.toggleAddButton(shouldDisable, window.variantStrings.soldOut)
+        this.toggleAddButton(shouldDisable, buttonText)
 
         const sampleButtonUpdated = html.getElementById(
           `SampleOrderButton-${sectionId}`
@@ -1649,22 +1685,22 @@ class VariantSelects extends HTMLElement {
     const quantityInput = document.querySelector('.quantity__input');
     const isPaver = quantityInput?.hasAttribute('data-paver');
 
-    // Only allow disabling for paver products
-    if (!isPaver) {
-      disable = false;
-    }
-
     if (disable) {
       addButton.setAttribute('disabled', 'disabled')
-      if (text) addButtonText.textContent = text
+      // Only update text if it's not a paver product or if we have explicit text to show
+      if ((!isPaver && text) || text) {
+        addButtonText.textContent = text
+      }
     } else {
       addButton.removeAttribute('disabled')
-      addButtonText.textContent = window.variantStrings.addToCart
       const currentPrice = document
         .getElementById(`price-${this.dataset.section}`)
-        .querySelector('.price__container').innerHTML
+        .querySelector('.price__container')
       if (currentPrice) {
-        addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>${currentPrice}</span>`
+        const basePrice = parseFloat(currentPrice.querySelector('.price-item--regular').getAttribute('data-price')) || 0;
+        const quantity = parseInt(quantityInput?.value) || 1;
+        const totalPrice = ((basePrice * quantity) / 100).toFixed(2);
+        addButtonText.innerHTML = `<span>${window.variantStrings.addToCart}</span> <span> - </span> <span>$${totalPrice}</span>`
       }
     }
 
@@ -1728,15 +1764,15 @@ class VariantRadios extends VariantSelects {
       ).value
     })
     
-    // Check if current selection is a paver
-    const isPaver = this.options[0] === 'Paver';
-    const quantityInput = document.querySelector('.quantity__input');
+    // // Check if current selection is a paver
+    // const isPaver = this.options[0] === 'Paver';
+    // const quantityInput = document.querySelector('.quantity__input');
     
-    if (isPaver) {
-      quantityInput?.setAttribute('data-paver', '');
-    } else {
-      quantityInput?.removeAttribute('data-paver');
-    }
+    // if (isPaver) {
+    //   quantityInput?.setAttribute('data-paver', '');
+    // } else {
+    //   quantityInput?.removeAttribute('data-paver');
+    // }
   }
 }
 
