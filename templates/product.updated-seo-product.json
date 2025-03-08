@@ -57,6 +57,10 @@
             "custom_liquid": "<div class=\"product__title-price\">\n\n  <h1 class=\"h4\">{{product.title}}</h1>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    </div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">/sqft.</span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"></span>\n    {% endif %}\n\n  </div>\n</div>"
           }
         },
+        "title_and_price_qymyKp": {
+          "type": "title_and_price",
+          "settings": {}
+        },
         "title_P3RWBr": {
           "type": "title",
           "settings": {
@@ -186,6 +190,7 @@
       },
       "block_order": [
         "d9b7944e-b2a7-481d-9a47-bca4d6393c24",
+        "title_and_price_qymyKp",
         "title_P3RWBr",
         "variant_picker",
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133",
