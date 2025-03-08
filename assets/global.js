@@ -797,10 +797,37 @@ class QuantityInput extends HTMLElement {
 
 customElements.define('quantity-input', QuantityInput)
 
+/**
+ * Creates a debounced version of a function that delays its execution until after a specified wait time.
+ * 
+ * @param {Function} fn - The function to debounce
+ * @param {number} wait - The number of milliseconds to wait before executing the function
+ * @returns {Function} A debounced version of the input function
+ * 
+ * @description
+ * This utility function creates a debounced version of a function that:
+ * - Delays execution until after the specified wait time
+ * - Cancels pending executions when called again within the wait period
+ * - Useful for rate-limiting expensive operations (e.g., API calls, DOM updates)
+ * 
+ * @example
+ * // Debounce a search input handler to prevent excessive API calls
+ * const debouncedSearch = debounce((searchTerm) => {
+ *   // Perform search operation
+ * }, 300);
+ * 
+ * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+ */
 function debounce(fn, wait) {
+  // Store the timeout ID for clearing
   let t
+  
+  // Return a wrapped function that handles the debouncing
   return (...args) => {
+    // Clear any existing timeout to cancel pending executions
     clearTimeout(t)
+    
+    // Set a new timeout that will execute the function after the wait period
     t = setTimeout(() => fn.apply(this, args), wait)
   }
 }
@@ -871,20 +898,6 @@ Shopify.CountryProvinceSelector = function (
   province_domid,
   options
 ) {
-  this.countryEl = document.getElementById(country_domid)
-  this.provinceEl = document.getElementById(province_domid)
-  this.provinceContainer = document.getElementById(
-    options['hideElement'] || province_domid
-  )
-
-  Shopify.addListener(
-    this.countryEl,
-    'change',
-    Shopify.bind(this.countryHandler, this)
-  )
-
-  this.initCountry()
-  this.initProvince()
 }
 
 Shopify.CountryProvinceSelector.prototype = {
