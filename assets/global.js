@@ -1705,165 +1705,45 @@ class ProductRecommendations extends HTMLElement {
 
 customElements.define('product-recommendations', ProductRecommendations);
 
-// class CalculatorModule extends HTMLElement {
-//   constructor() {
-//     super();
-//     this.calculatorContainer = this.querySelector('calculator');
-//     this.sectionId = this.calculatorContainer.getAttribute('data-sectionId');
-//     this.inputArea = this.calculatorContainer.querySelector('.inputArea');
-//     this.recommendations =
-//       this.calculatorContainer.querySelector('.recommendations');
-//     this.recomQty = this.calculatorContainer.querySelector('.recomQty');
-//     this.mainProductForm = document.querySelector(
-//       `#product-form-${this.sectionId}`
-//     );
-//     this.qtyForm = document.querySelector(`#Quantity-Form-${this.sectionId}`);
-//     this.mainProductInfo = document.querySelector(
-//       `#ProductInfo-${this.sectionId}`
-//     );
-//     this.formQty = this.qtyForm.querySelector('.quantity__input');
-//     this.variantMeta =
-//       this.calculatorContainer.querySelector('.productMetafields');
-//     this.variantMeta = JSON.parse(this.variantMeta.textContent);
-//     this.calToggle = this.querySelector('calBtn');
-//     this.closeToggles = this.querySelectorAll('calculator-close');
-//     this.calculateBtn = this.querySelector('#calc-btn');
-//     this.updateQtyBtn = this.querySelector('quantity-updater');
-//     this.noOfBricks = 0;
+if (!customElements.get('quick-ship-text')) {
+  customElements.define('quick-ship-text', class QuickShipText extends HTMLElement {
+    constructor() {
+      super();
+      this.variantChangeUnsubscriber = undefined;
+    }
 
-//     this.container = 'calculator';
+    connectedCallback() {
+      // Set initial state based on current variant
+      this.updateVisibility(this.getAttribute('data-quick-ship-state') === 'true');
 
-//     this.calculateBtn.addEventListener(
-//       'click',
-//       this.calculateBricks.bind(this)
-//     );
-//     this.formQty.addEventListener('click', this.formQtyCheck.bind(this));
-//     this.calToggle.addEventListener('click', this.onCalToggleClick.bind(this));
-//     this.closeToggles.forEach((closeToggle, index) => {
-//       closeToggle.addEventListener('click', this.onCalToggleClick.bind(this));
-//     });
-//     this.updateQtyBtn.addEventListener(
-//       'click',
-//       this.onUpdateQtyBtnClick.bind(this)
-//     );
-//   }
+      // Subscribe to variant changes
+      this.variantChangeUnsubscriber = subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
+        const sectionId = this.dataset.quickShipText;
+        if (event.data.sectionId !== sectionId) return;
+        
+        // Get the quick ship state from the HTML response
+        const html = event.data.html;
+        const quickShipElement = html.querySelector(`quick-ship-text[data-quick-ship-text="${sectionId}"]`);
+        if (!quickShipElement) return;
+        
+        // Check if the quick ship value is exactly "True"
+        const hasQuickShip = quickShipElement.getAttribute('data-quick-ship-state') === 'true';
+        this.updateVisibility(hasQuickShip);
+      });
+    }
 
-//   onCalToggleClick(event) {
-//     event.preventDefault();
-//     event.target.closest(this.container).classList.contains('open')
-//       ? this.close()
-//       : this.open(event);
-//   }
+    updateVisibility(shouldShow) {
+      this.style.display = shouldShow ? 'block' : 'none';
+      this.setAttribute('data-quick-ship-state', shouldShow.toString());
+    }
 
-//   calculateBricks(event) {
-//     event.preventDefault();
-//     this.boxes = 0;
-//     const variantId = this.mainProductForm.querySelector(
-//       '.product-variant-id'
-//     ).value;
-//     const dimensions = Object.entries(this.variantMeta)
-//       .map(([, value]) => value[variantId])
-//       .find((value) => value !== null && value !== undefined);
-//     this.area = this.calculatorContainer.querySelector('#area').value;
-//     this.palletQty = this.formQty.getAttribute('data-pallet-qty');
-//     this.palletQty = parseInt(this.palletQty);
-//     const totalSqft = this.area;
-//     var areaOfBrick =
-//       parseFloat(dimensions.width) * parseFloat(dimensions.length);
-//     this.noOfBricks = Math.ceil(totalSqft / areaOfBrick);
-//     //console.log(dimensions.unitsPerSqFt);
-//     if (dimensions.unitsPerSqFt != '') {
-//       areaOfBrick = dimensions.unitsPerSqFt;
-//       this.noOfBricks = totalSqft * areaOfBrick;
-//     }
-
-//     // console.log(this.noOfBricks);
-//     if (!this.noOfBricks > 0) {
-//       this.updateQtyBtn
-//         .querySelector('button')
-//         .setAttribute('disabled', 'disabled');
-//       return;
-//     }
-//     this.recomQty.textContent = this.noOfBricks;
-//     if (this.palletQty > 1) {
-//       this.boxes = Math.ceil(this.noOfBricks / this.palletQty);
-//       // console.log(this.boxes);
-//       this.noOfBricks = this.boxes * this.palletQty;
-//     }
-
-//     this.inputArea.textContent = this.area;
-
-//     this.recommendations.style.display = 'block';
-//     this.calculateBtn.textContent = 'Recalculate';
-
-//     if (this.boxes > 0) {
-//       this.calculatorContainer.querySelector('.boxes').textContent = this.boxes;
-//       this.calculatorContainer.querySelector('.bricksInBox').textContent =
-//         this.palletQty;
-//       this.calculatorContainer.querySelector('.palletEstimate').style.display =
-//         'block';
-//     } else {
-//       this.calculatorContainer.querySelector('.palletEstimate').style.display =
-//         'none';
-//     }
-
-//     this.updateQtyBtn.querySelector('button').removeAttribute('disabled');
-//   }
-
-//   formQtyCheck(event) {
-//     event.preventDefault();
-//     this.palletQty = this.formQty.getAttribute('data-pallet-qty');
-//     this.palletQty = parseInt(this.palletQty);
-//     if (this.palletQty > 1) {
-//       event.target.setAttribute('readonly', 'readonly');
-//       this.calculatorContainer.classList.add('open');
-//     } else {
-//       event.target.removeAttribute('readonly');
-//   }
-
-//   onUpdateQtyBtnClick(event) {
-//     event.preventDefault();
-//     // console.log(this.boxes);
-//     if (this.boxes > 0) {
-//       this.formQty.value = Math.ceil(this.boxes * 7.7);
-//       this.formQty.setAttribute('value', Math.ceil(this.boxes * 7.7));
-//     } else {
-//       this.formQty.value = this.area;
-//       this.formQty.setAttribute('value', this.area);
-//     }
-
-//     setTimeout(() => {
-//       this.close();
-//     }, 500);
-
-//     var event = new Event('change');
-//     this.formQty.dispatchEvent(event);
-//   }
-
-//   onBodyClick(event) {
-//     if (
-//       !this.contains(event.target) ||
-//       event.target.classList.contains('modal-overlay')
-//     )
-//       this.close(false);
-//   }
-
-//   open(event) {
-//     this.onBodyClickEvent =
-//       this.onBodyClickEvent || this.onBodyClick.bind(this);
-//     event.target.closest(this.container).classList.add('open');
-//     document.body.addEventListener('click', this.onBodyClickEvent);
-//     document.body.classList.add('overflow-hidden');
-//   }
-
-//   close(focusToggle = true) {
-//     this.calculatorContainer.classList.remove('open');
-//     document.body.removeEventListener('click', this.onBodyClickEvent);
-//     document.body.classList.remove('overflow-hidden');
-//   }
-// }
-
-// customElements.define('calculator-module', CalculatorModule);
+    disconnectedCallback() {
+      if (this.variantChangeUnsubscriber) {
+        this.variantChangeUnsubscriber();
+      }
+    }
+  });
+}
 
 VideoRatio();
 
