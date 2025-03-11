@@ -30,7 +30,7 @@
   assign holdVariant = blank
   assign quick_ship = false
   
-  if priceVariant.metafields.custom.quick_ship
+  if priceVariant.metafields.custom.quick_ship == "True"
     assign quick_ship = true
   endif
   
