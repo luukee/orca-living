@@ -67,17 +67,7 @@
 
 {% comment %} grid is on product page {% endcomment %}
 {% if product %}
-  {% assign primary_collection = null %}
-
-  {% for collection in product.collections %}
-    {% if collection.handle != 'all' %}
-      {% assign primary_collection = collection %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-
   <div class='section-{{ section.id }}-padding'>
-    {% comment %} {%- paginate collection.products by section.settings.products_per_page -%} {% endcomment %}
     <div class='{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}'>
       {% unless is_samples %}
         <div class='feed--view-type'>
@@ -93,58 +83,21 @@
       {% endunless %}
 
       <div class='product-grid-container' id='ProductGridContainer'>
-        {%- if collection.products.size == 0 -%}
-          <div
-            class='collection collection--empty page-width'
-            id='product-grid'
-            data-id='{{ section.id }}'
-          >
-            <div class='loading-overlay gradient'></div>
-            <div class='title-wrapper center'>
-              <h2 class='title title--primary'>
-                {{ 'sections.collection_template.empty' | t -}}
-                <br>
-                {{
-                  'sections.collection_template.use_fewer_filters_html'
-                  | t: link: collection.url, class: 'underlined-link link'
-                }}
-              </h2>
-            </div>
-          </div>
-        {%- else -%}
-          {% comment %}
-            {% assign primary_collection = product.collections %}
-            {% if primary_collection.handle != 'all' %}
-            {% render 'dump' with primary_collection %}
-            {% endif %}
-          {% endcomment %}
           <div class='collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}'>
             <div class='loading-overlay gradient'></div>
 
             <ul
-              id='product-grid'
+              id='product_grid'
               data-id='{{ section.id }}'
               class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop'
             >
               {% assign index = 0 %}
-              {% assign filter_tag = section.settings.filter_on_tag %}
-              {% comment %} products array including only the products with the product type property value {% endcomment %}
-              {%- for product in primary_collection.products -%}
-                {% assign has_matching_tag = false %}
-
-                {% for tag in product.tags %}
-                  {% if product.tags contains tag %}
-                    {% assign has_matching_tag = true %}
-                    {% break %}
-                  {% endif %}
-                {% endfor %}
-
-                {% assign lazy_load = false %}
+              {% assign displayed_variants = '' %}
                 {% assign product_expanded = false %}
                 {%- if forloop.index > 2 -%}
                   {%- assign lazy_load = true -%}
                 {%- endif -%}
-                {% assign displayed_variants = '' %}
+
                 {% for tag in product.tags %}
                   {% if tag contains 'expand-' %}
                     {% liquid
@@ -225,38 +178,61 @@
                   {% endif %}
                 {% endfor %}
                 {% unless product_expanded %}
-                  <li class='grid__item'>
-                    {% render 'card-product',
-                      card_product: product,
-                      is_samples: is_samples,
-                      hide_overlay_link: is_samples,
-                      media_aspect_ratio: section.settings.image_ratio,
-                      show_secondary_image: section.settings.show_secondary_image,
-                      show_vendor: section.settings.show_vendor,
-                      show_rating: section.settings.show_rating,
-                      lazy_load: lazy_load,
-                      show_quick_add: section.settings.enable_quick_add,
-                      single_variant_quick_add: single_variant_quick_add,
-                      section_id: section.id
-                    %}
-                  </li>
-                  {% assign index = index | plus: 1 %}
-                  {% assign remainder = index | modulo: 7 %}
-                  {% if index > 0 and remainder == 0 and is_samples %}
-                    <!-- <li class="grid__item"></li> -->
-                  {% endif %}
-                {% endunless %}
-              {%- endfor -%}
-            </ul>
+              {%- for variant in product.variants -%}
+                {% liquid
+                  if is_samples
+                    if displayed_variants contains variant.id
+                      continue
+                    elsif request.path contains filter_tag
+                      unless variant.metafields.custom.featured == true
+                        continue
+                      endunless
+                    endif
+                    unless variant.options contains 'Sample'
+                      continue
+                    endunless
+                  else
+                    if displayed_variants contains variant.id or variant.options contains 'Sample'
+                      continue
+                    endif
+                  endif
 
-            {%- if paginate.pages > 1 -%}
-              {% render 'pagination', paginate: paginate, anchor: '' %}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
+                  assign displayed_variants = displayed_variants | append: ' ' | append: variant.id
+                  assign lazy_load = false
+                  if forloop.index > 2
+                    assign lazy_load = true
+                  endif
+                %}
+                <li
+                  class='grid__item'
+                  {% if variant.metafields.custom.group != blank %}
+                    data-group='{{variant.metafields.custom.group}}'
+                  {% endif %}
+                >
+                  {% render 'card-product',
+                    card_product: variant,
+                    hide_overlay_link: is_samples,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    lazy_load: lazy_load,
+                    show_quick_add: section.settings.enable_quick_add,
+                    single_variant_quick_add: single_variant_quick_add,
+                    section_id: section.id
+                  %}
+                </li>
+                {% assign index = index | plus: 1 %}
+                {% assign remainder = index | modulo: 7 %}
+                {% if index > 0 and remainder == 0 and is_samples %}
+                  <!-- <li class="grid__item"></li> -->
+                {% endif %}
+              {%- endfor -%}
+            {% endunless %}
+          </ul>
+        </div>
       </div>
     </div>
-    {% comment %} {%- endpaginate -%} {% endcomment %}
   </div>
 {% elsif collection %}
   {% liquid
@@ -281,11 +257,11 @@
           </div>
         {% endunless %}
 
-        <div class='product-grid-container' id='ProductGridContainer'>
+        <div class='product-grid-container product-grid-container__collection' id='ProductGridContainer'>
           {%- if collection.products.size == 0 -%}
             <div
               class='collection collection--empty page-width'
-              id='product-grid'
+              id='product_grid'
               data-id='{{ section.id }}'
             >
               <div class='loading-overlay gradient'></div>
@@ -305,7 +281,7 @@
               <div class='loading-overlay gradient'></div>
 
               <ul
-                id='product-grid'
+                id='product_grid'
                 data-id='{{ section.id }}'
                 class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop'
               >
@@ -498,7 +474,7 @@
 
     // if (groups.size > 0 && isSamples == 'true'){
     //   //Re add the pattern seen in the Samples page, to compensate for grouping
-    //   const products = document.querySelectorAll('#product-grid > li')
+    //   const products = document.querySelectorAll('#product_grid > li')
 
     //   for(let i=6;i<products.length;i+=7) {
     //     products[i]?.insertAdjacentHTML("afterend",'<li class="grid__item"></li>')
