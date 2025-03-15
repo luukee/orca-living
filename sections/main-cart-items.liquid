@@ -96,8 +96,8 @@
 
                     <div style="display: flex; gap: 5px">
                       <a href="{{ item.url }}" class="cart-item__name h4 break">{{ item.product.title | escape }}</a>
-                      {% if item.variant.metafields.custom.quick_ship %}
-                        <span class="product-option" style="font-style: italic">- Quick ship</span>
+                      {% if item.variant.metafields.custom.quick_ship and section.settings.enable_quick_ship_card_badge %}
+                        <span class="product-option" style="font-style: italic">{{ section.settings.quick_ship_card_badge_text }}</span>
                       {% endif %}
                     </div>
 
@@ -448,6 +448,18 @@
       "label": "Enable product note",
       "default": false,
       "info": "Enable if you want to show the product cart note from product metafields."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_ship_card_badge",
+      "default": false,
+      "label": "Enable Quick Ship Card Badge"
+    },
+    {
+      "type": "text",
+      "id": "quick_ship_card_badge_text",
+      "default": "Quick Ship",
+      "label": "Quick Ship Card Badge Text"
     }
   ]
 }

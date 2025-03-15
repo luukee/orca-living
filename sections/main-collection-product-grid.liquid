@@ -226,8 +226,9 @@
                           show_quick_add: section.settings.enable_quick_add,
                           single_variant_quick_add: single_variant_quick_add,
                           section_id: section.id,
-                          append_url_params: '&quick_ship=true'
-                        %}
+                          enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
+                          quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                          %}
                       </li>
                     {% endif %}
                   {% endfor %}
@@ -297,6 +298,8 @@
                                 show_quick_add: section.settings.enable_quick_add,
                                 single_variant_quick_add: single_variant_quick_add,
                                 section_id: section.id
+                                enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
+                                quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
                               %}
                             </li>
                           {% endunless %}
@@ -318,7 +321,9 @@
                         lazy_load: lazy_load,
                         show_quick_add: section.settings.enable_quick_add,
                         single_variant_quick_add: single_variant_quick_add,
-                        section_id: section.id 
+                        section_id: section.id
+                        enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
+                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
                       %}
                     </li>
                     
@@ -355,7 +360,8 @@
                         show_quick_add: section.settings.enable_quick_add,
                         single_variant_quick_add: single_variant_quick_add,
                         section_id: section.id,
-                        append_url_params: '&quick_ship=true'
+                        enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
+                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
                       %}
                     </li>
                   {%- endif -%}
@@ -449,6 +455,8 @@
                               show_quick_add: section.settings.enable_quick_add,
                               single_variant_quick_add: single_variant_quick_add,
                               section_id: section.id
+                              enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
+                              quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
                             %}
                           </li>
                           {% assign index = index | plus: 1 %}
@@ -476,7 +484,9 @@
                         lazy_load: lazy_load,
                         show_quick_add: section.settings.enable_quick_add,
                         single_variant_quick_add: single_variant_quick_add,
-                        section_id: section.id
+                        section_id: section.id,
+                        enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
+                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
                       %}
                     </li>
                   {% endunless %}
@@ -577,6 +587,18 @@
       "id": "enable_quick_add",
       "default": false,
       "label": "t:sections.main-collection-product-grid.settings.enable_quick_buy.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_ship_card_badge",
+      "default": false,
+      "label": "Enable Quick Ship Card Badge"
+    },
+    {
+      "type": "text",
+      "id": "quick_ship_card_badge_text",
+      "default": "Quick Ship",
+      "label": "Quick Ship Card Badge Text"
     },
     {
       "type": "header",

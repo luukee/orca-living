@@ -30,7 +30,7 @@
   assign hold_variant = blank
   assign quick_ship = false
   
-  if price_variant.metafields.custom.quick_ship == "True"
+  if price_variant.metafields.custom.quick_ship == "True" and enable_quick_ship_card_badge
     assign quick_ship = true
   endif
   
@@ -196,7 +196,7 @@
         <div class="card__content">
           {% if quick_ship %}
             <div class="button_quick-ship button--hover-effect">
-              <button class="button--xsmall">Quick Ship</button>
+              <button class="button--xsmall">{{ quick_ship_card_badge_text }}</button>
             </div>
           {% endif %}
           <div class="card__information">
