@@ -57,6 +57,10 @@
             assign isCurrent        = true
           endif 
 
+          if collectionHandle == 'quick-ship' and linkHandle == 'pavers'
+            assign isCurrent        = true
+          endif
+
           assign linkURL            = link.url
           if isCurrent and template.name != 'article'
             assign linkURL          = linkURL | split: '/tagged' | first
@@ -75,7 +79,7 @@
           
           assign path = request.path
           assign show_nav_child_links = false
-          if path contains 'pavers'
+          if path contains 'pavers' or path contains 'quick-ship'
             assign show_nav_child_links = true
           endif
         %}
