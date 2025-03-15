@@ -74,12 +74,7 @@
     {% unless is_samples %}
       <div class='feed--view-type'>
         <span>View: </span>
-        <a
-          href='#images'
-          data-type='images'
-          class='current'
-          >Images</a
-        >,
+        <a href='#images' data-type='images' class='current'>Images</a>,
         <a href='#list' data-type='list'>List</a>
       </div>
     {% endunless %}
@@ -109,127 +104,154 @@
           %}
 
           {% if is_product_page %}
-            {%- for product in current_collection.products -%}
-            {% assign displayed_variants = '' %}
-            {% assign has_quick_ship = false %}
-            
-            {% if quick_ship_tag %}
-              {% for variant in product.variants %}
-                {% if variant.metafields.custom.quick_ship == 'True' %}
-                  {% assign has_quick_ship = true %}
-                  {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
-                  <li class='grid__item product-page--variant-by-quick-ship'>
-                    {% render 'card-product',
-                      product_title: product.title,
-                      card_product: variant,
-                      hide_overlay_link: is_samples,
-                      media_aspect_ratio: section.settings.image_ratio,
-                      show_secondary_image: section.settings.show_secondary_image,
-                      show_vendor: section.settings.show_vendor,
-                      show_rating: section.settings.show_rating,
-                      lazy_load: forloop.index > 2,
-                      show_quick_add: section.settings.enable_quick_add,
-                      single_variant_quick_add: single_variant_quick_add,
-                      section_id: section.id,
-                      append_url_params: '&quick_ship=true'
-                    %}
-                  </li>
-                {% endif %}
-              {% endfor %}
-            {% endif %}
-          
-            {% unless has_quick_ship %}
-              {% for tag in product.tags %}
-                
-                {% if tag contains 'expand-' %}
-                  {% liquid
-                    assign split_option = tag | split: '-' | last | capitalize
-                    assign option_variants = product.options_with_values | where: 'name', split_option | first
-                    assign option_pos = 'option'
-          
-                    for opt in product.options
-                      if opt == split_option
-                        assign option_pos = option_pos | append: forloop.index
-                      endif
-                    endfor
-                  %}
-          
-                  {% for option_variant in option_variants.values %}
-                    {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
-                    {% for variant in filtered_prods %}
-
-                      {% liquid
-                        if on_filter_by_tag_page
-                          unless variant.title contains filter_by_this_tag
-                            continue
-                          endunless
-                        # Then handle samples case
-                        elsif is_samples
-                          if displayed_variants contains variant.id
-                            continue
-                          endif
-                          unless variant.options contains 'Sample'
-                            continue
-                          endunless
-                        # Finally handle regular case
-                        else
-                          if displayed_variants contains variant.id or variant.options contains 'Sample'
-                            continue
-                          endif
-                        endif
-                      %}
-                      {% unless displayed_variants contains variant.id %}
-                        {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
-                        {% assign variant_title = product.title | append: ' in ' | append: option_variant %}
-                        
-                        <li class='grid__item grid__item--by-variant'>
-                          {% render 'card-product',
-                            product_title: variant_title,
-                            card_product: variant,
-                            hide_overlay_link: is_samples,
-                            media_aspect_ratio: section.settings.image_ratio,
-                            show_secondary_image: section.settings.show_secondary_image,
-                            show_vendor: section.settings.show_vendor,
-                            show_rating: section.settings.show_rating,
-                            lazy_load: forloop.index > 2,
-                            show_quick_add: section.settings.enable_quick_add,
-                            single_variant_quick_add: single_variant_quick_add,
-                            section_id: section.id
-                          %}
-                        </li>
-                      {% endunless %}
-                    {% endfor %}
-                  {% endfor %}
-                  {% assign product_expanded = true %}
-                {% endif %}
-              {% endfor %}
+              {% comment %}Get the current product's tag{% endcomment %}
+            {% assign current_product_tag = '' %}
+            {% assign is_tag_filtered = false %}
+            {% for tag in product.tags %}
+              {% if tag contains '_' %}
+                {% assign current_product_tag = tag %}
+                {% assign is_tag_filtered = true %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+            {%- for collection_product in current_collection.products -%}
+              {% comment %}Only process products that have the same tag as current product{% endcomment %}
+              {% assign should_process = true %}
+              {% if is_tag_filtered %}
+                {% assign should_process = false %}
+                {% for tag in collection_product.tags %}
+                  {% if tag == current_product_tag %}
+                    {% assign should_process = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
               
-              {% unless product_expanded %}
+              {% if should_process %}
+                {% assign displayed_variants = false %}
+                {% assign has_quick_ship = false %}
+                {% assign product_expanded = false %}
+                {%- if forloop.index > 2 -%}
+                  {%- assign lazy_load = true -%}
+                {%- endif -%}
                 
-                <li class="grid__item product-page--general-product">
-                  {% render 'card-product', 
-                    card_product: product,
-                    is_samples: is_samples,
-                    hide_overlay_link: is_samples,
-                    media_aspect_ratio: section.settings.image_ratio,
-                    show_secondary_image: section.settings.show_secondary_image,
-                    show_vendor: section.settings.show_vendor,
-                    show_rating: section.settings.show_rating,
-                    lazy_load: lazy_load,
-                    show_quick_add: section.settings.enable_quick_add,
-                    single_variant_quick_add: single_variant_quick_add,
-                    section_id: section.id 
-                  %}
-                </li>
-                
-                {% assign index = index | plus: 1 %}
-                {% assign remainder = index | modulo: 7 %}
-                {% if index > 0 and remainder == 0 and is_samples %}
-                  <!-- <li class="grid__item"></li> -->
+                {% if quick_ship_tag %}
+                  {% for variant in collection_product.variants %}
+                    {% if variant.metafields.custom.quick_ship == 'True' %}
+                      {% assign has_quick_ship = true %}
+                      {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
+                      {% assign product_title = product.title %}
+                      <li class='grid__item product-page--variant-by-quick-ship'>
+                        {% render 'card-product',
+                          product_title: product_title,
+                          card_product: variant,
+                          hide_overlay_link: is_samples,
+                          media_aspect_ratio: section.settings.image_ratio,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          show_vendor: section.settings.show_vendor,
+                          show_rating: section.settings.show_rating,
+                          lazy_load: forloop.index > 2,
+                          show_quick_add: section.settings.enable_quick_add,
+                          single_variant_quick_add: single_variant_quick_add,
+                          section_id: section.id,
+                          append_url_params: '&quick_ship=true'
+                        %}
+                      </li>
+                    {% endif %}
+                  {% endfor %}
                 {% endif %}
-              {% endunless %}
-            {% endunless %}
-          {% endfor %}
+              
+                {% unless has_quick_ship %}
+                  {% for tag in collection_product.tags %}
+                    {% if tag contains 'expand-' %}
+                      {% liquid
+                        assign split_option = tag | split: '-' | last | capitalize
+                        assign option_variants = product.options_with_values | where: 'name', split_option | first
+                        assign option_pos = 'option'
+              
+                        for opt in product.options
+                          if opt == split_option
+                            assign option_pos = option_pos | append: forloop.index
+                          endif
+                        endfor
+                      %}
+                      {% for option_variant in option_variants.values %}
+                        {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
+                        {% for variant in filtered_prods %}
+                          {% liquid
+                            if on_filter_by_tag_page
+                              unless variant.title contains filter_by_this_tag
+                                continue
+                              endunless
+                            # Then handle samples case
+                            elsif is_samples
+                              if displayed_variants contains variant.id
+                                continue
+                              endif
+                              unless variant.options contains 'Sample'
+                                continue
+                              endunless
+                            # Finally handle regular case
+                            else
+                              if displayed_variants contains variant.id or variant.options contains 'Sample'
+                                continue
+                              endif
+                            endif
+                          %}
+                          {% unless displayed_variants contains variant.id %}
+                            {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
+                            {% assign variant_title = product.title | append: ' in ' | append: option_variant %}
+                            
+                            <li class='grid__item grid__item--by-variant'>
+                              {% render 'card-product',
+                                product_title: variant_title,
+                                card_product: variant,
+                                hide_overlay_link: is_samples,
+                                media_aspect_ratio: section.settings.image_ratio,
+                                show_secondary_image: section.settings.show_secondary_image,
+                                show_vendor: section.settings.show_vendor,
+                                show_rating: section.settings.show_rating,
+                                lazy_load: forloop.index > 2,
+                                show_quick_add: section.settings.enable_quick_add,
+                                single_variant_quick_add: single_variant_quick_add,
+                                section_id: section.id
+                              %}
+                            </li>
+                          {% endunless %}
+                        {% endfor %}
+                      {% endfor %}
+                      {% assign product_expanded = true %}
+                    {% endif %}
+                  {% endfor %}
+                  
+                  {% unless product_expanded %}
+                    {% assign variant_title = collection_product.title | append: ' - ' | append: collection.handle %}
+                    <li class="grid__item product-page--general-product">
+                      {% render 'card-product', 
+                        product_title: variant_title,
+                        card_product: collection_product,
+                        is_samples: is_samples,
+                        hide_overlay_link: is_samples,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_rating: section.settings.show_rating,
+                        lazy_load: lazy_load,
+                        show_quick_add: section.settings.enable_quick_add,
+                        single_variant_quick_add: single_variant_quick_add,
+                        section_id: section.id 
+                      %}
+                    </li>
+                    
+                    {% assign index = index | plus: 1 %}
+                    {% assign remainder = index | modulo: 7 %}
+                    {% if index > 0 and remainder == 0 and is_samples %}
+                      <!-- <li class="grid__item"></li> -->
+                    {% endif %}
+                  {% endunless %}
+                {% endunless %}
+              {% endif %}
+            {% endfor %}
           {% else %} {% comment %} COLLECTION PAGE {% endcomment %}
             {%- paginate current_collection.products by section.settings.products_per_page -%}
               {%- for product in current_collection.products -%}
@@ -241,9 +263,10 @@
                 {%- for variant in product.variants -%}
                   {%- if variant.metafields.custom.quick_ship == 'True' and quick_ship_tag -%}
                     {% assign displayed_variants = true %}
+                    {% assign variant_title = product.title %}
                     <li class='grid__item grid__item--by-variant-quick-ship'>
                       {% render 'card-product',
-                        product_title: product.title,
+                        product_title: variant_title,
                         card_product: variant,
                         hide_overlay_link: is_samples,
                         media_aspect_ratio: section.settings.image_ratio,
@@ -318,6 +341,7 @@
                               assign prod_title = prod_title | append: ' in ' | append: option_variant
                             endif
                           %}
+                          {% assign variant_title = prod_title %}
                           <li
                             class='grid__item grid__item--by-variant'
                             {% if p.metafields.custom.group != blank %}
@@ -325,7 +349,7 @@
                             {% endif %}
                           >
                             {% render 'card-product',
-                              product_title: prod_title,
+                              product_title: variant_title,
                               card_product: p,
                               hide_overlay_link: is_samples,
                               media_aspect_ratio: section.settings.image_ratio,
@@ -350,8 +374,10 @@
                   {% endfor %}
       
                   {% unless product_expanded %}
+                    {% assign variant_title = product.title %}
                     <li class='grid__item grid__item--by-product'>
                       {% render 'card-product',
+                        product_title: variant_title,
                         card_product: product,
                         is_samples: is_samples,
                         hide_overlay_link: is_samples,
