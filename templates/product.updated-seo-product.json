@@ -61,6 +61,8 @@
         "show_vendor": false,
         "show_rating": false,
         "enable_quick_add": false,
+        "enable_quick_ship_card_badge": true,
+        "quick_ship_card_badge_text": "In Stock",
         "enable_filtering": false,
         "filter_type": "horizontal",
         "enable_sorting": false,

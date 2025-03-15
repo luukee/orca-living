@@ -14,7 +14,9 @@
       "settings": {
         "padding_top": 16,
         "padding_bottom": 16,
-        "product_note_enable": true
+        "product_note_enable": true,
+        "enable_quick_ship_card_badge": true,
+        "quick_ship_card_badge_text": "- In Stock"
       }
     },
     "cart-hear-about-us": {
