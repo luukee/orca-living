@@ -107,12 +107,23 @@
               {% comment %}Get the current product's tag{% endcomment %}
             {% assign current_product_tag = '' %}
             {% assign is_tag_filtered = false %}
+            {% comment %} debug tags {% endcomment %}
+            {% comment %} <h2>Product tags:</h2>
             {% for tag in product.tags %}
-              {% if tag contains '_' %}
+              {{ tag }}<br>
+            {% endfor %} {% endcomment %}
+            {% for tag in product.tags %}
+              {% comment %} 
+              Ignore import tags (import_2022_08_24_122925)
+              Allow regular tags (plumbing) and special tags (_Quick-ship)
+              {% endcomment %}
+              {% unless tag contains 'import_' %}
                 {% assign current_product_tag = tag %}
+                {% comment %} <h2>current_product_tag:</h2>
+                <p>{{ current_product_tag }}</p><br> {% endcomment %}
                 {% assign is_tag_filtered = true %}
                 {% break %}
-              {% endif %}
+              {% endunless %}
             {% endfor %}
             {%- for collection_product in current_collection.products -%}
               {% comment %}Only process products that have the same tag as current product{% endcomment %}
@@ -131,6 +142,12 @@
                 {% assign displayed_variants = false %}
                 {% assign has_quick_ship = false %}
                 {% assign product_expanded = false %}
+                {% assign has_variants = false %}
+                
+                {% if collection_product.variants.size > 1 %}
+                  {% assign has_variants = true %}
+                {% endif %}
+
                 {%- if forloop.index > 2 -%}
                   {%- assign lazy_load = true -%}
                 {%- endif -%}
@@ -140,10 +157,9 @@
                     {% if variant.metafields.custom.quick_ship == 'True' %}
                       {% assign has_quick_ship = true %}
                       {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
-                      {% assign product_title = product.title %}
-                      <li class='grid__item product-page--variant-by-quick-ship'>
+                      <li class='grid__item grid__item-PRODUCT-by-quick-ship'>
                         {% render 'card-product',
-                          product_title: product_title,
+                          product_title: collection_product.title,
                           card_product: variant,
                           hide_overlay_link: is_samples,
                           media_aspect_ratio: section.settings.image_ratio,
@@ -166,46 +182,56 @@
                     {% if tag contains 'expand-' %}
                       {% liquid
                         assign split_option = tag | split: '-' | last | capitalize
-                        assign option_variants = product.options_with_values | where: 'name', split_option | first
+                        assign option_variants = collection_product.options_with_values | where: 'name', split_option | first
                         assign option_pos = 'option'
               
-                        for opt in product.options
+                        for opt in collection_product.options
                           if opt == split_option
                             assign option_pos = option_pos | append: forloop.index
                           endif
                         endfor
                       %}
                       {% for option_variant in option_variants.values %}
-                        {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
-                        {% for variant in filtered_prods %}
+                        {% comment %} {% render 'dump' with option_variant %} {% endcomment %}
+                        {% assign filtered_prods = collection_product.variants | where: option_pos, option_variant %}
+
+                        {% for p in filtered_prods %}
                           {% liquid
                             if on_filter_by_tag_page
-                              unless variant.title contains filter_by_this_tag
+                              unless p.title contains filter_by_this_tag
                                 continue
                               endunless
                             # Then handle samples case
                             elsif is_samples
-                              if displayed_variants contains variant.id
+                              if displayed_variants contains p.id
                                 continue
                               endif
-                              unless variant.options contains 'Sample'
+                              unless p.options contains 'Sample'
                                 continue
                               endunless
                             # Finally handle regular case
                             else
-                              if displayed_variants contains variant.id or variant.options contains 'Sample'
+                              if displayed_variants contains p.id or p.options contains 'Sample'
                                 continue
                               endif
                             endif
                           %}
-                          {% unless displayed_variants contains variant.id %}
-                            {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
-                            {% assign variant_title = product.title | append: ' in ' | append: option_variant %}
-                            
-                            <li class='grid__item grid__item--by-variant'>
+                          {% unless displayed_variants contains p.id %}
+                            {% assign displayed_variants = displayed_variants | append: ' ' | append: p.id %}
+                            {% assign variant_title = collection_product.title %}
+                            {% if split_option == 'Size' and p.option2 != blank %}
+                              {% if option_pos == 'option1' %}
+                                {% assign variant_title = variant_title | append: ' in ' | append: p.option2 %}
+                              {% else %}
+                                {% assign variant_title = variant_title | append: ' in ' | append: p.option1 %}
+                              {% endif %}
+                            {% else %}
+                              {% assign variant_title = variant_title | append: ' - ' | append: option_variant %}
+                            {% endif %}
+                            <li class='grid__item grid__item-PRODUCT-by-variant{% if product_expanded %} product-expanded{% endif %}'>
                               {% render 'card-product',
                                 product_title: variant_title,
-                                card_product: variant,
+                                card_product: p,
                                 hide_overlay_link: is_samples,
                                 media_aspect_ratio: section.settings.image_ratio,
                                 show_secondary_image: section.settings.show_secondary_image,
@@ -223,12 +249,9 @@
                       {% assign product_expanded = true %}
                     {% endif %}
                   {% endfor %}
-                  
                   {% unless product_expanded %}
-                    {% assign variant_title = collection_product.title | append: ' - ' | append: collection.handle %}
-                    <li class="grid__item product-page--general-product">
+                    <li class="grid__item grid__item-PRODUCT-general-product {%- if product_expanded -%}product-expanded{%- endif -%}">
                       {% render 'card-product', 
-                        product_title: variant_title,
                         card_product: collection_product,
                         is_samples: is_samples,
                         hide_overlay_link: is_samples,
@@ -263,10 +286,9 @@
                 {%- for variant in product.variants -%}
                   {%- if variant.metafields.custom.quick_ship == 'True' and quick_ship_tag -%}
                     {% assign displayed_variants = true %}
-                    {% assign variant_title = product.title %}
-                    <li class='grid__item grid__item--by-variant-quick-ship'>
+                    <li class='grid__item grid__item-COLLECTION-quick-ship'>
                       {% render 'card-product',
-                        product_title: variant_title,
+                        product_title: product.title,
                         card_product: variant,
                         hide_overlay_link: is_samples,
                         media_aspect_ratio: section.settings.image_ratio,
@@ -302,54 +324,65 @@
       
                       <!-- Rest of your existing expand tag logic -->
                       {% for option_variant in option_variants.values %}
+                        {% comment %} {% render 'dump' with option_variant %} {% endcomment %}
                         {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
 
                         {% for p in filtered_prods %}
                           {% liquid
-                            ## filter by tag page
+                            ## Filter by tag page
+                            # If we're on a tag-filtered page (on_filter_by_tag_page is true), 
+                            # we skip any variant that doesn't contain the filtered tag in its title
                             if on_filter_by_tag_page
                               unless p.title contains filter_by_this_tag
                                 continue
                               endunless
                             elsif is_samples
+                              # If we're on the samples page, we skip any variant that's already been displayed
                               if displayed_variants contains p.id
                                 continue
                               elsif request.path contains filter_tag
+                                # If we're on a tag-filtered page, we skip any variant that doesn't have the featured tag
                                 unless p.metafields.custom.featured == true
                                   continue
                                 endunless
                               endif
                               unless p.options contains 'Sample'
+                                # If we're on the samples page, we skip any variant that doesn't have the 'Sample' option
                                 continue
                               endunless
                             else
+                              # If we're on a regular collection page, we skip any variant that's already been displayed or has the 'Sample' option
                               if displayed_variants contains p.id or p.options contains 'Sample'
                                 continue
                               endif
                             endif
-
+                          
+                            # Add the variant ID to the displayed_variants array
                             assign displayed_variants = displayed_variants | append: ' ' | append: p.id
+                            # Set the product title to the product's title
                             assign prod_title = product.title
-
+                          
+                            # If the split option is 'Size' and the variant has an option2, 
+                            # set the product title to the product's title plus ' in ' plus the variant's option2
                             if split_option == 'Size' and p.option2 != blank
+                              # If the option position is 'option1', 
+                              # set the product title to the product's title plus ' in ' plus the variant's option2
                               if option_pos == 'option1'
                                 assign prod_title = prod_title | append: ' in ' | append: p.option2
                               else
+                                # If the option position is 'option2', 
+                                # set the product title to the product's title plus ' in ' plus the variant's option1
                                 assign prod_title = prod_title | append: ' in ' | append: p.option1
                               endif
                             else
+                              # If the split option is not 'Size', 
+                              # set the product title to the product's title plus ' in ' plus the split option
                               assign prod_title = prod_title | append: ' in ' | append: option_variant
                             endif
                           %}
-                          {% assign variant_title = prod_title %}
-                          <li
-                            class='grid__item grid__item--by-variant'
-                            {% if p.metafields.custom.group != blank %}
-                              data-group='{{p.metafields.custom.group}}'
-                            {% endif %}
-                          >
+                          <li class='grid__item grid__item-COLLECTION-by-variant' {% if p.metafields.custom.group != blank %}data-group='{{p.metafields.custom.group}}'{% endif %}>
                             {% render 'card-product',
-                              product_title: variant_title,
+                              product_title: prod_title,
                               card_product: p,
                               hide_overlay_link: is_samples,
                               media_aspect_ratio: section.settings.image_ratio,
@@ -374,10 +407,9 @@
                   {% endfor %}
       
                   {% unless product_expanded %}
-                    {% assign variant_title = product.title %}
-                    <li class='grid__item grid__item--by-product'>
+                    <li class='grid__item grid__item-COLLECTION-by-product'>
                       {% render 'card-product',
-                        product_title: variant_title,
+                        product_title: product.title,
                         card_product: product,
                         is_samples: is_samples,
                         hide_overlay_link: is_samples,
