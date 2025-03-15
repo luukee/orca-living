@@ -24,27 +24,27 @@
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
 {% liquid
-  assign productURL = card_product.url | within: collection
-  assign priceVariant = card_product
-  assign productType = priceVariant.type | handleize
-  assign holdVariant = blank
+  assign product_url = card_product.url | within: collection
+  assign price_variant = card_product
+  assign product_type = price_variant.type | handleize
+  assign hold_variant = blank
   assign quick_ship = false
   
-  if priceVariant.metafields.custom.quick_ship == "True"
+  if price_variant.metafields.custom.quick_ship == "True"
     assign quick_ship = true
   endif
   
-  if productType contains 'paver'
+  if product_type contains 'paver'
     for variant in card_product.variants
       if variant.title contains 'Standard'
-        assign priceVariant = variant
+        assign price_variant = variant
         break
       endif
       if variant.title contains 'Thin'
-        assign holdVariant = variant
+        assign hold_variant = variant
       endif
-      if forloop.last and priceVariant == card_product and holdVariant != blank
-        assign priceVariant = holdVariant
+      if forloop.last and price_variant == card_product and hold_variant != blank
+        assign price_variant = hold_variant
       endif
     endfor
   endif
@@ -207,7 +207,7 @@
               {% endif %}
             >
               <a
-                href="{{ productURL }}"
+                href="{{ product_url }}"
                 id="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}"
                 class="full-unstyled-link"
                 aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
@@ -247,7 +247,7 @@
           >
             {% if hide_overlay_link == false %}
                 <a
-                href="{{ productURL }}"
+                href="{{ product_url }}"
                 id="CardLink-{{ section_id }}-{{ card_product.id }}"
                 class="full-unstyled-link"
                 aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
@@ -302,7 +302,7 @@
               </p>
             {%- endif -%}
 
-            {% render 'price', product: priceVariant, price_class: '' %}
+            {% render 'price', product: price_variant, price_class: '' %}
           </div>
         </div>
         {%- if show_quick_add -%}
@@ -323,7 +323,7 @@
                   class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
                   aria-haspopup="dialog"
                   aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                  data-product-url="{{ productURL }}"
+                  data-product-url="{{ product_url }}"
                 >
                   {{ 'products.product.choose_options' | t }}
                   {%- if horizontal_quick_add -%}
@@ -480,7 +480,7 @@
         {%- endif -%}
         {% if hide_overlay_link == true %}
           <a    
-            href="{{ productURL }}"
+            href="{{ product_url }}"
             id="CardLink-{{ section_id }}-{{ card_product.id }}"
             class="full-unstyled-link h5"
             aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
