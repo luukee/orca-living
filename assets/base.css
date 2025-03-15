@@ -7543,5 +7543,6 @@ pre {
   line-height: 1;
   background-color: white;
   overflow: auto;
+  text-wrap: wrap;
 }
 /*# sourceMappingURL=base.css.map */

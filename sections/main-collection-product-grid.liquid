@@ -7,6 +7,14 @@
   endif
   assign is_samples = false
   assign single_variant_quick_add = blank
+  
+  # Get collection handle from URL if we're on a product page
+  assign url_parts = request.path | split: '/'
+  if url_parts contains 'collections' and url_parts contains 'products'
+    assign collection_handle = url_parts[2]
+    assign collection = collections[collection_handle]
+  endif
+  
   if request.path == '/collections/pavers/_Samples'
     assign is_samples = true
     assign collection = collections.pavers
@@ -101,10 +109,10 @@
           %}
 
           {% if is_product_page %}
-            
+            {%- for product in current_collection.products -%}
             {% assign displayed_variants = '' %}
             {% assign has_quick_ship = false %}
-
+            
             {% if quick_ship_tag %}
               {% for variant in product.variants %}
                 {% if variant.metafields.custom.quick_ship == 'True' %}
@@ -132,6 +140,7 @@
           
             {% unless has_quick_ship %}
               {% for tag in product.tags %}
+                
                 {% if tag contains 'expand-' %}
                   {% liquid
                     assign split_option = tag | split: '-' | last | capitalize
@@ -148,10 +157,25 @@
                   {% for option_variant in option_variants.values %}
                     {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
                     {% for variant in filtered_prods %}
+
                       {% liquid
-                        # Skip if it's a Sample variant
-                        if variant.options contains 'Sample'
-                          continue
+                        if on_filter_by_tag_page
+                          unless variant.title contains filter_by_this_tag
+                            continue
+                          endunless
+                        # Then handle samples case
+                        elsif is_samples
+                          if displayed_variants contains variant.id
+                            continue
+                          endif
+                          unless variant.options contains 'Sample'
+                            continue
+                          endunless
+                        # Finally handle regular case
+                        else
+                          if displayed_variants contains variant.id or variant.options contains 'Sample'
+                            continue
+                          endif
                         endif
                       %}
                       {% unless displayed_variants contains variant.id %}
@@ -176,10 +200,36 @@
                       {% endunless %}
                     {% endfor %}
                   {% endfor %}
+                  {% assign product_expanded = true %}
                 {% endif %}
               {% endfor %}
+              
+              {% unless product_expanded %}
+                
+                <li class="grid__item product-page--general-product">
+                  {% render 'card-product', 
+                    card_product: product,
+                    is_samples: is_samples,
+                    hide_overlay_link: is_samples,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    lazy_load: lazy_load,
+                    show_quick_add: section.settings.enable_quick_add,
+                    single_variant_quick_add: single_variant_quick_add,
+                    section_id: section.id 
+                  %}
+                </li>
+                
+                {% assign index = index | plus: 1 %}
+                {% assign remainder = index | modulo: 7 %}
+                {% if index > 0 and remainder == 0 and is_samples %}
+                  <!-- <li class="grid__item"></li> -->
+                {% endif %}
+              {% endunless %}
             {% endunless %}
-            
+          {% endfor %}
           {% else %} {% comment %} COLLECTION PAGE {% endcomment %}
             {%- paginate current_collection.products by section.settings.products_per_page -%}
               {%- for product in current_collection.products -%}
