@@ -14,7 +14,7 @@
       "settings": {
         "title": "Shop",
         "make_h1": false,
-        "menu": "collections-menu",
+        "menu": "collections-menu-dev",
         "padding_top": 16,
         "padding_bottom": 16
       }
