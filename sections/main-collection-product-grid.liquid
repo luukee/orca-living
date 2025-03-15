@@ -69,7 +69,7 @@
 
 
 
-<div class='section-{{ section.id }}-padding'>
+<div class='section-{{ section.id }}-padding section--main-collection-product-grid'>
   <div class='collection{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}'>
     {% unless is_samples %}
       <div class='feed--view-type'>
@@ -88,6 +88,17 @@
             assign current_collection = collection
             assign is_product_page = false
             assign quick_ship_tag = false
+            assign should_filter_by_tag = false
+            
+            # Check if we're on a collection page with a tag
+            assign url_parts = request.path | split: '/'
+            if url_parts contains 'collections' and url_parts.size > 3
+              assign last_part = url_parts | last
+              if last_part contains '_'
+                assign should_filter_by_tag = true
+                assign current_product_tag = last_part
+              endif
+            endif
             
             if product
               # When on product page, we'll use the product's variants directly
@@ -96,43 +107,88 @@
               if request.path contains 'quick-ship'
                 assign quick_ship_tag = true
               endif
+              
+              # Check if we're on a product page in the pavers collection
+              if url_parts contains 'collections' and url_parts contains 'products'
+                assign collection_handle = url_parts[2]
+                if collection_handle == 'pavers'
+                  assign should_filter_by_tag = true
+                  # Get material tags from the product's tags
+                  assign material_tags = ''
+                  
+                  # First try to find a tag that matches the product handle
+                  assign product_handle_parts = product.handle | split: '-'
+                  assign found_matching_tag = false
+                  
+                  # Join handle parts to compare with tag
+                  assign handle_joined = product_handle_parts | join: ''
+                  
+                  for tag in product.tags
+                    assign first_char = tag | slice: 0
+                    # Check if it's a material tag (starts with underscore)
+                    if first_char == '_'
+                      # Exclude utility tags
+                      unless tag == '_Samples' or tag contains 'import_' or tag contains 'expand-' or tag contains 'validate-' or tag == 'Shop'
+                        # Remove underscore and convert to lowercase for comparison
+                        assign tag_without_underscore = tag | slice: 1, tag.size | downcase | replace: ' ', ''
+                        
+                        if handle_joined contains tag_without_underscore
+                          assign material_tags = tag
+                          assign found_matching_tag = true
+                          break
+                        endif
+                      endunless
+                    endif
+                  endfor
+                  
+                  # If we didn't find a matching tag, fall back to the first material tag
+                  unless found_matching_tag
+                    for tag in product.tags
+                      assign first_char = tag | slice: 0
+                      if first_char == '_'
+                        unless tag == '_Samples' or tag contains 'import_' or tag contains 'expand-' or tag contains 'validate-' or tag == 'Shop'
+                          assign material_tags = tag
+                          break
+                        endunless
+                      endif
+                    endfor
+                  endunless
+                  
+                  assign current_product_tag = material_tags
+                endif
+              endif
             endif
 
             if request.path contains 'quick-ship' or request.path contains '_Quick-ship'
               assign quick_ship_tag = true
             endif
           %}
-
+          {% comment %} DEBUG INFO {% endcomment %}
+          {% comment %}
+          <div class='debug-info'>
+            <h1>is_product_page: {{ is_product_page }}</h1>
+            <h1>current_collection: {{ current_collection.title }}</h1>
+            <h1>should_filter_by_tag: {{ should_filter_by_tag }}</h1>
+            {% if should_filter_by_tag %}
+              <h1>material_tags: {{ material_tags }}</h1>
+            {% endif %}
+          </div>
+          {% endcomment %}
           {% if is_product_page %}
-              {% comment %}Get the current product's tag{% endcomment %}
-            {% assign current_product_tag = '' %}
-            {% assign is_tag_filtered = false %}
-            {% comment %} debug tags {% endcomment %}
-            {% comment %} <h2>Product tags:</h2>
-            {% for tag in product.tags %}
-              {{ tag }}<br>
-            {% endfor %} {% endcomment %}
-            {% for tag in product.tags %}
-              {% comment %} 
-              Ignore import tags (import_2022_08_24_122925)
-              Allow regular tags (plumbing) and special tags (_Quick-ship)
-              {% endcomment %}
-              {% unless tag contains 'import_' %}
-                {% assign current_product_tag = tag %}
-                {% comment %} <h2>current_product_tag:</h2>
-                <p>{{ current_product_tag }}</p><br> {% endcomment %}
-                {% assign is_tag_filtered = true %}
-                {% break %}
-              {% endunless %}
-            {% endfor %}
             {%- for collection_product in current_collection.products -%}
-              {% comment %}Only process products that have the same tag as current product{% endcomment %}
+              {% comment %}Only process products that share any material tags with current product{% endcomment %}
               {% assign should_process = true %}
-              {% if is_tag_filtered %}
+              {% if should_filter_by_tag %}
                 {% assign should_process = false %}
+                {% assign product_material_tags = current_product_tag | split: ',' %}
                 {% for tag in collection_product.tags %}
-                  {% if tag == current_product_tag %}
-                    {% assign should_process = true %}
+                  {% for material_tag in product_material_tags %}
+                    {% if tag == material_tag %}
+                      {% assign should_process = true %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if should_process %}
                     {% break %}
                   {% endif %}
                 {% endfor %}
