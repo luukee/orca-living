@@ -418,8 +418,8 @@ a.product__text {
 }
 
 .product__title>* {
-	font-family: 'MonumentGrotesk-mono';
-	margin: 0
+	font-size: 1.5rem;
+	font-weight: 600;
 }
 
 .product__title>a {
@@ -1683,7 +1683,7 @@ a.product__text {
 }
 
 .product .product__info-container>*+* {
-	margin: 0 0 var(--margin)
+	margin: 0 0 calc(var(--margin) / 2)
 }
 
 .product .product__info-container>.accordion+.accordion {
@@ -1695,11 +1695,12 @@ a.product__text {
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	margin-left: calc(var(--margin) * -1)
+	margin-left: calc(var(--margin) * -1);
+	margin-bottom: calc(var(--margin) / 2);
 }
 
 .product .product__title-price>* {
-	margin: 0 0 var(--margin) var(--margin)
+	margin: 0 0 0 var(--margin)
 }
 
 .product .product__title-price * {
