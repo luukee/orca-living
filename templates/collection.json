@@ -15,7 +15,8 @@
       "settings": {
         "show_collection_description": false,
         "show_collection_image": false,
-        "color_scheme": "background-1"
+        "color_scheme": "background-1",
+        "collection_image_height": 75
       }
     },
     "a9fc5bfd-0b5d-4d04-a71b-98b67a41f0be": {
@@ -149,6 +150,7 @@
     },
     "custom_liquid_UmhWAa": {
       "type": "custom-liquid",
+      "disabled": true,
       "settings": {
         "custom_liquid": "<style>\n.section-paver-banner:not(:has(div)) {\n    display: none;\n}\n</style>",
         "color_scheme": "background-1",
