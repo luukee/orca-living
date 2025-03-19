@@ -114,6 +114,7 @@
         "two_grid_eRLH4g",
         "two_grid_MWaQra"
       ],
+      "disabled": true,
       "settings": {
         "banner_show_for_tag": "_Cobble",
         "banner_image": "shopify://shop_images/Frame_1_429196b9-66b5-43c5-b536-0988164e3a67.png",
@@ -161,6 +162,7 @@
         "e64aacb9-049a-45d5-93a6-7d274b43903b",
         "two_grid_YjDDiM"
       ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "banner_show_for_tag": "_Samples",
