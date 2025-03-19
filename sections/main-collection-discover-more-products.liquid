@@ -45,16 +45,24 @@
     
     for c in collections
       assign should_exclude = false
-      # Check if collection should be excluded
-      if section.settings.exclude_current_collection and c.handle == collection.handle
-        assign should_exclude = true
-      endif
-      for excluded in excluded_collections
-        if c.handle == excluded
+      
+      if section.settings.show_only_current_collection
+        # If we're only showing current collection, exclude everything else
+        if c.handle != collection.handle
           assign should_exclude = true
-          break
         endif
-      endfor
+      else
+        # Normal exclusion logic
+        if section.settings.exclude_current_collection and c.handle == collection.handle
+          assign should_exclude = true
+        endif
+        for excluded in excluded_collections
+          if c.handle == excluded
+            assign should_exclude = true
+            break
+          endif
+        endfor
+      endif
       
       unless should_exclude
         assign other_collections = other_collections | append: c.handle | append: ','
@@ -176,10 +184,17 @@
     },
     {
       "type": "checkbox",
+      "id": "show_only_current_collection",
+      "label": "Show only from current collection",
+      "default": false,
+      "info": "When enabled, only products from the current collection will be shown"
+    },
+    {
+      "type": "checkbox",
       "id": "exclude_current_collection",
       "label": "Exclude current collection",
       "default": true,
-      "info": "When enabled, products from the current collection will not appear in this section"
+      "info": "When enabled, products from the current collection will not appear in this section. Has no effect if 'Show only from current collection' is enabled."
     },
     {
       "type": "text",
