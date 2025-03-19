@@ -14,7 +14,7 @@
       "settings": {
         "title": "Shop",
         "make_h1": true,
-        "menu": "collections-menu-dev",
+        "menu": "collections-menu",
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -67,7 +67,10 @@
         "columns_desktop": 4,
         "columns_mobile": 2,
         "show_vendor": false,
-        "show_rating": false
+        "show_rating": false,
+        "show_only_current_collection": false,
+        "exclude_current_collection": true,
+        "excluded_collections": ""
       }
     },
     "be769056-a616-4653-a32a-74f9b612fbc4": {
