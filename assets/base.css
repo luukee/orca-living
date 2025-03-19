@@ -3646,6 +3646,11 @@ details-disclosure > details {
 .simple-footer .list-menu-wrapper {
   margin-bottom: 2rem;
 }
+@media only screen and (min-width: 750px) {
+  .simple-footer .list-menu-wrapper {
+    padding-right: 4rem;
+  }
+}
 .simple-footer .klaviyo-form form {
   margin-top: -5px;
 }
@@ -3712,9 +3717,8 @@ details-disclosure > details {
   }
   .simple-footer .copyright,
   .simple-footer .permissions {
-    grid-row: unset;
-    grid-column: span 2 !important;
-    grid-area: unset;
+    display: flex;
+    flex-direction: column;
   }
   .simple-footer .klaviyo-form,
   .simple-footer .permissions {
