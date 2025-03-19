@@ -26,7 +26,11 @@
         {% render 'dump' with collection %}
         <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
         {%- if current_tags.first -%}
-          {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize |  append: ' Paver' -}}
+          {% if current_tags.first contains 'paver' or current_tags.first contains 'Samples' %}
+            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
+            {% else %}              
+            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize |  append: ' Paver' -}}
+          {% endif %}
         {%- else -%}
           {{- collection.title | escape -}}
         {%- endif -%}
