@@ -7376,11 +7376,11 @@ details-disclosure > details {
 .template--article-field-notes-article h1,
 .collection-hero__title,
 .product__title h1 {
-  line-height: 1.3;
+  /* line-height: 1.3;
   letter-spacing: 2px;
   font-size: 30px;
   font-family: 'MonumentGrotesk-mono';
-  text-transform: uppercase;
+  text-transform: uppercase; */
   margin-bottom: 40px;
   margin-top: 30px;
 }
