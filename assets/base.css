@@ -3719,6 +3719,7 @@ details-disclosure > details {
   .simple-footer .permissions {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
   }
   .simple-footer .klaviyo-form,
   .simple-footer .permissions {
