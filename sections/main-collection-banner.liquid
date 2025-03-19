@@ -2,6 +2,7 @@
 {% assign media_type = 'image' %}
 {% assign hide_media = false %}
 {% assign tag_description = false %}
+{% assign tag_title = false %}
 
 {% if current_tags.first %}
   {% assign current_tag = current_tags.first %}
@@ -12,6 +13,11 @@
   {% for item in tag_media %}
     {% if item.tag == current_tag %}
       
+      {% if item.title != blank %}
+        {% assign featured_media_title = item.title %}
+        {% assign tag_title = true %}
+      {% endif %}
+
       {% if item.description %}
         {% assign featured_media_description = item.description %}
         {% assign tag_description = true %}
@@ -86,7 +92,9 @@
     <div class='collection-hero__text-wrapper' {% if hide_media == true %}style='padding-top: 0;'{% endif %}>
       <h1 class='collection-hero__title'>
         <span class='visually-hidden'>{{ 'sections.collection_template.title' | t }}: </span>
-        {%- if current_tags.first -%}
+        {%- if tag_title -%}
+          {{- featured_media_title | escape -}}
+        {%- elsif current_tags.first -%}
           {% if current_tags.first contains 'paver' or current_tags.first contains 'Samples' %}
             {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
           {% else %}
