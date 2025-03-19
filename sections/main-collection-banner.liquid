@@ -1,6 +1,7 @@
 {% assign featured_media_url = '' %}
 {% assign media_type = 'image' %}
 {% assign hide_media = false %}
+{% assign tag_description = false %}
 
 {% if current_tags.first %}
   {% assign current_tag = current_tags.first %}
@@ -10,6 +11,12 @@
 {% if tag_media %}
   {% for item in tag_media %}
     {% if item.tag == current_tag %}
+      
+      {% if item.description %}
+        {% assign featured_media_description = item.description %}
+        {% assign tag_description = true %}
+      {% endif %}
+      
       {% if item.no_media == true %}
         {% assign hide_media = true %}
         {% break %}
@@ -91,7 +98,11 @@
       </h1>
 
       {%- if section.settings.show_collection_description -%}
-        <div class='collection-hero__description rte'>{{ collection.description }}</div>
+        {%- if tag_description -%}
+          <div class='collection-hero__description rte'>{{ featured_media_description }}</div>
+        {%- else -%}
+          <div class='collection-hero__description rte'>{{ collection.description }}</div>
+        {%- endif -%}
       {%- endif -%}
     </div>
 
