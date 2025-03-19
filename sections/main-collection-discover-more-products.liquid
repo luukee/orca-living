@@ -9,6 +9,7 @@
   - products_to_show: Number of products to display
   - columns_desktop: Number of columns on desktop
   - columns_mobile: Number of columns on mobile
+  - excluded_collections: Comma-separated list of collection handles to exclude
 {% endcomment %}
 
 <div class="page-width">
@@ -22,16 +23,47 @@
     assign columns_desktop = section.settings.columns_desktop | default: 4
     assign columns_mobile = section.settings.columns_mobile | default: 2
     
+    # Get excluded collections and properly handle whitespace
+    assign raw_excluded = section.settings.excluded_collections | split: ',' 
+    assign excluded_collections = ''
+    for excluded in raw_excluded
+      assign clean_handle = excluded | strip
+      assign excluded_collections = excluded_collections | append: clean_handle | append: ','
+    endfor
+    assign excluded_collections = excluded_collections | split: ','
+    
+    render 'dump' with 'Excluded collections after processing:'
+    render 'dump' with excluded_collections
+    
     # Initialize empty string to store product handles
     assign related_products = ''
     
-    # Create array of other collections (excluding current)
+    # Create array of other collections (excluding current and excluded)
     assign other_collections = ''
+    render 'dump' with 'Current collection:'
+    render 'dump' with collection.handle
+    
     for c in collections
-      if c.handle != collection.handle
-        assign other_collections = other_collections | append: c.handle | append: ','
+      assign should_exclude = false
+      # Check if collection should be excluded
+      if section.settings.exclude_current_collection and c.handle == collection.handle
+        assign should_exclude = true
       endif
+      for excluded in excluded_collections
+        if c.handle == excluded
+          assign should_exclude = true
+          break
+        endif
+      endfor
+      
+      unless should_exclude
+        assign other_collections = other_collections | append: c.handle | append: ','
+      endunless
     endfor
+    
+    render 'dump' with 'Final other_collections:'
+    render 'dump' with other_collections
+    
     assign other_collections = other_collections | split: ','
     
     # Loop through collections
@@ -61,13 +93,15 @@
     assign related_product_handles = related_products | split: ','
   -%}
 	
-  {% comment %} <div style="display: none">
+  {% comment %} 
+  <div style="display: none">
     Debug:
     Products to show: {{ products_to_show }}
     Related products found: {{ related_product_handles.size }}
     Current collection: {{ collection.handle }}
     Available collections: {{ other_collections | join: ', ' }}
-  </div> {% endcomment %}
+  </div> 
+  {% endcomment %}
 	
   {% if related_product_handles.size > 0 %}
     <div class="discover-more-grid">
@@ -139,6 +173,19 @@
       "id": "show_rating",
       "default": false,
       "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "exclude_current_collection",
+      "label": "Exclude current collection",
+      "default": true,
+      "info": "When enabled, products from the current collection will not appear in this section"
+    },
+    {
+      "type": "text",
+      "id": "excluded_collections",
+      "label": "Excluded Collections",
+      "info": "Comma-separated list of collection handles to exclude"
     }
   ],
   "presets": [
