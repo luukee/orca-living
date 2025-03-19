@@ -36,9 +36,9 @@
 	.template--collection #MainContent .product-grid.feed-view.list {
 		display: block;
 	}
-	.template--collection #MainContent .collection-product-grid {
+	/* .template--collection #MainContent .collection-product-grid {
 		grid-column: span 1;
-	}
+	} */
 	.template--collection #MainContent .product-grid .grid__item:empty {
 		display: block;
 	}
@@ -83,14 +83,14 @@
 	min-height: calc(3.5rem + var(--buttons-border-width) * 2);
 }
 .template--collection #MainContent > :nth-child(2) {
-	padding-right: 0;
-	grid-column: span 3;
+	/* padding-right: 0; */
+	/* grid-column: span 3; */
 	/* padding-inline: 4rem; */
 }
 @media only screen and (max-width: 989px) {
 	.template--collection #MainContent > :nth-child(2) {
-		padding-inline: 0;
-		grid-column: span 3;
+		/* padding-inline: 0; */
+		/* grid-column: span 3; */
 	}
 }
 /*# sourceMappingURL=collection-pavers.css.map */
