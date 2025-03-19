@@ -81,7 +81,7 @@
     <div class='product-grid-container' id='ProductGridContainer'>
       <div class='collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}'>
         <div class='loading-overlay gradient'></div>
-        <ul id='product_grid' data-id='{{ section.id }}' class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop'>
+        <ul id='product_grid' data-id='{{ section.id }}' class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop{% if is_samples %} product-grid--samples{% endif %}'>
           {% assign index = 0 %}
           
           {% liquid
