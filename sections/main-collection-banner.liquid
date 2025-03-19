@@ -1,10 +1,20 @@
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
 {{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+{% assign collection_image_height = section.settings.collection_image_height %}
 
 {%- style -%}
   @media screen and (max-width: 749px) {
     .collection-hero--with-image .collection-hero__inner {
       padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
+    }
+    .collection-hero__image-container {
+      height: {{ collection_image_height| divided_by: 2 }}rem;
+    }
+  }
+
+  @media only screen and (min-width: 750px) {
+    .collection-hero__image-container {
+      min-height: {{ collection_image_height }}rem;
     }
   }
 {%- endstyle -%}
@@ -22,24 +32,33 @@
       {%- endif -%}
     </div>
 
-    {%- if section.settings.show_collection_image and collection.image -%}
+    {%- if section.settings.show_collection_image and collection.image or collection.metafields.custom.collection_video -%}
       <div class="collection-hero__image-container media gradient">
-        <img
-          srcset="
+        {% if collection.metafields.custom.collection_video %}
+          <video class="collection-hero__video" autoplay loop muted playsinline>
+            <source src="{{ collection.metafields.custom.collection_video | file_url }}" type="video/mp4">
+          </video>
+        {% elsif collection.image %}
+          {% comment %}
+            Smalllest srcset sizes:
             {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
             {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}
-            {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
-            {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
-            {%- if collection.image.width >= 1070 -%}{{ collection.image | image_url: width: 1070 }} 1070w,{%- endif -%}
-            {%- if collection.image.width >= 1500 -%}{{ collection.image | image_url: width: 1500 }} 1500w,{%- endif -%}
-            {{ collection.image | image_url }} {{ collection.image.width }}w
-          "
-          src="{{ collection.image | image_url: width: 750 }}"
-          sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
-          alt=""
-          width="{{ collection.image.width }}"
-          height="{{ collection.image.height }}"
-        >
+          {% endcomment %}
+          <img
+            srcset="
+              {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
+              {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
+              {%- if collection.image.width >= 1070 -%}{{ collection.image | image_url: width: 1070 }} 1070w,{%- endif -%}
+              {%- if collection.image.width >= 1500 -%}{{ collection.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+              {{ collection.image | image_url }} {{ collection.image.width }}w
+            "
+            src="{{ collection.image | image_url: width: 750 }}"
+            sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
+            alt=""
+            width="{{ collection.image.width }}"
+            height="{{ collection.image.height }}"
+          >
+        {% endif %}
       </div>
     {%- endif -%}
   </div>
@@ -94,6 +113,15 @@
       ],
       "default": "background-1",
       "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "range",
+      "id": "collection_image_height",
+      "label": "Collection Image Height",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 75
     }
   ]
 }
