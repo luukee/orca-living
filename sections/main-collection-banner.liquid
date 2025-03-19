@@ -1,5 +1,6 @@
 {% assign featured_media_url = '' %}
 {% assign media_type = 'image' %}
+{% assign hide_media = false %}
 
 {% if current_tags.first %}
   {% assign current_tag = current_tags.first %}
@@ -7,50 +8,50 @@
 {% endif %}
 
 {% if tag_media %}
-  {% comment %} <pre>Tag media: {% render 'dump' with tag_media %}</pre> {% endcomment %}
   {% for item in tag_media %}
-    {% comment %} <pre>Item tag: {{ item.tag }}</pre> {% endcomment %}
-    {% comment %} <pre>current tag: {{ current_tag }}</pre> {% endcomment %}
     {% if item.tag == current_tag %}
+      {% if item.no_media == true %}
+        {% assign hide_media = true %}
+        {% break %}
+      {% endif %}
+
       {% assign featured_media = item.media %}
       {% if item.text %}
         {% assign featured_media_text = item.text %}
       {% endif %}
-      {% comment %} <pre>Featured media text: {{ featured_media_text }}</pre> {% endcomment %}
+
       {% assign type_of_media = featured_media | split: 'shopify/' | last | split: '/' | first %}
-      
+
       {% case type_of_media %}
         {% when 'Video' %}
           {% assign media_type = 'video' %}
           {% assign featured_media_url = featured_media %}
-          {% comment %} <pre>Video: {{ featured_media_url }}</pre> {% endcomment %}
         {% when 'MediaImage' %}
           {% assign media_type = 'image' %}
           {% assign featured_media_url = featured_media | image_url: width: 2000 %}
-          {% comment %} <pre>MediaImage: {{ featured_media_url }}</pre> {% endcomment %}
       {% endcase %}
-      {% break %}
-    {% elsif collection.metafields.custom.collection_video %}
-      {% assign featured_media_url = collection.metafields.custom.collection_video %}
-      {% assign media_type = 'video' %}
-    {% else %}
-      {% comment %} <pre>Item tag does not match current tag: {{ item.tag }}</pre> {% endcomment %}
-      {% assign featured_media_url = collection.image | image_url: width: 2000 %}
       {% break %}
     {% endif %}
   {% endfor %}
 
-{% elsif collection.metafields.custom.collection_video %}
-  {% assign featured_media_url = collection.metafields.custom.collection_video %}
-  {% assign media_type = 'video' %}
-  {% comment %} <pre>collection video: {{ featured_media_url }}</pre> {% endcomment %}
-  
+  {% comment %} If no matching tag was found in the loop {% endcomment %}
+  {% if featured_media_url == '' and hide_media == false %}
+    {% if collection.metafields.custom.collection_video %}
+      {% assign featured_media_url = collection.metafields.custom.collection_video %}
+      {% assign media_type = 'video' %}
+    {% else %}
+      {% assign featured_media_url = collection.image | image_url: width: 2000 %}
+    {% endif %}
+  {% endif %}
 {% else %}
-  {% assign featured_media_url = collection.image | image_url: width: 2000 %}
-  {% comment %} <pre>collection image: {{ featured_media_url }}</pre> {% endcomment %}
-  
+  {% comment %} If no tag_media exists at all {% endcomment %}
+  {% if collection.metafields.custom.collection_video %}
+    {% assign featured_media_url = collection.metafields.custom.collection_video %}
+    {% assign media_type = 'video' %}
+  {% else %}
+    {% assign featured_media_url = collection.image | image_url: width: 2000 %}
+  {% endif %}
 {% endif %}
-
 
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
 {{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
@@ -73,16 +74,16 @@
   }
 {%- endstyle -%}
 
-<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
-  <div class="collection-hero__inner page-width">
-    <div class="collection-hero__text-wrapper">
-      <h1 class="collection-hero__title">
-        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+<div class='collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient' {% if hide_media == true %}style='padding-top: 0;'{% endif %}>
+  <div class='collection-hero__inner page-width'>
+    <div class='collection-hero__text-wrapper' {% if hide_media == true %}style='padding-top: 0;'{% endif %}>
+      <h1 class='collection-hero__title'>
+        <span class='visually-hidden'>{{ 'sections.collection_template.title' | t }}: </span>
         {%- if current_tags.first -%}
           {% if current_tags.first contains 'paver' or current_tags.first contains 'Samples' %}
             {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
-            {% else %}              
-            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize |  append: ' Paver' -}}
+          {% else %}
+            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize | append: ' Paver' -}}
           {% endif %}
         {%- else -%}
           {{- collection.title | escape -}}
@@ -90,33 +91,34 @@
       </h1>
 
       {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+        <div class='collection-hero__description rte'>{{ collection.description }}</div>
       {%- endif -%}
     </div>
-    {%- if section.settings.show_collection_image -%}
-      <div class="collection-hero__image-container media gradient">
+
+    {%- if section.settings.show_collection_image and hide_media == false -%}
+      <div class='collection-hero__image-container media gradient'>
         {% if media_type == 'video' %}
-          <video class="collection-hero__video" autoplay loop muted playsinline>
-            <source src="{{ featured_media_url | file_url }}" type="video/mp4">
+          <video class='collection-hero__video' autoplay loop muted playsinline>
+            <source src='{{ featured_media_url | file_url }}' type='video/mp4'>
           </video>
         {% else %}
           <img
-            srcset="
+            srcset='
               {%- if featured_media_url.image.width >= 535 -%}{{ featured_media_url | image_url: width: 535 }} 535w,{%- endif -%}
               {%- if featured_media_url.image.width >= 750 -%}{{ featured_media_url | image_url: width: 750 }} 750w,{%- endif -%}
               {%- if featured_media_url.image.width >= 1070 -%}{{ featured_media_url | image_url: width: 1070 }} 1070w,{%- endif -%}
               {%- if featured_media_url.image.width >= 1500 -%}{{ featured_media_url | image_url: width: 1500 }} 1500w,{%- endif -%}
               {{ featured_media_url.image | image_url }} {{ featured_media_url.image.width }}w
-            "
-            src="{{ featured_media_url.image | image_url: width: 2000 }}"
-            sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
-            alt="{{ featured_media_url.image.alt }}"
-            width="{{ featured_media_url.image.width }}"
-            height="{{ featured_media_url.image.height }}"
+            '
+            src='{{ featured_media_url.image | image_url: width: 2000 }}'
+            sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)'
+            alt='{{ featured_media_url.image.alt }}'
+            width='{{ featured_media_url.image.width }}'
+            height='{{ featured_media_url.image.height }}'
           >
         {% endif %}
         {% if featured_media_text %}
-          <p class="overlay-text">{{ featured_media_text }}</p>
+          <p class='overlay-text'>{{ featured_media_text }}</p>
         {% endif %}
       </div>
     {%- endif -%}
