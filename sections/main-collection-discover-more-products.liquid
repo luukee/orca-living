@@ -77,7 +77,21 @@
         assign random_index = 'now' | date: '%N' | modulo: collection_products.size
         assign random_product = collection_products[random_index]
 
-        unless related_products contains random_product.handle
+        # Check if product belongs to any excluded collection
+        assign should_exclude_product = false
+        for excluded in excluded_collections
+          for product_collection in random_product.collections
+            if product_collection.handle == excluded
+              assign should_exclude_product = true
+              break
+            endif
+          endfor
+          if should_exclude_product
+            break
+          endif
+        endfor
+
+        unless should_exclude_product or related_products contains random_product.handle
           assign related_products = related_products | append: random_product.handle | append: ','
         endunless
       endif
@@ -117,6 +131,7 @@
               show_quick_add: false,
               hide_overlay_link: false,
               media_aspect_ratio: 'portrait'
+              use_primary_collection_url: true
             %}
           </div>
         {% endif %}
