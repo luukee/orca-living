@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
@@ -34,7 +43,7 @@
       ],
       "settings": {
         "color_scheme": "background-1",
-        "custom_liquid": "<small>\n      Copyright {{ 'OR.CA Design LLC' | link_to: routes.root_url }}\n      {{ 'now' | date: '%Y' }}. &ensp;\n      <a href=\"\/pages\/terms-of-use\">Terms of Use<\/a> \/ \n      <a href=\"\/pages\/privacy-policy\">Privacy Policy<\/a> \/ \n      <a href=\"\/pages\/prop-65-warning\">Prop 65 Warning<\/a>\n    <\/small>",
+        "custom_liquid": "<small>\n      Copyright {{ 'OR.CA Design LLC' | link_to: routes.root_url }}\n      {{ 'now' | date: '%Y' }}. \n      <a href=\"/pages/terms-of-use\">Terms of Use</a> / \n      <a href=\"/pages/privacy-policy\">Privacy Policy</a> / \n      <a href=\"/pages/prop-65-warning\">Prop 65 Warning</a>\n    </small>",
         "newsletter_enable": false,
         "newsletter_heading": "Subscribe to our emails",
         "enable_follow_on_shop": false,
