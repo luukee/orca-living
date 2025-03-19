@@ -32,16 +32,11 @@
     endfor
     assign excluded_collections = excluded_collections | split: ','
     
-    render 'dump' with 'Excluded collections after processing:'
-    render 'dump' with excluded_collections
-    
     # Initialize empty string to store product handles
     assign related_products = ''
     
     # Create array of other collections (excluding current and excluded)
     assign other_collections = ''
-    render 'dump' with 'Current collection:'
-    render 'dump' with collection.handle
     
     for c in collections
       assign should_exclude = false
@@ -68,9 +63,6 @@
         assign other_collections = other_collections | append: c.handle | append: ','
       endunless
     endfor
-    
-    render 'dump' with 'Final other_collections:'
-    render 'dump' with other_collections
     
     assign other_collections = other_collections | split: ','
     
