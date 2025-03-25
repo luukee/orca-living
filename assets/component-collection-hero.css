@@ -22,6 +22,7 @@
 .collection-hero__text-wrapper {
   flex-basis: 100%;
 }
+
 @media only screen and (min-width: 750px) {
   .collection-hero {
     margin-top: var(--base-gutter--half);
@@ -67,6 +68,9 @@
     rgba(var(--color-shadow), var(--media-shadow-opacity));
 }
 
+.collection-hero--with-image .collection-hero__text-wrapper--no-media {
+  padding-bottom: 0;
+}
 @media only screen and (min-width: 750px) {
   .collection-hero--with-image .collection-hero__text-wrapper {
     padding: 4rem 2rem 0 0;
@@ -75,6 +79,9 @@
   .collection-hero__image-container {
     align-self: stretch;
     flex: 1 0 50%;
+  }
+  .collection-hero--with-image .collection-hero__text-wrapper--no-media {
+    padding-top: 0;
   }
 }
 /*# sourceMappingURL=component-collection-hero.css.map */

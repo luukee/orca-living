@@ -89,7 +89,7 @@
 
 <div class='collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient' {% if hide_media == true %}style='padding-top: 0;'{% endif %}>
   <div class='collection-hero__inner page-width'>
-    <div class='collection-hero__text-wrapper' {% if hide_media == true %}style='padding-top: 0;'{% endif %}>
+    <div class='collection-hero__text-wrapper{% if hide_media == true %} collection-hero__text-wrapper--no-media{% endif %}'>
       <h1 class='collection-hero__title'>
         <span class='visually-hidden'>{{ 'sections.collection_template.title' | t }}: </span>
         {%- if tag_title -%}
