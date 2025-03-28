@@ -1218,7 +1218,6 @@ class VariantSelects extends HTMLElement {
       !this.currentVariant ||
       (this.currentVariant && this.currentVariant.available)
     ) {
-      console.log(`OUT OF STOCK-> ${this.currentVariant}`);
       document.querySelector('.out-of-stock').style.display = 'none';
       return;
     }

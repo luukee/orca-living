@@ -39,7 +39,7 @@
       }
     });
     splide.Components.Slides.remove('*');
-
+    console.log(`NEW SLIDES: ${newSlides}`);
     if (newSlides.length == 0) {
       document.querySelector('.splide').style.display = "none"
       return
