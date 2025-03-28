@@ -1251,14 +1251,14 @@ class VariantSelects extends HTMLElement {
   updateCarousel() {
     let product_option = ''
     const options = this.currentVariant.options
-    console.log(`OPTIONS: ${options}`);
+    // console.log(`OPTIONS: ${options}`);
     for (let i = 0; i < options.length; i++) {
       product_option = product_option.concat(options[i].toLowerCase())
       if (i != options.length - 1) {
         product_option = product_option.concat('_')
       }
     }
-    console.log(`PRODUCT_OPTION: ${product_option}`);
+    // console.log(`PRODUCT_OPTION: ${product_option}`);
     document.querySelector('.splide').setAttribute('data-current',product_option);
     updateCarouselSlides();
   }
@@ -1524,18 +1524,11 @@ class VariantSelects extends HTMLElement {
         // Update quick ship text visibility based on variant metafield
         const quickShipTextElement = document.querySelector(`[data-quick-ship-text="${sectionId}"]`);
         const quickShipTextSourceElement = html.querySelector(`[data-quick-ship-text="${sectionId}"]`);
-        console.log('Quick Ship Elements:', {
-          current: quickShipTextElement,
-          source: quickShipTextSourceElement
-        });
         
         if (quickShipTextElement && quickShipTextSourceElement) {
           const sourceState = quickShipTextSourceElement.getAttribute('data-quick-ship-state');
           const hasQuickShip = sourceState.toLowerCase() === 'true';
-          console.log('Quick Ship State:', {
-            sourceState,
-            hasQuickShip
-          });
+
           quickShipTextElement.style.display = hasQuickShip ? 'block' : 'none';
           quickShipTextElement.setAttribute('data-quick-ship-state', sourceState);
         }
@@ -1574,7 +1567,6 @@ class VariantSelects extends HTMLElement {
       // destination.setAttribute('step',sourcePalletQty);
       // destination.setAttribute('value',sourcePalletQty);
       // destination.value = sourcePalletQty;
-      // console.log(sourcePalletQty);
       var event = new Event('change');
       destination.dispatchEvent(event);
     }
@@ -1890,7 +1882,7 @@ $('#tabs-select').on('change', function () {
   if (url) {
     // require a URL
     // window.location = url; // redirect
-    console.log($('a[href="' + url + '"]'));
+    // console.log($('a[href="' + url + '"]'));
     // $('a[href="' + url + '"]').trigger('click');
     document.querySelector(url).scrollIntoView({
       behavior: 'smooth',
@@ -1959,7 +1951,7 @@ $(document).on('touch click', '.acc-btn', function () {
   function mobScroll() {
     if (winWidth < 750) {
       setTimeout(function () {
-        console.log(openTabDist);
+        // console.log(openTabDist);
         $([document.documentElement, document.body]).animate(
           {
             scrollTop: openTabDist,
