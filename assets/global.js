@@ -1348,7 +1348,8 @@ class VariantSelects extends HTMLElement {
       const availableOptionInputsValue = selectedOptionOneVariants
         .filter(
           (variant) =>
-            variant.available &&
+            // For size options (index === 0), show all options regardless of availability
+            (index === 0 || variant.available) &&
             variant[`option${index}`] === previousOptionSelected
         )
         .map((variantOption) => variantOption[`option${index + 1}`]);
