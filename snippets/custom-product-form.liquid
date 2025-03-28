@@ -214,6 +214,7 @@ Product Details:
   .form__message {
     flex-direction: column;
     align-items: baseline;
+		border: none;
   }
 
   .form--success .form-status-list {
@@ -227,7 +228,7 @@ Product Details:
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('.customer__custom-form')
+    const form = document.querySelector('#custom_product_form')
     const inputs = form.querySelectorAll('.field__input')
 
     inputs.forEach((input) => {
@@ -244,7 +245,7 @@ Product Details:
     })
   })
   // Klaviyo form submission
-  document.querySelector('.customer__custom-form').addEventListener('submit', async function (e) {
+  document.querySelector('#custom_product_form').addEventListener('submit', async function (e) {
     // Don't prevent default - let Shopify form submit normally
 
     // Get form data for Klaviyo
