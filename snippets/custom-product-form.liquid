@@ -37,24 +37,6 @@ Product Details:
       {{ form.errors | default_errors }}
     </div>
   {%- endif -%}
-  {% comment %} Klaviyo form fields {% endcomment %}
-  {% comment %} Existing Klaviyo list ID {% endcomment %}
-  <input type='hidden' name='g' value='X9NHqL'>
-
-  {% comment %} Add custom properties for segmentation {% endcomment %}
-	<input type="hidden" name="$consent" value="email">
-  <input type='hidden' name='$fields[]' value='Source'>
-  <input type='hidden' name='Source' value='Product Inquiry'>
-  <input type='hidden' name='$fields[]' value='Product'>
-  <input type='hidden' name='Product' value='{{ product.title }}'>
-  <input type='hidden' name='$fields[]' value='Product Type'>
-  <input type='hidden' name='Product Type' value='{{ product.type }}'>
-  <input type='hidden' name='$fields[]' value='Collection'>
-  <input
-    type='hidden'
-    name='Collection'
-    value='{% for collection in product.collections %}{{ collection.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}'
-  >
 
   <input type='hidden' name='contact[body]' value='{{ email_body }}'>
 
@@ -233,9 +215,6 @@ Product Details:
     flex-direction: column;
     align-items: baseline;
   }
-  .form-status-list {
-    display: none;
-  }
 
   .form--success .form-status-list {
     display: block;
@@ -265,25 +244,43 @@ Product Details:
     })
   })
   // Klaviyo form submission
-  document.querySelector('#custom_product_form').addEventListener('submit', async function (e) {
-    e.preventDefault()
+  document.querySelector('.customer__custom-form').addEventListener('submit', async function (e) {
+    // Don't prevent default - let Shopify form submit normally
 
-    // Get form data
-    const formData = new FormData(this)
+    // Get form data for Klaviyo
+    const formData = new FormData()
 
+    // Add Klaviyo list ID
+    formData.append('g', 'X9NHqL')
+
+    // Add email and name from form
+    formData.append('email', this.querySelector('[name="contact[email]"]').value)
+    formData.append('$first_name', this.querySelector('[name="contact[FirstName]"]').value)
+    formData.append('$last_name', this.querySelector('[name="contact[LastName]"]').value)
+
+    // Add custom fields
+    formData.append('$consent', 'email')
+    formData.append('$fields[]', 'Source')
+    formData.append('Source', 'Product Inquiry')
+    formData.append('$fields[]', 'Product')
+    formData.append('Product', '{{ product.title }}')
+    formData.append('$fields[]', 'Product Type')
+    formData.append('Product Type', '{{ product.type }}')
+    formData.append('$fields[]', 'Collection')
+    formData.append(
+      'Collection',
+      '{% for collection in product.collections %}{{ collection.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}'
+    )
+
+    // Submit to Klaviyo
     try {
-      // Submit to Klaviyo
       await fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
         method: 'POST',
         body: formData
       })
-
-      // Hide form fields
-      document.querySelector('.custom-form__fields').style.display = 'none'
-
-      // Show success message (already handled by Shopify form)
+      console.log('Klaviyo submission successful')
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Klaviyo submission error:', error)
     }
   })
 </script>
