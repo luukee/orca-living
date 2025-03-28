@@ -61,6 +61,8 @@
         "show_vendor": false,
         "show_rating": false,
         "enable_quick_add": false,
+        "enable_quick_ship_card_badge": false,
+        "quick_ship_card_badge_text": "Quick Ship",
         "enable_filtering": false,
         "filter_type": "horizontal",
         "enable_sorting": false,
@@ -80,11 +82,15 @@
             "custom_liquid": "{% comment %}\n\nThe content in these sections is order dependent. \n\nPlease contact NINE15 for questions.\n\n{% endcomment %}"
           }
         },
+        "title_dzF3w6": {
+          "type": "title",
+          "settings": {}
+        },
         "d9b7944e-b2a7-481d-9a47-bca4d6393c24": {
           "type": "custom_liquid",
           "settings": {
             "title": "Title / Price",
-            "custom_liquid": "<div class=\"product__title-price\">\n\n  <h1 class=\"h4\">{{product.title}}</h1>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    </div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">/sqft.</span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"></span>\n    {% endif %}\n\n  </div>\n</div>"
+            "custom_liquid": "<div class=\"product__title-price\">\n\n  <h4>Price</h4>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    </div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">/sqft.</span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"></span>\n    {% endif %}\n\n  </div>\n</div>"
           }
         },
         "variant_picker": {
@@ -219,6 +225,7 @@
       },
       "block_order": [
         "d7916f60-0347-456e-9d3c-a15686ad4703",
+        "title_dzF3w6",
         "d9b7944e-b2a7-481d-9a47-bca4d6393c24",
         "variant_picker",
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133",

@@ -1787,10 +1787,10 @@ function VideoRatio() {
 
 function featuredFeedImage() {
   var items = document.querySelectorAll(
-      '#product-grid .card-wrapper, .blog-articles .card-wrapper'
+      '#product_grid .card-wrapper, .blog-articles .card-wrapper'
     ),
     firstItem = document.querySelector(
-      '#product-grid li:first-child .card-wrapper, .blog-articles > div:first-child .card-wrapper'
+      '#product_grid li .card-wrapper, .blog-articles > div:first-child .card-wrapper'
     ),
     titleLocation = document.querySelector('.hovered-item__title'),
     imageLocation = document.querySelector('.hovered-item__image');

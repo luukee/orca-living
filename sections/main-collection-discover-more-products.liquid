@@ -1,0 +1,245 @@
+{% comment %}
+  Section: Discover More Products
+
+  Displays related products from the current collection.
+  Shows a grid of product cards with customizable settings.
+
+  Settings:
+  - heading: Section heading text
+  - products_to_show: Number of products to display
+  - columns_desktop: Number of columns on desktop
+  - columns_mobile: Number of columns on mobile
+  - excluded_collections: Comma-separated list of collection handles to exclude
+{% endcomment %}
+
+<div class='page-width'>
+  {% if section.settings.heading != blank %}
+    <h2 class='discover-more-heading'>{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  {%- liquid
+    # Initialize settings with defaults
+    assign products_to_show = section.settings.products_to_show | default: 4
+    assign columns_desktop = section.settings.columns_desktop | default: 4
+    assign columns_mobile = section.settings.columns_mobile | default: 2
+
+    # Get excluded collections and properly handle whitespace
+    assign raw_excluded = section.settings.excluded_collections | split: ','
+    assign excluded_collections = ''
+    for excluded in raw_excluded
+      assign clean_handle = excluded | strip
+      assign excluded_collections = excluded_collections | append: clean_handle | append: ','
+    endfor
+    assign excluded_collections = excluded_collections | split: ','
+
+    # Initialize empty string to store product handles
+    assign related_products = ''
+
+    # Create array of other collections (excluding current and excluded)
+    assign other_collections = ''
+
+    for c in collections
+      assign should_exclude = false
+
+      if section.settings.show_only_current_collection
+        # If we're only showing current collection, exclude everything else
+        if c.handle != collection.handle
+          assign should_exclude = true
+        endif
+      else
+        # Normal exclusion logic
+        if section.settings.exclude_current_collection and c.handle == collection.handle
+          assign should_exclude = true
+        endif
+        for excluded in excluded_collections
+          if c.handle == excluded
+            assign should_exclude = true
+            break
+          endif
+        endfor
+      endif
+
+      unless should_exclude
+        assign other_collections = other_collections | append: c.handle | append: ','
+      endunless
+    endfor
+
+    assign other_collections = other_collections | split: ','
+
+    # Loop through collections
+    for collection_handle in other_collections
+      assign collection_item = collections[collection_handle]
+      # Get available products
+      assign collection_products = collection_item.products | where: 'available'
+
+      if collection_products.size > 0
+        # Get one random product using timestamp
+        assign random_index = 'now' | date: '%N' | modulo: collection_products.size
+        assign random_product = collection_products[random_index]
+
+        # Check if product belongs to any excluded collection
+        assign should_exclude_product = false
+        for excluded in excluded_collections
+          for product_collection in random_product.collections
+            if product_collection.handle == excluded
+              assign should_exclude_product = true
+              break
+            endif
+          endfor
+          if should_exclude_product
+            break
+          endif
+        endfor
+
+        unless should_exclude_product or related_products contains random_product.handle
+          assign related_products = related_products | append: random_product.handle | append: ','
+        endunless
+      endif
+
+      # Break if we have enough products
+      assign total_products = related_products | split: ',' | size
+      if total_products >= products_to_show
+        break
+      endif
+    endfor
+
+    # Convert comma-separated handles back to products
+    assign related_product_handles = related_products | split: ','
+  -%}
+
+  {% comment %}
+    <div style="display: none">
+      Debug:
+      Products to show: {{ products_to_show }}
+      Related products found: {{ related_product_handles.size }}
+      Current collection: {{ collection.handle }}
+      Available collections: {{ other_collections | join: ', ' }}
+    </div>
+  {% endcomment %}
+
+  {% if related_product_handles.size > 0 %}
+    <div class='discover-more-grid'>
+      {%- for handle in related_product_handles limit: products_to_show -%}
+        {% assign product = all_products[handle] %}
+        {% if product.available %}
+          <div class='discover-more-grid__item'>
+            {% render 'card-product',
+              card_product: product,
+              show_vendor: section.settings.show_vendor,
+              show_rating: section.settings.show_rating,
+              extend_height: true,
+              show_quick_add: false,
+              hide_overlay_link: false,
+              media_aspect_ratio: 'portrait'
+              use_primary_collection_url: true
+            %}
+          </div>
+        {% endif %}
+      {%- endfor -%}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Discover More Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover More"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show product vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_only_current_collection",
+      "label": "Show only from current collection",
+      "default": false,
+      "info": "When enabled, only products from the current collection will be shown"
+    },
+    {
+      "type": "checkbox",
+      "id": "exclude_current_collection",
+      "label": "Exclude current collection",
+      "default": true,
+      "info": "When enabled, products from the current collection will not appear in this section. Has no effect if 'Show only from current collection' is enabled."
+    },
+    {
+      "type": "text",
+      "id": "excluded_collections",
+      "label": "Excluded Collections",
+      "info": "Comma-separated list of collection handles to exclude"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discover More Products"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .discover-more-heading {
+    margin: 3rem 0 2rem;
+  }
+
+  .discover-more-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    padding-bottom: 36px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .discover-more-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  .discover-more-product-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+</style>

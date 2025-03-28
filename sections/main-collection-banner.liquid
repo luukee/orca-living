@@ -1,45 +1,144 @@
+{% assign featured_media_url = '' %}
+{% assign media_type = 'image' %}
+{% assign hide_media = false %}
+{% assign tag_description = false %}
+{% assign tag_title = false %}
+
+{% if current_tags.first %}
+  {% assign current_tag = current_tags.first %}
+  {% assign tag_media = collection.metafields.custom.prod_tags_feat_media.value %}
+{% endif %}
+
+{% if tag_media %}
+  {% for item in tag_media %}
+    {% if item.tag == current_tag %}
+      
+      {% if item.title != blank %}
+        {% assign featured_media_title = item.title %}
+        {% assign tag_title = true %}
+      {% endif %}
+
+      {% if item.description %}
+        {% assign featured_media_description = item.description %}
+        {% assign tag_description = true %}
+      {% endif %}
+      
+      {% if item.no_media == true %}
+        {% assign hide_media = true %}
+        {% break %}
+      {% endif %}
+
+      {% assign featured_media = item.media %}
+      {% if item.text %}
+        {% assign featured_media_text = item.text %}
+      {% endif %}
+
+      {% assign type_of_media = featured_media | split: 'shopify/' | last | split: '/' | first %}
+
+      {% case type_of_media %}
+        {% when 'Video' %}
+          {% assign media_type = 'video' %}
+          {% assign featured_media_url = featured_media %}
+        {% when 'MediaImage' %}
+          {% assign media_type = 'image' %}
+          {% assign featured_media_url = featured_media | image_url: width: 2000 %}
+      {% endcase %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} If no matching tag was found in the loop {% endcomment %}
+  {% if featured_media_url == '' and hide_media == false %}
+    {% if collection.metafields.custom.collection_video %}
+      {% assign featured_media_url = collection.metafields.custom.collection_video %}
+      {% assign media_type = 'video' %}
+    {% else %}
+      {% assign featured_media_url = collection.image | image_url: width: 2000 %}
+    {% endif %}
+  {% endif %}
+{% else %}
+  {% comment %} If no tag_media exists at all {% endcomment %}
+  {% if collection.metafields.custom.collection_video %}
+    {% assign featured_media_url = collection.metafields.custom.collection_video %}
+    {% assign media_type = 'video' %}
+  {% else %}
+    {% assign featured_media_url = collection.image | image_url: width: 2000 %}
+  {% endif %}
+{% endif %}
+
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
 {{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+{% assign collection_image_height = section.settings.collection_image_height %}
 
 {%- style -%}
   @media screen and (max-width: 749px) {
     .collection-hero--with-image .collection-hero__inner {
       padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
     }
+    .collection-hero__image-container {
+      height: {{ collection_image_height| divided_by: 3 }}rem;
+    }
+  }
+
+  @media only screen and (min-width: 750px) {
+    .collection-hero__image-container {
+      min-height: {{ collection_image_height }}rem;
+    }
   }
 {%- endstyle -%}
 
-<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
-  <div class="collection-hero__inner page-width">
-    <div class="collection-hero__text-wrapper">
-      <h1 class="collection-hero__title">
-        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
-        {{- collection.title | escape -}}
+<div class='collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient' {% if hide_media == true %}style='padding-top: 0;'{% endif %}>
+  <div class='collection-hero__inner page-width'>
+    <div class='collection-hero__text-wrapper{% if hide_media == true %} collection-hero__text-wrapper--no-media{% endif %}'>
+      <h1 class='collection-hero__title'>
+        <span class='visually-hidden'>{{ 'sections.collection_template.title' | t }}: </span>
+        {%- if tag_title -%}
+          {{- featured_media_title | escape -}}
+        {%- elsif current_tags.first -%}
+          {% if current_tags.first contains 'paver' or current_tags.first contains 'Samples' %}
+            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
+          {% else %}
+            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize | append: ' Paver' -}}
+          {% endif %}
+        {%- else -%}
+          {{- collection.title | escape -}}
+        {%- endif -%}
       </h1>
 
       {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+        {%- if tag_description -%}
+          <div class='collection-hero__description rte'>{{ featured_media_description }}</div>
+        {%- else -%}
+          <div class='collection-hero__description rte'>{{ collection.description }}</div>
+        {%- endif -%}
       {%- endif -%}
     </div>
 
-    {%- if section.settings.show_collection_image and collection.image -%}
-      <div class="collection-hero__image-container media gradient">
-        <img
-          srcset="
-            {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
-            {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}
-            {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
-            {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
-            {%- if collection.image.width >= 1070 -%}{{ collection.image | image_url: width: 1070 }} 1070w,{%- endif -%}
-            {%- if collection.image.width >= 1500 -%}{{ collection.image | image_url: width: 1500 }} 1500w,{%- endif -%}
-            {{ collection.image | image_url }} {{ collection.image.width }}w
-          "
-          src="{{ collection.image | image_url: width: 750 }}"
-          sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
-          alt=""
-          width="{{ collection.image.width }}"
-          height="{{ collection.image.height }}"
-        >
+    {%- if section.settings.show_collection_image and hide_media == false -%}
+      <div class='collection-hero__image-container media gradient'>
+        {% if media_type == 'video' %}
+          <video class='collection-hero__video' autoplay loop muted playsinline>
+            <source src='{{ featured_media_url | file_url }}' type='video/mp4'>
+          </video>
+        {% else %}
+          <img
+            srcset='
+              {%- if featured_media_url.image.width >= 535 -%}{{ featured_media_url | image_url: width: 535 }} 535w,{%- endif -%}
+              {%- if featured_media_url.image.width >= 750 -%}{{ featured_media_url | image_url: width: 750 }} 750w,{%- endif -%}
+              {%- if featured_media_url.image.width >= 1070 -%}{{ featured_media_url | image_url: width: 1070 }} 1070w,{%- endif -%}
+              {%- if featured_media_url.image.width >= 1500 -%}{{ featured_media_url | image_url: width: 1500 }} 1500w,{%- endif -%}
+              {{ featured_media_url.image | image_url }} {{ featured_media_url.image.width }}w
+            '
+            src='{{ featured_media_url.image | image_url: width: 2000 }}'
+            sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)'
+            alt='{{ featured_media_url.image.alt }}'
+            width='{{ featured_media_url.image.width }}'
+            height='{{ featured_media_url.image.height }}'
+          >
+        {% endif %}
+        {% if featured_media_text %}
+          <p class='overlay-text'>{{ featured_media_text }}</p>
+        {% endif %}
       </div>
     {%- endif -%}
   </div>
@@ -94,6 +193,15 @@
       ],
       "default": "background-1",
       "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "range",
+      "id": "collection_image_height",
+      "label": "Collection Image Height",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 75
     }
   ]
 }

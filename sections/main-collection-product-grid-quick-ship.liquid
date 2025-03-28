@@ -1,0 +1,386 @@
+<!-- sections/main-collection-product-grid-quick-ship -->
+
+{% liquid
+  assign on_filter_by_tag_page = false
+  if section.settings.collection != '' and section.settings.collection != blank
+    assign collection = collections[section.settings.collection]
+  endif
+  assign is_samples = false
+  assign single_variant_quick_add = blank
+  if request.path == '/collections/pavers/_Samples'
+    assign is_samples = true
+    assign collection = collections.pavers
+    assign single_variant_quick_add = 'sample'
+    ## check if filter_on_tag is not blank and the URL contains the filter_on_tag string
+  elsif section.settings.filter_on_tag != ' ' and request.path contains section.settings.filter_on_tag
+    assign on_filter_by_tag_page = true
+    ## check if filter_on_tag contains underscore
+    if section.settings.filter_on_tag contains '_'
+      ## if it does we need to remove/replace the underscore
+      assign selected_tag = section.settings.filter_on_tag
+      assign filter_by_this_tag = selected_tag | replace: '_', ''
+      ## otherwise assign filter_on_tag string to filter_by_this_tag variable
+    else
+      assign filter_by_this_tag = section.settings.filter_on_tag
+    endif
+    assign is_samples = true
+    assign single_variant_quick_add = 'sample'
+  endif
+%}
+
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.enable_quick_add -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src='{{ 'quick-add.js' | asset_url }}' defer='defer'></script>
+  <script src='{{ 'product-form.js' | asset_url }}' defer='defer'></script>
+{%- endif -%}
+
+<script src='{{ 'product-form.js' | asset_url }}' defer='defer'></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}
+    px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}
+    px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}
+      px;
+      padding-bottom: {{ section.settings.padding_bottom }}
+      px;
+    }
+  }
+{%- endstyle -%}
+
+{% comment %}
+  {% if is_samples %}
+    {{ 'collection-pavers.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+{% endcomment %}
+
+{% comment %} grid is on product page {% endcomment %}
+{% if product %}
+  <div class='section-{{ section.id }}-padding product-grid_product-quick-ship'>
+    <div class='{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}'>
+      {% unless is_samples %}
+        <div class='feed--view-type'>
+          <span>View: </span>
+          <a
+            href='#images'
+            data-type='images'
+            class='current'
+            >Images</a
+          >,
+          <a href='#list' data-type='list'>List</a>
+        </div>
+      {% endunless %}
+
+      <div class='product-grid-container' id='ProductGridContainer'>
+          <div class='collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}'>
+            <div class='loading-overlay gradient'></div>
+
+            <ul
+              id='product_grid'
+              data-id='{{ section.id }}'
+              class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop'
+            >
+              {% assign variants = product.variants %}
+              
+              {%- for variant in variants -%}
+                {%- if variant.metafields.custom.quick_ship == 'True' -%}
+                  {% liquid
+                    assign lazy_load = false
+                    if forloop.index > 2
+                      assign lazy_load = true
+                    endif
+                  %}
+                  <li class='grid__item'>
+                    {% render 'card-product',
+                      card_product: variant,
+                      product_title: variant.title,
+                      hide_overlay_link: is_samples,
+                      media_aspect_ratio: section.settings.image_ratio,
+                      show_secondary_image: section.settings.show_secondary_image,
+                      show_vendor: section.settings.show_vendor,
+                      show_rating: section.settings.show_rating,
+                      lazy_load: lazy_load,
+                      show_quick_add: section.settings.enable_quick_add,
+                      single_variant_quick_add: single_variant_quick_add,
+                      section_id: section.id
+                    %}
+                  </li>
+                {% endif %}
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+{% elsif collection %}
+  <div class='section-{{ section.id }}-padding product-grid_collection-quick-ship'>
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class='{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}'>
+        {% unless is_samples %}
+          <div class='feed--view-type'>
+            <span>View: </span>
+            <a
+              href='#images'
+              data-type='images'
+              class='current'
+              >Images</a
+            >,
+            <a href='#list' data-type='list'>List</a>
+          </div>
+        {% endunless %}
+
+        <div class='product-grid-container product-grid-container__collection' id='ProductGridContainer'>
+          {%- if collection.products.size == 0 -%}
+            <div
+              class='collection collection--empty page-width'
+              id='product_grid'
+              data-id='{{ section.id }}'
+            >
+              <div class='loading-overlay gradient'></div>
+              <div class='title-wrapper center'>
+                <h2 class='title title--primary'>
+                  {{ 'sections.collection_template.empty' | t -}}
+                  <br>
+                  {{
+                    'sections.collection_template.use_fewer_filters_html'
+                    | t: link: collection.url, class: 'underlined-link link'
+                  }}
+                </h2>
+              </div>
+            </div>
+          {%- else -%}
+            <div class='collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}'>
+              <div class='loading-overlay gradient'></div>
+
+              <ul
+                id='product_grid'
+                data-id='{{ section.id }}'
+                class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop'
+              >
+                {% assign index = 0 %}
+
+                {%- for product in collection.products -%}
+                  {% assign variants = product.variants %}
+                  
+                  {%- for variant in variants -%}
+                    {%- if variant.metafields.custom.quick_ship == 'True' -%}
+                      <li class='grid__item collection-product-grid_quick-ship__item'>
+                        {% render 'card-product',
+                          card_product: variant,
+                          product_title: variant.title,
+                          hide_overlay_link: is_samples,
+                          media_aspect_ratio: section.settings.image_ratio,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          show_vendor: section.settings.show_vendor,
+                          show_rating: section.settings.show_rating,
+                          lazy_load: lazy_load,
+                          show_quick_add: section.settings.enable_quick_add,
+                          single_variant_quick_add: single_variant_quick_add,
+                          section_id: section.id
+                        %}
+                      </li>
+                      {% assign index = index | plus: 1 %}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+              </ul>
+
+              {%- if paginate.pages > 1 -%}
+                {% render 'pagination', paginate: paginate, anchor: '' %}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endpaginate -%}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product grid (Quick ship)",
+  "class": "section collection-product-grid_quick-ship",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "default": 16,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-collection-product-grid.settings.columns_desktop.label"
+    },
+    {
+      "type": "header",
+      "content": "Filter by variant"
+    },
+    {
+      "type": "text",
+      "id": "filter_on_tag",
+      "label": "Filter on tag name",
+      "info": "Variant filter will only apply to this tag of products."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.enable_quick_buy.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
+        },
+        {
+          "value": "vertical",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
+        },
+        {
+          "value": "drawer",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
+        }
+      ],
+      "default": "horizontal",
+      "label": "t:sections.main-collection-product-grid.settings.filter_type.label",
+      "info": "t:sections.main-collection-product-grid.settings.filter_type.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header_mobile.content"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.main-collection-product-grid.settings.columns_mobile.label",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "liquid",
+      "id": "collection",
+      "label": "Collection Override"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product grid (Quick ship)"
+    }
+  ]
+}
+{% endschema %}

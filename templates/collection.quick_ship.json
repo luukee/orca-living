@@ -20,7 +20,7 @@
       }
     },
     "product-grid": {
-      "type": "main-collection-product-grid",
+      "type": "main-collection-product-grid-quick-ship",
       "custom_css": [
         ".product-grid-container {padding-bottom: 1em;}"
       ],
