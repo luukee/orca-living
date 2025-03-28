@@ -1808,7 +1808,14 @@ details[open] > .share-button__fallback {
   text-align: left;
   padding: 1.5rem;
   margin: var(--inputs-border-width);
+  background-color: rgb(var(--color-background));
   transition: box-shadow var(--duration-short) ease;
+}
+.field input:is(:-webkit-autofill, :autofill) {
+  padding-left: 1rem;
+}
+.field input:is(:-webkit-autofill, :autofill) ~ label {
+  padding: 0.2rem 0 0 1rem;
 }
 .field__label,
 .customer .field label {
@@ -1836,7 +1843,6 @@ details[open] > .share-button__fallback {
 .customer .field input:-webkit-autofill ~ label {
   font-size: 1.4rem;
   top: calc(var(--inputs-border-width) - 0.35rem);
-  left: calc(var(--inputs-border-width) + 2rem);
   letter-spacing: 0.04rem;
 }
 .customer .field label:has(+ input:not(:-moz-placeholder-shown)) {
@@ -1857,7 +1863,7 @@ details[open] > .share-button__fallback {
 .customer .field input:focus,
 .customer .field input:not(:placeholder-shown),
 .customer .field input:-webkit-autofill {
-  padding: 2.2rem 1.5rem 0.8rem 2rem;
+  padding: 2.2rem 1.5rem 0.8rem 0;
   margin: var(--inputs-border-width);
 }
 .field__input::-webkit-search-cancel-button,
