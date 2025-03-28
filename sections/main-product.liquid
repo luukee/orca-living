@@ -303,6 +303,8 @@
               {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}
             {%- when 'buy_buttons_gift_card' -%}
               {%- render 'buy-buttons_gift-card', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}
+            {%- when 'custom_product_form' -%}
+              {%- render 'custom-product-form', block: block, product: product, form: form, section: section -%}
             {%- when 'rating' -%}
               {%- if product.metafields.reviews.rating.value != blank -%}
                 {% liquid
@@ -1927,6 +1929,25 @@
           "default": "Heading",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "custom_product_form",
+      "name": "Custom Product Form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "form_title",
+          "label": "Form Title",
+          "default": "Request Information"
+        },
+        {
+          "type": "text",
+          "id": "submit_button_text",
+          "label": "Submit Button Text",
+          "default": "Submit"
         }
       ]
     }

@@ -1,0 +1,192 @@
+{% comment %}
+  Renders custom product form with required fields.
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - form: {Object} the product form object.
+  - section: {Object} section to which this snippet belongs.
+
+  Usage:
+  {% render 'custom-product-form', product: product, block: block, form: form, section: section %}
+{% endcomment %}
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- assign formatted_price = product.price | money -%}
+
+{% capture email_body %}
+Product Inquiry
+
+Product Details:
+- Name: {{ product.title }}
+- Price: {{ formatted_price }}
+- SKU: {{ product.selected_or_first_available_variant.sku }}
+- URL: {{ shop.secure_url }}{{ product.url }}
+{% endcapture %}
+
+{%- form 'contact' -%}
+  {%- if form.posted_successfully? -%}
+    <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
+      <h2>{% render 'icon-success' %} Thank you for your inquiry about {{ product.title }}</h2>
+      <p>We'll get back to you as soon as possible.</p>
+    </div>
+  {%- endif -%}
+
+  {%- if form.errors -%}
+    <div class="form__message" tabindex="-1" autofocus>
+      <h2>{% render 'icon-error' %} There was a problem submitting your inquiry</h2>
+      {{ form.errors | default_errors }}
+    </div>
+  {%- endif -%}
+
+  <input type="hidden" name="contact[body]" value="{{ email_body }}">
+
+  <div class='custom-form__fields'>
+    <div class='field-row'>
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "FirstName" %} invalid{% endif %}'
+          id='FirstName-{{ section.id }}'
+          name='contact[FirstName]'
+          type='text'
+          required
+          placeholder="First Name"
+          value="{{ form.FirstName }}"
+        >
+        <label class='field__label' for='FirstName-{{ section.id }}'> First Name* </label>
+      </div>
+
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "LastName" %} invalid{% endif %}'
+          id='LastName-{{ section.id }}'
+          name='contact[LastName]'
+          type='text'
+          required
+          placeholder="Last Name"
+          value="{{ form.LastName }}"
+        >
+        <label class='field__label' for='LastName-{{ section.id }}'> Last Name* </label>
+      </div>
+    </div>
+
+    <div class='field-row'>
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "email" %} invalid{% endif %}'
+          id='Email-{{ section.id }}'
+          name='contact[email]'
+          type='email'
+          required
+          placeholder="Email"
+          value="{{ form.email }}"
+          autocomplete="email"
+        >
+        <label class='field__label' for='Email-{{ section.id }}'> Email* </label>
+      </div>
+
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "phone" %} invalid{% endif %}'
+          id='Phone-{{ section.id }}'
+          name='contact[phone]'
+          type='tel'
+          required
+          autocomplete='tel'
+          placeholder="Phone number"
+          value="{{ form.phone }}"
+        >
+        <label class='field__label' for='Phone-{{ section.id }}'> Phone number* </label>
+      </div>
+    </div>
+
+    <div class='field'>
+      <label class='field__label visually-hidden' for='Role-{{ section.id }}'> Individual/Business* </label>
+      <div class='select'>
+        <select
+          class='select__select{% if form.errors contains "Role" %} invalid{% endif %}'
+          id='Role-{{ section.id }}'
+          name='contact[Role]'
+          required
+        >
+          <option value=''>- Individual/Business</option>
+          <option value='Landscape Designer'{% if form.Role == 'Landscape Designer' %} selected{% endif %}>Landscape Designer</option>
+          <option value='Contractor'{% if form.Role == 'Contractor' %} selected{% endif %}>Contractor</option>
+          <option value='Architect'{% if form.Role == 'Architect' %} selected{% endif %}>Architect</option>
+          <option value='Interior Designer'{% if form.Role == 'Interior Designer' %} selected{% endif %}>Interior Designer</option>
+          <option value='Individual'{% if form.Role == 'Individual' %} selected{% endif %}>Individual</option>
+          <option value='Other'{% if form.Role == 'Other' %} selected{% endif %}>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class='field'>
+      <textarea
+        class='text-area field__input{% if form.errors contains "Message" %} invalid{% endif %}'
+        id='Message-{{ section.id }}'
+        name='contact[Message]'
+        rows='4'
+        required
+        placeholder="Message"
+      >{{ form.Message }}</textarea>
+      <label class='field__label' for='Message-{{ section.id }}'> Message* </label>
+    </div>
+
+    <div class='product-form__buttons'>
+      <button
+        type='submit'
+        class='button product-form__submit'
+      >
+        Submit <span class='icon-arrow'>→</span>
+      </button>
+    </div>
+  </div>
+{%- endform -%}
+
+<style>
+  .custom-form__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .field-row {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .icon-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .product-form__submit:hover .icon-arrow {
+    transform: translateX(5px);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.customer__custom-form')
+    const inputs = form.querySelectorAll('.field__input')
+
+    inputs.forEach((input) => {
+      input.addEventListener('invalid', function (e) {
+        e.preventDefault()
+        this.classList.add('invalid')
+      })
+
+      input.addEventListener('input', function () {
+        if (this.validity.valid) {
+          this.classList.remove('invalid')
+        }
+      })
+    })
+  })
+</script>
