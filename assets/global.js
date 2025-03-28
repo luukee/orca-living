@@ -1251,12 +1251,14 @@ class VariantSelects extends HTMLElement {
   updateCarousel() {
     let product_option = ''
     const options = this.currentVariant.options
+    console.log(`OPTIONS: ${options}`);
     for (let i = 0; i < options.length; i++) {
       product_option = product_option.concat(options[i].toLowerCase())
       if (i != options.length - 1) {
         product_option = product_option.concat('_')
       }
     }
+    console.log(`PRODUCT_OPTION: ${product_option}`);
     document.querySelector('.splide').setAttribute('data-current',product_option);
     updateCarouselSlides();
   }
