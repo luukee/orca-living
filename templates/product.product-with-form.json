@@ -145,13 +145,6 @@
             "custom_liquid": "{% if product.type == 'Paver' %}\n{% if product.title contains 'Recycled' %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 180sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n{% else %}\n<p style=\"text-align:left\" class=\"hidden\" data-paver-qty-message>\nFor any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" class=\"link\">hello@orcaliving.com</a>\n.</p>\n  {% endif %}\n{% endif %}"
           }
         },
-        "custom_product_form_FkxpNY": {
-          "type": "custom_product_form",
-          "settings": {
-            "form_title": "Request Information",
-            "submit_button_text": "Submit"
-          }
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "disabled": true,
@@ -222,6 +215,13 @@
             "page": ""
           }
         },
+        "custom_product_form_FkxpNY": {
+          "type": "custom_product_form",
+          "settings": {
+            "form_title": "Request Information",
+            "submit_button_text": "Submit"
+          }
+        },
         "0fcbd653-2d74-498a-bc58-b25c07a3fb92": {
           "type": "custom_liquid",
           "disabled": true,
@@ -240,7 +240,6 @@
         "990496b9-45f5-4d28-8fac-28cde7981284",
         "37c16ae2-8059-4ef5-bc28-e6e8934d1b25",
         "280b22a8-63c8-4d97-be23-ea1752259cd1",
-        "custom_product_form_FkxpNY",
         "buy_buttons",
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72",
         "351e9119-7dce-482d-92e8-1e70ca0a9bf9",
@@ -251,6 +250,7 @@
         "632b5178-719f-4860-942b-84d82a7ad73d",
         "77103b87-1a07-4800-8ebb-ac2a40e39caf",
         "09c49608-3846-4f9f-9a8a-68d415bf1e4f",
+        "custom_product_form_FkxpNY",
         "0fcbd653-2d74-498a-bc58-b25c07a3fb92"
       ],
       "settings": {
