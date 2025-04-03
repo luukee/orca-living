@@ -1603,5 +1603,27 @@
         "info": "t:settings_schema.cart.settings.cart_drawer.collection.info"
       }
     ]
+  },
+  {
+    "name": "API Keys",
+    "settings": [
+      {
+        "type": "text",
+        "id": "klaviyo_private_key",
+        "label": "Klaviyo Private API Key",
+        "info": "Used for product inquiry form"
+      }
+    ]
+  },
+  {
+    "name": "Klaviyo Settings",
+    "settings": [
+        {
+            "type": "text",
+            "id": "klaviyo_list_id",
+            "label": "Klaviyo Product Inquiry List ID",
+            "info": "The ID of the list to add form submissions to"
+        }
+    ]
   }
 ]
