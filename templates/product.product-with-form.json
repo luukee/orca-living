@@ -147,7 +147,6 @@
         },
         "buy_buttons": {
           "type": "buy_buttons",
-          "disabled": true,
           "settings": {
             "show_dynamic_checkout": false,
             "quick_ship_text": "In Stock | Ships within 1-3 weeks"
