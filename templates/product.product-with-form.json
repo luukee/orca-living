@@ -101,7 +101,9 @@
         },
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133": {
           "type": "calculator_quantity",
-          "settings": {}
+          "settings": {
+            "calculator_quantity_hide": true
+          }
         },
         "990496b9-45f5-4d28-8fac-28cde7981284": {
           "type": "quantity_selector",
@@ -149,7 +151,8 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false,
-            "quick_ship_text": "In Stock | Ships within 1-3 weeks"
+            "quick_ship_text": "In Stock | Ships within 1-3 weeks",
+            "buy_buttons_hide": true
           }
         },
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72": {
