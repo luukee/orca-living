@@ -6,12 +6,13 @@
   - product_form_id: {String} product form id.
   - section_id: {String} id of section to which this snippet belongs.
   - show_pickup_availability: {Boolean} for the pickup availability. If true the pickup availability is rendered, false - not rendered (optional).
+  - buy_buttons_hide: {Boolean} for the buy buttons. If true the buy buttons are hidden, false - not hidden (optional).
 
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
  {% unless product.gift_card? %}
-<div {{ block.shopify_attributes }} class="buy-buttons_wrap">
+<div {{ block.shopify_attributes }} class="buy-buttons_wrap {% if buy_buttons_hide %}hidden{% endif %}" {% if buy_buttons_hide %}aria-hidden="true"{% endif %}>
   {%- if product != blank -%}
     {%- liquid
       assign gift_card_recipient_feature_active = false

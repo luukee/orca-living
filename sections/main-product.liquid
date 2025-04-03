@@ -270,7 +270,7 @@
                 </div>
               {% endif %}
             {%- when 'calculator_quantity' -%}
-              {% render 'product-quantity-calculator', product_form_id: product_form_id, external: external %}
+              {% render 'product-quantity-calculator', product_form_id: product_form_id, external: external, calculator_quantity_hide: block.settings.calculator_quantity_hide %}
             {%- when 'quantity_selector' -%}
               {% render 'product-quantity', product_form_id: product_form_id, external: external %}
             {%- when 'popup' -%}
@@ -300,7 +300,7 @@
             {%- when 'variant_picker' -%}
               {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
             {%- when 'buy_buttons' -%}
-              {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}
+              {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link, buy_buttons_hide: block.settings.buy_buttons_hide -%}
             {%- when 'buy_buttons_gift_card' -%}
               {%- render 'buy-buttons_gift-card', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}
             {%- when 'custom_product_form' -%}
@@ -700,7 +700,15 @@
     {
       "type": "calculator_quantity",
       "name": "Calculator Module",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "calculator_quantity_hide",
+          "label": "Hide Calculator Quantity",
+          "default": false
+          }
+      ]
     },
     {
       "type": "variant_picker",
@@ -743,6 +751,12 @@
           "placeholder": "Quick Ship | Ships within 2-3 weeks",
           "label": "Quick ship text",
           "info": "Any variants with Quick Ship set to true will display this below their Add To Cart buttons."
+        },
+        {
+          "type": "checkbox",
+          "id": "buy_buttons_hide",
+          "label": "Hide Buy Buttons",
+          "default": false
         }
       ]
     },

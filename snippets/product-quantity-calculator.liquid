@@ -1,5 +1,21 @@
 <!-- snippets/product-quantity-calculator -->
+{% comment %}
+  Renders product quantity calculator with quantity selector.
+  Accepts:
+  - product: {Object} product object.
+  - product_form_id: {String} product form id.
+  - external: {Boolean} whether the product is external (optional).
+  - calculator_quantity_hide: {Boolean} whether to hide the calculator quantity (optional).
+  - is_pavers: {Boolean} whether the product is a paver (optional).
+  - is_recycled: {Boolean} whether the product is recycled (optional).
 
+  Usage:
+  {% render 'product-quantity-calculator', 
+    product_form_id: product_form_id, 
+    external: external, 
+    calculator_quantity_hide: block.settings.calculator_quantity_hide 
+  %}
+{% endcomment %}
 {% liquid 
 
   assign is_pavers      = false
@@ -19,7 +35,7 @@
   endif
 %}
 
-<div class="product__calc-qty {% unless is_pavers %}show-qty-buttons{% endunless %}">
+<div class="product__calc-qty {% unless is_pavers %}show-qty-buttons{% endunless %} {% if calculator_quantity_hide %}hidden{% endif %}" {% if calculator_quantity_hide %}aria-hidden="true"{% endif %}>
   
   <div class="product__calc-title">
     Quantity:
