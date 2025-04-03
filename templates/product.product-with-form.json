@@ -88,6 +88,7 @@
         },
         "d9b7944e-b2a7-481d-9a47-bca4d6393c24": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
             "title": "Title / Price",
             "custom_liquid": "<div class=\"product__title-price\">\n\n  <h4>Price</h4>\n\n  <div class=\"product__price h4\">\n    <div class=\"no-js-hidden price-{{ section.id }}\" id=\"price-{{ section.id }}\" role=\"status\">\n      {%- render 'price', product: product, show_sale: true, use_variant: true -%}\n    </div>\n\n    {% if product.type == 'Paver' %}\n      <span class=\"qtyLabel\">/sqft.</span>\n    {% else %}\n      <span class=\"qtyLabel {{product.type}}\"></span>\n    {% endif %}\n\n  </div>\n</div>"
@@ -101,6 +102,7 @@
         },
         "e93bcd80-c980-4bb2-8a3c-ae65bdce3133": {
           "type": "calculator_quantity",
+          "disabled": true,
           "settings": {}
         },
         "990496b9-45f5-4d28-8fac-28cde7981284": {
