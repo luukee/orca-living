@@ -270,8 +270,7 @@
         formFields.style.display = 'none';
         formMessage.innerHTML = `
             <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
-                <p>Thank you for your inquiry about {{ product.title }}</p>
-                <p>We'll get back to you as soon as possible.</p>
+                <p>{{ modal_form_success_message }}</p>
             </div>
         `;
         formMessage.style.display = 'block';

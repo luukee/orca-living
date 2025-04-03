@@ -7,6 +7,7 @@
   - section_id: {String} id of section to which this snippet belongs.
   - show_pickup_availability: {Boolean} for the pickup availability. If true the pickup availability is rendered, false - not rendered (optional).
   - buy_buttons_hide: {Boolean} for the buy buttons. If true the buy buttons are hidden, false - not hidden (optional).
+  - buy_buttons_modal_form: {Boolean} for the buy buttons modal form. If true the buy buttons modal form is rendered, false - not rendered (optional).
 
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
@@ -83,7 +84,14 @@
               assign quantity_rule_soldout = true
             endif
           -%}
-          {% if external %}
+          {% if buy_buttons_modal_form %}
+            {% comment %} This button is used to open the #buy_buttons_modal_form modal form {% endcomment %}
+            <button
+              id="ProductSubmitButton-{{ section_id }}"
+              type="button"
+              class="product-form__submit button button--full-width button--primary"
+            >{{ block.settings.modal_form_button_text }}</button>
+          {% elsif external %}
             <a href="{{ external_link }}" class="product-form__submit button button--full-width button--primary" target="_blank">Shop</a>
           {% else %}
             <button
@@ -266,4 +274,142 @@
     <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 </div>
+
+  {% comment %} Render the buy buttons modal form if the buy_buttons_modal_form is true {% endcomment %}
+  {% comment %} custom-product-form.liquid is rendered in the modal {% endcomment %}
+  {% if buy_buttons_modal_form %}
+    {% comment %}
+      Modal structure with proper styling
+    {% endcomment %}
+    <div id="product-inquiry-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="modal-form-container">
+          <p>{{ block.settings.modal_form_title }}</p>
+          {%- render 'custom-product-form', 
+            block: block, 
+            product: product, 
+            section: section,
+            modal_form_success_message: modal_form_success_message
+          -%}
+        </div>
+      </div>
+    </div>
+    
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.4);
+      }
+
+      .modal-content {
+        background-color: rgb(var(--color-background));
+        margin: 5% auto;
+        padding: 20px 40px;
+        width: 80%;
+        max-width: 600px;
+        position: relative;
+      }
+
+      .close-modal {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close-modal:hover {
+        color: #000;
+      }
+
+      .loading-overlay {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 1;
+      }
+
+      .loading-overlay__spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .form__message {
+        flex-direction: column;
+        align-items: baseline;
+        border: none;
+      }
+
+      .form--success .form-status-list {
+        display: block;
+      }
+
+      .form--success .custom-form__fields {
+        display: none;
+      }
+    </style>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('product-inquiry-modal');
+        const btn = document.querySelector('.product-form__submit');
+        const span = document.getElementsByClassName('close-modal')[0];
+
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          modal.style.display = 'block';
+        });
+
+        span.addEventListener('click', function() {
+          modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+          if (e.target == modal) {
+            modal.style.display = 'none';
+          }
+        });
+
+        // Listen for form submission success to close modal
+        const form = document.querySelector('#custom_product_form');
+        const formMessage = form.querySelector('.form__message');
+        
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+              if (formMessage.style.display === 'block') {
+                // Close modal after 3 seconds on success
+                setTimeout(() => {
+                  modal.style.display = 'none';
+                  // Reset form and show fields again
+                  form.reset();
+                  form.querySelector('.custom-form__fields').style.display = 'block';
+                  formMessage.style.display = 'none';
+                }, 3000);
+              }
+            }
+          });
+        });
+
+        observer.observe(formMessage, {
+          attributes: true
+        });
+      });
+    </script>
+  {% endif %}
+
 {% endunless %}

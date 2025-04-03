@@ -62,7 +62,7 @@
 .field input {
   padding-left: 0;
   border-bottom: 0.1rem solid rgb(var(--color-base-text));
-  font-size: 1.6rem;
+  font-size: var(--font-size);
 	background-color: rgb(var(--color-background));
 }
 .select select:focus,

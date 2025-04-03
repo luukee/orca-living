@@ -300,7 +300,20 @@
             {%- when 'variant_picker' -%}
               {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
             {%- when 'buy_buttons' -%}
-              {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link, buy_buttons_hide: block.settings.buy_buttons_hide -%}
+              {%- render 'buy-buttons', 
+                block: block, 
+                product: product, 
+                product_form_id: product_form_id, 
+                section_id: section.id, 
+                show_pickup_availability: true, 
+                external: external, 
+                external_link: external_link, 
+                buy_buttons_hide: block.settings.buy_buttons_hide, 
+                buy_buttons_modal_form: block.settings.buy_buttons_modal_form,
+                modal_form_button_text: block.settings.modal_form_button_text,
+                modal_form_title: block.settings.modal_form_title,
+                modal_form_success_message: block.settings.modal_form_success_message
+                 -%}
             {%- when 'buy_buttons_gift_card' -%}
               {%- render 'buy-buttons_gift-card', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}
             {%- when 'custom_product_form' -%}
@@ -757,6 +770,31 @@
           "id": "buy_buttons_hide",
           "label": "Hide Buy Buttons",
           "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "buy_buttons_modal_form",
+          "label": "Show Buy Buttons Modal Form",
+          "info": "If true, the buy buttons will be replaced with a modal form that allows the customer to inquire about the product.",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "modal_form_button_text",
+          "label": "Modal Form Button Text",
+          "default": "Inquire"
+        },
+        {
+          "type": "text",
+          "id": "modal_form_title",
+          "label": "Modal Form Title",
+          "default": "Inquire about this product"
+        },
+        {
+          "type": "text",
+          "id": "modal_form_success_message",
+          "label": "Modal Form Success Message",
+          "default": "Thank you for your inquiry! We'll get back to you soon."
         }
       ]
     },

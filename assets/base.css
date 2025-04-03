@@ -698,7 +698,7 @@ blockquote {
 .select__select {
   font-size: 1.3rem;
   line-height: calc(1 + 0.5 / var(--font-body-scale));
-  letter-spacing: 0.04rem;
+  letter-spacing: normal;
 }
 .color-foreground {
   color: rgb(var(--color-foreground));
@@ -1819,7 +1819,7 @@ details[open] > .share-button__fallback {
 }
 .field__label,
 .customer .field label {
-  font-size: 1.6rem;
+  font-size: var(--font-size);
   left: calc(var(--inputs-border-width) + 2rem);
   top: calc(1rem + var(--inputs-border-width));
   margin-bottom: 0;
@@ -1829,7 +1829,7 @@ details[open] > .share-button__fallback {
     top var(--duration-short) ease,
     font-size var(--duration-short) ease;
   color: rgba(var(--color-foreground), 1);
-  letter-spacing: 0.1rem;
+  letter-spacing: normal;
   line-height: 1.5;
 }
 .field__input:focus ~ .field__label,
