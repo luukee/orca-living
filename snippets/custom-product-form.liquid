@@ -11,34 +11,8 @@
 {% endcomment %}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 
-{%- assign formatted_price = product.price | money -%}
-
-{% capture email_body %}
-Product Inquiry
-
-Product Details:
-- Name: {{ product.title }}
-- Price: {{ formatted_price }}
-- SKU: {{ product.selected_or_first_available_variant.sku }}
-- URL: {{ shop.secure_url }}{{ product.url }}
-{% endcapture %}
-
-{%- form 'contact', return_to: back, id: 'custom_product_form', class: 'custom-product-form' -%}
-  {%- if form.posted_successfully? -%}
-    <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
-      <p>Thank you for your inquiry about {{ product.title }}</p>
-      <p>We'll get back to you as soon as possible.</p>
-    </div>
-  {%- endif -%}
-
-  {%- if form.errors -%}
-    <div class='form__message' tabindex='-1' autofocus>
-      <h2>{% render 'icon-error' %} There was a problem submitting your inquiry</h2>
-      {{ form.errors | default_errors }}
-    </div>
-  {%- endif -%}
-
-  <input type='hidden' name='contact[body]' value='{{ email_body }}'>
+<form id='custom_product_form' class='custom-product-form'>
+  <div class='form__message' style='display: none;'></div>
 
   <div class='custom-form__fields'>
     <div class='field-row'>
@@ -46,11 +20,10 @@ Product Details:
         <input
           class='field__input{% if form.errors contains "FirstName" %} invalid{% endif %}'
           id='FirstName-{{ section.id }}'
-          name='contact[FirstName]'
+          name='FirstName'
           type='text'
           required
           placeholder='First Name'
-          value='{{ form.FirstName }}'
         >
         <label class='field__label' for='FirstName-{{ section.id }}'> First Name* </label>
       </div>
@@ -59,11 +32,10 @@ Product Details:
         <input
           class='field__input{% if form.errors contains "LastName" %} invalid{% endif %}'
           id='LastName-{{ section.id }}'
-          name='contact[LastName]'
+          name='LastName'
           type='text'
           required
           placeholder='Last Name'
-          value='{{ form.LastName }}'
         >
         <label class='field__label' for='LastName-{{ section.id }}'> Last Name* </label>
       </div>
@@ -74,12 +46,10 @@ Product Details:
         <input
           class='field__input{% if form.errors contains "email" %} invalid{% endif %}'
           id='Email-{{ section.id }}'
-          name='contact[email]'
+          name='Email'
           type='email'
           required
           placeholder='Email'
-          value='{{ form.email }}'
-          autocomplete='email'
         >
         <label class='field__label' for='Email-{{ section.id }}'> Email* </label>
       </div>
@@ -88,12 +58,11 @@ Product Details:
         <input
           class='field__input{% if form.errors contains "phone" %} invalid{% endif %}'
           id='Phone-{{ section.id }}'
-          name='contact[phone]'
+          name='Phone'
           type='tel'
           required
           autocomplete='tel'
           placeholder='Phone number'
-          value='{{ form.phone }}'
         >
         <label class='field__label' for='Phone-{{ section.id }}'> Phone number* </label>
       </div>
@@ -105,7 +74,7 @@ Product Details:
         <select
           class='select__select{% if form.errors contains "Role" %} invalid{% endif %}'
           id='Role-{{ section.id }}'
-          name='contact[Role]'
+          name='Role'
           required
         >
           <option value=''>- Individual/Business</option>
@@ -165,11 +134,11 @@ Product Details:
       <textarea
         class='text-area field__input{% if form.errors contains "Message" %} invalid{% endif %}'
         id='Message-{{ section.id }}'
-        name='contact[Message]'
+        name='Message'
         rows='4'
         required
         placeholder='Message'
-      >{{ form.Message }}</textarea>
+      ></textarea>
       <label class='field__label' for='Message-{{ section.id }}'> Message* </label>
     </div>
 
@@ -182,7 +151,7 @@ Product Details:
       </button>
     </div>
   </div>
-{%- endform -%}
+</form>
 
 <style>
   .custom-form__fields {
@@ -246,71 +215,78 @@ Product Details:
   })
   // Klaviyo form submission
   document.querySelector('#custom_product_form').addEventListener('submit', async function (e) {
-    const email = this.querySelector('[name="contact[email]"]').value;
-    const firstName = this.querySelector('[name="contact[FirstName]"]').value;
-    const lastName = this.querySelector('[name="contact[LastName]"]').value;
+    e.preventDefault();
 
-    // First create/update the profile
-    const profileData = {
-        data: {
-            type: "profile",
-            attributes: {
-                email: email,
-                first_name: firstName,
-                last_name: lastName,
-                properties: {
-                    Source: 'Product Inquiry Form',
-                    Product: '{{ product.title }}',
-                    Product_Type: '{{ product.type }}',
-                    Collections: '{% for collection in product.collections %}{{ collection.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}',
-                    Inquiry_Date: new Date().toISOString()
-                }
-            }
-        }
-    };
+    const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const formFields = form.querySelector('.custom-form__fields');
+    const formMessage = form.querySelector('.form__message');
 
     try {
-        // Create/update profile
-        const profileResponse = await fetch('https://a.klaviyo.com/api/profiles', {
-            method: 'POST',
-            headers: {
-                'revision': '2025-01-15',
-                'Content-Type': 'application/json',
-                'Authorization': 'Klaviyo-API-Key {{ settings.klaviyo_private_key }}'
-            },
-            body: JSON.stringify(profileData)
-        });
+        submitButton.disabled = true;
         
-        const profileResponseData = await profileResponse.json();
-        console.log('Klaviyo profile response:', profileResponseData);
+        const email = this.querySelector('[name="Email"]').value;
+        const firstName = this.querySelector('[name="FirstName"]').value;
+        const lastName = this.querySelector('[name="LastName"]').value;
+        const phone = this.querySelector('[name="Phone"]').value;
+        const role = this.querySelector('[name="Role"]').value;
+        const message = this.querySelector('[name="Message"]').value;
 
-        // Add to list
-        const listId = '{{ settings.klaviyo_list_id }}'; // You'll need to add this setting
-        const subscriptionData = {
-            data: {
-                type: "subscription",
-                attributes: {
-                    profile_id: profileResponseData.data.id,
-                    custom_source: "Product Inquiry Form"
-                }
-            }
-        };
+        // Wait for Klaviyo to be ready
+        if (typeof _learnq === 'undefined') {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
 
-        const listResponse = await fetch(`https://a.klaviyo.com/api/lists/${listId}/subscriptions/`, {
-            method: 'POST',
-            headers: {
-                'revision': '2025-01-15',
-                'Content-Type': 'application/json',
-                'Authorization': 'Klaviyo-API-Key {{ settings.klaviyo_private_key }}'
-            },
-            body: JSON.stringify(subscriptionData)
-        });
+        // Identify the profile
+        _learnq.push(['identify', {
+            '$email': email,
+            '$first_name': firstName,
+            '$last_name': lastName,
+            '$phone_number': phone,
+            'Role': role,
+            'Message': message,
+            'Source': 'Product Inquiry Form',
+            'Product': '{{ product.title }}',
+            'Product_Type': '{{ product.type }}',
+            'Collections': '{% for collection in product.collections %}{{ collection.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}',
+            'Inquiry_Date': new Date().toISOString()
+        }]);
 
-        const listResponseData = await listResponse.json();
-        console.log('Klaviyo list subscription response:', listResponseData);
+        // List subscription
+        if ('{{ settings.klaviyo_list_id }}') {
+            _learnq.push(['track', 'Product Inquiry Form Submission', {
+                '$email': email,
+                '$first_name': firstName,
+                '$last_name': lastName,
+                '$phone_number': phone,
+                'Role': role,
+                'Message': message,
+                'Product': '{{ product.title }}',
+                'Product_Type': '{{ product.type }}'
+            }]);
+        }
+
+        // Show success message
+        formFields.style.display = 'none';
+        formMessage.innerHTML = `
+            <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
+                <p>Thank you for your inquiry about {{ product.title }}</p>
+                <p>We'll get back to you as soon as possible.</p>
+            </div>
+        `;
+        formMessage.style.display = 'block';
         
     } catch (error) {
         console.error('Klaviyo submission error:', error);
+        formMessage.innerHTML = `
+            <div class='form__message' tabindex='-1' autofocus>
+                <h2>{% render 'icon-error' %} There was a problem submitting your inquiry</h2>
+                <p>Please try again later.</p>
+            </div>
+        `;
+        formMessage.style.display = 'block';
+    } finally {
+        submitButton.disabled = false;
     }
   })
 </script>
