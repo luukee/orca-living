@@ -152,7 +152,11 @@
           "settings": {
             "show_dynamic_checkout": false,
             "quick_ship_text": "In Stock | Ships within 1-3 weeks",
-            "buy_buttons_hide": true
+            "buy_buttons_hide": false,
+            "buy_buttons_modal_form": true,
+            "modal_form_button_text": "Inquire",
+            "modal_form_title": "Inquire about this product",
+            "modal_form_success_message": "Thank you for your inquiry about {{ product.title }}. We'll get back to you soon."
           }
         },
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72": {
@@ -219,6 +223,7 @@
         },
         "custom_product_form_FkxpNY": {
           "type": "custom_product_form",
+          "disabled": true,
           "settings": {
             "form_title": "Request Information",
             "submit_button_text": "Submit"
