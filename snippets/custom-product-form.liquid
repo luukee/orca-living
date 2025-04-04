@@ -130,7 +130,7 @@
         </select>
       </div>
     </div>
-    
+
     {% comment %} Square footage field {% endcomment %}
     <div class='field'>
       <input
@@ -143,9 +143,8 @@
       <label class='field__label' for='Square Footage-{{ section.id }}'>Approximate Square Footage</label>
     </div>
 
-    
     {% comment %}
-    Material interest field
+      Material interest field
     {% endcomment %}
     <div class='field field--checkbox'>
       <label class='field__label field__label--checkbox'>Material Interest (select as many as you'd like)</label>
@@ -182,7 +181,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class='field'>
       <textarea
         class='text-area field__input{% if form.errors contains "Message" %} invalid{% endif %}'
@@ -285,86 +284,95 @@
   })
   // Klaviyo form submission
   document.querySelector('#custom_product_form').addEventListener('submit', async function (e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const form = this;
-    const submitButton = form.querySelector('button[type="submit"]');
-    const formFields = form.querySelector('.custom-form__fields');
-    const formMessage = form.querySelector('.form__message');
+    const form = this
+    const submitButton = form.querySelector('button[type="submit"]')
+    const formFields = form.querySelector('.custom-form__fields')
+    const formMessage = form.querySelector('.form__message')
 
     try {
-        submitButton.disabled = true;
-        
-        const email = this.querySelector('[name="Email"]').value;
-        const firstName = this.querySelector('[name="FirstName"]').value;
-        const lastName = this.querySelector('[name="LastName"]').value;
-        const phone = this.querySelector('[name="Phone"]').value;
-        const role = this.querySelector('[name="Role"]').value;
-        const squareFootage = this.querySelector('[name="Square Footage"]').value;
-        // Get all selected material interests
-        const materialInterestCheckboxes = this.querySelectorAll('[name="Material Interest"]:checked');
-        const materialInterests = Array.from(materialInterestCheckboxes).map(checkbox => checkbox.value).join(', ');
-        const message = this.querySelector('[name="Message"]').value;
+      submitButton.disabled = true
 
-        // Wait for Klaviyo to be ready
-        if (typeof _learnq === 'undefined') {
-            await new Promise(resolve => setTimeout(resolve, 1000));
+      const email = this.querySelector('[name="Email"]').value
+      const firstName = this.querySelector('[name="FirstName"]').value
+      const lastName = this.querySelector('[name="LastName"]').value
+      const phone = this.querySelector('[name="Phone"]').value
+      const role = this.querySelector('[name="Role"]').value
+      const squareFootage = this.querySelector('[name="Square Footage"]').value
+      // Get all selected material interests
+      const materialInterestCheckboxes = this.querySelectorAll('[name="Material Interest"]:checked')
+      const materialInterests = Array.from(materialInterestCheckboxes)
+        .map((checkbox) => checkbox.value)
+        .join(', ')
+      const message = this.querySelector('[name="Message"]').value
+
+      // Wait for Klaviyo to be ready
+      if (typeof _learnq === 'undefined') {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      }
+
+      // Identify the profile
+      _learnq.push([
+        'identify',
+        {
+          $email: email,
+          $first_name: firstName,
+          $last_name: lastName,
+          $phone_number: phone,
+          Role: role,
+          'Square Footage': squareFootage,
+          'Material Interest': materialInterests,
+          Message: message,
+          Source: 'Product Inquiry Form',
+          Product: '{{ product.title }}',
+          Product_Type: '{{ product.type }}',
+          Collections:
+            '{% for collection in product.collections %}{{ collection.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}',
+          Inquiry_Date: new Date().toISOString()
         }
+      ])
 
-        // Identify the profile
-        _learnq.push(['identify', {
-            '$email': email,
-            '$first_name': firstName,
-            '$last_name': lastName,
-            '$phone_number': phone,
-            'Role': role,
+      // List subscription
+      if ('{{ settings.klaviyo_list_id }}') {
+        _learnq.push([
+          'track',
+          'Product Inquiry Form Submission',
+          {
+            $email: email,
+            $first_name: firstName,
+            $last_name: lastName,
+            $phone_number: phone,
+            Role: role,
+            Message: message,
             'Square Footage': squareFootage,
             'Material Interest': materialInterests,
-            'Message': message,
-            'Source': 'Product Inquiry Form',
-            'Product': '{{ product.title }}',
-            'Product_Type': '{{ product.type }}',
-            'Collections': '{% for collection in product.collections %}{{ collection.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}',
-            'Inquiry_Date': new Date().toISOString()
-        }]);
+            Product: '{{ product.title }}',
+            Product_Type: '{{ product.type }}'
+          }
+        ])
+      }
 
-        // List subscription
-        if ('{{ settings.klaviyo_list_id }}') {
-            _learnq.push(['track', 'Product Inquiry Form Submission', {
-                '$email': email,
-                '$first_name': firstName,
-                '$last_name': lastName,
-                '$phone_number': phone,
-                'Role': role,
-                'Message': message,
-                'Square Footage': squareFootage,
-                'Material Interest': materialInterests,
-                'Product': '{{ product.title }}',
-                'Product_Type': '{{ product.type }}'
-            }]);
-        }
-
-        // Show success message
-        formFields.style.display = 'none';
-        formMessage.innerHTML = `
+      // Show success message
+      formFields.style.display = 'none'
+      formMessage.innerHTML = `
             <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
                 <p>Thank you for your inquiry about {{ product.title }}</p>
                 <p>We'll get back to you as soon as possible.</p>
             </div>
-        `;
-        formMessage.style.display = 'block';
-        
+        `
+      formMessage.style.display = 'block'
     } catch (error) {
-        console.error('Klaviyo submission error:', error);
-        formMessage.innerHTML = `
+      console.error('Klaviyo submission error:', error)
+      formMessage.innerHTML = `
             <div class='form__message' tabindex='-1' autofocus>
                 <h2>{% render 'icon-error' %} There was a problem submitting your inquiry</h2>
                 <p>Please try again later.</p>
             </div>
-        `;
-        formMessage.style.display = 'block';
+        `
+      formMessage.style.display = 'block'
     } finally {
-        submitButton.disabled = false;
+      submitButton.disabled = false
     }
   })
 </script>
