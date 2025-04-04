@@ -15,6 +15,7 @@
   <div class='form__message' style='display: none;'></div>
 
   <div class='custom-form__fields'>
+    {% comment %} First Name, Last Name {% endcomment %}
     <div class='field-row'>
       <div class='field'>
         <input
@@ -41,6 +42,7 @@
       </div>
     </div>
 
+    {% comment %} Email, Phone {% endcomment %}
     <div class='field-row'>
       <div class='field'>
         <input
@@ -67,7 +69,7 @@
         <label class='field__label' for='Phone-{{ section.id }}'> Phone number* </label>
       </div>
     </div>
-
+    
     {% comment %} Role field {% endcomment %}
     <div class='field'>
       <label class='field__label visually-hidden' for='Role-{{ section.id }}'> Individual/Business* </label>
@@ -131,6 +133,68 @@
       </div>
     </div>
 
+    {% comment %} Address - Street Address, City {% endcomment %}
+    <div class='field-row'>
+      {% comment %} Street Address {% endcomment %}
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "Street Address" %} invalid{% endif %}'
+          id='Street Address-{{ section.id }}'
+          name='Street Address'
+          type='text'
+          required
+          placeholder='Street Address'
+        >
+        <label class='field__label' for='Street Address-{{ section.id }}'> Street Address* </label>
+      </div>
+
+      {% comment %} City {% endcomment %}
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "LastName" %} invalid{% endif %}'
+          id='City-{{ section.id }}'
+          name='City'
+          type='text'
+          required
+          placeholder='City'
+        >
+        <label class='field__label' for='City-{{ section.id }}'> City* </label>
+      </div>
+    </div>
+
+    {% comment %} Address - State, Zip {% endcomment %}
+    <div class='field-row'>
+      {% comment %} State {% endcomment %}
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "State" %} invalid{% endif %}'
+          id='State-{{ section.id }}'
+          name='State'
+          type='text'
+          required
+          placeholder='State'
+        >
+        <label class='field__label' for='State-{{ section.id }}'> State* </label>
+      </div>
+
+      {% comment %} Zip {% endcomment %}
+      <div class='field'>
+        <input
+          class='field__input{% if form.errors contains "Zip" %} invalid{% endif %}'
+          id='Zip-{{ section.id }}'
+          name='Zip'
+          type='text'
+          required
+          placeholder='Zip'
+        >
+        <label class='field__label' for='Zip-{{ section.id }}'> Zip* </label>
+      </div>
+      <div class='field field--note'>
+        <p>Please note: we ship Rock only within the Southern California region at this time.</p>
+      </div>
+    </div>
+      
+    
     {% comment %} Square footage field {% endcomment %}
     <div class='field'>
       <input
@@ -143,9 +207,7 @@
       <label class='field__label' for='Square Footage-{{ section.id }}'>Approximate Square Footage</label>
     </div>
 
-    {% comment %}
-      Material interest field
-    {% endcomment %}
+    {% comment %} Material interest field {% endcomment %}
     <div class='field field--checkbox'>
       <label class='field__label field__label--checkbox'>Material Interest (select as many as you'd like)</label>
       <div class='checkbox-group'>
@@ -179,6 +241,16 @@
           >
           <label class='checkbox__label' for='Boulder-{{ section.id }}'>Boulder</label>
         </div>
+        <div class='checkbox-item'>
+          <input
+            type='checkbox'
+            id='Pavers-{{ section.id }}'
+            name='Material Interest'
+            value='Pavers'
+            class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
+          >
+          <label class='checkbox__label' for='Pavers-{{ section.id }}'>Pavers</label>
+        </div>
       </div>
     </div>
 
@@ -206,62 +278,80 @@
 </form>
 
 <style>
-  .custom-form__fields {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .field-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-  }
-
-  @media screen and (max-width: 749px) {
-    .field-row {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
+    /* Make the form scrollable on mobile */
+    .custom-product-form {
+      padding-bottom: 1rem;
     }
-  }
-  .checkbox-group {
-    display: flex;
-    gap: 1rem;
-    padding: 2.2rem 1.5rem 0.8rem 0;
-    border-bottom: 0.1rem solid rgb(var(--color-base-text));
-  }
-  .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .checkbox__input {
-    width: auto;
-    margin: 0;
-  }
-  .checkbox__label {
-    margin: 0;
-  }
-  .icon-arrow {
-    transition: transform 0.2s ease;
-  }
+  
+    .custom-form__fields {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-bottom: 1rem;
+    }
 
-  .product-form__submit:hover .icon-arrow {
-    transform: translateX(5px);
-  }
-  .form__message {
-    flex-direction: column;
-    align-items: baseline;
-    border: none;
-  }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .field-row:has(.field--note) {
+      gap: 1rem;
+    }
 
-  .form--success .form-status-list {
-    display: block;
-  }
+    @media screen and (max-width: 749px) {
+      .field-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .checkbox-group {
+        flex-direction: column;
+      }
+    }
+    .field--note {
+      grid-column: 1 / -1;
+    }
+    .field--note p {
+      margin: 0;
+    }
+    .checkbox-group {
+      display: flex;
+      gap: 1rem;
+      padding: 2.2rem 1.5rem 0.8rem 0;
+      border-bottom: 0.1rem solid rgb(var(--color-base-text));
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .checkbox__input {
+      width: auto;
+      margin: 0;
+    }
+    .checkbox__label {
+      margin: 0;
+    }
+    .icon-arrow {
+      transition: transform 0.2s ease;
+    }
 
-  .form--success .custom-form__fields {
-    display: none;
-  }
+    .product-form__submit:hover .icon-arrow {
+      transform: translateX(5px);
+    }
+    .form__message {
+      flex-direction: column;
+      align-items: baseline;
+      border: none;
+    }
+
+    .form--success .form-status-list {
+      display: block;
+    }
+
+    .form--success .custom-form__fields {
+      display: none;
+    }
 </style>
 
 <script>
@@ -299,6 +389,10 @@
       const lastName = this.querySelector('[name="LastName"]').value
       const phone = this.querySelector('[name="Phone"]').value
       const role = this.querySelector('[name="Role"]').value
+      const streetAddress = this.querySelector('[name="Street Address"]').value
+      const city = this.querySelector('[name="City"]').value
+      const state = this.querySelector('[name="State"]').value
+      const zip = this.querySelector('[name="Zip"]').value
       const squareFootage = this.querySelector('[name="Square Footage"]').value
       // Get all selected material interests
       const materialInterestCheckboxes = this.querySelectorAll('[name="Material Interest"]:checked')
@@ -321,6 +415,10 @@
           $last_name: lastName,
           $phone_number: phone,
           Role: role,
+          $address1: streetAddress,
+          $city: city,
+          $state: state,
+          $zip: zip,
           'Square Footage': squareFootage,
           'Material Interest': materialInterests,
           Message: message,
@@ -344,11 +442,17 @@
             $last_name: lastName,
             $phone_number: phone,
             Role: role,
-            Message: message,
+            $address1: streetAddress,
+            $city: city,
+            $state: state,
+            $zip: zip,
             'Square Footage': squareFootage,
             'Material Interest': materialInterests,
+            Message: message,
+            Source: 'Product Inquiry Form',
             Product: '{{ product.title }}',
-            Product_Type: '{{ product.type }}'
+            Product_Type: '{{ product.type }}',
+            
           }
         ])
       }
