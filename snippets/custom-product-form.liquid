@@ -301,7 +301,9 @@
         const phone = this.querySelector('[name="Phone"]').value;
         const role = this.querySelector('[name="Role"]').value;
         const squareFootage = this.querySelector('[name="Square Footage"]').value;
-        const materialInterest = this.querySelector('[name="Material Interest"]').value;
+        // Get all selected material interests
+        const materialInterestCheckboxes = this.querySelectorAll('[name="Material Interest"]:checked');
+        const materialInterests = Array.from(materialInterestCheckboxes).map(checkbox => checkbox.value).join(', ');
         const message = this.querySelector('[name="Message"]').value;
 
         // Wait for Klaviyo to be ready
