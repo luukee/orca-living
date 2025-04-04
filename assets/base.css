@@ -1789,6 +1789,10 @@ details[open] > .share-button__fallback {
   display: flex;
   transition: box-shadow var(--duration-short) ease;
 }
+.field--checkbox {
+  flex-direction: column;
+  gap: 0.5rem;
+}
 .customer .field {
   display: flex;
   background: transparent !important;
@@ -1831,6 +1835,9 @@ details[open] > .share-button__fallback {
   color: rgba(var(--color-foreground), 1);
   letter-spacing: normal;
   line-height: 1.5;
+}
+.field__label--checkbox {
+  position: relative;
 }
 .field__input:focus ~ .field__label,
 .field__input:not(:placeholder-shown) ~ .field__label,

@@ -68,6 +68,7 @@
       </div>
     </div>
 
+    {% comment %} Role field {% endcomment %}
     <div class='field'>
       <label class='field__label visually-hidden' for='Role-{{ section.id }}'> Individual/Business* </label>
       <div class='select'>
@@ -129,7 +130,59 @@
         </select>
       </div>
     </div>
+    
+    {% comment %} Square footage field {% endcomment %}
+    <div class='field'>
+      <input
+        class='field__input{% if form.errors contains "Square Footage" %} invalid{% endif %}'
+        id='Square Footage-{{ section.id }}'
+        name='Square Footage'
+        type='number'
+        placeholder='Square Footage'
+      >
+      <label class='field__label' for='Square Footage-{{ section.id }}'> Square Footage </label>
+    </div>
 
+    
+    {% comment %}
+    Material interest field
+    {% endcomment %}
+    <div class='field field--checkbox'>
+      <label class='field__label field__label--checkbox'>Material Interest (select as many as you'd like)</label>
+      <div class='checkbox-group'>
+        <div class='checkbox-item'>
+          <input
+            type='checkbox'
+            id='PathFines-{{ section.id }}'
+            name='Material Interest'
+            value='Path Fines'
+            class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
+          >
+          <label class='checkbox__label' for='PathFines-{{ section.id }}'>Path Fines</label>
+        </div>
+        <div class='checkbox-item'>
+          <input
+            type='checkbox'
+            id='Gravel-{{ section.id }}'
+            name='Material Interest'
+            value='Gravel'
+            class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
+          >
+          <label class='checkbox__label' for='Gravel-{{ section.id }}'>Gravel</label>
+        </div>
+        <div class='checkbox-item'>
+          <input
+            type='checkbox'
+            id='Boulder-{{ section.id }}'
+            name='Material Interest'
+            value='Boulder'
+            class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
+          >
+          <label class='checkbox__label' for='Boulder-{{ section.id }}'>Boulder</label>
+        </div>
+      </div>
+    </div>
+    
     <div class='field'>
       <textarea
         class='text-area field__input{% if form.errors contains "Message" %} invalid{% endif %}'
@@ -172,7 +225,24 @@
       gap: 1.5rem;
     }
   }
-
+  .checkbox-group {
+    display: flex;
+    gap: 1rem;
+    padding: 2.2rem 1.5rem 0.8rem 0;
+    border-bottom: 0.1rem solid rgb(var(--color-base-text));
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .checkbox__input {
+    width: auto;
+    margin: 0;
+  }
+  .checkbox__label {
+    margin: 0;
+  }
   .icon-arrow {
     transition: transform 0.2s ease;
   }
@@ -230,6 +300,8 @@
         const lastName = this.querySelector('[name="LastName"]').value;
         const phone = this.querySelector('[name="Phone"]').value;
         const role = this.querySelector('[name="Role"]').value;
+        const squareFootage = this.querySelector('[name="Square Footage"]').value;
+        const materialInterest = this.querySelector('[name="Material Interest"]').value;
         const message = this.querySelector('[name="Message"]').value;
 
         // Wait for Klaviyo to be ready
@@ -244,6 +316,8 @@
             '$last_name': lastName,
             '$phone_number': phone,
             'Role': role,
+            'Square Footage': squareFootage,
+            'Material Interest': materialInterest,
             'Message': message,
             'Source': 'Product Inquiry Form',
             'Product': '{{ product.title }}',
@@ -261,6 +335,8 @@
                 '$phone_number': phone,
                 'Role': role,
                 'Message': message,
+                'Square Footage': squareFootage,
+                'Material Interest': materialInterest,
                 'Product': '{{ product.title }}',
                 'Product_Type': '{{ product.type }}'
             }]);
@@ -270,7 +346,8 @@
         formFields.style.display = 'none';
         formMessage.innerHTML = `
             <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
-                <p>{{ modal_form_success_message }}</p>
+                <p>Thank you for your inquiry about {{ product.title }}</p>
+                <p>We'll get back to you as soon as possible.</p>
             </div>
         `;
         formMessage.style.display = 'block';
