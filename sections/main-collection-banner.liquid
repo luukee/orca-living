@@ -1,3 +1,13 @@
+{% comment %}
+  This section initializes variables and assigns default values for handling media display in the collection banner.
+  - `featured_media_url`: Stores the URL of the featured media, initially set to an empty string.
+  - `media_type`: Indicates the type of media ('image' by default).
+  - `hide_media`: A flag to determine if media should be hidden, default is `false`.
+  - `tag_description`: A flag to check if a tag description is available, default is `false`.
+  - `tag_title`: A flag to check if a tag title is available, default is `false`.
+  If there are any tags, the first tag is assigned to `current_tag`, and `tag_media` is retrieved from the collection's metafields.
+{% endcomment %}
+
 {% assign featured_media_url = '' %}
 {% assign media_type = 'image' %}
 {% assign hide_media = false %}
@@ -92,14 +102,18 @@
     <div class='collection-hero__text-wrapper{% if hide_media == true %} collection-hero__text-wrapper--no-media{% endif %}'>
       <h1 class='collection-hero__title'>
         <span class='visually-hidden'>{{ 'sections.collection_template.title' | t }}: </span>
+        {% render 'dump' with current_tags %}
         {%- if tag_title -%}
           {{- featured_media_title | escape -}}
-        {%- elsif current_tags.first -%}
+        {%- elsif collection.handle == 'pavers' -%}
           {% if current_tags.first contains 'paver' or current_tags.first contains 'Samples' %}
             {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
           {% else %}
             {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize | append: ' Paver' -}}
           {% endif %}
+        {%- elsif current_tags.first -%}
+          {% comment %} just the tag name {% endcomment %}
+          {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
         {%- else -%}
           {{- collection.title | escape -}}
         {%- endif -%}
