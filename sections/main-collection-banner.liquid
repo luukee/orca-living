@@ -76,6 +76,16 @@
   {% endif %}
 {% endif %}
 
+<!--
+- featured_media_url: {{ featured_media_url }}
+- media_type: {{ media_type }}
+- hide_media: {{ hide_media }}
+- tag_description: {{ tag_description }}
+- tag_title: {{ tag_title }}
+- current_tag: {{ current_tag }}
+- tag_media: {% for item in tag_media %}{{ item.tag }}, {% endfor %}
+-->
+
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
 {{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
 {% assign collection_image_height = section.settings.collection_image_height %}
@@ -102,15 +112,8 @@
     <div class='collection-hero__text-wrapper{% if hide_media == true %} collection-hero__text-wrapper--no-media{% endif %}'>
       <h1 class='collection-hero__title'>
         <span class='visually-hidden'>{{ 'sections.collection_template.title' | t }}: </span>
-        {% render 'dump' with current_tags %}
         {%- if tag_title -%}
           {{- featured_media_title | escape -}}
-        {%- elsif collection.handle == 'pavers' -%}
-          {% if current_tags.first contains 'paver' or current_tags.first contains 'Samples' %}
-            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
-          {% else %}
-            {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize | append: ' Paver' -}}
-          {% endif %}
         {%- elsif current_tags.first -%}
           {% comment %} just the tag name {% endcomment %}
           {{- current_tags.first | remove: '_' | replace: '-', ' ' | capitalize -}}
