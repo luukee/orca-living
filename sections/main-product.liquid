@@ -300,6 +300,13 @@
             {%- when 'variant_picker' -%}
               {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
             {%- when 'buy_buttons' -%}
+              
+              {% comment %} Custom per-product button and modal settings {% endcomment %}
+              {% assign button_text = product.metafields.product_form.button_text | default: block.settings.modal_form_button_text %}
+              {% assign button_destination = product.metafields.product_form.button_destination %}
+              {% assign modal_form_title = product.metafields.product_form.modal_title | default: block.settings.modal_form_title %}
+              {% assign modal_form_success_message = product.metafields.product_form.modal_success_message | default: block.settings.modal_form_success_message %}
+              
               {%- render 'buy-buttons', 
                 block: block, 
                 product: product, 
@@ -310,9 +317,10 @@
                 external_link: external_link, 
                 buy_buttons_hide: block.settings.buy_buttons_hide, 
                 buy_buttons_modal_form: block.settings.buy_buttons_modal_form,
-                modal_form_button_text: block.settings.modal_form_button_text,
-                modal_form_title: block.settings.modal_form_title,
-                modal_form_success_message: block.settings.modal_form_success_message
+                modal_form_button_text: button_text,
+                modal_form_button_destination: button_destination,
+                modal_form_title: modal_form_title,
+                modal_form_success_message: modal_form_success_message
                  -%}
             {%- when 'buy_buttons_gift_card' -%}
               {%- render 'buy-buttons_gift-card', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, external: external, external_link: external_link -%}

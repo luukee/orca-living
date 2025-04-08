@@ -5,7 +5,7 @@
   - block: {Object} passing the block information.
   - form: {Object} the product form object.
   - section: {Object} section to which this snippet belongs.
-
+  - modal_form_success_message: {String} the success message to display.
   Usage:
   {% render 'custom-product-form', product: product, block: block, form: form, section: section %}
 {% endcomment %}
@@ -463,8 +463,7 @@
       formFields.style.display = 'none'
       formMessage.innerHTML = `
             <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
-                <p>Thank you for your inquiry about {{ product.title }}</p>
-                <p>We'll get back to you as soon as possible.</p>
+                <p>{{ modal_form_success_message }}</p>
             </div>
         `
       formMessage.style.display = 'block'

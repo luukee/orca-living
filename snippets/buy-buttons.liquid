@@ -8,7 +8,10 @@
   - show_pickup_availability: {Boolean} for the pickup availability. If true the pickup availability is rendered, false - not rendered (optional).
   - buy_buttons_hide: {Boolean} for the buy buttons. If true the buy buttons are hidden, false - not hidden (optional).
   - buy_buttons_modal_form: {Boolean} for the buy buttons modal form. If true the buy buttons modal form is rendered, false - not rendered (optional).
-
+  - modal_form_button_text: {String} for the button text. If true the button text is rendered, false - not rendered (optional).
+  - modal_form_button_destination: {String} for the button destination. If true the button destination is rendered, false - not rendered (optional).
+  - modal_form_title: {String} for the modal form title. If true the modal form title is rendered, false - not rendered (optional).
+  - modal_form_success_message: {String} for the modal form success message. If true the modal form success message is rendered, false - not rendered (optional).
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
@@ -97,13 +100,19 @@
             -%}
             {% if buy_buttons_modal_form %}
               {% comment %} This button is used to open the #buy_buttons_modal_form modal form {% endcomment %}
-              <button
-                id='ProductSubmitButton-{{ section_id }}'
-                type='button'
-                class='product-form__submit button button--full-width button--primary'
-              >
-                {{ block.settings.modal_form_button_text }}
-              </button>
+              {% if modal_form_button_destination %}
+                <a href="{{ modal_form_button_destination }}" class='product-form__url button button--full-width button--primary'>
+                  {{ modal_form_button_text }}
+                </a>
+              {% else %}
+                <button
+                  id='ProductSubmitButton-{{ section_id }}'
+                  type='button'
+                  class='product-form__submit button button--full-width button--primary'
+                >
+                  {{ modal_form_button_text }}
+                </button>
+              {% endif %}
             {% elsif external %}
               <a
                 href='{{ external_link }}'
@@ -306,7 +315,7 @@
       <div class='modal-content'>
         <div class='modal-header'>
           <span class='close-modal'>&times;</span>
-          <p>{{ block.settings.modal_form_title }}</p>
+          <p>{{ modal_form_title }}</p>
         </div>
         <div class='modal-form-container'>
           {%- render 'custom-product-form',

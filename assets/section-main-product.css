@@ -276,7 +276,8 @@ fieldset.product-form__input .form__label {
 	max-width: 25rem
 }
 
-.product-form__submit {
+.product-form__submit,
+.product-form__url {
 	margin-bottom: 1rem
 }
 
