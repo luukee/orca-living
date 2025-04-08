@@ -241,7 +241,12 @@
           </div>
         {%- endform -%}
       </product-form>
-      {% render 'native-sold-out', product: product %}
+      <!--
+      waitlist? {{ product.metafields.custom.waitlist_opt_out }}
+      -->
+      {% unless product.metafields.custom.waitlist_opt_out %}
+        {% render 'native-sold-out', product: product %}
+      {% endunless %}
     {%- else -%}
       <div class='product-form'>
         <div class='product-form__buttons form'>
