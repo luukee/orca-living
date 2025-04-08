@@ -12,268 +12,284 @@
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
- {% unless product.gift_card? %}
-<div {{ block.shopify_attributes }} class="buy-buttons_wrap {% if buy_buttons_hide %}hidden{% endif %}" {% if buy_buttons_hide %}aria-hidden="true"{% endif %}>
-  {%- if product != blank -%}
-    {%- liquid
-      assign gift_card_recipient_feature_active = false
-      if block.settings.show_gift_card_recipient and product.gift_card?
-        assign gift_card_recipient_feature_active = true
-      endif
+{% unless product.gift_card? %}
+  <div
+    {{ block.shopify_attributes }}
+    class='buy-buttons_wrap {% if buy_buttons_hide %}hidden{% endif %}'
+    {% if buy_buttons_hide %}
+      aria-hidden='true'
+    {% endif %}
+  >
+    {%- if product != blank -%}
+      {%- liquid
+        assign gift_card_recipient_feature_active = false
+        if block.settings.show_gift_card_recipient and product.gift_card?
+          assign gift_card_recipient_feature_active = true
+        endif
 
-      assign show_dynamic_checkout = false
-      if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
-        assign show_dynamic_checkout = true
-      endif
-      
-      assign product_is_sample = false
-      assign product_price_max = ''
-      ## if is sample variant 
-      ## get the product max price and
-      ## set this price as the add to cart button's price
-      ## see 'price-item price-item--regular' class element below
-      if product.selected_or_first_available_variant.option1 contains 'Sample'
-        assign product_is_sample = true
-        assign product_price_max = product.price_max | money
-      endif
-    -%}
+        assign show_dynamic_checkout = false
+        if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
+          assign show_dynamic_checkout = true
+        endif
 
-    <product-form class="product-form {% if product.gift_card? %}product-form__gift-card{% endif %}" data-hide-errors="{{ gift_card_recipient_feature_active }}">
-      <div class="product-form__error-message-wrapper" role="alert" hidden>
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          class="icon icon-error"
-          viewBox="0 0 13 13"
-        >
-          <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-          <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-          <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-          <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
-        </svg>
-        <span class="product-form__error-message"></span>
-      </div>
-
-      {%- form 'product',
-        product,
-        id: product_form_id,
-        class: 'form',
-        novalidate: 'novalidate',
-        data-type: 'add-to-cart-form'
+        assign product_is_sample = false
+        assign product_price_max = ''
+        ## if is sample variant
+        ## get the product max price and
+        ## set this price as the add to cart button's price
+        ## see 'price-item price-item--regular' class element below
+        if product.selected_or_first_available_variant.option1 contains 'Sample'
+          assign product_is_sample = true
+          assign product_price_max = product.price_max | money
+        endif
       -%}
-        <input
-          type="hidden"
-          name="id"
-          value="{{ product.selected_or_first_available_variant.id }}"
-          disabled
-          class="product-variant-id"
-        >
-        {% comment %} Gift card moved to snippets/buy-buttons_gift-card.liquid {% endcomment %}
-        {% comment %} {%- if gift_card_recipient_feature_active -%}
-          {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
-        {%- endif -%} {% endcomment %}
 
-        <div class="product-form__buttons">
-          {% comment %} Nine15 - UPDATE THIS IN GLOBAL.JS FILE IN THE toggleOutOfStockForm function if you decide to change something here {% endcomment %}
-          {%- liquid
-            assign check_against_inventory = true
-            if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
-              assign check_against_inventory = false
-            endif
-            if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity and check_against_inventory
-              assign quantity_rule_soldout = true
-            endif
-          -%}
-          {% if buy_buttons_modal_form %}
-            {% comment %} This button is used to open the #buy_buttons_modal_form modal form {% endcomment %}
-            <button
-              id="ProductSubmitButton-{{ section_id }}"
-              type="button"
-              class="product-form__submit button button--full-width button--primary"
-            >{{ block.settings.modal_form_button_text }}</button>
-          {% elsif external %}
-            <a href="{{ external_link }}" class="product-form__submit button button--full-width button--primary" target="_blank">Shop</a>
-          {% else %}
-            <button
-              id="ProductSubmitButton-{{ section_id }}"
-              type="submit"
-              name="add"
-              class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
-              {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
-                disabled
-              {% endif %}
-            >
-              <span>
-                <span>
-                  {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-                    {{ 'products.product.sold_out' | t }}
-                  {%- else -%}
-                    {{ 'products.product.add_to_cart' | t }}
-                  {%- endif -%}
-                </span>
-
-                {% comment %}
-                {% endcomment %}
-                <span> - </span>
-                {% liquid
-                  assign target = product.selected_or_first_available_variant
-                  assign price = target.price | default: 1999
-                  assign money_price = price | money
-                  if settings.currency_code_enabled
-                    assign money_price = price | money_with_currency
-                  endif
-
-                  if customer and customer.tags contains 'trade'
-                    assign price = price | times: 0.9
-                    assign money_price = price | money
-                  endif
-                %}
-                <span class="price-item price-item--regular" data-price="{{ price }}">
-                  {% if product_is_sample %}
-                    {{ product_price_max }}
-                  {% else %}
-                    {{ money_price }}
-                  {% endif %}
-                  
-                </span>
-                {% comment %} {% render 'price', product: product, use_variant: true, show_sale: false %} {% endcomment %}
-              </span>
-
-              <div class="loading-overlay__spinner hidden">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  class="spinner"
-                  viewBox="0 0 66 66"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                </svg>
-              </div>
-            </button>
-          {% endif %}
-          {% liquid
-            assign selected_product = product.selected_or_first_available_variant
-            assign sample_variant = blank
-            for prod in product.variants
-              if prod.option1 == 'Sample' and selected_product.option2 == prod.option2
-                assign sample_variant = prod
-                break
-              endif
-            endfor
-          %}
-          {% if sample_variant != blank %}
-            <button
-              id="SampleOrderButton-{{ section_id }}"
-              name="add"
-              data-value="{{ sample_variant.id }}"
-              class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--primary{% else %}button--secondary{% endif %}"
-              {% if sample_variant.available == false or quantity_rule_soldout %}
-                disabled
-              {% endif %}
-            >
-              <span>
-                <span>
-                  {%- if sample_variant.available == false or quantity_rule_soldout -%}
-                    {{ 'products.product.sold_out' | t }}
-                  {%- else -%}
-                    Order Sample
-                  {%- endif -%}
-                </span>
-
-                {% comment %}
-                {% endcomment %}
-                <span> - </span>
-
-                {% render 'price', product: sample_variant, use_variant: false, show_sale: true %}
-              </span>
-
-              <div class="loading-overlay__spinner hidden">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  class="spinner"
-                  viewBox="0 0 66 66"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                </svg>
-              </div>
-            </button>
-          {% endif %}
-
-          {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
-          {%- endif -%}
-          
-          {% liquid
-            assign quick_ship = false
-            assign current_variant = product.selected_or_first_available_variant
-            if current_variant.metafields.custom.quick_ship == "True"
-              assign quick_ship = true
-            endif
-           %}
-          <quick-ship-text 
-            class="quick-ship-text" 
-            data-quick-ship-text="{{ section_id }}" 
-            data-quick-ship-state="{% if current_variant.metafields.custom.quick_ship == 'True' %}true{% else %}false{% endif %}"
-            style="text-align: center; margin-top: 0; margin-bottom: 10px;"
+      <product-form
+        class='product-form {% if product.gift_card? %}product-form__gift-card{% endif %}'
+        data-hide-errors='{{ gift_card_recipient_feature_active }}'
+      >
+        <div class='product-form__error-message-wrapper' role='alert' hidden>
+          <svg
+            aria-hidden='true'
+            focusable='false'
+            class='icon icon-error'
+            viewBox='0 0 13 13'
           >
-            {{ block.settings.quick_ship_text }}
-          </quick-ship-text>
-          
+            <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+            <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+            <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+            <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+          </svg>
+          <span class='product-form__error-message'></span>
         </div>
-      {%- endform -%}
-    </product-form>
-    {% render 'native-sold-out', product: product %}
-  {%- else -%}
-    <div class="product-form">
-      <div class="product-form__buttons form">
-        <button
-          type="submit"
-          name="add"
-          class="product-form__submit button button--full-width button--primary"
-          disabled
-        >
-          {{ 'products.product.sold_out' | t }}
-        </button>
-      </div>
-    </div>
-    {% render 'native-sold-out', product: product %}
-  {%- endif -%}
 
-  {%- if show_pickup_availability -%}
-    {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+        {%- form 'product',
+          product,
+          id: product_form_id,
+          class: 'form',
+          novalidate: 'novalidate',
+          data-type: 'add-to-cart-form'
+        -%}
+          <input
+            type='hidden'
+            name='id'
+            value='{{ product.selected_or_first_available_variant.id }}'
+            disabled
+            class='product-variant-id'
+          >
+          {% comment %} Gift card moved to snippets/buy-buttons_gift-card.liquid {% endcomment %}
+          {% comment %}
+            {%- if gift_card_recipient_feature_active -%}
+              {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
+            {%- endif -%}
+          {% endcomment %}
 
-    {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities
-      | where: 'pick_up_enabled', true
-    -%}
+          <div class='product-form__buttons'>
+            {% comment %} Nine15 - UPDATE THIS IN GLOBAL.JS FILE IN THE toggleOutOfStockForm function if you decide to change something here {% endcomment %}
+            {%- liquid
+              assign check_against_inventory = true
+              if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
+                assign check_against_inventory = false
+              endif
+              if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity and check_against_inventory
+                assign quantity_rule_soldout = true
+              endif
+            -%}
+            {% if buy_buttons_modal_form %}
+              {% comment %} This button is used to open the #buy_buttons_modal_form modal form {% endcomment %}
+              <button
+                id='ProductSubmitButton-{{ section_id }}'
+                type='button'
+                class='product-form__submit button button--full-width button--primary'
+              >
+                {{ block.settings.modal_form_button_text }}
+              </button>
+            {% elsif external %}
+              <a
+                href='{{ external_link }}'
+                class='product-form__submit button button--full-width button--primary'
+                target='_blank'
+                >Shop</a
+              >
+            {% else %}
+              <button
+                id='ProductSubmitButton-{{ section_id }}'
+                type='submit'
+                name='add'
+                class='product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}'
+                {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
+                  disabled
+                {% endif %}
+              >
+                <span>
+                  <span>
+                    {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- else -%}
+                      {{ 'products.product.add_to_cart' | t }}
+                    {%- endif -%}
+                  </span>
 
-    <pickup-availability
-      class="product__pickup-availabilities no-js-hidden quick-add-hidden"
-      {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %}
-        available
-      {% endif %}
-      data-root-url="{{ routes.root_url }}"
-      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-      data-has-only-default-variant="{{ product.has_only_default_variant }}"
-    >
-      <template>
-        <pickup-availability-preview class="pickup-availability-preview">
-          {% render 'icon-unavailable' %}
-          <div class="pickup-availability-info">
-            <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
-            <button class="pickup-availability-button link link--text underlined-link">
-              {{ 'products.product.pickup_availability.refresh' | t }}
-            </button>
+                  {% comment %}
+                  {% endcomment %}
+                  <span> - </span>
+                  {% liquid
+                    assign target = product.selected_or_first_available_variant
+                    assign price = target.price | default: 1999
+                    assign money_price = price | money
+                    if settings.currency_code_enabled
+                      assign money_price = price | money_with_currency
+                    endif
+
+                    if customer and customer.tags contains 'trade'
+                      assign price = price | times: 0.9
+                      assign money_price = price | money
+                    endif
+                  %}
+                  <span class='price-item price-item--regular' data-price='{{ price }}'>
+                    {% if product_is_sample %}
+                      {{ product_price_max }}
+                    {% else %}
+                      {{ money_price }}
+                    {% endif %}
+                  </span>
+                  {% comment %} {% render 'price', product: product, use_variant: true, show_sale: false %} {% endcomment %}
+                </span>
+
+                <div class='loading-overlay__spinner hidden'>
+                  <svg
+                    aria-hidden='true'
+                    focusable='false'
+                    class='spinner'
+                    viewBox='0 0 66 66'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </button>
+            {% endif %}
+            {% liquid
+              assign selected_product = product.selected_or_first_available_variant
+              assign sample_variant = blank
+              for prod in product.variants
+                if prod.option1 == 'Sample' and selected_product.option2 == prod.option2
+                  assign sample_variant = prod
+                  break
+                endif
+              endfor
+            %}
+            {% if sample_variant != blank %}
+              <button
+                id='SampleOrderButton-{{ section_id }}'
+                name='add'
+                data-value='{{ sample_variant.id }}'
+                class='product-form__submit button button--full-width {% if show_dynamic_checkout %}button--primary{% else %}button--secondary{% endif %}'
+                {% if sample_variant.available == false or quantity_rule_soldout %}
+                  disabled
+                {% endif %}
+              >
+                <span>
+                  <span>
+                    {%- if sample_variant.available == false or quantity_rule_soldout -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- else -%}
+                      Order Sample
+                    {%- endif -%}
+                  </span>
+
+                  {% comment %}
+                  {% endcomment %}
+                  <span> - </span>
+
+                  {% render 'price', product: sample_variant, use_variant: false, show_sale: true %}
+                </span>
+
+                <div class='loading-overlay__spinner hidden'>
+                  <svg
+                    aria-hidden='true'
+                    focusable='false'
+                    class='spinner'
+                    viewBox='0 0 66 66'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </button>
+            {% endif %}
+
+            {%- if show_dynamic_checkout -%}
+              {{ form | payment_button }}
+            {%- endif -%}
+
+            {% liquid
+              assign quick_ship = false
+              assign current_variant = product.selected_or_first_available_variant
+              if current_variant.metafields.custom.quick_ship == 'True'
+                assign quick_ship = true
+              endif
+            %}
+            <quick-ship-text
+              class='quick-ship-text'
+              data-quick-ship-text='{{ section_id }}'
+              data-quick-ship-state='{% if current_variant.metafields.custom.quick_ship == 'True' %}true{% else %}false{% endif %}'
+              style='text-align: center; margin-top: 0; margin-bottom: 10px;'
+            >
+              {{ block.settings.quick_ship_text }}
+            </quick-ship-text>
           </div>
-        </pickup-availability-preview>
-      </template>
-    </pickup-availability>
+        {%- endform -%}
+      </product-form>
+      {% render 'native-sold-out', product: product %}
+    {%- else -%}
+      <div class='product-form'>
+        <div class='product-form__buttons form'>
+          <button
+            type='submit'
+            name='add'
+            class='product-form__submit button button--full-width button--primary'
+            disabled
+          >
+            {{ 'products.product.sold_out' | t }}
+          </button>
+        </div>
+      </div>
+      {% render 'native-sold-out', product: product %}
+    {%- endif -%}
 
-    <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
-  {%- endif -%}
-</div>
+    {%- if show_pickup_availability -%}
+      {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+
+      {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities
+        | where: 'pick_up_enabled', true
+      -%}
+
+      <pickup-availability
+        class='product__pickup-availabilities no-js-hidden quick-add-hidden'
+        {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %}
+          available
+        {% endif %}
+        data-root-url='{{ routes.root_url }}'
+        data-variant-id='{{ product.selected_or_first_available_variant.id }}'
+        data-has-only-default-variant='{{ product.has_only_default_variant }}'
+      >
+        <template>
+          <pickup-availability-preview class='pickup-availability-preview'>
+            {% render 'icon-unavailable' %}
+            <div class='pickup-availability-info'>
+              <p class='caption-large'>{{ 'products.product.pickup_availability.unavailable' | t }}</p>
+              <button class='pickup-availability-button link link--text underlined-link'>
+                {{ 'products.product.pickup_availability.refresh' | t }}
+              </button>
+            </div>
+          </pickup-availability-preview>
+        </template>
+      </pickup-availability>
+
+      <script src='{{ 'pickup-availability.js' | asset_url }}' defer='defer'></script>
+    {%- endif -%}
+  </div>
 
   {% comment %} Render the buy buttons modal form if the buy_buttons_modal_form is true {% endcomment %}
   {% comment %} custom-product-form.liquid is rendered in the modal {% endcomment %}
@@ -281,23 +297,23 @@
     {% comment %}
       Modal structure with proper styling
     {% endcomment %}
-    <div id="product-inquiry-modal" class="modal" style="display: none;">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close-modal">&times;</span>
+    <div id='product-inquiry-modal' class='modal' style='display: none;'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <span class='close-modal'>&times;</span>
           <p>{{ block.settings.modal_form_title }}</p>
         </div>
-        <div class="modal-form-container">
-          {%- render 'custom-product-form', 
-            block: block, 
-            product: product, 
+        <div class='modal-form-container'>
+          {%- render 'custom-product-form',
+            block: block,
+            product: product,
             section: section,
             modal_form_success_message: modal_form_success_message
           -%}
         </div>
       </div>
     </div>
-    
+
     <style>
       .modal {
         display: none;
@@ -307,7 +323,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0,0,0,0.4);
+        background-color: rgba(0, 0, 0, 0.4);
       }
 
       .modal-content {
@@ -391,78 +407,77 @@
     </style>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const modal = document.getElementById('product-inquiry-modal');
-        const btn = document.querySelector('.product-form__submit');
-        const span = document.getElementsByClassName('close-modal')[0];
-        const body = document.body;
-        
+      document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('product-inquiry-modal')
+        const btn = document.querySelector('.product-form__submit')
+        const span = document.getElementsByClassName('close-modal')[0]
+        const body = document.body
+
         // Store the original body styles to restore later
-        let scrollPosition;
-        
+        let scrollPosition
+
         // Function to disable background scrolling
         function disableScroll() {
-          scrollPosition = window.pageYOffset;
-          body.style.overflow = 'hidden';
-          body.style.position = 'fixed';
-          body.style.top = `-${scrollPosition}px`;
-          body.style.width = '100%';
+          scrollPosition = window.pageYOffset
+          body.style.overflow = 'hidden'
+          body.style.position = 'fixed'
+          body.style.top = `-${scrollPosition}px`
+          body.style.width = '100%'
         }
-        
+
         // Function to enable background scrolling
         function enableScroll() {
-          body.style.overflow = '';
-          body.style.position = '';
-          body.style.top = '';
-          body.style.width = '';
-          window.scrollTo(0, scrollPosition);
+          body.style.overflow = ''
+          body.style.position = ''
+          body.style.top = ''
+          body.style.width = ''
+          window.scrollTo(0, scrollPosition)
         }
 
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          modal.style.display = 'block';
-          disableScroll();
-        });
+        btn.addEventListener('click', function (e) {
+          e.preventDefault()
+          modal.style.display = 'block'
+          disableScroll()
+        })
 
-        span.addEventListener('click', function() {
-          modal.style.display = 'none';
-          enableScroll();
-        });
+        span.addEventListener('click', function () {
+          modal.style.display = 'none'
+          enableScroll()
+        })
 
-        window.addEventListener('click', function(e) {
+        window.addEventListener('click', function (e) {
           if (e.target == modal) {
-            modal.style.display = 'none';
-            enableScroll();
+            modal.style.display = 'none'
+            enableScroll()
           }
-        });
+        })
 
         // Listen for form submission success to close modal
-        const form = document.querySelector('#custom_product_form');
-        const formMessage = form.querySelector('.form__message');
-        
-        const observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
+        const form = document.querySelector('#custom_product_form')
+        const formMessage = form.querySelector('.form__message')
+
+        const observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
               if (formMessage.style.display === 'block') {
                 // Close modal after 3 seconds on success
                 setTimeout(() => {
-                  modal.style.display = 'none';
-                  enableScroll();
+                  modal.style.display = 'none'
+                  enableScroll()
                   // Reset form and show fields again
-                  form.reset();
-                  form.querySelector('.custom-form__fields').style.display = 'block';
-                  formMessage.style.display = 'none';
-                }, 3000);
+                  form.reset()
+                  form.querySelector('.custom-form__fields').style.display = 'block'
+                  formMessage.style.display = 'none'
+                }, 3000)
               }
             }
-          });
-        });
+          })
+        })
 
         observer.observe(formMessage, {
           attributes: true
-        });
-      });
+        })
+      })
     </script>
   {% endif %}
-
 {% endunless %}
