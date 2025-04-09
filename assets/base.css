@@ -1792,6 +1792,9 @@ details[open] > .share-button__fallback {
 .field--checkbox {
   flex-direction: column;
   gap: 0.5rem;
+  border: none;
+  padding-block: 0;
+  padding-inline: 0;
 }
 .customer .field {
   display: flex;
@@ -1838,6 +1841,8 @@ details[open] > .share-button__fallback {
 }
 .field__label--checkbox {
   position: relative;
+  padding-inline: 0;
+  left: 0;
 }
 .field__input:focus ~ .field__label,
 .field__input:not(:placeholder-shown) ~ .field__label,

@@ -12,32 +12,63 @@
 {% endcomment %}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 
-<form id='custom_product_form' class='custom-product-form'>
-  <div class='form__message' style='display: none;'></div>
+{%- form 'contact', id: 'custom_product_form', class: 'custom-product-form isolate' -%}
+  {%- if form.posted_successfully? -%}
+    <h2 class='form-status form-status-list form__message' tabindex='-1' autofocus>
+      {% render 'icon-success' %}
+      {{ 'templates.contact.form.post_success' | t }}
+    </h2>
+  {%- elsif form.errors -%}
+    <div class='form__message'>
+      <h2 class='form-status caption-large text-body' role='alert' tabindex='-1' autofocus>
+        {% render 'icon-error' %}
+        {{ 'templates.contact.form.error_heading' | t }}
+      </h2>
+    </div>
+    {{ form.errors | default_errors }}
+  {%- endif -%}
 
   <div class='custom-form__fields'>
     {% comment %} First Name, Last Name {% endcomment %}
     <div class='field-row'>
       <div class='field'>
         <input
-          class='field__input{% if form.errors contains "FirstName" %} invalid{% endif %}'
+          class='field__input{% if form.errors contains "First Name" %} invalid{% endif %}'
           id='FirstName-{{ section.id }}'
-          name='FirstName'
+          name='contact[First Name]'
           type='text'
           required
           placeholder='First Name'
+          value='{{ form.first_name }}'
+          aria-required='true'
+          {% if form.errors contains 'First Name' %}
+            aria-invalid='true'
+            aria-describedby='FirstName-error-{{ section.id }}'
+          {% endif %}
         >
         <label class='field__label' for='FirstName-{{ section.id }}'> First Name* </label>
+        {%- if form.errors contains 'First Name' -%}
+          <small class='contact__field-error' id='FirstName-error-{{ section.id }}'>
+            <span class='visually-hidden'>{{ 'accessibility.error' | t }}</span>
+            <span class='form__message'>{% render 'icon-error' %}{{ form.errors.translated_fields['First Name'] | capitalize }} {{ form.errors.messages['First Name'] }}</span>
+          </small>
+        {%- endif -%}
       </div>
 
       <div class='field'>
         <input
-          class='field__input{% if form.errors contains "LastName" %} invalid{% endif %}'
+          class='field__input{% if form.errors contains "Last Name" %} invalid{% endif %}'
           id='LastName-{{ section.id }}'
-          name='LastName'
+          name='contact[Last Name]'
           type='text'
           required
           placeholder='Last Name'
+          value='{{ form.last_name }}'
+          aria-required='true'
+          {% if form.errors contains 'Last Name' %}
+            aria-invalid='true'
+            aria-describedby='LastName-error-{{ section.id }}'
+          {% endif %}
         >
         <label class='field__label' for='LastName-{{ section.id }}'> Last Name* </label>
       </div>
@@ -49,7 +80,7 @@
         <input
           class='field__input{% if form.errors contains "email" %} invalid{% endif %}'
           id='Email-{{ section.id }}'
-          name='Email'
+          name='contact[Email]'
           type='email'
           required
           placeholder='Email'
@@ -61,7 +92,7 @@
         <input
           class='field__input{% if form.errors contains "phone" %} invalid{% endif %}'
           id='Phone-{{ section.id }}'
-          name='Phone'
+          name='contact[phone]'
           type='tel'
           required
           autocomplete='tel'
@@ -78,7 +109,7 @@
         <select
           class='select__select{% if form.errors contains "Role" %} invalid{% endif %}'
           id='Role-{{ section.id }}'
-          name='Role'
+          name='contact[Role]'
           required
         >
           <option value=''>- Individual/Business</option>
@@ -141,7 +172,7 @@
         <input
           class='field__input{% if form.errors contains "Street Address" %} invalid{% endif %}'
           id='Street Address-{{ section.id }}'
-          name='Street Address'
+          name='contact[Street Address]'
           type='text'
           required
           placeholder='Street Address'
@@ -154,7 +185,7 @@
         <input
           class='field__input{% if form.errors contains "LastName" %} invalid{% endif %}'
           id='City-{{ section.id }}'
-          name='City'
+          name='contact[City]'
           type='text'
           required
           placeholder='City'
@@ -170,7 +201,7 @@
         <input
           class='field__input{% if form.errors contains "State" %} invalid{% endif %}'
           id='State-{{ section.id }}'
-          name='State'
+          name='contact[State]'
           type='text'
           required
           placeholder='State'
@@ -183,7 +214,7 @@
         <input
           class='field__input{% if form.errors contains "Zip" %} invalid{% endif %}'
           id='Zip-{{ section.id }}'
-          name='Zip'
+          name='contact[Zip]'
           type='text'
           required
           placeholder='Zip'
@@ -201,7 +232,7 @@
       <input
         class='field__input{% if form.errors contains "Square Footage" %} invalid{% endif %}'
         id='Square Footage-{{ section.id }}'
-        name='Square Footage'
+        name='contact[Square Footage]'
         type='number'
         placeholder='Square Footage'
       >
@@ -209,14 +240,14 @@
     </div>
 
     {% comment %} Material interest field {% endcomment %}
-    <div class='field field--checkbox'>
-      <label class='field__label field__label--checkbox'>Material Interest (select as many as you'd like)</label>
+    <fieldset class='field field--checkbox'>
+      <legend class='field__label field__label--checkbox'>Material Interest (select as many as you'd like)</legend>
       <div class='checkbox-group'>
         <div class='checkbox-item'>
           <input
             type='checkbox'
             id='PathFines-{{ section.id }}'
-            name='Material Interest'
+            name='contact[Material Interest - Path Fines]'
             value='Path Fines'
             class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
           >
@@ -226,7 +257,7 @@
           <input
             type='checkbox'
             id='Gravel-{{ section.id }}'
-            name='Material Interest'
+            name='contact[Material Interest - Gravel]'
             value='Gravel'
             class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
           >
@@ -236,7 +267,7 @@
           <input
             type='checkbox'
             id='Boulder-{{ section.id }}'
-            name='Material Interest'
+            name='contact[Material Interest - Boulder]'
             value='Boulder'
             class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
           >
@@ -246,25 +277,36 @@
           <input
             type='checkbox'
             id='Pavers-{{ section.id }}'
-            name='Material Interest'
+            name='contact[Material Interest - Pavers]'
             value='Pavers'
             class='checkbox__input{% if form.errors contains "Material Interest" %} invalid{% endif %}'
           >
           <label class='checkbox__label' for='Pavers-{{ section.id }}'>Pavers</label>
         </div>
       </div>
-    </div>
+    </fieldset>
 
     <div class='field'>
       <textarea
         class='text-area field__input{% if form.errors contains "Message" %} invalid{% endif %}'
         id='Message-{{ section.id }}'
-        name='Message'
+        name='contact[body]'
         rows='4'
         required
         placeholder='Message'
+        aria-required='true'
+        {% if form.errors contains 'body' %}
+          aria-invalid='true'
+          aria-describedby='Message-error-{{ section.id }}'
+        {% endif %}
       ></textarea>
       <label class='field__label' for='Message-{{ section.id }}'> Message* </label>
+      {%- if form.errors contains 'body' -%}
+        <small class='contact__field-error' id='Message-error-{{ section.id }}'>
+          <span class='visually-hidden'>{{ 'accessibility.error' | t }}</span>
+          <span class='form__message'>{% render 'icon-error' %}{{ form.errors.translated_fields['body'] | capitalize }} {{ form.errors.messages['body'] }}</span>
+        </small>
+      {%- endif -%}
     </div>
 
     <div class='product-form__buttons'>
@@ -276,7 +318,7 @@
       </button>
     </div>
   </div>
-</form>
+{%- endform -%}
 
 <style>
     /* Make the form scrollable on mobile */
@@ -385,22 +427,22 @@
     try {
       submitButton.disabled = true
 
-      const email = this.querySelector('[name="Email"]').value
-      const firstName = this.querySelector('[name="FirstName"]').value
-      const lastName = this.querySelector('[name="LastName"]').value
-      const phone = this.querySelector('[name="Phone"]').value
-      const role = this.querySelector('[name="Role"]').value
-      const streetAddress = this.querySelector('[name="Street Address"]').value
-      const city = this.querySelector('[name="City"]').value
-      const state = this.querySelector('[name="State"]').value
-      const zip = this.querySelector('[name="Zip"]').value
-      const squareFootage = this.querySelector('[name="Square Footage"]').value
+      const email = this.querySelector('[name="contact[Email]"]').value
+      const firstName = this.querySelector('[name="contact[First Name]"]').value
+      const lastName = this.querySelector('[name="contact[Last Name]"]').value
+      const phone = this.querySelector('[name="contact[phone]"]').value
+      const role = this.querySelector('[name="contact[Role]"]').value
+      const streetAddress = this.querySelector('[name="contact[Street Address]"]').value
+      const city = this.querySelector('[name="contact[City]"]').value
+      const state = this.querySelector('[name="contact[State]"]').value
+      const zip = this.querySelector('[name="contact[Zip]"]').value
+      const squareFootage = this.querySelector('[name="contact[Square Footage]"]').value
       // Get all selected material interests
-      const materialInterestCheckboxes = this.querySelectorAll('[name="Material Interest"]:checked')
+      const materialInterestCheckboxes = this.querySelectorAll('[name^="contact[Material Interest -"]:checked')
       const materialInterests = Array.from(materialInterestCheckboxes)
         .map((checkbox) => checkbox.value)
         .join(', ')
-      const message = this.querySelector('[name="Message"]').value
+      const message = this.querySelector('[name="contact[body]"]').value
 
       // Wait for Klaviyo to be ready
       if (typeof _learnq === 'undefined') {
