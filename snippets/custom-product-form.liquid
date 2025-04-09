@@ -417,7 +417,8 @@
   })
   // Klaviyo form submission
   document.querySelector('#custom_product_form').addEventListener('submit', async function (e) {
-    e.preventDefault()
+    // prevent default submission
+    // e.preventDefault()
 
     const form = this
     const submitButton = form.querySelector('button[type="submit"]')
@@ -501,6 +502,9 @@
           }
         ])
       }
+      
+      // Optional delay to ensure Klaviyo gets its time
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
       // Show success message
       formFields.style.display = 'none'
@@ -523,4 +527,5 @@
       submitButton.disabled = false
     }
   })
+  
 </script>
