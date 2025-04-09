@@ -5,6 +5,7 @@
   - block: {Object} passing the block information.
   - form: {Object} the product form object.
   - section: {Object} section to which this snippet belongs.
+  - modal_form_shipping_note: {String} the shipping note to display.
   - modal_form_success_message: {String} the success message to display.
   Usage:
   {% render 'custom-product-form', product: product, block: block, form: form, section: section %}
@@ -190,7 +191,7 @@
         <label class='field__label' for='Zip-{{ section.id }}'> Zip* </label>
       </div>
       <div class='field field--note'>
-        <p>Please note: we ship rock only within the Southern California region.</p>
+        <p>{{ modal_form_shipping_note }}</p>
       </div>
     </div>
       

@@ -157,6 +157,12 @@
         "unavailable": "Couldn't load pickup availability",
         "refresh": "Refresh"
       },
+      "product_form": {
+        "button_text": "Get Quote",
+        "modal_form_title": "Please complete the information below and someone from our team will be in touch with a quote.",
+        "modal_form_shipping_note": "Please note: we ship rock only within the Southern California region.",
+        "modal_form_success_message": "Thank you for your inquiry. We'll get back to you soon."
+      },
       "price": {
         "from_price_html": "From {{ price }}",
         "regular_price": "Regular price",

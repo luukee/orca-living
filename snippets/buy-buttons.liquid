@@ -11,6 +11,7 @@
   - modal_form_button_text: {String} for the button text. If true the button text is rendered, false - not rendered (optional).
   - modal_form_button_destination: {String} for the button destination. If true the button destination is rendered, false - not rendered (optional).
   - modal_form_title: {String} for the modal form title. If true the modal form title is rendered, false - not rendered (optional).
+  - modal_form_shipping_note: {String} for the modal form shipping note. If true the modal form shipping note is rendered, false - not rendered (optional).
   - modal_form_success_message: {String} for the modal form success message. If true the modal form success message is rendered, false - not rendered (optional).
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
@@ -322,7 +323,8 @@
             block: block,
             product: product,
             section: section,
-            modal_form_success_message: modal_form_success_message
+            modal_form_shipping_note: modal_form_shipping_note
+            modal_form_success_message: modal_form_success_message,
           -%}
         </div>
       </div>

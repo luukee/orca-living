@@ -302,10 +302,17 @@
             {%- when 'buy_buttons' -%}
               
               {% comment %} Custom per-product button and modal settings {% endcomment %}
-              {% assign button_text = product.metafields.product_form.button_text | default: block.settings.modal_form_button_text %}
+              {% comment %} Default from theme settings {% endcomment %}
+              {% assign button_text_default = 'products.product.product_form.button_text' | t %}
+              {% assign modal_form_title_default = 'products.product.product_form.modal_form_title' | t %}
+              {% assign modal_form_shipping_note_default = 'products.product.product_form.modal_form_shipping_note' | t %}
+              {% assign modal_form_success_message_default = 'products.product.product_form.modal_form_success_message' | t %}
+              
+              {% assign button_text = product.metafields.product_form.button_text | default: button_text_default %}
               {% assign button_destination = product.metafields.product_form.button_destination %}
-              {% assign modal_form_title = product.metafields.product_form.modal_title | default: block.settings.modal_form_title %}
-              {% assign modal_form_success_message = product.metafields.product_form.modal_success_message | default: block.settings.modal_form_success_message %}
+              {% assign modal_form_title = product.metafields.product_form.modal_title | default: modal_form_title_default %}
+              {% assign modal_form_shipping_note = product.metafields.product_form.modal_form_shipping_note | default: modal_form_shipping_note_default %}
+              {% assign modal_form_success_message = product.metafields.product_form.modal_success_message | default: modal_form_success_message_default %}
               
               {%- render 'buy-buttons', 
                 block: block, 
@@ -320,6 +327,7 @@
                 modal_form_button_text: button_text,
                 modal_form_button_destination: button_destination,
                 modal_form_title: modal_form_title,
+                modal_form_shipping_note: modal_form_shipping_note,
                 modal_form_success_message: modal_form_success_message
                  -%}
             {%- when 'buy_buttons_gift_card' -%}
@@ -785,24 +793,6 @@
           "label": "Show Buy Buttons Modal Form",
           "info": "If true, the buy buttons will be replaced with a modal form that allows the customer to inquire about the product.",
           "default": false
-        },
-        {
-          "type": "text",
-          "id": "modal_form_button_text",
-          "label": "Modal Form Button Text",
-          "default": "Inquire"
-        },
-        {
-          "type": "text",
-          "id": "modal_form_title",
-          "label": "Modal Form Title",
-          "default": "Inquire about this product"
-        },
-        {
-          "type": "text",
-          "id": "modal_form_success_message",
-          "label": "Modal Form Success Message",
-          "default": "Thank you for your inquiry! We'll get back to you soon."
         }
       ]
     },
