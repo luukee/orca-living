@@ -12,7 +12,7 @@
 {% endcomment %}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 
-{%- form 'contact', id: 'custom_product_form', class: 'custom-product-form isolate' -%}
+{%- form 'contact', id: 'custom_product_form', class: 'custom-product-form isolate', return_to: back -%}
   {%- if form.posted_successfully? -%}
     <h2 class='form-status form-status-list form__message' tabindex='-1' autofocus>
       {% render 'icon-success' %}
@@ -82,7 +82,7 @@
           id='Email-{{ section.id }}'
           name='contact[Email]'
           type='email'
-          required
+          required="required"
           placeholder='Email'
         >
         <label class='field__label' for='Email-{{ section.id }}'> Email* </label>
@@ -94,7 +94,7 @@
           id='Phone-{{ section.id }}'
           name='contact[phone]'
           type='tel'
-          required
+          required="required"
           autocomplete='tel'
           placeholder='Phone number'
         >
@@ -110,7 +110,7 @@
           class='select__select{% if form.errors contains "Role" %} invalid{% endif %}'
           id='Role-{{ section.id }}'
           name='contact[Role]'
-          required
+          required="required"
         >
           <option value=''>- Individual/Business</option>
           <option
@@ -174,7 +174,7 @@
           id='Street Address-{{ section.id }}'
           name='contact[Street Address]'
           type='text'
-          required
+          required="required"
           placeholder='Street Address'
         >
         <label class='field__label' for='Street Address-{{ section.id }}'> Street Address* </label>
@@ -187,7 +187,7 @@
           id='City-{{ section.id }}'
           name='contact[City]'
           type='text'
-          required
+          required="required"
           placeholder='City'
         >
         <label class='field__label' for='City-{{ section.id }}'> City* </label>
@@ -203,7 +203,7 @@
           id='State-{{ section.id }}'
           name='contact[State]'
           type='text'
-          required
+          required="required"
           placeholder='State'
         >
         <label class='field__label' for='State-{{ section.id }}'> State* </label>
@@ -216,7 +216,7 @@
           id='Zip-{{ section.id }}'
           name='contact[Zip]'
           type='text'
-          required
+          required="required"
           placeholder='Zip'
         >
         <label class='field__label' for='Zip-{{ section.id }}'> Zip* </label>
@@ -292,7 +292,7 @@
         id='Message-{{ section.id }}'
         name='contact[body]'
         rows='4'
-        required
+        required="required"
         placeholder='Message'
         aria-required='true'
         {% if form.errors contains 'body' %}
