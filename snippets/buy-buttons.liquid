@@ -470,29 +470,33 @@
 
         // Listen for form submission success to close modal
         const form = document.querySelector('#custom_product_form')
-        const formMessage = form.querySelector('.form__message')
+        if (form) {
+          const formMessage = form.querySelector('.form__message')
+          
+          if (formMessage) {
+            const observer = new MutationObserver(function (mutations) {
+              mutations.forEach(function (mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                  if (formMessage.style.display === 'block') {
+                    // Close modal after 3 seconds on success
+                    setTimeout(() => {
+                      modal.style.display = 'none'
+                      enableScroll()
+                      // Reset form and show fields again
+                      form.reset()
+                      form.querySelector('.custom-form__fields').style.display = 'block'
+                      formMessage.style.display = 'none'
+                    }, 3000)
+                  }
+                }
+              })
+            })
 
-        const observer = new MutationObserver(function (mutations) {
-          mutations.forEach(function (mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-              if (formMessage.style.display === 'block') {
-                // Close modal after 3 seconds on success
-                setTimeout(() => {
-                  modal.style.display = 'none'
-                  enableScroll()
-                  // Reset form and show fields again
-                  form.reset()
-                  form.querySelector('.custom-form__fields').style.display = 'block'
-                  formMessage.style.display = 'none'
-                }, 3000)
-              }
-            }
-          })
-        })
-
-        observer.observe(formMessage, {
-          attributes: true
-        })
+            observer.observe(formMessage, {
+              attributes: true
+            })
+          }
+        }
       })
     </script>
   {% endif %}
