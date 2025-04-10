@@ -16,22 +16,22 @@
         "padding_bottom": 16
       }
     },
-    "form": {
-      "type": "contact-form",
+    "contact_form_product_3PjwTV": {
+      "type": "contact-form-product",
       "settings": {
         "heading": "",
-        "text": "<p>If you're interested in our design services, please complete our client inquiry form <span data-tf-live=\"01J7EG61RERFXG6FP7TS3TZY0H\"></span>. We will follow up within 5-7 business days to schedule a phone consultation to review the project.</p><p>For all other product questions or general inquiries, please fill out the form below or email <a href=\"mailto:hello@orcaliving.com\">hello@orcaliving.com</a>.</p><p></p><script src=\"//embed.typeform.com/next/embed.js\"></script>",
+        "text": "",
         "heading_size": "h1",
         "color_scheme": "background-1",
-        "select_title": "Subject",
-        "select_list": "Product Questions\nTrade Inquiry\nOther",
-        "padding_top": 32,
-        "padding_bottom": 16
+        "select_title": "",
+        "select_list": "",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
   "order": [
     "main",
-    "form"
+    "contact_form_product_3PjwTV"
   ]
 }
