@@ -20,7 +20,7 @@
       "type": "contact-form-product",
       "settings": {
         "heading": "",
-        "text": "",
+        "text": "Please complete the information below and someone from our team will be in touch with a quote.",
         "heading_size": "h1",
         "color_scheme": "background-1",
         "select_title": "",
