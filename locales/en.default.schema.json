@@ -627,6 +627,12 @@
         "name": "Contact form"
       }
     },
+    "contact-form-product": {
+      "name": "Contact Form Product",
+      "presets": {
+        "name": "Contact form product"
+      }
+    },
     "custom-liquid": {
       "name": "Custom Liquid",
       "settings": {

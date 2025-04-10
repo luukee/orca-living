@@ -1,3 +1,8 @@
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
 .contact,
 .customer__custom-form {
   --margin: var(--base-gutter--half);
@@ -97,5 +102,11 @@
   .template--page-contact #MainContent > *:nth-child(2) .page-width {
     padding-top: 0;
   }
+}
+.checkbox-group {
+  display: flex;
+  gap: 1rem;
+  padding: 2.2rem 1.5rem 0.8rem 0;
+  border-bottom: 0.1rem solid rgb(var(--color-base-text));
 }
 /*# sourceMappingURL=section-contact-form.css.map */

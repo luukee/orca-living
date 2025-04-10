@@ -273,6 +273,33 @@
         "error_heading": "Please adjust the following:"
       }
     },
+    "contact-product": {
+      "form": {
+        "title": "Contact form",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "email": "Email",
+        "phone": "Phone number",
+        "address": "Address",
+        "address-line2": "Apartment, suite, etc.",
+        "address-city": "City",
+        "address-state": "State",
+        "address-country": "Country",
+        "address-zip": "ZIP",
+        "address-note": "Please note: we ship rock only within the Southern California region.",
+        "square-footage": "Approximate Square Footage",
+        "material-interest": "Material Interest (select as many as you'd like)",
+        "overview": "Overview of project",
+        "timeline": "Timeline",
+        "budget": "Budget",
+        "discover": "How you discovered OR.CA",
+        "subject": "Subject",
+        "comment": "Message",
+        "send": "Send",
+        "post_success": "Thank you for contacting us. We'll be in touch shortly.",
+        "error_heading": "Please adjust the following:"
+      }
+    },
     "404": {
       "title": "Page not found",
       "subtext": "404"
