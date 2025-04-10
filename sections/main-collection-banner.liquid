@@ -71,19 +71,15 @@
   {% if collection.metafields.custom.collection_video %}
     {% assign featured_media_url = collection.metafields.custom.collection_video %}
     {% assign media_type = 'video' %}
-  {% else %}
+    {% comment %} collection metafield to hide collection image {% endcomment %}
+  {% elsif collection.metafields.collection.hide_collection_image %}
+    {% assign hide_media = true %}
+    {% else %}
     {% assign featured_media_url = collection.image | image_url: width: 2000 %}
   {% endif %}
 {% endif %}
-
 <!--
-- featured_media_url: {{ featured_media_url }}
-- media_type: {{ media_type }}
-- hide_media: {{ hide_media }}
-- tag_description: {{ tag_description }}
-- tag_title: {{ tag_title }}
-- current_tag: {{ current_tag }}
-- tag_media: {% for item in tag_media %}{{ item.tag }}, {% endfor %}
+hide collection image: {{ collection.metafields.collection.hide_collection_image }}
 -->
 
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
