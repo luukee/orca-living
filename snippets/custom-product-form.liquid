@@ -507,13 +507,13 @@
       await new Promise((resolve) => setTimeout(resolve, 300))
 
       // Show success message
-      formFields.style.display = 'none'
-      formMessage.innerHTML = `
-            <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
-                <p>{{ modal_form_success_message }}</p>
-            </div>
-        `
-      formMessage.style.display = 'block'
+      // formFields.style.display = 'none'
+      // formMessage.innerHTML = `
+      //       <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
+      //           <p>{{ modal_form_success_message }}</p>
+      //       </div>
+      //   `
+      // formMessage.style.display = 'block'
     } catch (error) {
       console.error('Klaviyo submission error:', error)
       formMessage.innerHTML = `
