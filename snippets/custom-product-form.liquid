@@ -11,66 +11,66 @@
   {% render 'custom-product-form', product: product, block: block, form: form, section: section %}
 {% endcomment %}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+{% assign contact_form_class = 'custom-product-form isolate' %}
 
-{%- form 'contact', id: 'custom_product_form', class: 'custom-product-form isolate', return_to: back -%}
+{%- form 'contact', id: 'ContactFormProduct', class: contact_form_class, return_to: back -%}
   {%- if form.posted_successfully? -%}
-    <h2 class='form-status form-status-list form__message' tabindex='-1' autofocus>
+    <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
       {% render 'icon-success' %}
       {{ 'templates.contact.form.post_success' | t }}
     </h2>
   {%- elsif form.errors -%}
-    <div class='form__message'>
-      <h2 class='form-status caption-large text-body' role='alert' tabindex='-1' autofocus>
+    <div class="form__message">
+      <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
         {% render 'icon-error' %}
         {{ 'templates.contact.form.error_heading' | t }}
       </h2>
     </div>
-    {{ form.errors | default_errors }}
+    <ul class="form-status-list caption-large" role="list">
+      <li>
+        <a href="#ContactForm-email" class="link">
+          {{ form.errors.translated_fields.email | capitalize }}
+          {{ form.errors.messages.email }}
+        </a>
+      </li>
+    </ul>
   {%- endif -%}
 
-  <div class='custom-form__fields'>
+  <div class='contact__fields'>
     {% comment %} First Name, Last Name {% endcomment %}
     <div class='field-row'>
       <div class='field'>
         <input
-          class='field__input{% if form.errors contains "First Name" %} invalid{% endif %}'
-          id='FirstName-{{ section.id }}'
-          name='contact[First Name]'
-          type='text'
-          required
-          placeholder='First Name'
-          value='{{ form.first_name }}'
           aria-required='true'
-          {% if form.errors contains 'First Name' %}
-            aria-invalid='true'
-            aria-describedby='FirstName-error-{{ section.id }}'
-          {% endif %}
+          class='field__input'
+          autocomplete="given-name"
+          type='text'
+          id='ContactForm-given-name'
+          name='contact[{{ 'templates.contact.form.first_name' | t }}]'
+          value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.first_name }}{% endif %}"
+          placeholder="{{ 'templates.contact.form.first_name' | t }}"
         >
-        <label class='field__label' for='FirstName-{{ section.id }}'> First Name* </label>
-        {%- if form.errors contains 'First Name' -%}
-          <small class='contact__field-error' id='FirstName-error-{{ section.id }}'>
-            <span class='visually-hidden'>{{ 'accessibility.error' | t }}</span>
-            <span class='form__message'>{% render 'icon-error' %}{{ form.errors.translated_fields['First Name'] | capitalize }} {{ form.errors.messages['First Name'] }}</span>
-          </small>
-        {%- endif -%}
+        <label class='field__label' for='ContactForm-given-name'>
+          {{- 'templates.contact.form.first_name' | t }}
+          <span aria-hidden="true">*</span>
+        </label>
       </div>
 
       <div class='field'>
         <input
-          class='field__input{% if form.errors contains "Last Name" %} invalid{% endif %}'
-          id='LastName-{{ section.id }}'
-          name='contact[Last Name]'
-          type='text'
-          required
-          placeholder='Last Name'
-          value='{{ form.last_name }}'
           aria-required='true'
-          {% if form.errors contains 'Last Name' %}
-            aria-invalid='true'
-            aria-describedby='LastName-error-{{ section.id }}'
-          {% endif %}
+          class='field__input'
+          autocomplete="family-name"
+          type='text'
+          id='ContactForm-family-name'
+          name="contact[{{ 'templates.contact.form.last_name' | t }}]"
+          value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.last_name }}{% endif %}"
+          placeholder="{{ 'templates.contact.form.last_name' | t }}"
         >
-        <label class='field__label' for='LastName-{{ section.id }}'> Last Name* </label>
+        <label class='field__label' for='ContactForm-family-name'>
+          {{- 'templates.contact.form.last_name' | t }}
+          <span aria-hidden="true">*</span>
+        </label>
       </div>
     </div>
 
@@ -78,27 +78,54 @@
     <div class='field-row'>
       <div class='field'>
         <input
-          class='field__input{% if form.errors contains "email" %} invalid{% endif %}'
-          id='Email-{{ section.id }}'
-          name='contact[Email]'
+          autocomplete="email"
           type='email'
-          required="required"
-          placeholder='Email'
+          id='ContactForm-email'
+          class='field__input'
+          name='contact[email]'
+          spellcheck="false"
+          autocapitalize="off"
+          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          aria-required="true"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="ContactForm-email-error"
+          {% endif %}
+          placeholder="{{ 'templates.contact.form.email' | t }}"
         >
-        <label class='field__label' for='Email-{{ section.id }}'> Email* </label>
+        <label class='field__label' for='ContactForm-email'>
+          {{- 'templates.contact.form.email' | t }}
+          <span aria-hidden="true">*</span>
+        </label>
+        {%- if form.errors contains 'email' -%}
+          <small class="contact__field-error" id="ContactForm-email-error">
+            <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+            <span class="form__message">
+              <span class="svg-wrapper">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+              </span>
+              {{- form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email -}}
+            </span>
+          </small>
+        {%- endif -%}
       </div>
 
       <div class='field'>
         <input
-          class='field__input{% if form.errors contains "phone" %} invalid{% endif %}'
-          id='Phone-{{ section.id }}'
-          name='contact[phone]'
           type='tel'
-          required="required"
+          id='ContactForm-phone'
+          class='field__input{% if form.errors contains "phone" %} invalid{% endif %}'
           autocomplete='tel'
-          placeholder='Phone number'
+          name='contact[{{ 'templates.contact.form.phone' | t }}]'
+          pattern="[0-9\-]*"
+          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+          placeholder="{{ 'templates.contact.form.phone' | t }}"
+          required="required"
         >
-        <label class='field__label' for='Phone-{{ section.id }}'> Phone number* </label>
+        <label class='field__label' for='ContactForm-phone'>
+          {{ 'templates.contact.form.phone' | t }}
+        </label>
       </div>
     </div>
     
@@ -285,22 +312,27 @@
         </div>
       </div>
     </fieldset>
-
+    
+    {% comment %} Message {% endcomment %}
     <div class='field'>
       <textarea
-        class='text-area field__input{% if form.errors contains "Message" %} invalid{% endif %}'
-        id='Message-{{ section.id }}'
-        name='contact[body]'
         rows='4'
+        id='ContactForm-body'
+        class='text-area field__input{% if form.errors contains "Message" %} invalid{% endif %}'
+        name="contact[{{ 'templates.contact.form.comment' | t }}]"
+        placeholder="{{ 'templates.contact.form.comment' | t }}"
         required="required"
-        placeholder='Message'
         aria-required='true'
         {% if form.errors contains 'body' %}
           aria-invalid='true'
           aria-describedby='Message-error-{{ section.id }}'
         {% endif %}
-      ></textarea>
-      <label class='field__label' for='Message-{{ section.id }}'> Message* </label>
+      >
+        {{- form.body -}}
+      </textarea>
+      <label class='field__label' for='ContactForm-body'>
+        {{- 'templates.contact.form.comment' | t -}}
+      </label>
       {%- if form.errors contains 'body' -%}
         <small class='contact__field-error' id='Message-error-{{ section.id }}'>
           <span class='visually-hidden'>{{ 'accessibility.error' | t }}</span>
@@ -309,12 +341,12 @@
       {%- endif -%}
     </div>
 
-    <div class='product-form__buttons'>
+    <div class='contact__button product-form__buttons'>
       <button
         type='submit'
         class='button product-form__submit'
       >
-        Submit <span class='icon-arrow'>→</span>
+      {{ 'templates.contact.form.send' | t }} <span class='icon-arrow'>→</span>
       </button>
     </div>
   </div>
@@ -326,7 +358,7 @@
       padding-bottom: 1rem;
     }
   
-    .custom-form__fields {
+    .contact__fields {
       display: flex;
       flex-direction: column;
       gap: 2rem;
@@ -392,14 +424,14 @@
       display: block;
     }
 
-    .form--success .custom-form__fields {
+    .form--success .contact__fields {
       display: none;
     }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('#custom_product_form')
+    const form = document.querySelector('#ContactFormProduct')
     const inputs = form.querySelectorAll('.field__input')
 
     inputs.forEach((input) => {
@@ -416,22 +448,22 @@
     })
   })
   // Klaviyo form submission
-  document.querySelector('#custom_product_form').addEventListener('submit', async function (e) {
+  document.querySelector('#ContactFormProduct').addEventListener('submit', async function (e) {
     // prevent default submission
     // e.preventDefault()
 
     const form = this
     const submitButton = form.querySelector('button[type="submit"]')
-    const formFields = form.querySelector('.custom-form__fields')
+    const formFields = form.querySelector('.contact__fields')
     const formMessage = form.querySelector('.form__message')
 
     try {
       submitButton.disabled = true
 
-      const email = this.querySelector('[name="contact[Email]"]').value
+      const email = this.querySelector('[name="contact[email]"]').value
       const firstName = this.querySelector('[name="contact[First Name]"]').value
-      const lastName = this.querySelector('[name="contact[Last Name]"]').value
-      const phone = this.querySelector('[name="contact[phone]"]').value
+      const lastName = this.querySelector('[name="contact[{{ 'templates.contact.form.last_name' | t }}]"]').value
+      const phone = this.querySelector('[name="contact[{{ 'templates.contact.form.phone' | t }}]"]').value
       const role = this.querySelector('[name="contact[Role]"]').value
       const streetAddress = this.querySelector('[name="contact[Street Address]"]').value
       const city = this.querySelector('[name="contact[City]"]').value
@@ -443,7 +475,7 @@
       const materialInterests = Array.from(materialInterestCheckboxes)
         .map((checkbox) => checkbox.value)
         .join(', ')
-      const message = this.querySelector('[name="contact[body]"]').value
+      const message = this.querySelector('[name="contact[{{ 'templates.contact.form.comment' | t }}]"]').value
 
       // Wait for Klaviyo to be ready
       if (typeof _learnq === 'undefined') {
@@ -505,15 +537,6 @@
       
       // Optional delay to ensure Klaviyo gets its time
       await new Promise((resolve) => setTimeout(resolve, 300))
-
-      // Show success message
-      // formFields.style.display = 'none'
-      // formMessage.innerHTML = `
-      //       <div class='form-status form-status-list form__message' tabindex='-1' autofocus>
-      //           <p>{{ modal_form_success_message }}</p>
-      //       </div>
-      //   `
-      // formMessage.style.display = 'block'
     } catch (error) {
       console.error('Klaviyo submission error:', error)
       formMessage.innerHTML = `
