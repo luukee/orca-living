@@ -12,7 +12,7 @@
 {% endcomment %}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 {% assign contact_form_class = 'custom-product-form isolate' %}
-
+<!-- TODO: required fields error handling -->
 {%- form 'contact', id: 'ContactFormProduct', class: contact_form_class, return_to: back -%}
   {%- if form.posted_successfully? -%}
     <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
@@ -262,8 +262,10 @@
         name='contact[Square Footage]'
         type='number'
         placeholder='Square Footage'
+        required="required"
+        aria-required="true"
       >
-      <label class='field__label' for='Square Footage-{{ section.id }}'>Approximate Square Footage</label>
+      <label class='field__label' for='Square Footage-{{ section.id }}'>Approximate Square Footage<span aria-hidden="true">*</span></label>
     </div>
 
     {% comment %} Material interest field {% endcomment %}
