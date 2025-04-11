@@ -9,6 +9,9 @@
   - modal_form_success_message: {String} the success message to display.
   Usage:
   {% render 'custom-product-form', product: product, block: block, form: form, section: section %}
+  
+  Klaviyo:
+  - Internal alert message personalization reference page: https://help.klaviyo.com/hc/en-us/articles/4408802648731#h_01HBRGTJ3H2M4N326FXPBSA4AN
 {% endcomment %}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 {% assign contact_form_class = 'custom-product-form isolate' %}
