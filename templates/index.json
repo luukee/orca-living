@@ -97,7 +97,7 @@
         "button_MgKUB3": {
           "type": "button",
           "settings": {
-            "button_label": "Landscapes",
+            "button_label": "Design",
             "button_link": "shopify://blogs/landscapes",
             "button_style_secondary": true,
             "button_label_2": "Shop",
