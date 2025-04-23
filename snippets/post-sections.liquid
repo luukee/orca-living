@@ -1,20 +1,16 @@
 {% assign blocks = article.metafields.blog.sections.references %}
 {% render 'dump' with blocks %}
-{% if blocks %}
+{% if blocks and blocks.size > 0 %}
   {% for block in blocks %}
-		{% render 'dump' with block.__typename %}
     {% case block.__typename %}
       {% when 'text_section' %}
         <h2>{{ block.heading }}</h2>
         {{ block.body | rich_text }}
-
       {% when 'text_image_section' %}
         <h2>{{ block.heading }}</h2>
         {{ block.body | rich_text }}
         <img src="{{ block.image | img_url: 'large' }}" alt="{{ block.image.alt }}">
-
-      {# …your other types here… #}
-
+      {# …etc.… #}
     {% endcase %}
   {% endfor %}
 {% else %}
