@@ -1,6 +1,8 @@
 {% assign blocks = article.metafields.blog.sections.references %}
-{% if blocks and blocks.size > 0 %}
+{% render 'dump' with blocks %}
+{% if blocks %}
   {% for block in blocks %}
+		{% render 'dump' with block.__typename %}
     {% case block.__typename %}
       {% when 'text_section' %}
         <h2>{{ block.heading }}</h2>
