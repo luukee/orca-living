@@ -58,6 +58,7 @@
     },
     "2e29f856-a629-41cb-9b51-49b8164a7b82": {
       "type": "custom-liquid",
+      "disabled": true,
       "settings": {
         "custom_liquid": "{% render 'snippet--article-gallery' %}",
         "color_scheme": "background-1",
