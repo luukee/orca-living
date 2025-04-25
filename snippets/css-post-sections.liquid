@@ -1,9 +1,18 @@
 <style data-id='post-sections' type='text/css'>
-		.article-template__content--post-sections.rte img {
-			height: 100%;
-			width: 100%;
-			border: none;
-	}
+  .template--article-sections-blog-post .page-width.page-width--narrow {
+    max-width: 1400px;
+  }
+  @media only screen and (max-width: 989px) {
+    .template--article-sections-blog-post #MainContent > *:nth-child(2) {
+      grid-column-start: 1;
+      grid-column-end: -1;
+    }
+  }
+  .article-template__content--post-sections.rte img {
+    height: 100%;
+    width: 100%;
+    border: none;
+  }
   .post-sections--gallery img {
     object-fit: contain;
   }
