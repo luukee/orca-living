@@ -6834,18 +6834,26 @@ details-disclosure > details {
   opacity: 1;
   background: #000;
 }
-.template--article-field-notes-article .rte img {
+.section-full-width-image {
+  margin-bottom: 3em;
+}
+
+.template--article-field-notes-article .rte img,
+.section-full-width-image img {
   height: 100%;
   width: 100%;
   border: none;
 }
 em:not(.caption em) {
+  font-style: italic;
+}
+.template--article-field-notes-article em:not(.caption em),
+.section-quote em:not(.caption em) {
   text-align: center;
   display: flex;
   justify-content: center;
   margin: 60px;
   font-size: 25px;
-  font-style: italic;
   margin-bottom: 30px;
   margin-top: 40px;
 }
@@ -6884,7 +6892,8 @@ em:not(.caption em) {
     margin-top: 60px;
     margin-bottom: 60px;
   }
-  .template--article-field-notes-article h1 {
+  .template--article-field-notes-article h1,
+  .article-template__content h1 {
     line-height: 1.3;
     letter-spacing: 2px;
     font-size: 55px;
@@ -6914,7 +6923,8 @@ em:not(.caption em) {
   }
 }
 @media only screen and (max-width: 989px) {
-  em:not(.caption em) {
+  .template--article-field-notes-article em:not(.caption em),
+  .section-quote em:not(.caption em) {
     margin: 15px 15px 3px;
     font-size: 20px;
   }
@@ -7396,13 +7406,13 @@ em:not(.caption em) {
   width: 100%;
   border: none;
 }
-em:not(.caption em) {
+.template--article-field-notes-article em:not(.caption em),
+.section-quote em:not(.caption em) {
   text-align: center;
   display: flex;
   justify-content: center;
   margin: 60px;
   font-size: 25px;
-  font-style: italic;
   margin-bottom: 30px;
   margin-top: 40px;
 }
@@ -7436,7 +7446,8 @@ em:not(.caption em) {
   text-decoration: underline;
 }
 .template--article-field-notes-article h1,
-.collection-hero__title {
+.collection-hero__title,
+.article-template__content h1 {
   line-height: 1.3;
   letter-spacing: 2px;
   font-size: 30px;
@@ -7466,7 +7477,8 @@ em:not(.caption em) {
     margin-bottom: 60px;
   }
   .template--article-field-notes-article h1,
-  .collection-hero__title {
+  .collection-hero__title,
+  .article-template__content h1 {
     font-size: 55px;
   }
   .template--article-field-notes-article h3,
@@ -7499,7 +7511,8 @@ em:not(.caption em) {
   }
 }
 @media only screen and (max-width: 989px) {
-  em:not(.caption em) {
+  .template--article-field-notes-article em:not(.caption em),
+  .section-quote em:not(.caption em) {
     margin: 15px 15px 3px;
     font-size: 20px;
   }

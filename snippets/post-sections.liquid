@@ -47,12 +47,14 @@
                 {% assign image_url = section.text_image | image_url: width: 555 %}
                 {% assign image_tag = section.text_image | image_url: width: 555 | image_tag %}
                 {% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% assign ratio = section.text_image.value.aspect_ratio %}
+                {% assign calculated_height = 555 | divided_by: ratio | round %}
                 {% render 'snippet--image',
                   img: image_url,
                   lazy: true,
                   alt: image_alt,
-                  setWidth: '555px',
-                  setHeight: '555px',
+                  setWidth: 555,
+                  setHeight: calculated_height,
                   useBG: false
                 %}
               </div>
@@ -72,22 +74,25 @@
       </section>
     {% elsif section.full_width_image %}
       {% comment %}This is a full_width_image_section{% endcomment %}
-      <section class='section-full-width-image'>
-				{% comment %} <pre>Full Width Image Section</pre> {% endcomment %}
-				{% assign image_url = section.full_width_image | image_url: width: 2000 %}
-				{% assign image_tag = section.full_width_image | image_url: width: 2000 | image_tag %}
-				{% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
-				{% assign natural_width = section.full_width_image.width %}
-				{% assign natural_height = section.full_width_image.height %}
-				{% assign aspect_ratio = natural_height | divided_by: natural_width | times: 2000 | round %}
-				{% render 'snippet--image',
-					img: image_url,
-					lazy: true,
-					alt: image_alt,
-					setWidth: '2000px',
-					setHeight: {{ aspect_ratio }}px,
-					useBG: false,
-				%}
+      <section class='section-full-width-image rte'>
+        {% comment %} <pre>Full Width Image Section</pre> {% endcomment %}
+        {% assign image_url = section.full_width_image | image_url: width: 2000 %}
+        {% assign image_tag = section.full_width_image | image_url: width: 2000 | image_tag %}
+        {% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
+        {% assign natural_width = section.full_width_image.width %}
+        {% assign natural_height = section.full_width_image.height %}
+        {% assign aspect_ratio = '600' %}
+        {% if section.image_height != blank %}
+          {% assign aspect_ratio = section.image_height %}
+        {% endif %}
+        {% render 'snippet--image',
+          img: image_url,
+          lazy: true,
+          alt: image_alt,
+          setWidth: '2000px',
+          setHeight: aspect_ratio,
+          useBG: false
+        %}
       </section>
     {% elsif section.first_image %}
       {% comment %}This is a two_grid_section{% endcomment %}
@@ -100,12 +105,14 @@
                 {% assign first_image_url = section.first_image | image_url: width: 555 %}
                 {% assign first_image_tag = section.first_image | image_url: width: 555 | image_tag %}
                 {% assign first_image_alt = first_image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% assign ratio = section.first_image.value.aspect_ratio %}
+                {% assign calculated_height = 555 | divided_by: ratio | round %}
                 {% render 'snippet--image',
                   img: first_image_url,
                   lazy: true,
                   alt: first_image_alt,
-                  setWidth: '555px',
-                  setHeight: '555px',
+                  setWidth: 555,
+                  setHeight: calculated_height,
                   useBG: false
                 %}
                 {% if section.first_image_caption %}
@@ -116,12 +123,14 @@
                 {% assign second_image_url = section.second_image | image_url: width: 555 %}
                 {% assign second_image_tag = section.second_image | image_url: width: 555 | image_tag %}
                 {% assign second_image_alt = second_image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% assign ratio = section.second_image.value.aspect_ratio %}
+                {% assign calculated_height = 555 | divided_by: ratio | round %}
                 {% render 'snippet--image',
                   img: second_image_url,
                   lazy: true,
                   alt: second_image_alt,
-                  setWidth: '555px',
-                  setHeight: '555px',
+                  setWidth: 555,
+                  setHeight: calculated_height,
                   useBG: false
                 %}
                 {% if section.second_image_caption %}
@@ -136,9 +145,9 @@
       {% comment %}This is a quote_section{% endcomment %}
       <section class='section-quote'>
         {% comment %} <pre>Quote Section</pre> {% endcomment %}
-        <em>
-          {{ section.quote_text }}
-        </em>
+        <p>
+          <em> "{{ section.quote_text }}" </em>
+        </p>
       </section>
     {% endif %}
   {% endfor %}

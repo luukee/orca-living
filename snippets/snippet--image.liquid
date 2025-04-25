@@ -24,6 +24,7 @@
     else
       assign is_lazy = false
       assign lazyload = ''
+      assign cf = true
     endunless
 
     assign img_alt = img.alt
@@ -34,10 +35,9 @@
     assign img_master = img | image_url
     assign img_src = img | image_url
     assign img_url = img | image_url
-
-    if setWidth != blank and setHeight != blank
+    
+    if setWidth != blank
       assign width = setWidth | remove: 'px'
-      assign height = setHeight | remove: 'px'
     elsif img.width != blank and img.height != blank
       assign width = img.width
       assign height = img.height
@@ -45,12 +45,15 @@
       assign width = '600'
       assign height = '600'
     endif
-
+    if setHeight
+      assign height = setHeight 
+    endif
+    
     assign width_num = width | times: 1
     assign height_num = height | times: 1
     assign padding_top = height_num | times: 100 | divided_by: width_num | append: '%'
-    assign image_width = width | append: 'px'
-    assign image_height = height | append: 'px'
+    assign image_width = width 
+    assign image_height = height 
 
     if cf == true
       unless img_master contains '.webp'
@@ -73,17 +76,24 @@
     {%- for w in widths -%}
       {%- assign w_num = w | times: 1 -%}
       {%- if width_num >= w_num -%}
-        {{- img | image_url: width: w_num }} {{w}}w
-        {%- unless forloop.last and width_num == w_num -%},{%- endunless -%}
+        {%- if img contains 'cdn.shopify.com' -%}
+          {%- assign img_url = img | replace: 'width=2000', 'width=' | append: w_num -%}
+          {{- img_url }} {{w}}w{%- unless forloop.last and width_num == w_num -%},{%- endunless -%}
+        {%- else -%}
+          {{- img | image_url: width: w_num }} {{w}}w{%- unless forloop.last and width_num == w_num -%},{%- endunless -%}
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
     {%- assign last_width = widths.last | times: 1 -%}
     {%- if width_num > last_width -%}
-      ,{{ img | image_url }} {{ width }}w
+      {%- if img contains 'cdn.shopify.com' -%}
+        ,{{ img | replace: 'width=2000', '' }} {{ width }}w
+      {%- else -%}
+        ,{{ img | image_url }} {{ width }}w
+      {%- endif -%}
     {%- endif -%}
   {%- endcapture -%}
-  {%- assign src_set = src_set | strip_newlines -%}
-
+  {%- assign src_set = src_set | strip_newlines | strip -%}
   {% liquid
     if article
       assign base_sizes = '(min-width: 1917px) 760px, (min-width: 1200px) ' | append: width | append: 'px, 100vw' | strip
@@ -149,6 +159,9 @@
     </noscript>
     <div class="image--outer image--{{image_id}} {{class}}">
       <div class="image--inner ">
+        {% comment %} 
+          {% if is_lazy %} lazyload{% endif %}
+        {% endcomment %}
         <img
           {% if id %}id="{{id}}"{% endif %}
           class="else___image{% if is_lazy %} lazyload{% endif %}"
@@ -177,12 +190,12 @@
           --image--natural-height:{{padding_top}};
           --image--set-width:{{image_width}};
           --image--set-height:{{padding_top}};
-          {%- if setWidth -%}--image--set-width:{{setWidth}}px;{%- endif -%}
           {%- if setHeight -%}--image--set-height:{{setHeight}}px;{%- endif -%}
+          {%- if setWidth -%}--image--set-width:{{setWidth}}px;{%- endif -%}
           {{style}}
         }
         .image--{{image_id}} .image--inner {
-          padding-top:{{padding_top}};
+          padding-top:var(--image--set-height,56.6%);
         }
       </style>
     </div>
