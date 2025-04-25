@@ -11,9 +11,21 @@
   "sections": {
     "a6a40d43-1bf3-4347-81bd-9a5fb174555e": {
       "type": "custom-liquid",
+      "disabled": true,
       "settings": {
         "custom_liquid": "",
         "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "side_navigation_LwM4NP": {
+      "type": "side-navigation",
+      "name": "Side Navigation",
+      "settings": {
+        "title": "",
+        "make_h1": false,
+        "menu": "fieldnotes",
         "padding_top": 40,
         "padding_bottom": 52
       }
@@ -76,6 +88,7 @@
   },
   "order": [
     "a6a40d43-1bf3-4347-81bd-9a5fb174555e",
+    "side_navigation_LwM4NP",
     "main",
     "2e29f856-a629-41cb-9b51-49b8164a7b82"
   ]
