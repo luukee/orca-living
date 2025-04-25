@@ -3,25 +3,15 @@
   {% for section in article_sections %}
     {% if section.images %}
       {% comment %}This is a gallery_section{% endcomment %}
-      {% comment %} <pre>Gallery Section</pre> {% endcomment %}
-      <section class='section-gallery article-template__image-gallery'>
+      <section class='post-sections--gallery article-template__image-gallery'>
         <div class='cell half_gutter vert-top'>
           {% if section.images.value %}
             {% for image in section.images.value %}
-              <div class='cell__item medium-up--one-half{% unless forloop.first or forloop.last %} image-margin-top{% endunless %}'>
+              <div class='cell__item medium-up--one-half'>
                 <div class='inner-container'>
-                  {% assign image_url = image | file_url | replace: '/files/files/', '/files/' %}
-                  {%
-                    render 'snippet--image',
-                    img: image_url,
-                    lazy: true,
-                    alt: image.alt | default: '',
-                    setHeight: '100%',
-                    useBG: false
-                  %}
+                  {{ image | image_url: width: 600 | image_tag }}
                 </div>
               </div>
-              {% comment %} {% render 'snippet--gallery-list_expand' %} {% endcomment %}
             {% endfor %}
           {% endif %}
         </div>
@@ -29,12 +19,11 @@
     {% elsif section.text_image %}
       {% comment %}This is a text_image_section{% endcomment %}
       <section
-        class='section-text-image two-grid-section{% if section.section_background_color %} section-text-image--background{% endif %}'
+        class='post-sections--text-image two-grid-section{% if section.section_background_color %} post-sections--text-image--background{% endif %}'
         {% if section.section_background_color %}
           style='background-color: {{ section.background_color }};'
         {% endif %}
       >
-        {% comment %} <pre>Text Image Section</pre> {% endcomment %}
         <div class='cell half_gutter vert-top'>
           <div class='cell__item'>
             <div class='two-grid'>
@@ -44,16 +33,18 @@
                 {% endif %}
               </div>
               <div class='image'>
-                {% assign image_url = section.text_image | image_url: width: 555 %}
-                {% assign image_tag = section.text_image | image_url: width: 555 | image_tag %}
+                {% assign image_url = section.text_image | image_url: width: 600 %}
+                {% assign image_tag = section.text_image | image_url: width: 600 | image_tag %}
                 {% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% assign natural_width = section.text_image.value.width %}
                 {% assign ratio = section.text_image.value.aspect_ratio %}
-                {% assign calculated_height = 555 | divided_by: ratio | round %}
+                {% assign target_width = natural_width | at_most: 600 %}
+                {% assign calculated_height = target_width | divided_by: ratio | round | at_most: 600 %}
                 {% render 'snippet--image',
                   img: image_url,
                   lazy: true,
                   alt: image_alt,
-                  setWidth: 555,
+                  setWidth: target_width,
                   setHeight: calculated_height,
                   useBG: false
                 %}
@@ -64,8 +55,7 @@
       </section>
     {% elsif section.text_section_body %}
       {% comment %}This is a text_section{% endcomment %}
-      <section class='section-text'>
-        {% comment %} <pre>Text Section</pre> {% endcomment %}
+      <section class='post-sections--text'>
         <div class='rte'>
           {% if section.text_section_body %}
             {{ section.text_section_body | metafield_tag }}
@@ -74,44 +64,47 @@
       </section>
     {% elsif section.full_width_image %}
       {% comment %}This is a full_width_image_section{% endcomment %}
-      <section class='section-full-width-image rte'>
-        {% comment %} <pre>Full Width Image Section</pre> {% endcomment %}
+      <section class='post-sections--full-width-image rte'>
         {% assign image_url = section.full_width_image | image_url: width: 2000 %}
         {% assign image_tag = section.full_width_image | image_url: width: 2000 | image_tag %}
         {% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
-        {% assign natural_width = section.full_width_image.width %}
-        {% assign natural_height = section.full_width_image.height %}
-        {% assign aspect_ratio = '600' %}
+        {% assign natural_width = section.full_width_image.value.width %}
+        {% assign ratio = section.full_width_image.value.aspect_ratio %}
+        {% assign target_width = natural_width | at_most: 2000 %}
+        {% assign calculated_height = target_width | divided_by: ratio | round %}
         {% if section.image_height != blank %}
-          {% assign aspect_ratio = section.image_height %}
+          {% assign calculated_height = section.image_height %}
+        {% else %}
+          {% assign calculated_height = calculated_height %}
         {% endif %}
         {% render 'snippet--image',
           img: image_url,
           lazy: true,
           alt: image_alt,
-          setWidth: '2000px',
-          setHeight: aspect_ratio,
+          setWidth: target_width,
+          setHeight: calculated_height,
           useBG: false
         %}
       </section>
     {% elsif section.first_image %}
       {% comment %}This is a two_grid_section{% endcomment %}
-      <section class='section-two-grid two-grid-section'>
-        {% comment %} <pre>Two Grid Section</pre> {% endcomment %}
+      <section class='post-sections--two-grid two-grid-section'>
         <div class='cell half_gutter vert-top'>
           <div class='cell__item'>
             <div class='two-grid'>
               <div class='{% if section.first_image_caption %}caption{% else %}image{% endif %}'>
-                {% assign first_image_url = section.first_image | image_url: width: 555 %}
-                {% assign first_image_tag = section.first_image | image_url: width: 555 | image_tag %}
+                {% assign first_image_url = section.first_image | image_url: width: 600 %}
+                {% assign first_image_tag = section.first_image | image_url: width: 600 | image_tag %}
                 {% assign first_image_alt = first_image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% assign natural_width = section.first_image.value.width %}
                 {% assign ratio = section.first_image.value.aspect_ratio %}
-                {% assign calculated_height = 555 | divided_by: ratio | round %}
+                {% assign target_width = natural_width | at_most: 600 %}
+                {% assign calculated_height = target_width | divided_by: ratio | round | at_most: 600 %}
                 {% render 'snippet--image',
                   img: first_image_url,
                   lazy: true,
                   alt: first_image_alt,
-                  setWidth: 555,
+                  setWidth: target_width,
                   setHeight: calculated_height,
                   useBG: false
                 %}
@@ -120,16 +113,18 @@
                 {% endif %}
               </div>
               <div class='{% if section.second_image_caption %}caption{% else %}image{% endif %}'>
-                {% assign second_image_url = section.second_image | image_url: width: 555 %}
-                {% assign second_image_tag = section.second_image | image_url: width: 555 | image_tag %}
+                {% assign second_image_url = section.second_image | image_url: width: 600 %}
+                {% assign second_image_tag = section.second_image | image_url: width: 600 | image_tag %}
                 {% assign second_image_alt = second_image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% assign natural_width = section.second_image.value.width %}
                 {% assign ratio = section.second_image.value.aspect_ratio %}
-                {% assign calculated_height = 555 | divided_by: ratio | round %}
+                {% assign target_width = natural_width | at_most: 600 %}
+                {% assign calculated_height = target_width | divided_by: ratio | round | at_most: 600 %}
                 {% render 'snippet--image',
                   img: second_image_url,
                   lazy: true,
                   alt: second_image_alt,
-                  setWidth: 555,
+                  setWidth: target_width,
                   setHeight: calculated_height,
                   useBG: false
                 %}
@@ -143,8 +138,7 @@
       </section>
     {% elsif section.quote_text %}
       {% comment %}This is a quote_section{% endcomment %}
-      <section class='section-quote'>
-        {% comment %} <pre>Quote Section</pre> {% endcomment %}
+      <section class='post-sections--quote'>
         <p>
           <em> "{{ section.quote_text }}" </em>
         </p>
@@ -152,3 +146,4 @@
     {% endif %}
   {% endfor %}
 {% endif %}
+{% render 'css-post-sections' %}

@@ -6834,9 +6834,6 @@ details-disclosure > details {
   opacity: 1;
   background: #000;
 }
-.section-full-width-image {
-  margin-bottom: 3em;
-}
 
 .template--article-field-notes-article .rte img,
 .section-full-width-image img {
@@ -6848,7 +6845,7 @@ em:not(.caption em) {
   font-style: italic;
 }
 .template--article-field-notes-article em:not(.caption em),
-.section-quote em:not(.caption em) {
+.post-sections--quote em:not(.caption em) {
   text-align: center;
   display: flex;
   justify-content: center;
@@ -6924,7 +6921,7 @@ em:not(.caption em) {
 }
 @media only screen and (max-width: 989px) {
   .template--article-field-notes-article em:not(.caption em),
-  .section-quote em:not(.caption em) {
+  .post-sections--quote em:not(.caption em) {
     margin: 15px 15px 3px;
     font-size: 20px;
   }
@@ -7407,7 +7404,7 @@ em:not(.caption em) {
   border: none;
 }
 .template--article-field-notes-article em:not(.caption em),
-.section-quote em:not(.caption em) {
+.post-sections--quote em:not(.caption em) {
   text-align: center;
   display: flex;
   justify-content: center;
@@ -7512,7 +7509,7 @@ em:not(.caption em) {
 }
 @media only screen and (max-width: 989px) {
   .template--article-field-notes-article em:not(.caption em),
-  .section-quote em:not(.caption em) {
+  .post-sections--quote em:not(.caption em) {
     margin: 15px 15px 3px;
     font-size: 20px;
   }
