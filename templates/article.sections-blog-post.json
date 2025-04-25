@@ -38,6 +38,10 @@
           "type": "content",
           "settings": {}
         },
+        "sections_DTYJXM": {
+          "type": "sections",
+          "settings": {}
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -49,12 +53,15 @@
         "featured_image",
         "title",
         "content",
+        "sections_DTYJXM",
         "share"
       ],
       "custom_css": [
         "> * {margin: var(--base-gutter--half) 0;}"
       ],
-      "settings": {}
+      "settings": {
+        "page_width": "narrow"
+      }
     },
     "2e29f856-a629-41cb-9b51-49b8164a7b82": {
       "type": "custom-liquid",
