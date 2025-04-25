@@ -206,90 +206,86 @@
   }
 
   function LazyImages() {
-
-
-    // To Do: figure out how to only see "visible" images, not ones hidden in menus till needed
-    function isVisible(elem) {
-      const styles = window.getComputedStyle(elem)      
-      return styles.display !== 'none' && styles.visibility !== 'hidden'
-      // return styles.display !== 'none' && styles.visibility !== 'hidden' && parentVisible(elem)
-    }
     var lazyClass = 'lazyload',
         loadedClass = 'lazyloaded',
         ignoreClass = 'defer',
         lazyImages = [].slice.call(document.querySelectorAll('img.'+lazyClass+':not(.'+ignoreClass+')'));
     
-    setTimeout(function (argument) {
-      if ("IntersectionObserver" in window && "IntersectionObserverEntry" in window && "intersectionRatio" in window.IntersectionObserverEntry.prototype) {
+    function cleanupImageAttributes(img) {
+      // Transfer data attributes to regular attributes
+      if (img.dataset.srcset) {
+        img.setAttribute('srcset', img.dataset.srcset);
+        img.removeAttribute('data-srcset');
+      }
+      if (img.dataset.sizes) {
+        img.setAttribute('sizes', img.dataset.sizes);
+        img.removeAttribute('data-sizes');
+      }
+      if (img.dataset.src) {
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+      }
+      // Remove other data attributes that are no longer needed
+      img.removeAttribute('data-expand');
+      img.removeAttribute('data-parent-fit');
+    }
+
+    // Add load event listener to all lazy images
+    lazyImages.forEach(img => {
+      img.addEventListener('load', () => {
+        if (img.classList.contains(loadedClass)) {
+          cleanupImageAttributes(img);
+        }
+      });
+    });
+    
+    setTimeout(function () {
+      if ("IntersectionObserver" in window) {
         let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
           entries.forEach(function(entry) {
-            if (entry.isIntersecting ) {
-
-              let lazyImage = entry.target,
-                  lazySrc = lazyImage.dataset.src,
-                  lazySrcSet = lazyImage.dataset.srcset,
-                  lazySizes = lazyImage.dataset.sizes;
-              // console.log(lazySizes)
-
-              if (lazyImage.offsetWidth < window.innerWidth) {
-                let newSize = Math.round(lazyImage.offsetWidth * 2) + 'px';
-                let newLazySize = '(min-width: ' + window.innerWidth + 'px) ' + newSize + ',';
-                lazySizes = newLazySize + lazySizes;
-              }
-
-
-              lazyImage.src = lazySrc;
-              lazyImage.srcset = lazySrcSet;
-              lazyImage.sizes = lazySizes;
-              lazyImage.addEventListener('load', loaded)
-
-              function loaded() {
-                lazyImage.classList.remove(lazyClass);
-                lazyImage.classList.add(loadedClass);
-                lazyImageObserver.unobserve(lazyImage);
-
-              }
+            if (entry.isIntersecting) {
+              let lazyImage = entry.target;
+              cleanupImageAttributes(lazyImage);
+              lazyImage.classList.remove(lazyClass);
+              lazyImage.classList.add(loadedClass);
+              lazyImageObserver.unobserve(lazyImage);
             }
           });
+        }, {
+          rootMargin: '50px'
         });
+
         lazyImages.forEach(function(lazyImage) {
           lazyImageObserver.observe(lazyImage);
         });
       } else {
-        var lazyloadIThrottleTimeout;
+        // Fallback for older browsers
+        var lazyloadThrottleTimeout;
         function lazyload () {
-          if (lazyloadIThrottleTimeout) {
-            clearTimeout(lazyloadIThrottleTimeout);
+          if(lazyloadThrottleTimeout) {
+            clearTimeout(lazyloadThrottleTimeout);
           }    
-          lazyloadIThrottleTimeout = setTimeout(function() {
+          lazyloadThrottleTimeout = setTimeout(function() {
             var scrollTop = window.pageYOffset;
             lazyImages.forEach(function(img) {
-              if (img.offsetTop < (window.innerHeight + scrollTop)) {
-
-
-
-                img.src = img.dataset.src;
-                img.srcset = img.dataset.srcset;
-                img.sizes = img.dataset.sizes;
+              if(img.offsetTop < (window.innerHeight + scrollTop)) {
+                cleanupImageAttributes(img);
                 img.classList.remove(lazyClass);
-                // console.log(img)
+                img.classList.add(loadedClass);
               }
             });
-            if (lazyImages.length == 0) { 
+            if(lazyImages.length == 0) { 
               document.removeEventListener("scroll", lazyload);
-              window.removeEventListener("load", lazyload);
               window.removeEventListener("resize", lazyload);
               window.removeEventListener("orientationChange", lazyload);
             }
           }, 20);
         }
         document.addEventListener("scroll", lazyload);
-        window.addEventListener("load", lazyload);
         window.addEventListener("resize", lazyload);
         window.addEventListener("orientationChange", lazyload);
       }
-    },100)
-
+    }, 100);
   }
   
   function updateHeightVar(el, v) {

@@ -1,6 +1,6 @@
 {{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
 
-<article class="article-template" itemscope itemtype="http://schema.org/BlogPosting">
+<article class="article-template template--article-main-article {{class}}" itemscope itemtype="http://schema.org/BlogPosting">
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
@@ -41,7 +41,7 @@
         {%- endif -%}
 
       {%- when 'title' -%}
-        <header class="page-width page-width--narrow" {{ block.shopify_attributes }}>
+        <header class="page-width page-width--{{ section.settings.page_width }}" {{ block.shopify_attributes }}>
           <h1 class="article-template__title" itemprop="headline">{{ article.title | escape }}</h1>
           {%- if block.settings.blog_show_date -%}
             <span class="circle-divider caption-with-letter-spacing" itemprop="dateCreated pubdate datePublished">
@@ -57,14 +57,14 @@
 
       {%- when 'content' -%}
         <div
-          class="article-template__content page-width page-width--narrow rte"
+          class="article-template__content page-width page-width--{{ section.settings.page_width }} rte"
           itemprop="articleBody"
           {{ block.shopify_attributes }}
         >
-          {% render 'post-sections' %}
+          {{ article.content }}
         </div>
-        
-
+      {%- when 'sections' -%}
+        {% render 'post-sections' %}
       {%- when 'share' -%}
         <div class="article-template__social-sharing page-width page-width--narrow" {{ block.shopify_attributes }}>
           {% assign share_url = request.origin | append: article.url %}
@@ -304,6 +304,25 @@
   "name": "t:sections.main-article.name",
   "tag": "section",
   "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "page_width",
+      "info": "This setting will apply to the article content on desktop.",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "narrow",
+      "label": "Page Width"
+    }
+  ],
   "blocks": [
     {
       "type": "@app"
@@ -399,6 +418,17 @@
         {
           "type": "paragraph",
           "content": "t:sections.main-article.blocks.share.settings.title_info.content"
+        }
+      ]
+    },
+    {
+      "type": "sections",
+      "name": "Sections",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Includes sections defined in the article Metafields -> Sections."
         }
       ]
     }

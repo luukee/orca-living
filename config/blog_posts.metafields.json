@@ -1,14 +1,16 @@
 [
   {
-    "namespace":   "blog",
-    "key":         "sections",
-    "name":        "Sections",
+    "namespace": "blog",
+    "key": "sections",
+    "name": "Sections",
     "description": "Flexible content blocks",
-    "type":        "list.metaobject",
+    "type": "list.metaobject",
     "validations": {
-      "metaobject": { "resource": "*" }
+      "metaobject": {
+        "resource": "*"
+      }
     },
     "ownerType": "BLOG_POST",
-    "access":    "storefront"
+    "access": "storefront"
   }
 ]

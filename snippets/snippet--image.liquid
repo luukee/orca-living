@@ -14,86 +14,93 @@
   {% endcomment %}
   <!-- snippets/snippet--image -->
   {% liquid
-    if imgMaster contains '.webp'
+    if img_master contains '.webp'
       assign cf = true
     endif
 
     unless lazy == false or cf == true
-      assign isLazy = true
+      assign is_lazy = true
       assign lazyload = 'lazyload'
     else
+      assign is_lazy = false
       assign lazyload = ''
-      assign isLazy = false
-      assign cf = true
     endunless
 
-    assign imgAlt = img.alt
+    assign img_alt = img.alt
     if alt != blank
-      assign imgAlt = alt
+      assign img_alt = alt
     endif
 
-    assign imgMaster = img | img_url: 'master'
-    assign imgSrc = img | img_url: '600x'
-    assign img_url = img | img_url: '600x'
-    assign paddingTop = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
-    assign imageWidth = img.src.width | append: 'px'
+    assign img_master = img | image_url
+    assign img_src = img | image_url
+    assign img_url = img | image_url
+
+    if setWidth != blank and setHeight != blank
+      assign width = setWidth | remove: 'px'
+      assign height = setHeight | remove: 'px'
+    elsif img.width != blank and img.height != blank
+      assign width = img.width
+      assign height = img.height
+    else
+      assign width = '600'
+      assign height = '600'
+    endif
+
+    assign width_num = width | times: 1
+    assign height_num = height | times: 1
+    assign padding_top = height_num | times: 100 | divided_by: width_num | append: '%'
+    assign image_width = width | append: 'px'
+    assign image_height = height | append: 'px'
 
     if cf == true
-      assign paddingTop = '100%'
-      unless imgMaster contains '.webp'
-        assign imgSrc = img
-        assign imgMaster = img
+      unless img_master contains '.webp'
+        assign img_src = img
+        assign img_master = img
       else
-        assign imgSrc = imgMaster
+        assign img_src = img_master
       endunless
-      assign imageWidth = '100%'
+      assign image_width = '100%'
     endif
 
-    assign key = imageWidth | append: paddingTop | append: alt | append: section.id | append: block.id | append: forloop.index
-    assign imageID = img | hmac_sha1: key
+    assign key = image_width | append: padding_top | append: alt | append: section.id | append: block.id | append: forloop.index
+    assign image_id = img | hmac_sha1: key
   %}
 
-  {% assign imgSrcSet = img.src %}
-  {%- capture srcSet -%}
-    {% unless imgSrcSet == '' or imgSrcSet == blank %}
-      {%- for i in (1..100) -%}
-        {%- liquid 
-          assign w = i | times: 50
-          assign wSize = w | append: 'x'
-        -%}
-        {%- if img.src.width > w -%}{{ img.src | img_url: wSize }} {{w}}w,{%- endif -%}
-      {%- endfor -%}
-      {{ img.src | image_url }} {{ img.src.width }}w
-    {% else %}
-      {{ img | file_url }} 1400w
-    {% endunless %}
+  {% assign img_src_set = img.src %}
+  {%- capture src_set -%}
+    {%- assign widths = "200,400,600,800,1000,1200,1400,1600" | split: ',' -%}
+    {%- assign width_num = width | times: 1 -%}
+    {%- for w in widths -%}
+      {%- assign w_num = w | times: 1 -%}
+      {%- if width_num >= w_num -%}
+        {{- img | image_url: width: w_num }} {{w}}w
+        {%- unless forloop.last and width_num == w_num -%},{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign last_width = widths.last | times: 1 -%}
+    {%- if width_num > last_width -%}
+      ,{{ img | image_url }} {{ width }}w
+    {%- endif -%}
   {%- endcapture -%}
-  {%- assign srcSet = srcSet | lstrip | rstrip | trim | strip | strip_newlines -%}
+  {%- assign src_set = src_set | strip_newlines -%}
 
-  {%- capture sizes -%}
-    {% comment %}
-    {% unless imgSrcSet == '' or imgSrcSet == blank %}
-      (min-width: {{img.src.width}}px) {{img.src.width}}px,
-
-      {%- for i in (1..100) -%}
-        {%- liquid 
-          assign w = i | times: 50
-        -%}
-        {%- if img.src.width > w -%}(min-width: {{w}}px) {{w}}px,{%- endif -%}
-      {%- endfor -%}
-    {% endunless %}
-    {% endcomment %}
-    100vw
-  {%- endcapture -%}
-  {%- assign sizes = sizes | lstrip | rstrip | trim | strip | strip_newlines -%}
+  {% liquid
+    if article
+      assign base_sizes = '(min-width: 1917px) 760px, (min-width: 1200px) ' | append: width | append: 'px, 100vw' | strip
+    else
+      assign base_sizes = '(min-width: 1200px) ' | append: width | append: 'px, 100vw' | strip
+    endif
+  %}
 
   {% if useBG == true %}
     <noscript>
       <div class="bg_image {{class}}">
         <img
-          src="{{ imgSrc }}"
-          alt="{{ imgAlt }}"
+          src="{{ img_src }}"
+          alt="{{ img_alt }}"
           class=""
+          width="{{ width }}"
+          height="{{ height }}"
           {% if style %}
             style="{{style}}"
           {% endif %}
@@ -109,65 +116,73 @@
         {% if id %}
           id="{{id}}"
         {% endif %}
-        class="{{ lazyload }} "
-        src="{{ imgSrc }}"
-        {% if isLazy %}
+        class="{{ lazyload }} bg___image"
+        src="{{ img_src }}"
+        {% if is_lazy %}
           data-src="{{ img_url }}"
           data-sizes="{{-sizes-}}"
-          data-srcset="{{-srcSet-}}"
+          data-srcset="{{-src_set-}}"
         {% endif %}
-        alt="{{ imgAlt | escape }}"
+        alt="{{ img_alt | escape }}"
+        width="{{ width }}"
+        height="{{ height }}"
         {{ attr }}
       >
     </div>
   {% else %}
     {% comment %}
       <!-- {{key}} -->
-      <!-- {{imageID}} -->
+      <!-- {{image_id}} -->
     {% endcomment %}
     <noscript>
       <img
-        src="{{ imgSrc }}"
-        alt="{{ imgAlt }}"
+        src="{{ img_src }}"
+        alt="{{ img_alt }}"
         class=""
+        width="{{ width }}"
+        height="{{ height }}"
         {% if style %}
           style="{{style}}"
         {% endif %}
         {{ attr }}
       >
     </noscript>
-    <div class="image--outer image--{{imageID}} {{class}}">
+    <div class="image--outer image--{{image_id}} {{class}}">
       <div class="image--inner ">
         <img
-          {% if id %}
-            id="{{id}}"
-          {% endif %}
-          class="{{ lazyload }} "
-          src="{{ imgSrc }}"
-
-          {% if isLazy %}
+          {% if id %}id="{{id}}"{% endif %}
+          class="else___image{% if is_lazy %} lazyload{% endif %}"
+          src="{{ img_src }}"
+          {% if is_lazy %}
             data-src="{{ img_url }}"
-            data-sizes="{{-sizes-}}"
-            data-srcset="{{-srcSet-}}"
+            data-srcset="{{ src_set }}"
+            data-sizes="{{ base_sizes }}"
+            data-expand="-10"
+            data-parent-fit="contain"
+            loading="lazy"
+          {% else %}
+            srcset="{{ src_set }}"
+            sizes="{{ base_sizes }}"
           {% endif %}
-          alt="{{ imgAlt | escape }}"
+          alt="{{ img_alt | escape }}"
+          width="{{ width }}"
+          height="{{ height }}"
           {{ attr }}
         >
       </div>
       <style type="text/css">
-        .image--{{imageID}} {
-          --image--max-source: url('{{imgMaster}}');
-          --image--set-width:var(--image--natural-width);
-          --image--set-height:var(--image--natural-height);
-          --image--natural-width:{{imageWidth}};
-          --image--natural-height:{{paddingTop}};
-          /*max-width:var(--image--set-width,100%);*/
-          {%- if setHeight -%}--image--set-height:{{setHeight}};{%- endif -%}
-          {%- if setWidth -%}--image--set-width:{{setWidth}};{%- endif -%}
+        .image--{{image_id}} {
+          --image--max-source: url('{{ img_master }}');
+          --image--natural-width:{{image_width}};
+          --image--natural-height:{{padding_top}};
+          --image--set-width:{{image_width}};
+          --image--set-height:{{padding_top}};
+          {%- if setWidth -%}--image--set-width:{{setWidth}}px;{%- endif -%}
+          {%- if setHeight -%}--image--set-height:{{setHeight}}px;{%- endif -%}
           {{style}}
         }
-        .image--{{imageID}} .image--inner {
-          padding-top:var(--image--set-height,56.6%);
+        .image--{{image_id}} .image--inner {
+          padding-top:{{padding_top}};
         }
       </style>
     </div>

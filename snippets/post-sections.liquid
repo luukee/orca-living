@@ -1,18 +1,145 @@
-{% assign blocks = article.metafields.blog.sections.references %}
-{% render 'dump' with blocks %}
-{% if blocks and blocks.size > 0 %}
-  {% for block in blocks %}
-    {% case block.__typename %}
-      {% when 'text_section' %}
-        <h2>{{ block.heading }}</h2>
-        {{ block.body | rich_text }}
-      {% when 'text_image_section' %}
-        <h2>{{ block.heading }}</h2>
-        {{ block.body | rich_text }}
-        <img src="{{ block.image | img_url: 'large' }}" alt="{{ block.image.alt }}">
-      {# …etc.… #}
-    {% endcase %}
+{% assign article_sections = article.metafields.blog.sections.value %}
+{% if article_sections %}
+  {% for section in article_sections %}
+    {% if section.images %}
+      {% comment %}This is a gallery_section{% endcomment %}
+      <pre>Gallery Section</pre>
+      <section class='section-gallery article-template__image-gallery'>
+        <div class='cell half_gutter vert-top'>
+          {% if section.images.value %}
+            {% for image in section.images.value %}
+              <div class='cell__item medium-up--one-half{% unless forloop.first or forloop.last %} image-margin-top{% endunless %}'>
+                <div class='inner-container'>
+                  {% assign image_url = image | file_url | replace: '/files/files/', '/files/' %}
+                  {%
+                    render 'snippet--image',
+                    img: image_url,
+                    lazy: true,
+                    alt: image.alt | default: '',
+                    setHeight: '100%',
+                    useBG: false
+                  %}
+                </div>
+              </div>
+              {% comment %} {% render 'snippet--gallery-list_expand' %} {% endcomment %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </section>
+    {% elsif section.text_image %}
+      {% comment %}This is a text_image_section{% endcomment %}
+      <section
+        class='section-text-image two-grid-section{% if section.section_background_color %} section-text-image--background{% endif %}'
+        {% if section.section_background_color %}
+          style='background-color: {{ section.background_color }};'
+        {% endif %}
+      >
+        <pre>Text Image Section</pre>
+        <div class='cell half_gutter vert-top'>
+          <div class='cell__item'>
+            <div class='two-grid'>
+              <div class='rte caption{% if section.flip_order == true %} order-2{% endif %}'>
+                {% if section.body %}
+                  {{ section.body | metafield_tag }}
+                {% endif %}
+              </div>
+              <div class='image'>
+                {% assign image_url = section.text_image | image_url: width: 555 %}
+                {% assign image_tag = section.text_image | image_url: width: 555 | image_tag %}
+                {% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% render 'snippet--image',
+                  img: image_url,
+                  lazy: true,
+                  alt: image_alt,
+                  setWidth: '555px',
+                  setHeight: '555px',
+                  useBG: false
+                %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    {% elsif section.text_section_body %}
+      {% comment %}This is a text_section{% endcomment %}
+      <section class='section-text'>
+        <pre>Text Section</pre>
+        <div class='rte'>
+          {% if section.text_section_body %}
+            {{ section.text_section_body | metafield_tag }}
+          {% endif %}
+        </div>
+      </section>
+    {% elsif section.full_width_image %}
+      {% comment %}This is a full_width_image_section{% endcomment %}
+      <section class='section-full-width-image'>
+				<pre>Full Width Image Section</pre>
+				{% assign image_url = section.full_width_image | image_url: width: 2000 %}
+				{% assign image_tag = section.full_width_image | image_url: width: 2000 | image_tag %}
+				{% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
+				{% assign natural_width = section.full_width_image.width %}
+				{% assign natural_height = section.full_width_image.height %}
+				{% assign aspect_ratio = natural_height | divided_by: natural_width | times: 2000 | round %}
+				{% render 'snippet--image',
+					img: image_url,
+					lazy: true,
+					alt: image_alt,
+					setWidth: '2000px',
+					setHeight: {{ aspect_ratio }}px,
+					useBG: false,
+				%}
+      </section>
+    {% elsif section.first_image %}
+      {% comment %}This is a two_grid_section{% endcomment %}
+      <section class='section-two-grid two-grid-section'>
+        <pre>Two Grid Section</pre>
+        <div class='cell half_gutter vert-top'>
+          <div class='cell__item'>
+            <div class='two-grid'>
+              <div class='{% if section.first_image_caption %}caption{% else %}image{% endif %}'>
+                {% assign first_image_url = section.first_image | image_url: width: 555 %}
+                {% assign first_image_tag = section.first_image | image_url: width: 555 | image_tag %}
+                {% assign first_image_alt = first_image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% render 'snippet--image',
+                  img: first_image_url,
+                  lazy: true,
+                  alt: first_image_alt,
+                  setWidth: '555px',
+                  setHeight: '555px',
+                  useBG: false
+                %}
+                {% if section.first_image_caption %}
+                  {{ section.first_image_caption | metafield_tag }}
+                {% endif %}
+              </div>
+              <div class='{% if section.second_image_caption %}caption{% else %}image{% endif %}'>
+                {% assign second_image_url = section.second_image | image_url: width: 555 %}
+                {% assign second_image_tag = section.second_image | image_url: width: 555 | image_tag %}
+                {% assign second_image_alt = second_image_tag | split: 'alt="' | last | split: '"' | first %}
+                {% render 'snippet--image',
+                  img: second_image_url,
+                  lazy: true,
+                  alt: second_image_alt,
+                  setWidth: '555px',
+                  setHeight: '555px',
+                  useBG: false
+                %}
+                {% if section.second_image_caption %}
+                  {{ section.second_image_caption | metafield_tag }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    {% elsif section.quote_text %}
+      {% comment %}This is a quote_section{% endcomment %}
+      <section class='section-quote'>
+        <pre>Quote Section</pre>
+        <em>
+          {{ section.quote_text }}
+        </em>
+      </section>
+    {% endif %}
   {% endfor %}
-{% else %}
-  {{ article.content }}
 {% endif %}

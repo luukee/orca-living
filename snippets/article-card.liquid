@@ -60,12 +60,14 @@
             >
               {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
                 {% render 'snippet--image',
-                    img: article.image.src,
+                    img: article.image,
                     useBG: false,
                     lazy: true,
+                    is_lazy: true,
                     cf: false,
+                    article: article,
                     setHeight: article.image.height, 
-                    setWidth:  article.image.width
+                    setWidth: article.image.width
                   %}
               
               {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
