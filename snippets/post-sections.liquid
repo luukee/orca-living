@@ -3,7 +3,7 @@
   {% for section in article_sections %}
     {% if section.images %}
       {% comment %}This is a gallery_section{% endcomment %}
-      <pre>Gallery Section</pre>
+      {% comment %} <pre>Gallery Section</pre> {% endcomment %}
       <section class='section-gallery article-template__image-gallery'>
         <div class='cell half_gutter vert-top'>
           {% if section.images.value %}
@@ -34,7 +34,7 @@
           style='background-color: {{ section.background_color }};'
         {% endif %}
       >
-        <pre>Text Image Section</pre>
+        {% comment %} <pre>Text Image Section</pre> {% endcomment %}
         <div class='cell half_gutter vert-top'>
           <div class='cell__item'>
             <div class='two-grid'>
@@ -63,7 +63,7 @@
     {% elsif section.text_section_body %}
       {% comment %}This is a text_section{% endcomment %}
       <section class='section-text'>
-        <pre>Text Section</pre>
+        {% comment %} <pre>Text Section</pre> {% endcomment %}
         <div class='rte'>
           {% if section.text_section_body %}
             {{ section.text_section_body | metafield_tag }}
@@ -73,7 +73,7 @@
     {% elsif section.full_width_image %}
       {% comment %}This is a full_width_image_section{% endcomment %}
       <section class='section-full-width-image'>
-				<pre>Full Width Image Section</pre>
+				{% comment %} <pre>Full Width Image Section</pre> {% endcomment %}
 				{% assign image_url = section.full_width_image | image_url: width: 2000 %}
 				{% assign image_tag = section.full_width_image | image_url: width: 2000 | image_tag %}
 				{% assign image_alt = image_tag | split: 'alt="' | last | split: '"' | first %}
@@ -92,7 +92,7 @@
     {% elsif section.first_image %}
       {% comment %}This is a two_grid_section{% endcomment %}
       <section class='section-two-grid two-grid-section'>
-        <pre>Two Grid Section</pre>
+        {% comment %} <pre>Two Grid Section</pre> {% endcomment %}
         <div class='cell half_gutter vert-top'>
           <div class='cell__item'>
             <div class='two-grid'>
@@ -135,7 +135,7 @@
     {% elsif section.quote_text %}
       {% comment %}This is a quote_section{% endcomment %}
       <section class='section-quote'>
-        <pre>Quote Section</pre>
+        {% comment %} <pre>Quote Section</pre> {% endcomment %}
         <em>
           {{ section.quote_text }}
         </em>
