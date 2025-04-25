@@ -197,6 +197,21 @@
         .image--{{image_id}} .image--inner {
           padding-top:var(--image--set-height,56.6%);
         }
+        @media only screen and (min-width: 768px) {
+          .image--{{image_id}} .image--inner {
+            padding-top:calc(var(--image--set-height) - 150px);
+          }
+        }
+        @media only screen and (min-width: 990px) {
+          .image--{{image_id}} .image--inner {
+            padding-top:calc(var(--image--set-height) - 70px);
+          }
+        }
+        @media only screen and (min-width: 1200px) {
+          .image--{{image_id}} .image--inner {
+            padding-top:calc(var(--image--set-height) + 150px);
+          }
+        }
       </style>
     </div>
   {% endif %}
