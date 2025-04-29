@@ -2,14 +2,33 @@
   .template--article-sections-blog-post .page-width.page-width--narrow {
     max-width: 1400px;
   }
+  .post-sections {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+  .post-sections--quote em:not(.caption em) {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: 60px;
+    font-size: 25px;
+  }
   @media only screen and (max-width: 989px) {
+    .post-sections {
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+    }
+    .post-sections--quote em:not(.caption em) {
+      margin: 15px 15px 3px;
+      font-size: 20px;
+    }
     .template--article-sections-blog-post #MainContent > *:nth-child(2) {
       grid-column-start: 1;
       grid-column-end: -1;
     }
   }
   .article-template__content--post-sections.rte img {
-    height: 100%;
+    height: auto;
     width: 100%;
     border: none;
   }

@@ -2942,7 +2942,6 @@ details-disclosure > details {
   box-shadow: var(--media-shadow-horizontal-offset)
     var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
     rgba(var(--color-shadow), var(--media-shadow-opacity));
-  margin-bottom: var(--media-shadow-vertical-offset);
 }
 .rte ul,
 .rte ol {
@@ -6848,8 +6847,7 @@ details-disclosure > details {
 em:not(.caption em) {
   font-style: italic;
 }
-.template--article-field-notes-article em:not(.caption em),
-.post-sections--quote em:not(.caption em) {
+.template--article-field-notes-article em:not(.caption em) {
   text-align: center;
   display: flex;
   justify-content: center;
@@ -6889,7 +6887,7 @@ em:not(.caption em) {
   .two-grid .caption img {
     margin-bottom: 30px;
   }
-  .two-grid-section {
+  .two-grid-section:not(.post-sections) {
     margin-top: 60px;
     margin-bottom: 60px;
   }
@@ -6924,12 +6922,11 @@ em:not(.caption em) {
   }
 }
 @media only screen and (max-width: 989px) {
-  .template--article-field-notes-article em:not(.caption em),
-  .post-sections--quote em:not(.caption em) {
+  .template--article-field-notes-article em:not(.caption em) {
     margin: 15px 15px 3px;
     font-size: 20px;
   }
-  .two-grid-section {
+  .two-grid-section:not(.post-sections) {
     margin-top: 15px;
     margin-bottom: 15px;
   }
@@ -7407,8 +7404,7 @@ em:not(.caption em) {
   width: 100%;
   border: none;
 }
-.template--article-field-notes-article em:not(.caption em),
-.post-sections--quote em:not(.caption em) {
+.template--article-field-notes-article em:not(.caption em) {
   text-align: center;
   display: flex;
   justify-content: center;
@@ -7473,7 +7469,7 @@ em:not(.caption em) {
   .two-grid .caption img {
     margin-bottom: 30px;
   }
-  .two-grid-section {
+  .two-grid-section:not(.post-sections) {
     margin-top: 60px;
     margin-bottom: 60px;
   }
@@ -7512,12 +7508,11 @@ em:not(.caption em) {
   }
 }
 @media only screen and (max-width: 989px) {
-  .template--article-field-notes-article em:not(.caption em),
-  .post-sections--quote em:not(.caption em) {
+  .template--article-field-notes-article em:not(.caption em) {
     margin: 15px 15px 3px;
     font-size: 20px;
   }
-  .two-grid-section {
+  .two-grid-section:not(.post-sections) {
     margin-top: 15px;
     margin-bottom: 15px;
   }
