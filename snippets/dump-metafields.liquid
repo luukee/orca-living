@@ -1,0 +1,7 @@
+{% comment %}
+	usage:
+	{% render 'dump-metafields' with article.metafields.blog.sections %}
+{% endcomment %}
+<script type="text/javascript">
+ console.log('Metafields Data:', {{ dump-metafields | map: "value" | json }});
+</script>
