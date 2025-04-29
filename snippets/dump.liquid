@@ -1,7 +1,10 @@
 {% comment %}
-	usage:
-	{% render 'dump' with [OBJECT] %}
+	Description:
+		Snippet to dump the content of an object in the console
+	Usage:
+		{% render 'dump' with [OBJECT] %}
 {% endcomment %}
+
 <script type="text/javascript">
- console.log({{ dump | json }});
+	console.log({{ dump | json }});
 </script>
