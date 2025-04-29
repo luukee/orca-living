@@ -1,5 +1,23 @@
 {{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
+{% comment %} 
+  {% render 'dump-metafields' with article.metafields.blog.sections %}
+{% endcomment %}
 
+{% assign article_meta = article.metafields.blog.sections.value %}
+{% assign featured_image_show = true %}
+{% for item in article_meta %}
+  {% if item.featured_image_display == "Hide featured image" %}
+    {% assign featured_image_show = false %}
+    {% style %}
+      .article-template__content {
+        margin-top: 2rem !important;
+      }
+      .article-template__content h1 {
+        margin-top: 0;
+      }
+    {% endstyle %}
+  {% endif %}
+{% endfor %}
 <article class='article-template' itemscope itemtype='http://schema.org/BlogPosting'>
   {%- for block in section.blocks -%}
     {%- case block.type -%}
@@ -8,7 +26,7 @@
           {% render block %}
         </div>
       {%- when 'featured_image' -%}
-        {%- if article.image -%}
+        {%- if article.image and featured_image_show -%}
           <div class='article-template__hero-container' {{ block.shopify_attributes }}>
             <div class='article-template__alignment' aria-hidden>{{ article.title | escape }}</div>
             <div
