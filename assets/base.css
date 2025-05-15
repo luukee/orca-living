@@ -6919,6 +6919,7 @@ em:not(.caption em) {
     grid-template-columns: 1fr 1fr;
     align-items: center;
     gap: 30px;
+    align-items: stretch;
   }
 }
 @media only screen and (max-width: 989px) {
