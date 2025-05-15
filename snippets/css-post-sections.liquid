@@ -29,11 +29,9 @@
   }
   /* full width image section */
   .article-template__content--post-sections .post-sections--full-width-image img {
-    height: auto;
+    height: calc(100vh - 10rem);
     width: auto;
-    border: none;
-    min-height: 100%;
-    max-width: 100%;
+    object-fit: contain;
   }
   /* image and text section */
   .article-template__content--post-sections .post-sections--text-image img {
