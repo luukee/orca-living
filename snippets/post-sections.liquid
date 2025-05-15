@@ -56,8 +56,13 @@
         {% else %}
           {% assign height = 800 %}
         {% endif %}
-        {% comment %} {% assign focal_point = section.full_width_image.presentation.focal_point %} {% endcomment %}
-        {{ section.full_width_image | image_url: height: height | image_tag: loading: 'lazy' }}
+        {% assign focal_point = section.full_width_image.presentation.focal_point %}
+        <img
+          src="{{ section.full_width_image | image_url: height: height }}"
+          loading="lazy"
+          style="object-fit: cover; object-position: {{ focal_point }};"
+          alt="{{ section.full_width_image.alt | escape }}"
+        >
       </section>
     {% elsif section.first_image %}
       {% comment %}This is a two_grid_section{% endcomment %}
