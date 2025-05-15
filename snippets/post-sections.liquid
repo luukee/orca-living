@@ -56,6 +56,8 @@
         {% else %}
           {% assign height = 800 %}
         {% endif %}
+        {% assign focal_point = section.full_width_image.presentation.focal_point %}
+        {% render 'dump' with focal_point %}
         {{ section.full_width_image | image_url: height: height | image_tag: loading: 'lazy' }}
       </section>
     {% elsif section.first_image %}
