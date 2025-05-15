@@ -52,7 +52,6 @@
       {% comment %}This is a full_width_image_section{% endcomment %}
       <section class='post-sections post-sections--full-width-image rte'>
         {% if section.image_height != blank %}
-          {{ section.image_height }}
           {% assign height = section.image_height %}
         {% else %}
           {% assign height = 800 %}
