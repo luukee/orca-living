@@ -60,9 +60,9 @@
         <img
           src="{{ section.full_width_image | image_url: height: height }}"
           loading="lazy"
-          style="object-fit: cover; object-position: {{ focal_point }};"
+          style="object-fit: cover;{% if focal_point != blank %} object-position: {{ focal_point }};{% endif %}"
           alt="{{ section.full_width_image.alt | escape }}"
-        >
+        >        
       </section>
     {% elsif section.first_image %}
       {% comment %}This is a two_grid_section{% endcomment %}
