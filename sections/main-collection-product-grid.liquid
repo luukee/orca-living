@@ -35,7 +35,7 @@
     assign single_variant_quick_add = 'sample'
   endif
 %}
-
+<pre>{{ collection.title }}</pre>
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
@@ -255,9 +255,9 @@
                         {% for p in filtered_prods %}
                           {% liquid
                             if on_filter_by_tag_page
-                              unless p.title contains filter_by_this_tag
-                                continue
-                              endunless
+                            unless product.tags contains section.settings.filter_on_tag
+                              continue
+                            endunless
                             # Then handle samples case
                             elsif is_samples
                               if displayed_variants contains p.id
