@@ -384,9 +384,8 @@
                         endfor
                       %}
       
-                      <!-- Rest of your existing expand tag logic -->
+                      <!-- Expand tag logic -->
                       {% for option_variant in option_variants.values %}
-                        {% comment %} {% render 'dump' with option_variant %} {% endcomment %}
                         {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
 
                         {% for p in filtered_prods %}
