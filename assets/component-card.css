@@ -305,9 +305,6 @@
 .card-article-info {
   margin-top: 1rem;
 }
-.card-wrapper .price {
-  display: none !important;
-}
 .card-wrapper .card__inner,
 .card-wrapper .card__inner * {
   background-color: unset !important;
