@@ -221,6 +221,8 @@
                           media_aspect_ratio: section.settings.image_ratio,
                           show_secondary_image: section.settings.show_secondary_image,
                           show_vendor: section.settings.show_vendor,
+                          show_price: section.settings.show_price,
+                          show_badge: section.settings.show_badge,
                           show_rating: section.settings.show_rating,
                           lazy_load: forloop.index > 2,
                           show_quick_add: section.settings.enable_quick_add,
@@ -293,6 +295,8 @@
                                 media_aspect_ratio: section.settings.image_ratio,
                                 show_secondary_image: section.settings.show_secondary_image,
                                 show_vendor: section.settings.show_vendor,
+                                show_price: section.settings.show_price,
+                                show_badge: section.settings.show_badge,
                                 show_rating: section.settings.show_rating,
                                 lazy_load: forloop.index > 2,
                                 show_quick_add: section.settings.enable_quick_add,
@@ -317,6 +321,8 @@
                         media_aspect_ratio: section.settings.image_ratio,
                         show_secondary_image: section.settings.show_secondary_image,
                         show_vendor: section.settings.show_vendor,
+                        show_price: section.settings.show_price,
+                        show_badge: section.settings.show_badge,
                         show_rating: section.settings.show_rating,
                         lazy_load: lazy_load,
                         show_quick_add: section.settings.enable_quick_add,
@@ -337,6 +343,7 @@
               {% endif %}
             {% endfor %}
           {% else %} {% comment %} COLLECTION PAGE {% endcomment %}
+          <!-- collection page -->
             {%- paginate current_collection.products by section.settings.products_per_page -%}
               {%- for product in current_collection.products -%}
                 {% assign displayed_variants = false %}
@@ -355,6 +362,8 @@
                         media_aspect_ratio: section.settings.image_ratio,
                         show_secondary_image: section.settings.show_secondary_image,
                         show_vendor: section.settings.show_vendor,
+                        show_price: section.settings.show_price,
+                        show_badge: section.settings.show_badge,
                         show_rating: section.settings.show_rating,
                         lazy_load: lazy_load,
                         show_quick_add: section.settings.enable_quick_add,
@@ -383,8 +392,8 @@
                           endif
                         endfor
                       %}
-      
-                      <!-- Expand tag logic -->
+                      <!-- main-collection-product-grid.liquid -->
+                      {% comment %} Expand tag logic {% endcomment %}
                       {% for option_variant in option_variants.values %}
                         {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
 
@@ -449,6 +458,8 @@
                               media_aspect_ratio: section.settings.image_ratio,
                               show_secondary_image: section.settings.show_secondary_image,
                               show_vendor: section.settings.show_vendor,
+                              show_price: section.settings.show_price,
+                              show_badge: section.settings.show_badge,
                               show_rating: section.settings.show_rating,
                               lazy_load: lazy_load,
                               show_quick_add: section.settings.enable_quick_add,
@@ -479,6 +490,8 @@
                         media_aspect_ratio: section.settings.image_ratio,
                         show_secondary_image: section.settings.show_secondary_image,
                         show_vendor: section.settings.show_vendor,
+                        show_price: section.settings.show_price,
+                        show_badge: section.settings.show_badge,
                         show_rating: section.settings.show_rating,
                         lazy_load: lazy_load,
                         show_quick_add: section.settings.enable_quick_add,
@@ -573,6 +586,18 @@
       "id": "show_vendor",
       "default": false,
       "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "default": false,
+      "label": "Show Price"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "default": false,
+      "label": "Show Available Badge"
     },
     {
       "type": "checkbox",

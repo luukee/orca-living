@@ -2847,43 +2847,6 @@ details-disclosure > details {
   }
 }
 
-.product-grid--samples .card {
-  gap: 0.3rem;
-}
-
-.product-grid--samples .product-form__submit {
-  border-radius: 40px;
-  width: 100%;
-  transition: transform 0.2s ease;
-  position: relative;
-}
-
-.product-grid--samples .product-form__submit::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 40px; /* Match button's border-radius */
-  transition: box-shadow 0.2s ease;
-  pointer-events: none; /* Ensures hover works on main button */
-}
-.product-grid--samples .product-form__submit:hover::after {
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.product-grid--samples .card__content {
-  justify-items:stretch;
-  text-align: center;
-  gap: 1rem;
-  padding-top: var(--base-gutter--quarter);
-}
-
-.product-grid--samples .card__information {
-  grid-row-start: 1;
-}
-
 .font-body-bold {
   font-weight: var(--font-body-weight-bold);
 }
