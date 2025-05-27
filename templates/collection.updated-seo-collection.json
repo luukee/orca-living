@@ -40,7 +40,7 @@
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,
-        "show_price": true,
+        "show_price": false,
         "show_badge": false,
         "show_rating": false,
         "enable_quick_add": false,
