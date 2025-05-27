@@ -305,6 +305,9 @@
 .card-article-info {
   margin-top: 1rem;
 }
+.product-grid.images .card-information {
+  display: none !important;
+}
 .card-wrapper .card__inner,
 .card-wrapper .card__inner * {
   background-color: unset !important;

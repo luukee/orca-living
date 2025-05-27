@@ -71,17 +71,17 @@
 
 <div class='section-{{ section.id }}-padding section--main-collection-product-grid'>
   <div class='collection{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}'>
-    {% unless is_samples %}
+    {% comment %} {% unless is_samples %} {% endcomment %}
       <div class='feed--view-type'>
         <span>View: </span>
         <a href='#images' data-type='images' class='current'>Images</a>,
         <a href='#list' data-type='list'>List</a>
       </div>
-    {% endunless %}
+    {% comment %} {% endunless %} {% endcomment %}
     <div class='product-grid-container' id='ProductGridContainer'>
       <div class='collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}'>
         <div class='loading-overlay gradient'></div>
-        <ul id='product_grid' data-id='{{ section.id }}' class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop{% if is_samples %} product-grid--samples{% endif %}'>
+        <ul id='product_grid' data-id='{{ section.id }}' class='grid feed-view product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop images'>
           {% assign index = 0 %}
           
           {% liquid
