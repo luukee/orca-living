@@ -1631,14 +1631,17 @@ customElements.define('variant-selects', VariantSelects);
 class VariantRadios extends VariantSelects {
   constructor() {
     super();
+    this.addEventListener('change', this.onVariantChange);
   }
 
   setInputAvailability(listOfOptions, listOfAvailableOptions) {
     listOfOptions.forEach((input) => {
       if (listOfAvailableOptions.includes(input.getAttribute('value'))) {
         input.classList.remove('disabled');
+        input.disabled = false;
       } else {
         input.classList.add('disabled');
+        input.disabled = true;
       }
     });
   }
@@ -1646,10 +1649,27 @@ class VariantRadios extends VariantSelects {
   updateOptions() {
     const fieldsets = Array.from(this.querySelectorAll('fieldset'));
     this.options = fieldsets.map((fieldset) => {
-      return Array.from(fieldset.querySelectorAll('input')).find(
+      const checkedInput = Array.from(fieldset.querySelectorAll('input:not([disabled])')).find(
         (radio) => radio.checked
-      ).value;
-    });
+      );
+      if (!checkedInput) {
+        // If no input is checked, find the first enabled input and check it
+        const firstEnabledInput = fieldset.querySelector('input:not([disabled])');
+        if (firstEnabledInput) {
+          firstEnabledInput.checked = true;
+          return firstEnabledInput.value;
+        }
+      }
+      return checkedInput ? checkedInput.value : null;
+    }).filter(Boolean); // Remove any null values
+  }
+
+  onVariantChange(event) {
+    if (event.target.disabled) {
+      event.preventDefault();
+      return;
+    }
+    super.onVariantChange();
   }
 }
 
