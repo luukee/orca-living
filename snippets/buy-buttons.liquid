@@ -179,13 +179,31 @@
                 </div>
               </button>
             {% endif %}
+            {% comment %}
+              Sample variant matching logic:
+              - Finds the corresponding sample variant by matching options with the currently selected variant
+              - For products with 2 options (Size & Color):
+                - Matches on option1 being 'Sample' and option2 (Color) matching the selected variant
+              - For products with 3 options (Size, Color, & additional option):
+                - Matches on option1 being 'Sample', option2 (Color) matching, and option3 matching
+              - The sample variant is used to populate the "Order Sample" button with correct variant ID and price
+            {% endcomment %}
             {% liquid
               assign selected_product = product.selected_or_first_available_variant
               assign sample_variant = blank
               for prod in product.variants
-                if prod.option1 == 'Sample' and selected_product.option2 == prod.option2
-                  assign sample_variant = prod
-                  break
+                if prod.option1 == 'Sample' 
+                  assign is_match = true
+                  if selected_product.option2 != prod.option2
+                    assign is_match = false
+                  endif
+                  if product.options.size > 2 and selected_product.option3 != prod.option3
+                    assign is_match = false
+                  endif
+                  if is_match
+                    assign sample_variant = prod
+                    break
+                  endif
                 endif
               endfor
             %}
