@@ -1,7 +1,45 @@
+/**
+ * ProductForm Custom Element
+ * 
+ * A custom element that handles product form functionality including:
+ * - Regular "Add to Cart" form submissions
+ * - Sample product ordering
+ * - Cart integration
+ * - Loading states and error handling
+ * 
+ * Key Features:
+ * - Handles both regular product variants and sample variants
+ * - Manages loading states with spinners
+ * - Integrates with cart drawer/notification
+ * - Updates cart quantities in header
+ * - Handles error states and messages
+ * - Supports quick add modal functionality
+ * 
+ * Usage:
+ * <product-form class="product-form">
+ *   <form>
+ *     <!-- Regular add to cart button -->
+ *     <button type="submit" class="product-form__submit">Add to Cart</button>
+ *     
+ *     <!-- Optional sample button -->
+ *     <button id="SampleOrderButton-{section_id}" 
+ *             class="product-form__submit" 
+ *             data-value="{variant_id}">
+ *       Order Sample
+ *     </button>
+ *   </form>
+ * </product-form>
+ */
+
 if (!customElements.get('product-form')) {
   customElements.define(
     'product-form',
     class ProductForm extends HTMLElement {
+      /**
+       * Initializes the product form component.
+       * Sets up event listeners for form submission and sample button clicks.
+       * Configures cart integration and button accessibility attributes.
+       */
       constructor() {
         super();
 
@@ -25,6 +63,12 @@ if (!customElements.get('product-form')) {
         this.hideErrors = this.dataset.hideErrors === 'true';
       }
 
+      /**
+       * Sets all submit buttons to a loading state.
+       * - Disables buttons to prevent multiple submissions
+       * - Adds loading class for visual feedback
+       * - Shows loading spinner if present
+       */
       setToLoading() {
         this.submitButtons.forEach((btn) => {
           btn.setAttribute('aria-disabled', true);
@@ -36,6 +80,19 @@ if (!customElements.get('product-form')) {
         });
       }
 
+      /**
+       * Handles the AJAX request to add items to cart.
+       * @param {Event} evt - The event that triggered the request
+       * @param {FormData} formData - The form data to be sent
+       * @param {Object} config - The fetch configuration object
+       * 
+       * Flow:
+       * 1. Sends request to cart/add endpoint
+       * 2. Handles success/error responses
+       * 3. Updates cart UI and button states
+       * 4. Shows error messages if needed
+       * 5. Updates cart icon with new quantity
+       */
       sendRequest(evt,formData,config) {
         fetch(`${routes.cart_add_url}`, config)
           .then((response) => response.json())
@@ -115,6 +172,16 @@ if (!customElements.get('product-form')) {
           });
       }
 
+      /**
+       * Handles sample button click events.
+       * @param {Event} evt - The click event
+       * 
+       * Flow:
+       * 1. Validates the sample variant ID exists
+       * 2. Sets up loading state
+       * 3. Creates request to add sample to cart
+       * 4. Includes cart section updates if cart component exists
+       */
       onSampleSubmitHandler(evt) {
         evt.preventDefault();
         if (evt.target.getAttribute('data-value') == null) return;
@@ -138,6 +205,16 @@ if (!customElements.get('product-form')) {
         this.sendRequest(evt,formData,config)
       }
 
+      /**
+       * Handles regular form submission events.
+       * @param {Event} evt - The submit event
+       * 
+       * Flow:
+       * 1. Validates form is not disabled
+       * 2. Sets up loading state
+       * 3. Creates request with form data
+       * 4. Includes cart section updates if cart component exists
+       */
       onSubmitHandler(evt) {
         evt.preventDefault();
         if (evt.target.getAttribute('aria-disabled') === 'true') return;
@@ -162,6 +239,16 @@ if (!customElements.get('product-form')) {
         this.sendRequest(evt,formData,config);
       }
 
+      /**
+       * Manages error message display for the form.
+       * @param {string} errorMessage - The error message to display
+       * 
+       * Flow:
+       * 1. Checks if errors should be hidden
+       * 2. Finds or creates error message elements
+       * 3. Toggles visibility based on error state
+       * 4. Updates error message text if provided
+       */
       handleErrorMessage(errorMessage = false) {
         if (this.hideErrors) return;
 
@@ -182,6 +269,10 @@ if (!customElements.get('product-form')) {
         }
       }
 
+      /**
+       * Updates the cart icon quantity in the header.
+       * Fetches latest cart data and updates all cart quantity indicators.
+       */
       updateCartIcon() {
         fetch(`${routes.cart_url}?section_id=custom-cart-counter`)
           .then((response) => response.text())
