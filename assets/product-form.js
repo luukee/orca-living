@@ -29,9 +29,10 @@ if (!customElements.get('product-form')) {
         this.submitButtons.forEach((btn) => {
           btn.setAttribute('aria-disabled', true);
           btn.classList.add('loading');
-          btn
-            .querySelector('.loading-overlay__spinner')
-            .classList.remove('hidden');
+          const spinner = btn.querySelector('.loading-overlay__spinner');
+          if (spinner) {
+            spinner.classList.remove('hidden');
+          }
         });
       }
 
@@ -103,9 +104,10 @@ if (!customElements.get('product-form')) {
             this.submitButtons.forEach((btn) => {
               btn.classList.remove('loading');
               if (!this.error) btn.removeAttribute('aria-disabled');
-              btn
-                .querySelector('.loading-overlay__spinner')
-                .classList.add('hidden');
+              const spinner = btn.querySelector('.loading-overlay__spinner');
+              if (spinner) {
+                spinner.classList.add('hidden');
+              }
             });
             if (this.cart && this.cart.classList.contains('is-empty'))
               this.cart.classList.remove('is-empty');
