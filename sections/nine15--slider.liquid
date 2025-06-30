@@ -3,6 +3,16 @@
 {% include 'master--slider' %}
 {% if section.settings.hide_menus == true %}
   <style>
+    .template--index #MainContent > *:nth-child(n + 2) {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .template--index #MainContent > *:nth-child(n + 2) .gradient {
+      background: transparent;
+    }
     .header__icon--menu .icon,
     .section-header .header__cart__mobile,
     .section-header .header__inline-menu {
