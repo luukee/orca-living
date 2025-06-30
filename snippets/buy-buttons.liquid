@@ -181,19 +181,29 @@
             {% endif %}
             {% comment %}
               Sample variant matching logic:
-              - Finds the sample variant for the currently selected size, color, and finish.
-              - Looks for a variant where the size is 'Sample {selected size}'.
+              - Finds the corresponding sample variant by matching options with the currently selected variant
+              - For products with 2 options (Size & Color):
+                - Matches on option1 being 'Sample' and option2 (Color) matching the selected variant
+              - For products with 3 options (Size, Color, & additional option):
+                - Matches on option1 being 'Sample', option2 (Color) matching, and option3 matching
+              - The sample variant is used to populate the "Order Sample" button with correct variant ID and price
             {% endcomment %}
             {% liquid
-              assign selected_size = selected_product.option1
-              assign selected_color = selected_product.option2
-              assign selected_finish = selected_product.option3
-              assign sample_size = 'Sample ' | append: selected_size
+              assign selected_product = product.selected_or_first_available_variant
               assign sample_variant = blank
               for prod in product.variants
-                if prod.option1 == sample_size and prod.option2 == selected_color and prod.option3 == selected_finish
-                  assign sample_variant = prod
-                  break
+                if prod.option1 == 'Sample' 
+                  assign is_match = true
+                  if selected_product.option2 != prod.option2
+                    assign is_match = false
+                  endif
+                  if product.options.size > 2 and selected_product.option3 != prod.option3
+                    assign is_match = false
+                  endif
+                  if is_match
+                    assign sample_variant = prod
+                    break
+                  endif
                 endif
               endfor
             %}
@@ -202,20 +212,27 @@
                 id='SampleOrderButton-{{ section_id }}'
                 name='add'
                 data-value='{{ sample_variant.id }}'
-                class='product-form__submit button button--full-width'
-                {% if sample_variant.available == false %}
+                class='product-form__submit button button--full-width {% if show_dynamic_checkout %}button--primary{% else %}button--secondary{% endif %}'
+                {% if sample_variant.available == false or quantity_rule_soldout %}
                   disabled
                 {% endif %}
               >
                 <span>
                   <span>
-                    {%- if sample_variant.available == false -%}
+                    {%- if sample_variant.available == false or quantity_rule_soldout -%}
                       {{ 'products.product.sold_out' | t }}
                     {%- else -%}
                       Order Sample
                     {%- endif -%}
                   </span>
+
+                  {% comment %}
+                  {% endcomment %}
+                  <span> - </span>
+
+                  {% render 'price', product: sample_variant, use_variant: false, show_sale: true %}
                 </span>
+
                 <div class='loading-overlay__spinner hidden'>
                   <svg
                     aria-hidden='true'
