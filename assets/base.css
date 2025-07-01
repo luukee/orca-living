@@ -698,7 +698,9 @@ blockquote {
 .customer select,
 .field__input,
 .form__label,
-.select__select {
+.select__select,
+.product__title-price h4 {
+  font-family: var(--font-body-family);
   font-size: 1.3rem;
   line-height: calc(1 + 0.5 / var(--font-body-scale));
   letter-spacing: normal;

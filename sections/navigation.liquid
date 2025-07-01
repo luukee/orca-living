@@ -14,6 +14,161 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Mobile drawer styles */
+  .navigation-drawer-container {
+    display: flex;
+  }
+
+  .navigation-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(var(--color-foreground), 0.04);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .navigation-drawer.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .navigation-drawer__inner-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(var(--color-background));
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .navigation-drawer.active .navigation-drawer__inner-container {
+    transform: translateX(0);
+  }
+
+  .navigation-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .navigation-drawer__title {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+
+  .navigation-drawer__close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: rgb(var(--color-foreground));
+  }
+
+  .navigation-drawer__close-button:hover {
+    color: rgb(var(--color-accent));
+  }
+
+  .navigation-drawer__close-button .icon-close {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .navigation-drawer__navigation-container {
+    height: calc(100% - 7.4rem); /* Subtract header height */
+    overflow-y: auto;
+    padding: 2rem;
+  }
+
+  .navigation-drawer__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .navigation-drawer__menu-item {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+    text-decoration: none;
+    color: rgb(var(--color-foreground));
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+
+  .navigation-drawer__menu-item--active {
+    color: rgb(var(--color-accent));
+  }
+
+  .navigation-drawer__submenu {
+    padding-left: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .navigation-drawer__submenu .navigation-drawer__menu-item {
+    font-size: 1.4rem;
+    padding: 0.5rem 0;
+    border-bottom: none;
+  }
+
+  .navigation-drawer__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .navigation-drawer__toggle .icon-hamburger,
+  .navigation-drawer__toggle .icon-close {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .navigation-drawer__toggle .icon-close {
+    display: none;
+  }
+
+  .navigation-drawer__toggle[aria-expanded="true"] .icon-hamburger {
+    display: none;
+  }
+
+  .navigation-drawer__toggle[aria-expanded="true"] .icon-close {
+    display: block;
+  }
+
+  /* Hide desktop navigation on mobile */
+  @media screen and (max-width: 749px) {
+    .navigation-desktop {
+      display: none;
+    }
+  }
+
+  /* Show desktop navigation on larger screens */
+  @media screen and (min-width: 750px) {
+    .navigation-mobile {
+      display: none;
+    }
+  }
 {%- endstyle -%}
 
 
@@ -34,105 +189,277 @@
       <{{headingEl}} class="h4">{{section.settings.title}}</{{headingEl}}>
     {% endif %}
 
-    <ul class="list-menu" role="list">
-      {%- for link in section.settings.menu.links -%}
-        {% liquid 
-          assign isCurrent          = false 
-          assign linkHandle         = link.handle 
+    <!-- Mobile Navigation Drawer -->
+    <div class="navigation-mobile">
+      <navigation-drawer>
+        <details id="Details-navigation-drawer-container" class="navigation-drawer-container">
+          <summary class="navigation-drawer__toggle" aria-label="{{ 'sections.header.menu' | t }}">
+            <span>
+              {% render 'icon-hamburger' %}
+              {% render 'icon-close' %}
+            </span>
+          </summary>
+          <div id="navigation-drawer" class="navigation-drawer" tabindex="-1">
+            <div class="navigation-drawer__inner-container">
+              <div class="navigation-drawer__header">
+                <h2 class="navigation-drawer__title">
+                  {% if section.settings.title %}
+                    {{ section.settings.title }}
+                  {% else %}
+                    {{ 'sections.header.menu' | t }}
+                  {% endif %}
+                </h2>
+                <button type="button" class="navigation-drawer__close-button link link--text focus-inset" aria-label="{{ 'accessibility.close' | t }}">
+                  {% render 'icon-close' %}
+                </button>
+              </div>
+              <div class="navigation-drawer__navigation-container">
+                <nav class="navigation-drawer__navigation">
+                  <ul class="navigation-drawer__menu" role="list">
+                    {%- for link in section.settings.menu.links -%}
+                      {% liquid 
+                        assign isCurrent          = false 
+                        assign linkHandle         = link.handle 
 
-          assign collectionHandle   = collection.handle 
-          capture collectionURL 
-            render 'snippet--url-query', queryString: 'collection'
-          endcapture
-          if collectionURL != ''
-            if link.url contains collectionURL
-              assign isCurrent      = true 
+                        assign collectionHandle   = collection.handle 
+                        capture collectionURL 
+                          render 'snippet--url-query', queryString: 'collection'
+                        endcapture
+                        if collectionURL != ''
+                          if link.url contains collectionURL
+                            assign isCurrent      = true 
+                          endif
+                        endif
+
+                        if link.current
+                          assign isCurrent        = true 
+                        endif 
+
+                        if collectionHandle == linkHandle
+                          assign isCurrent        = true
+                        endif 
+
+                        if collectionHandle == 'quick-ship' and linkHandle == 'pavers'
+                          assign isCurrent        = true
+                        endif
+
+                        assign linkURL            = link.url
+                        if isCurrent and template.name != 'article'
+                          assign linkURL          = linkURL | split: '/tagged' | first
+                        endif 
+
+                        for tag in article.tags
+                          assign linkHndl         = link.url | handleize
+                          assign tagHndl          = tag |handleize 
+                          if linkHndl contains tagHndl
+                            assign isCurrent      = true
+                            break
+                          endif 
+                        endfor 
+
+                        assign ChildLinkSize      = link.links | size
+                        
+                        assign path = request.path
+                        assign show_nav_child_links = false
+                        if path contains 'pavers' or path contains 'quick-ship'
+                          assign show_nav_child_links = true
+                        endif
+                      %}
+                      <li>
+                        <a href="{{ linkURL }}" class="navigation-drawer__menu-item link link--text focus-inset{% if isCurrent %} navigation-drawer__menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
+                          {{ link.title | escape }}
+                        </a>
+                        {% if isCurrent %}
+                          {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
+                            <ul class="navigation-drawer__submenu" role="list">
+                              {%- for childlink in link.links -%}
+                                {% liquid 
+                                  assign showChildLink      = false
+                                  assign isCurrentInner     = false
+                                  assign taggedHandle       = ''
+                                  assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
+                                  for tag in current_tags
+                                    assign taggedHandle     = tag | handleize | replace: '_',''
+                                  endfor 
+                                  assign currentChildLink   = childlink.handle | handleize | replace: '_',''
+                                  if currentChildLink contains taggedHandle and taggedHandle != ''
+                                    assign isCurrentInner   = true
+                                  endif
+                                  if allTagsHandles contains currentChildLink
+                                    assign showChildLink    = true 
+                                  endif 
+                                %}
+                                <li>
+                                  <a href="{{ childlink.url }}" class="navigation-drawer__menu-item link link--text focus-inset {% if isCurrentInner %} navigation-drawer__menu-item--active{% endif %}">
+                                    {{ childlink.title | escape }}
+                                  </a>
+                                </li>
+                              {%- endfor -%}  
+                            </ul>          
+                          {%- endif -%}            
+                        {% endif %}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </details>
+      </navigation-drawer>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="navigation-desktop">
+      <ul class="list-menu" role="list">
+        {%- for link in section.settings.menu.links -%}
+          {% liquid 
+            assign isCurrent          = false 
+            assign linkHandle         = link.handle 
+
+            assign collectionHandle   = collection.handle 
+            capture collectionURL 
+              render 'snippet--url-query', queryString: 'collection'
+            endcapture
+            if collectionURL != ''
+              if link.url contains collectionURL
+                assign isCurrent      = true 
+              endif
             endif
-          endif
 
-          if link.current
-            assign isCurrent        = true 
-          endif 
-
-          if collectionHandle == linkHandle
-            assign isCurrent        = true
-          endif 
-
-          if collectionHandle == 'quick-ship' and linkHandle == 'pavers'
-            assign isCurrent        = true
-          endif
-
-          assign linkURL            = link.url
-          if isCurrent and template.name != 'article'
-            assign linkURL          = linkURL | split: '/tagged' | first
-          endif 
-
-          for tag in article.tags
-            assign linkHndl         = link.url | handleize
-            assign tagHndl          = tag |handleize 
-            if linkHndl contains tagHndl
-              assign isCurrent      = true
-              break
+            if link.current
+              assign isCurrent        = true 
             endif 
-          endfor 
 
-          assign ChildLinkSize      = link.links | size
-          
-          assign path = request.path
-          assign show_nav_child_links = false
-          if path contains 'pavers' or path contains 'quick-ship'
-            assign show_nav_child_links = true
-          endif
-        %}
-        <li>
-          <a href="{{ linkURL }}" class=" list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
-            {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
-            {{ link.title | escape }}
-            {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
-          </a>
-          {% comment %} <pre>{{ isCurrent }}</pre>
-          <pre>{{ ChildLinkSize }}</pre> {% endcomment %}
-          {% if isCurrent %}
-            {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
-              <ul class="menu-drawer__menu list-menu medium-down--hide" role="list">
-                {%- for childlink in link.links -%}
-                  {% liquid 
-                    assign showChildLink      = false
-                    assign isCurrentInner     = false
-                    assign taggedHandle       = ''
-                    assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
-                    for tag in current_tags
-                      assign taggedHandle     = tag | handleize | replace: '_',''
-                    endfor 
-                    assign currentChildLink   = childlink.handle | handleize | replace: '_',''
-                    if currentChildLink contains taggedHandle and taggedHandle != ''
-                      assign isCurrentInner   = true
-                    endif
-                    if allTagsHandles contains currentChildLink
-                      assign showChildLink    = true 
-                    endif 
-                  %}
-                  {% comment %} {% if showChildLink %} {% endcomment %}
-                   {% comment %} 
-                    Info: 
-                    "if showChildLink" prevented new navigation items from displying on the front end on the collections-menu navigation menu
-                   {% endcomment %}
+            if collectionHandle == linkHandle
+              assign isCurrent        = true
+            endif 
+
+            if collectionHandle == 'quick-ship' and linkHandle == 'pavers'
+              assign isCurrent        = true
+            endif
+
+            assign linkURL            = link.url
+            if isCurrent and template.name != 'article'
+              assign linkURL          = linkURL | split: '/tagged' | first
+            endif 
+
+            for tag in article.tags
+              assign linkHndl         = link.url | handleize
+              assign tagHndl          = tag |handleize 
+              if linkHndl contains tagHndl
+                assign isCurrent      = true
+                break
+              endif 
+            endfor 
+
+            assign ChildLinkSize      = link.links | size
+            
+            assign path = request.path
+            assign show_nav_child_links = false
+            if path contains 'pavers' or path contains 'quick-ship'
+              assign show_nav_child_links = true
+            endif
+          %}
+          <li>
+            <a href="{{ linkURL }}" class=" list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
+              {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+              {{ link.title | escape }}
+              {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+            </a>
+            {% if isCurrent %}
+              {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
+                <ul class="menu-drawer__menu list-menu medium-down--hide" role="list">
+                  {%- for childlink in link.links -%}
+                    {% liquid 
+                      assign showChildLink      = false
+                      assign isCurrentInner     = false
+                      assign taggedHandle       = ''
+                      assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
+                      for tag in current_tags
+                        assign taggedHandle     = tag | handleize | replace: '_',''
+                      endfor 
+                      assign currentChildLink   = childlink.handle | handleize | replace: '_',''
+                      if currentChildLink contains taggedHandle and taggedHandle != ''
+                        assign isCurrentInner   = true
+                      endif
+                      if allTagsHandles contains currentChildLink
+                        assign showChildLink    = true 
+                      endif 
+                    %}
                     <li>
                       <a href="{{ childlink.url }}" class=" list-menu__item link link--text focus-inset {% if isCurrentInner %} menu-item--active{% endif %}">
                         {{ childlink.title | escape }}
                       </a>
                     </li>
-                  {% comment %} {% endif %} {% endcomment %}
-                {%- endfor -%}  
-              </ul>          
-            {%- endif -%}            
-          {% endif %}
-        </li>
-      {%- endfor -%}
-    </ul>
+                  {%- endfor -%}  
+                </ul>          
+              {%- endif -%}            
+            {% endif %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
 
   </div>
 </div>
+
+<script>
+  class NavigationDrawer extends HTMLElement {
+    constructor() {
+      super();
+      this.drawer = this.querySelector('#navigation-drawer');
+      this.toggle = this.querySelector('.navigation-drawer__toggle');
+      this.closeButton = this.querySelector('.navigation-drawer__close-button');
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      this.toggle.addEventListener('click', this.toggleDrawer.bind(this));
+      this.closeButton.addEventListener('click', this.closeDrawer.bind(this));
+      
+      // Close drawer when clicking outside
+      this.drawer.addEventListener('click', (event) => {
+        if (event.target === this.drawer) {
+          this.closeDrawer();
+        }
+      });
+
+      // Close drawer on escape key
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && this.isOpen()) {
+          this.closeDrawer();
+        }
+      });
+    }
+
+    toggleDrawer() {
+      if (this.isOpen()) {
+        this.closeDrawer();
+      } else {
+        this.openDrawer();
+      }
+    }
+
+    openDrawer() {
+      this.drawer.classList.add('active');
+      this.toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    closeDrawer() {
+      this.drawer.classList.remove('active');
+      this.toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    isOpen() {
+      return this.drawer.classList.contains('active');
+    }
+  }
+
+  customElements.define('navigation-drawer', NavigationDrawer);
+</script>
 
 {% schema %}
 {
