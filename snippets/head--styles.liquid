@@ -56,7 +56,7 @@
     --font-body-weight: {{ settings.type_body_font.weight }};
     --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
 
-    --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+    --font-heading-family: MonumentGrotesk-mono, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-heading-style: {{ settings.type_header_font.style }};
     --font-heading-weight: {{ settings.type_header_font.weight }};
 
@@ -196,7 +196,7 @@
 
     /* Overrides */
     --font-body-family: MonumentGrotesk, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-heading-family: var(--font-body-family);
+    --font-heading-family: MonumentGrotesk-mono, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;;
 
     /* Slick */
     --slick--ajax_loader          : {{ "ajax-loader.gif" | asset_url }};

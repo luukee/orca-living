@@ -187,7 +187,7 @@
 }
 .multicolumn-card__info .link {
   text-decoration: none;
-  font-size: inherit;
+  font-size: 22px;
   margin-top: 1.5rem;
 }
 .multicolumn-card__info .icon-wrap {

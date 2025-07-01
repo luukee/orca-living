@@ -577,7 +577,7 @@ h5,
 .h3,
 .h4,
 .h5 {
-  font-family: var(--font-heading-family);
+  font-family: MonumentGrotesk-mono, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-style: var(--font-heading-style);
   font-weight: var(--font-heading-weight);
   color: rgb(var(--color-foreground));
@@ -602,12 +602,12 @@ h5,
 }
 h1,
 .h1 {
-  font-size: calc(var(--font-heading-scale) * 3rem);
+  font-size: calc(var(--font-heading-scale) * 2rem);
 }
 @media only screen and (min-width: 750px) {
   h1,
   .h1 {
-    font-size: calc(var(--font-heading-scale) * 4rem);
+    font-size: calc(var(--font-heading-scale) * 3rem);
   }
 }
 h2,
@@ -627,7 +627,7 @@ h3,
 @media only screen and (min-width: 750px) {
   h3,
   .h3 {
-    font-size: calc(var(--font-heading-scale) * 1.8rem);
+    font-size: calc(var(--font-heading-scale) * 2.2rem);
   }
 }
 h4,
@@ -818,6 +818,7 @@ hr {
   }
 }
 .full-unstyled-link {
+  font-family: var(--font-heading-family);
   text-decoration: none;
   color: currentColor;
   display: block;
