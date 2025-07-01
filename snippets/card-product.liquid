@@ -27,7 +27,7 @@
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
-{% render 'dump' with card_show_outer_content %}
+
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
 {% liquid
@@ -78,11 +78,6 @@ endif
     assign product_title = card_product.title
   endif
   
-  # If show_product_title is nil, set it to true
-  if show_product_title == nil
-    assign show_product_title = true
-  endif
-
   assign is_variant = false
   if card_product.product
     assign is_variant = true  
@@ -190,6 +185,10 @@ endif
     if mainImage or settings.card_style == 'standard'
       assign card_inner_classes = card_inner_classes | append: ' ratio'
     endif
+    # If show_product_title is nil, set it to true
+    if show_product_title == nil
+      assign show_product_title = true
+    endif
     unless card_show_outer_content == false
       assign card_show_outer_content = true
     endunless
@@ -288,9 +287,9 @@ endif
           </div>
         {% endif %}
         
-        {% if card_show_inner_content != false and template.name != 'product' and template.name != 'collection' %}
+        {% comment %} {% if card_show_inner_content != false %}
           <div class="card__content">
-            <div class="card__information">
+            <div class="card__information test01">
               
               {% if card_title_text != blank %}
                 <h2 class="card__title">
@@ -309,14 +308,14 @@ endif
               </h3>
             </div>
           </div>
-        {% endif %}
+        {% endif %} {% endcomment %}
         
       </div>
 
       {% comment %} Card Content {% endcomment %}
       {% unless card_show_outer_content == false %}
         <div class="card__content card__content--v2">
-          <div class="card__information">
+          <div class="card__information test02">
             
             <h3 class="card__heading{% if mainImage or settings.card_style == 'standard' %} h5{% endif %} card__link-underline-wrapper"
               {% if mainImage or settings.card_style == 'card' %}
@@ -328,7 +327,6 @@ endif
               <a href="{{ product_url }}" id="CardLink-{{ section_id }}-{{ card_product.id }}" class="full-unstyled-link" aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}">
                 {%- if card_link_text != blank -%}
                   {{- card_link_text | escape -}}
-                  <span class="card__link-underline"></span>
                 {%- else -%}
                   {{ product_title | escape }}
                 {%- endif -%}
@@ -640,7 +638,7 @@ endif
         style="--ratio-percent: 100%;"
       >
         <div class="card__content">
-          <div class="card__information">
+          <div class="card__information test03">
             
             {% if card_title_text != blank %}
               <h2 class="card__title">
@@ -662,7 +660,7 @@ endif
       </div>
       {% if card_show_outer_content %}
       <div class="card__content">
-        <div class="card__information">
+        <div class="card__information test04">
           <h3 class="card__heading{% if settings.card_style == 'standard' %} h5{% endif %}">
             <a role="link" aria-disabled="true" class="full-unstyled-link">
               {{ 'onboarding.product_title' | t }}
