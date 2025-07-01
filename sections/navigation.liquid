@@ -206,7 +206,7 @@
                   {% if section.settings.title %}
                     {{ section.settings.title }}
                   {% else %}
-                    {{ 'sections.header.menu' | t }}
+                    {% comment %} {{ 'sections.header.menu' | t }} {% endcomment %}
                   {% endif %}
                 </h2>
                 <button type="button" class="navigation-drawer__close-button link link--text focus-inset" aria-label="{{ 'accessibility.close' | t }}">
@@ -411,11 +411,12 @@
       this.drawer = this.querySelector('#navigation-drawer');
       this.toggle = this.querySelector('.navigation-drawer__toggle');
       this.closeButton = this.querySelector('.navigation-drawer__close-button');
+      this.details = this.querySelector('details');
       this.bindEvents();
     }
 
     bindEvents() {
-      this.toggle.addEventListener('click', this.toggleDrawer.bind(this));
+      // Let the details element handle the toggle naturally
       this.closeButton.addEventListener('click', this.closeDrawer.bind(this));
       
       // Close drawer when clicking outside
@@ -431,30 +432,29 @@
           this.closeDrawer();
         }
       });
-    }
 
-    toggleDrawer() {
-      if (this.isOpen()) {
-        this.closeDrawer();
-      } else {
-        this.openDrawer();
-      }
-    }
-
-    openDrawer() {
-      this.drawer.classList.add('active');
-      this.toggle.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
+      // Listen for details toggle to sync our custom state
+      this.details.addEventListener('toggle', (event) => {
+        if (event.target.open) {
+          // Details was opened, add our custom active class
+          this.drawer.classList.add('active');
+          this.toggle.setAttribute('aria-expanded', 'true');
+          document.body.style.overflow = 'hidden';
+        } else {
+          // Details was closed, remove our custom active class
+          this.drawer.classList.remove('active');
+          this.toggle.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        }
+      });
     }
 
     closeDrawer() {
-      this.drawer.classList.remove('active');
-      this.toggle.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+      this.details.removeAttribute('open');
     }
 
     isOpen() {
-      return this.drawer.classList.contains('active');
+      return this.details.hasAttribute('open');
     }
   }
 
