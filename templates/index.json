@@ -315,7 +315,7 @@
       ],
       "custom_css": [
         ".link {margin-top: 0.5rem;}",
-        ".link,.inline-richtext {font-size: calc(var(--font-heading-scale) * 1.8rem); text-transform: uppercase;}"
+        ".link,.inline-richtext:not(.title) {font-size: calc(var(--font-heading-scale) * 1.8rem); text-transform: uppercase;}"
       ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
