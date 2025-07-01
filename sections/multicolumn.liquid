@@ -121,8 +121,9 @@
                   <div class="rte">{{ block.settings.text }}</div>
                 {%- endif -%}
                 {%- if block.settings.link_label != blank -%}
-                  <a
-                    class="link animate-arrow"
+                  <div class="card__link-underline-wrapper">
+                    <a
+                      class="link animate-arrow underlined-link"
                     {% if block.settings.link == blank %}
                       role="link" aria-disabled="true"
                     {% else %}
@@ -130,8 +131,9 @@
                     {% endif %}
                   >
                     {{- block.settings.link_label | escape -}}
-                    <span class="icon-wrap">&nbsp;{% render 'icon-arrow' %}</span></a
-                  >
+                    <span class="icon-wrap">&nbsp;{% render 'icon-arrow' %}</span>
+                    </a>
+                  </div>
                 {%- endif -%}
               </div>
             </div>

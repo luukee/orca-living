@@ -596,9 +596,9 @@
                             <div class="rte">{% if s.leaf == true %} {% include 'icon-leaf'%} {%endif%} {{ txt }}{% if s.leaf == true %} {% include 'icon-leaf'%} {%endif%}</div>
                         {% endif %}
                         
-                        <div class="but-div">
+                        <div class="but-div card__link-underline-wrapper">
                         {% if use_btn == true %}
-                            <a class="btn button button--{{btnStyle}}" href="{{ btn_url }}">{{ btn_txt }}</a>
+                            <a class="button--{{btnStyle}} underlined-link white" href="{{ btn_url }}">{{ btn_txt }}</a>
                         {% endif %}
                         {% if use_btn2 == true %}
                             <a class="btn button button--{{btnStyle2}}" href="{{ btn_url2 }}">{{ btn_txt2 }}</a>

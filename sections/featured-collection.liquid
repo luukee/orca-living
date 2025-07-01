@@ -127,17 +127,19 @@
 
     {%- if section.settings.show_view_all and more_in_collection -%}
       <div class='{{ section.settings.view_all_button_position }} page-width collection__view-all'>
+        <div class="card__link-underline-wrapper">  
         <a
-          href='{{ section.settings.collection.url }}'
-          class='{% if section.settings.view_all_style == 'link' %}link underlined-link{% elsif section.settings.view_all_style == 'solid' %}button{% else %}button button--secondary{% endif %}'
-          aria-label='{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title }}'
-        >
-          {% if section.settings.view_all_text != blank %}
-            {{ section.settings.view_all_text }}
-          {% else %}
-            {{ 'sections.featured_collection.view_all' | t }}
-          {% endif %}
-        </a>
+            href='{{ section.settings.collection.url }}'
+            class='{% if section.settings.view_all_style == 'link' %}link underlined-link{% elsif section.settings.view_all_style == 'solid' %}button{% else %}button button--secondary{% endif %}'
+            aria-label='{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title }}'
+          >
+            {% if section.settings.view_all_text != blank %}
+              {{ section.settings.view_all_text }}
+            {% else %}
+              {{ 'sections.featured_collection.view_all' | t }}
+            {% endif %}
+          </a>
+        </div>
       </div>
     {%- endif -%}
   </div>
