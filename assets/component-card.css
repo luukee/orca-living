@@ -7,10 +7,9 @@
 .card {
   text-decoration: none;
   text-align: var(--text-alignment);
+  position: relative;
 }
 .card:not(.ratio) {
-  display: flex;
-  flex-direction: column;
   height: 100%;
 }
 .card.card--horizontal {
@@ -218,8 +217,8 @@
   .card-wrapper .media.media--hover-effect > img:only-child {
     transition: transform var(--duration-long) ease;
   }
-  .card:hover .media.media--hover-effect > img:first-child:only-child,
-  .card-wrapper:hover .media.media--hover-effect > img:first-child:only-child {
+  .card:hover .media.media--hover-effect .card-link-overlay > img:first-child:only-child,
+  .card-wrapper:hover .media.media--hover-effect .card-link-overlay > img:first-child:only-child {
     transform: scale(1.03);
   }
   .card-wrapper:hover
@@ -335,5 +334,19 @@
 
 .card--samples.card-wrapper {
   border: 2px solid red;
+}
+
+.card-link-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  background: transparent;
+  text-decoration: none;
+  color: inherit;
 }
 /*# sourceMappingURL=component-card.css.map */

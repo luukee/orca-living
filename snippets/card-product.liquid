@@ -206,12 +206,15 @@ endif
 
   <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div class="{{ card_classes }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+      <!-- Overlay link: covers the whole card -->
+      
       <div class="{{ card_inner_classes }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;--image--natural-height: {{ 1 | divided_by: mainImage.aspect_ratio | times: 100 | append: '%' }};">
         
         {% comment %} Main Image {% endcomment %}
         {%- if mainImage -%}
           <div class="card__media">
             <div class="media media--transparent media--hover-effect">
+              <a href="{{ product_url }}" class="card-link-overlay full-unstyled-link" aria-label="{{ product_title | escape }}" id="CardLink-{{ section_id }}-{{ card_product.id }}" aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}">
               {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
               <img
                 srcset="
@@ -226,7 +229,7 @@ endif
                 src="{{ mainImage | image_url: width: 533 }}"
                 sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
                 alt="{{ mainImage.alt | escape }}"
-                class="motion-reduce"
+                class="motion-reduce main-image"
                 {% unless lazy_load == false %}
                   loading="lazy"
                 {% endunless %}
@@ -255,6 +258,7 @@ endif
                   height="{{ hoverImage.height }}"
                 >
               {%- endif -%}
+              </a>
             </div>
           </div>
         {%- endif -%}

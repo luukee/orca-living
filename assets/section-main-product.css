@@ -1691,6 +1691,7 @@ a.product__text {
 }
 
 .product .product__title-price {
+	font-family: var(--font-body-family);
 	--margin: var(--base-gutter--half);
 	display: flex;
 	justify-content: space-between;
