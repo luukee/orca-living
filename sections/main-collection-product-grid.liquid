@@ -36,6 +36,21 @@
   endif
 %}
 
+{% comment %} Show related products when coming from a non-all collection {% endcomment %}
+{% if product %}
+  {% assign first_non_all_collection = blank %}
+  {% for c in product.collections %}
+    {% if c.handle != 'all' %}
+      {% assign first_non_all_collection = c %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% if collection == blank or collection.handle == 'all' %}
+    {% assign collection = first_non_all_collection %}
+  {% endif %}
+{% endif %}
+
+
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
