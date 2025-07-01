@@ -28,6 +28,7 @@
           "type": "slider",
           "settings": {
             "show_image": true,
+            "image": "shopify://shop_images/ORCA_Home_page.png",
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 12,
@@ -67,8 +68,7 @@
             "width": "2000px",
             "video_ratio": "56",
             "video_url": "",
-            "video_hosted": "https://cdn.shopify.com/videos/c/o/v/7856fbc1d28e4adb9b4092aa6526d17e.mp4",
-            "video_hosted_thumbnail": "shopify://shop_images/Cliff-May-Homepage-Video-creator-1080-thumb.webp",
+            "video_hosted": "",
             "btn_txt_modal": "Watch Video",
             "video_modal": "",
             "custom_css": "",
