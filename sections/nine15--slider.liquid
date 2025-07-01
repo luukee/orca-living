@@ -1,6 +1,6 @@
 <!-- sections/nine15--slider -->
 
-{% include 'master--slider' %}
+{% render 'master--slider' %}
 {% if section.settings.hide_menus == true %}
   <style>
     .template--index #MainContent > *:nth-child(n + 2) {
@@ -145,6 +145,12 @@
       "id": "use_dots",
       "label": "Use Dots",
       "default": true
+    },
+    {
+      "type": "color_background",
+      "id": "arrow_background_color",
+      "label": "Arrow Background Color",
+      "default": "#ffffff"
     },
     {
       "type": "select",

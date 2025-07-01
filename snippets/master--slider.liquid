@@ -471,7 +471,7 @@
         {% if imgMain == blank and imgMob == blank  %}
             {% assign normMob = true %}
         {% endif %}
-        {% include 'snippet--video', 
+        {% render 'snippet--video', 
             vidExt: vidEmbd, 
             vidHosted: vidHost, 
             hostedThumb: hostedThumb,
@@ -481,7 +481,7 @@
             videoRatio: vidRatio
         %}
             {% comment %}{% assign vCls = sectionClass | append: ' medium-up--hide' %}
-            {% include 'snippet--video', 
+            {% render 'snippet--video', 
                 vidExt: vidEmbd, 
                 vidHosted: vidHost, 
                 vidClass: sectionClass, 
@@ -494,7 +494,7 @@
     {% capture img %}
         {% capture imgCls %}{% if imgMob != blank or mobRelative == true %}{% if mobOvSooner %}medium-down{% else %}small{% endif %}--hide{% endif %}{% endcapture %}
         {% capture mobImgCls %}{% if mobOvSooner %}large-up{% else %}medium-up{% endif %}--hide{% endcapture %}
-        {% include 'snippet--image', 
+        {% render 'snippet--image', 
             img: imgMain,
             alt: imgMainAlt, 
             class: imgCls,
@@ -502,7 +502,7 @@
             useBG: useBgImg 
         %}
         {% if imgMob != blank and mobRelative == false %}
-            {% include 'snippet--image', 
+            {% render 'snippet--image', 
                 img: imgMob, 
                 class: mobImgCls,
                 useBG: useBgImg 
@@ -513,7 +513,7 @@
             {% if imgMob != blank %}
                 {% assign relImgMob = imgMob %}
             {% endif %}
-            {% include 'snippet--image', 
+            {% render 'snippet--image', 
                 img: relImgMob, 
                 class: mobImgCls,
                 useBG: false 
@@ -530,7 +530,7 @@
                 <div class="modal-inner">
                     <span data-close="video_{{ forloop.index }}" class="close-modal">
                         <span class="visually-hidden">Close</span>
-                        {% include 'icon-close' %}
+                        {% render 'icon-close' %}
                     </span>
                     <div class="video-ratio for-modal">
                         {% if v_modal.type == "youtube" %}
@@ -571,7 +571,7 @@
                     txt != blank 
                 %}
                     <div class="center-content {{ contAlgn }}">
-                        {% include 'snippet--image', 
+                        {% render 'snippet--image', 
                             img: icnImg, 
                             useBG: false,
                             customStyle: 'max-width: 100px;display: inline-block;width: 100%;margin-bottom: 15px;'
@@ -579,7 +579,7 @@
                         {% if topStars > 0 %}
                             <div class="stars">
                                 {% for i in (1..topStars) %}
-                                    {% include 'icon-star' %}
+                                    {% render 'icon-star' %}
                                 {% endfor %}
                             </div>
                         {% endif %}
@@ -593,7 +593,7 @@
                         {% endif %}
                         
                         {% if txt != blank %}
-                            <div class="rte">{% if s.leaf == true %} {% include 'icon-leaf'%} {%endif%} {{ txt }}{% if s.leaf == true %} {% include 'icon-leaf'%} {%endif%}</div>
+                            <div class="rte">{% if s.leaf == true %} {% render 'icon-leaf'%} {%endif%} {{ txt }}{% if s.leaf == true %} {% render 'icon-leaf'%} {%endif%}</div>
                         {% endif %}
                         
                         <div class="but-div card__link-underline-wrapper">
@@ -607,7 +607,7 @@
                         
                         {% if v_modal != blank %}
                             <a class="btn button button--secondary secondary open-modal" data-open="video_{{ forloop.index }}" href="#">
-                                <span>{% include 'icon-play' %}</span>
+                                <span>{% render 'icon-play' %}</span>
                                 <span>{{v_modal_btn}}</span>
                             </a>
                         {% endif %}
@@ -615,13 +615,13 @@
                 {% endif %}
             </div>
 
-            {% include 'custom-css', 
+            {% render 'custom-css', 
                 css: blockCSS, 
                 class: slideCls,
                 important: false
             %}
 
-            {% include 'custom-css', 
+            {% render 'custom-css', 
                 css: blockCustomCSS, 
                 class: slideCls 
             %}
@@ -732,7 +732,7 @@
       }
       == .slick-prev::before, 
       == .slick-next::before {
-          background-color: white;
+          background-color: {{section.settings.arrow_background_color}};
       }
       /small/ {
           == .slick-prev, 
@@ -827,7 +827,7 @@
   {% endcapture %}
   </style>
 
-  {% include 'custom-css', 
+  {% render 'custom-css', 
       css: sectionCSS, 
       class: cssClass,
       important: false
@@ -842,7 +842,7 @@
   {{modal}}
 
 
-  {% include 'custom-css', 
+  {% render 'custom-css', 
       css: sectionCustomCSS, 
       class: cssClass 
   %}
