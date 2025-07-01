@@ -16,26 +16,63 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  {% if section.settings.card_max_height != blank %}
+    @media screen and (min-width: 750px) {
+      .collage__item {
+        height: {{ section.settings.card_max_height }};
+      }
+      .card.card--media {
+        overflow: hidden;
+      }
+    }
+  {% endif %}
+
+  {% if section.settings.card_title_text != blank %}
+    .card__content .card__title {
+      font-size: 3.25rem;
+      margin-bottom: 1rem;
+    }
+  {% endif %}
+  {% if section.settings.card_text_color != blank %}
+    .card__content .card__information,
+    .card__content .card__title,
+    .card__content .full-unstyled-link {
+      color: {{ section.settings.card_text_color }};
+    }
+  {% endif %}
+  {% if section.settings.card_inner_padding != blank %}
+    .card--media .card__inner .card__content {
+      padding: {{ section.settings.card_inner_padding }};
+    }
+  {% endif %}
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient isolate">
-  <div class="page-width{% if section.settings.heading == blank %} no-heading{% endif %} section-{{ section.id }}-padding">
-    <h2 class="collage-wrapper-title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
-    <div class="collage{% if section.settings.mobile_layout == 'collage' %} collage--mobile{% endif %}">
+{% liquid
+  assign card_titles = section.settings.card_title_text | split: '|'
+
+%}
+
+<div class='color-{{ section.settings.color_scheme }} gradient isolate'>
+  <div class='page-width{% if section.settings.heading == blank %} no-heading{% endif %} section-{{ section.id }}-padding'>
+    <h2 class='collage-wrapper-title inline-richtext {{ section.settings.heading_size }}'>
+      {{ section.settings.heading }}
+    </h2>
+    <div class='collage{% if section.settings.mobile_layout == 'collage' %} collage--mobile{% endif %}{% if section.settings.desktop_layout == 'equal' %} collage--equal{% endif %}'>
       {%- for block in section.blocks -%}
+        {% assign card_heading = card_titles[forloop.index0] | strip %}
         <div
-          class="collage__item collage__item--{{ block.type }} collage__item--{{ section.settings.desktop_layout }}"
+          class='collage__item collage__item--{{ block.type }} collage__item--{{ section.settings.desktop_layout }}'
           {{ block.shopify_attributes }}
         >
           {%- case block.type -%}
             {%- when 'image' -%}
-              <div class="collage-card {% if section.settings.card_styles == 'none' %}global-media-settings{% else %}card-wrapper {{ section.settings.card_styles }} color-{{ settings.card_color_scheme }}{% endif %}">
+              <div class='collage-card {% if section.settings.card_styles == 'none' %}global-media-settings{% else %}card-wrapper {{ section.settings.card_styles }} color-{{ settings.card_color_scheme }}{% endif %}'>
                 <div
-                  class="media media--transparent ratio"
+                  class='media media--transparent ratio'
                   {% if block.settings.image != blank %}
-                    style="--ratio-percent: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%"
+                    style='--ratio-percent: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%'
                   {% else %}
-                    style="--ratio-percent: 100%"
+                    style='--ratio-percent: 100%'
                   {% endif %}
                 >
                   {%- if block.settings.image != blank -%}
@@ -55,7 +92,11 @@
                 card_product: block.settings.product,
                 media_aspect_ratio: 'adapt',
                 show_secondary_image: block.settings.second_image,
-                extend_height: true
+                extend_height: true,
+                card_link_text: section.settings.card_link_text,
+                card_title_text: card_heading,
+                card_show_caption_description: section.settings.card_show_caption_description,
+                card_show_outer_content: section.settings.card_show_outer_content
               %}
             {%- when 'collection' -%}
               {% render 'card-collection',
@@ -63,21 +104,25 @@
                 media_aspect_ratio: 'adapt',
                 columns: 2,
                 extend_height: true,
-                wrapper_class: section.settings.card_styles
+                wrapper_class: section.settings.card_styles,
+                card_link_text: section.settings.card_link_text,
+                card_title_text: card_heading,
+                card_show_caption_description: section.settings.card_show_caption_description,
+                card_show_outer_content: section.settings.card_show_outer_content
               %}
             {%- when 'video' -%}
-              <div class="collage-card {% if section.settings.card_styles == 'none' %}global-media-settings{% else %}{{ section.settings.card_styles }} color-{{ settings.card_color_scheme }}{% endif %}">
+              <div class='collage-card {% if section.settings.card_styles == 'none' %}global-media-settings{% else %}{{ section.settings.card_styles }} color-{{ settings.card_color_scheme }}{% endif %}'>
                 <noscript>
                   <a
-                    href="{{ block.settings.video_url }}"
-                    class="collage-card__link"
+                    href='{{ block.settings.video_url }}'
+                    class='collage-card__link'
                   >
                     <div
-                      class="media media--transparent ratio"
+                      class='media media--transparent ratio'
                       {% if block.settings.cover_image != blank %}
-                        style="--ratio-percent: {{ 1 | divided_by: block.settings.cover_image.aspect_ratio | times: 100 }}%"
+                        style='--ratio-percent: {{ 1 | divided_by: block.settings.cover_image.aspect_ratio | times: 100 }}%'
                       {% else %}
-                        style="--ratio-percent: 100%"
+                        style='--ratio-percent: 100%'
                       {% endif %}
                     >
                       {%- if block.settings.cover_image != blank -%}
@@ -103,24 +148,24 @@
                     </div>
                   </a>
                 </noscript>
-                <modal-opener class="no-js-hidden" data-modal="#PopupModal-{{ block.id }}">
-                  <div class="deferred-media">
+                <modal-opener class='no-js-hidden' data-modal='#PopupModal-{{ block.id }}'>
+                  <div class='deferred-media'>
                     <button
-                      class="deferred-media__poster full-unstyled-link"
-                      type="button"
-                      aria-label="{{ 'sections.video.load_video' | t: description: block.settings.description | escape }}"
-                      aria-haspopup="dialog"
-                      data-media-id="{{ block.settings.video_url.id }}"
+                      class='deferred-media__poster full-unstyled-link'
+                      type='button'
+                      aria-label='{{ 'sections.video.load_video' | t: description: block.settings.description | escape }}'
+                      aria-haspopup='dialog'
+                      data-media-id='{{ block.settings.video_url.id }}'
                     >
                       <div
-                        class="media media--transparent ratio"
+                        class='media media--transparent ratio'
                         {% if block.settings.cover_image != blank %}
-                          style="--ratio-percent: {{ 1 | divided_by: block.settings.cover_image.aspect_ratio | times: 100 }}%"
+                          style='--ratio-percent: {{ 1 | divided_by: block.settings.cover_image.aspect_ratio | times: 100 }}%'
                         {% else %}
-                          style="--ratio-percent: 100%"
+                          style='--ratio-percent: 100%'
                         {% endif %}
                       >
-                        <span class="deferred-media__poster-button motion-reduce">
+                        <span class='deferred-media__poster-button motion-reduce'>
                           {%- render 'icon-play' -%}
                         </span>
 
@@ -148,40 +193,40 @@
                     </button>
                   </div>
                 </modal-opener>
-                <modal-dialog id="PopupModal-{{ block.id }}" class="modal-video media-modal color-background-1">
+                <modal-dialog id='PopupModal-{{ block.id }}' class='modal-video media-modal color-background-1'>
                   <div
-                    class="modal-video__content"
-                    role="dialog"
-                    aria-label="{{ block.settings.description | escape }}"
-                    aria-modal="true"
-                    tabindex="-1"
+                    class='modal-video__content'
+                    role='dialog'
+                    aria-label='{{ block.settings.description | escape }}'
+                    aria-modal='true'
+                    tabindex='-1'
                   >
                     <button
-                      id="ModalClose-{{ block.id }}"
-                      type="button"
-                      class="modal-video__toggle"
-                      aria-label="{{ 'accessibility.close' | t }}"
+                      id='ModalClose-{{ block.id }}'
+                      type='button'
+                      class='modal-video__toggle'
+                      aria-label='{{ 'accessibility.close' | t }}'
                     >
                       {% render 'icon-close' %}
                     </button>
-                    <div class="modal-video__content-info">
-                      <deferred-media class="modal-video__video template-popup">
+                    <div class='modal-video__content-info'>
+                      <deferred-media class='modal-video__video template-popup'>
                         <template>
                           {%- if block.settings.video_url.type == 'youtube' -%}
                             <iframe
-                              src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?enablejsapi=1"
-                              class="js-youtube"
-                              allow="autoplay; encrypted-media"
+                              src='https://www.youtube.com/embed/{{ block.settings.video_url.id }}?enablejsapi=1'
+                              class='js-youtube'
+                              allow='autoplay; encrypted-media'
                               allowfullscreen
-                              title="{{ block.settings.description | escape }}"
+                              title='{{ block.settings.description | escape }}'
                             ></iframe>
                           {%- else -%}
                             <iframe
-                              src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}"
-                              class="js-vimeo"
-                              allow="autoplay; encrypted-media"
+                              src='https://player.vimeo.com/video/{{ block.settings.video_url.id }}'
+                              class='js-vimeo'
+                              allow='autoplay; encrypted-media'
                               allowfullscreen
-                              title="{{ block.settings.description | escape }}"
+                              title='{{ block.settings.description | escape }}'
                             ></iframe>
                           {%- endif -%}
                         </template>
@@ -243,6 +288,10 @@
         {
           "value": "right",
           "label": "t:sections.collage.settings.desktop_layout.options__2.label"
+        },
+        {
+          "value": "equal",
+          "label": "Equal width"
         }
       ],
       "default": "left",
@@ -282,6 +331,13 @@
       "label": "t:sections.collage.settings.card_styles.label"
     },
     {
+      "type": "text",
+      "id": "card_max_height",
+      "label": "Card max height",
+      "default": "90vh",
+      "info": "0-100vh.Set to 0 to disable"
+    },
+    {
       "type": "select",
       "id": "color_scheme",
       "options": [
@@ -309,6 +365,46 @@
       "default": "background-1",
       "label": "t:sections.all.colors.label",
       "info": "t:sections.all.colors.has_cards_info"
+    },
+    {
+      "type": "header",
+      "content": "Card text"
+    },
+    {
+      "type": "text",
+      "id": "card_title_text",
+      "label": "Card title text",
+      "info": "Separate each card heading with a bar (|). Leave blank to not show the heading."
+    },
+    {
+      "type": "text",
+      "id": "card_link_text",
+      "label": "Card link text",
+      "info": "Leave blank to use collection title"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_caption_description",
+      "default": false,
+      "label": "Show caption description"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_outer_content",
+      "default": true,
+      "label": "Show outer content"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "card_inner_padding",
+      "label": "Card inner padding",
+      "info": "Leave blank to use default padding. Example: 1rem 2rem 1rem 2rem"
     },
     {
       "type": "header",

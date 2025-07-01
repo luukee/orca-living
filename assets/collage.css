@@ -11,6 +11,7 @@
 .collage__item .card__content {
   flex-grow: initial;
 }
+
 @media only screen and (max-width: 749px) {
   .collage {
     grid-column-gap: var(--grid-mobile-horizontal-spacing);
@@ -48,6 +49,9 @@
     grid-row-gap: var(--grid-desktop-vertical-spacing);
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  .collage--equal {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .collage__item--left:nth-child(3n-2) {
     grid-column: 1 / span 2;
     grid-row: span 2;
@@ -78,6 +82,17 @@
   .collage__item--right:nth-child(3n) {
     grid-column: 2 / span 2;
     grid-row: span 2;
+  }
+  .collage__item--equal {
+    grid-column: 2 / span 1;
+    grid-row: span 1;
+  }
+  .collage__item--equal:nth-child(3n-2) {
+    grid-column: 1 / span 1;
+    grid-row: span 1;
+  }
+  .collage__item--equal:nth-child(3n-2):last-child {
+    grid-column: 1 / span 3;
   }
   .collage__item--collection:only-child,
   .collage__item--product:only-child {
@@ -167,5 +182,35 @@
 .collage-card .deferred-media__poster:focus {
   outline: none;
   box-shadow: none;
+}
+.collage .card__inner .card__information {
+  grid-row: -1;
+}
+@media only screen and (min-width: 990px) {
+  .collage .card__link-underline-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  .collage .underline-links-hover a {
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .collage .underline-links-hover a::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0; /* space below text */
+    top: auto;
+    width: auto;
+    height: 2px;
+    background: #fff; /* or your desired color */
+    transform: translateY(6px);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .collage .underline-links-hover:hover a::after,
+  .collage .underline-links-hover:focus a::after {
+    transform: translateY(0);
+  }
 }
 /*# sourceMappingURL=collage.css.map */

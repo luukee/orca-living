@@ -4,8 +4,9 @@
   Accepts:
   - card_product: {Object} Product Liquid object (optional)
   - product_title: {String} Product title (optional)
+  - show_product_title: {Boolean} Show the product title. Default: true (optional)
   - media_aspect_ratio: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
-  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false
   - show_vendor: {Boolean} Show the product vendor. Default: false
   - show_price: {Boolean} Show the product price. Default: false
   - show_badge: {Boolean} Show the product badge. Default: false
@@ -19,11 +20,14 @@
   - horizontal_class: {Boolean} Add a card--horizontal class if set to true. Default: false (optional)
   - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
   - use_primary_collection_url: {Boolean} Use product's primary collection for URL instead of current collection (optional)
-
+  - card_link_text: {String} Text for card link (optional)
+  - card_title_text: {String} Text for card heading (optional)
+  - card_show_outer_content: {Boolean} Show the outer content. Default: false (optional)
+  - card_show_inner_content: {Boolean} Show the inner content. Default: false (optional)
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
-
+{% render 'dump' with card_show_outer_content %}
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
 {% liquid
@@ -74,6 +78,11 @@ endif
     assign product_title = card_product.title
   endif
   
+  # If show_product_title is nil, set it to true
+  if show_product_title == nil
+    assign show_product_title = true
+  endif
+
   assign is_variant = false
   if card_product.product
     assign is_variant = true  
@@ -181,7 +190,19 @@ endif
     if mainImage or settings.card_style == 'standard'
       assign card_inner_classes = card_inner_classes | append: ' ratio'
     endif
-
+    unless card_show_outer_content == false
+      assign card_show_outer_content = true
+    endunless
+    unless card_show_inner_content == false
+      assign card_show_inner_content = true
+    endunless
+    
+    if card_link_text == blank
+      assign card_link_text = card_product.title
+    endif
+    if card_title_text != blank
+      assign card_title_text = card_title_text
+    endif
   -%}
 
   <div class="card-wrapper product-card-wrapper underline-links-hover">
@@ -266,189 +287,146 @@ endif
             {%- endif -%}
           </div>
         {% endif %}
-
+        
+        {% if card_show_inner_content != false and template.name != 'product' and template.name != 'collection' %}
+          <div class="card__content">
+            <div class="card__information">
+              
+              {% if card_title_text != blank %}
+                <h2 class="card__title">
+                  {{- card_title_text | escape -}}
+                </h2>
+              {% endif %}
+              
+              <h3 class="card__heading card__link-underline-wrapper">
+                <a role="link" aria-disabled="true" class="full-unstyled-link">
+                  {%- if card_link_text != blank -%}
+                    {{- card_link_text | escape -}}
+                  {%- else -%}
+                    {{ 'onboarding.product_title' | t }}
+                  {%- endif -%}
+                </a>
+              </h3>
+            </div>
+          </div>
+        {% endif %}
+        
       </div>
 
       {% comment %} Card Content {% endcomment %}
-      <div class="card__content card__content--v2">
-        <div class="card__information">
-          <h3 class="card__heading{% if mainImage or settings.card_style == 'standard' %} h5{% endif %}"
-            {% if mainImage or settings.card_style == 'card' %}
-              id="title-{{ section_id }}-{{ card_product.id }}"
-            {% endif %}
-          >
-            <a href="{{ product_url }}" id="CardLink-{{ section_id }}-{{ card_product.id }}" class="full-unstyled-link" aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}">
-              {{ product_title | escape }}
-            </a>
-            {% comment %} Hide overlay link & View full details button {% endcomment %}
-            {% comment %}
-              {% if hide_overlay_link == false %}
-                  <a
-                  href="{{ product_url }}"
-                  id="CardLink-{{ section_id }}-{{ card_product.id }}"
-                  class="full-unstyled-link"
-                  aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
-                >
+      {% unless card_show_outer_content == false %}
+        <div class="card__content card__content--v2">
+          <div class="card__information">
+            
+            <h3 class="card__heading{% if mainImage or settings.card_style == 'standard' %} h5{% endif %} card__link-underline-wrapper"
+              {% if mainImage or settings.card_style == 'card' %}
+                id="title-{{ section_id }}-{{ card_product.id }}"
+              {% endif %}
+            >
+            
+            {% if show_product_title == true %}
+              <a href="{{ product_url }}" id="CardLink-{{ section_id }}-{{ card_product.id }}" class="full-unstyled-link" aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}">
+                {%- if card_link_text != blank -%}
+                  {{- card_link_text | escape -}}
+                  <span class="card__link-underline"></span>
+                {%- else -%}
                   {{ product_title | escape }}
-                </a>
-              {% else %}
-                {{ product_title | escape }}
-              {% endif %}
-            {% endcomment %}
-          </h3>
-          {% if show_price or show_vendor or show_rating %}
-            <div class="card-information">
-              
-              {% comment %} Vendor {% endcomment %}
-              {%- if show_vendor -%}
-                <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
-                <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
-              {%- endif -%}
-
-              {% comment %} Rating {% endcomment %}
-              {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
-                {% liquid
-                  assign rating_decimal = 0
-                  assign decimal = card_product.metafields.reviews.rating.value.rating | modulo: 1
-                  if decimal >= 0.3 and decimal <= 0.7
-                    assign rating_decimal = 0.5
-                  elsif decimal > 0.7
-                    assign rating_decimal = 1
-                  endif
-                %}
-                <div
-                  class="rating"
-                  role="img"
-                  aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: card_product.metafields.reviews.rating.value, rating_max: card_product.metafields.reviews.rating.value.scale_max }}"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="rating-star color-icon-{{ settings.accent_icons }}"
-                    style="--rating: {{ card_product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ card_product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
-                  ></span>
-                </div>
-                <p class="rating-text caption">
-                  <span aria-hidden="true">
-                    {{- card_product.metafields.reviews.rating.value }} /
-                    {{ card_product.metafields.reviews.rating.value.scale_max -}}
-                  </span>
-                </p>
-                <p class="rating-count caption">
-                  <span aria-hidden="true">({{ card_product.metafields.reviews.rating_count }})</span>
-                  <span class="visually-hidden">
-                    {{- card_product.metafields.reviews.rating_count }}
-                    {{ 'accessibility.total_reviews' | t -}}
-                  </span>
-                </p>
-              {%- endif -%}
-
-              {% comment %} Price {% endcomment %}
-              {% if show_price %}
-                {% render 'price', product: price_variant, price_class: '' %}
-              {% endif %}
-            </div>
-          {% endif %}
-        </div>
-        {%- if show_quick_add -%}
-          <div class="quick-add no-js-hidden">
-            {%- liquid
-              assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
-              assign qty_rules = false
-              if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
-                assign qty_rules = true
-              endif
-            -%}
-            {%- if card_product.variants.size > 1 or qty_rules -%}
-              <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
-                <button
-                  id="{{ product_form_id }}-submit"
-                  type="submit"
-                  name="add"
-                  class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
-                  aria-haspopup="dialog"
-                  aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                  data-product-url="{{ product_url }}"
-                >
-                  {{ 'products.product.choose_options' | t }}
-                  {%- if horizontal_quick_add -%}
-                    <span class="icon-wrap">{% render 'icon-arrow' %}</span>
-                  {%- endif -%}
-                  <div class="loading-overlay__spinner hidden">
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      class="spinner"
-                      viewBox="0 0 66 66"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                    </svg>
-                  </div>
-                </button>
-              </modal-opener>
-              <quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal">
-                <div
-                  role="dialog"
-                  aria-label="{{ 'products.product.choose_product_options' | t: product_name: product_title | escape }}"
-                  aria-modal="true"
-                  class="quick-add-modal__content global-settings-popup"
-                  tabindex="-1"
-                >
-                  <button
-                    id="ModalClose-{{ card_product.id }}"
-                    type="button"
-                    class="quick-add-modal__toggle"
-                    aria-label="{{ 'accessibility.close' | t }}"
+                {%- endif -%}
+              </a>
+            {% endif %}
+            </h3>
+              {% comment %} Hide overlay link & View full details button {% endcomment %}
+              {% comment %}
+                {% if hide_overlay_link == false %}
+                    <a
+                    href="{{ product_url }}"
+                    id="CardLink-{{ section_id }}-{{ card_product.id }}"
+                    class="full-unstyled-link"
+                    aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
                   >
-                    {% render 'icon-close' %}
-                  </button>
-                  <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
-                </div>
-              </quick-add-modal>
-            {%- else -%}
-              <product-form>
-                {% assign prod = card_product %}
-                {% if is_variant %}
-                  {% assign prod = prod.product %}
+                    {{ product_title | escape }}
+                  </a>
+                {% else %}
+                  {{ product_title | escape }}
                 {% endif %}
-                {%- form 'product',
-                  prod,
-                  id: product_form_id,
-                  class: 'form',
-                  novalidate: 'novalidate',
-                  data-type: 'add-to-cart-form'
-                -%}
-                  <input
-                    type="hidden"
-                    name="id"
-                    value="{{ card_product.selected_or_first_available_variant.id }}"
-                    disabled
+              {% endcomment %}
+            
+            {% if show_price or show_vendor or show_rating %}
+              <div class="card-information">
+                
+                {% comment %} Vendor {% endcomment %}
+                {%- if show_vendor -%}
+                  <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+                  <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
+                {%- endif -%}
+
+                {% comment %} Rating {% endcomment %}
+                {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
+                  {% liquid
+                    assign rating_decimal = 0
+                    assign decimal = card_product.metafields.reviews.rating.value.rating | modulo: 1
+                    if decimal >= 0.3 and decimal <= 0.7
+                      assign rating_decimal = 0.5
+                    elsif decimal > 0.7
+                      assign rating_decimal = 1
+                    endif
+                  %}
+                  <div
+                    class="rating"
+                    role="img"
+                    aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: card_product.metafields.reviews.rating.value, rating_max: card_product.metafields.reviews.rating.value.scale_max }}"
                   >
+                    <span
+                      aria-hidden="true"
+                      class="rating-star color-icon-{{ settings.accent_icons }}"
+                      style="--rating: {{ card_product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ card_product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
+                    ></span>
+                  </div>
+                  <p class="rating-text caption">
+                    <span aria-hidden="true">
+                      {{- card_product.metafields.reviews.rating.value }} /
+                      {{ card_product.metafields.reviews.rating.value.scale_max -}}
+                    </span>
+                  </p>
+                  <p class="rating-count caption">
+                    <span aria-hidden="true">({{ card_product.metafields.reviews.rating_count }})</span>
+                    <span class="visually-hidden">
+                      {{- card_product.metafields.reviews.rating_count }}
+                      {{ 'accessibility.total_reviews' | t -}}
+                    </span>
+                  </p>
+                {%- endif -%}
+
+                {% comment %} Price {% endcomment %}
+                {% if show_price %}
+                  {% render 'price', product: price_variant, price_class: '' %}
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+          {%- if show_quick_add -%}
+            <div class="quick-add no-js-hidden">
+              {%- liquid
+                assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
+                assign qty_rules = false
+                if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+                  assign qty_rules = true
+                endif
+              -%}
+              {%- if card_product.variants.size > 1 or qty_rules -%}
+                <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
                   <button
                     id="{{ product_form_id }}-submit"
                     type="submit"
                     name="add"
-                    class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
+                    class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
                     aria-haspopup="dialog"
                     aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                    aria-live="polite"
-                    data-sold-out-message="true"
-                    {% if card_product.selected_or_first_available_variant.available == false %}
-                      disabled
-                    {% endif %}
+                    data-product-url="{{ product_url }}"
                   >
-                    <span>
-                      {%- if card_product.selected_or_first_available_variant.available -%}
-                        {{ 'products.product.add_to_cart' | t }}
-                      {%- else -%}
-                        {{ 'products.product.sold_out' | t }}
-                      {%- endif -%}
-                    </span>
-                    <span class="sold-out-message hidden">
-                      {{ 'products.product.sold_out' | t }}
-                    </span>
+                    {{ 'products.product.choose_options' | t }}
                     {%- if horizontal_quick_add -%}
-                      <span class="icon-wrap">{% render 'icon-plus' %}</span>
+                      <span class="icon-wrap">{% render 'icon-arrow' %}</span>
                     {%- endif -%}
                     <div class="loading-overlay__spinner hidden">
                       <svg
@@ -462,107 +440,185 @@ endif
                       </svg>
                     </div>
                   </button>
-                {%- endform -%}
-              </product-form>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-        {% comment %} Samples button **needs work** {% endcomment %}
-        {% comment %} 
-          {% if quick_add_variant %}
-            {% assign product_form_id = 'single-variant-quick-add-' | append: section_id | append: quick_add_variant.id %}
-            <div class="quick-add no-js-hidden">
-              <product-form>
-                {% assign prod = card_product %}
-                {% if is_variant %}
-                  {% assign prod = prod.product %}
-                {% endif %}
-                {%- form 'product',
-                  prod,
-                  id: product_form_id,
-                  class: 'form',
-                  novalidate: 'novalidate',
-                  data-type: 'add-to-cart-form'
-                -%}
-                  <input
-                    type="hidden"
-                    name="id"
-                    value="{{ single_variant_quick_add.id }}"
-                    disabled
+                </modal-opener>
+                <quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal">
+                  <div
+                    role="dialog"
+                    aria-label="{{ 'products.product.choose_product_options' | t: product_name: product_title | escape }}"
+                    aria-modal="true"
+                    class="quick-add-modal__content global-settings-popup"
+                    tabindex="-1"
                   >
-                  <button
-                    id="SampleOrderButton-{{ section_id }}"
-                    name="add"
-                    data-value="{{ quick_add_variant.id }}"
-                    class="product-form__submit button button--full-width"
-                    {% if quick_add_variant.available == false %}
+                    <button
+                      id="ModalClose-{{ card_product.id }}"
+                      type="button"
+                      class="quick-add-modal__toggle"
+                      aria-label="{{ 'accessibility.close' | t }}"
+                    >
+                      {% render 'icon-close' %}
+                    </button>
+                    <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
+                  </div>
+                </quick-add-modal>
+              {%- else -%}
+                <product-form>
+                  {% assign prod = card_product %}
+                  {% if is_variant %}
+                    {% assign prod = prod.product %}
+                  {% endif %}
+                  {%- form 'product',
+                    prod,
+                    id: product_form_id,
+                    class: 'form',
+                    novalidate: 'novalidate',
+                    data-type: 'add-to-cart-form'
+                  -%}
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ card_product.selected_or_first_available_variant.id }}"
                       disabled
-                    {% endif %}
-                  >
-                    <span>
+                    >
+                    <button
+                      id="{{ product_form_id }}-submit"
+                      type="submit"
+                      name="add"
+                      class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
+                      aria-haspopup="dialog"
+                      aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+                      aria-live="polite"
+                      data-sold-out-message="true"
+                      {% if card_product.selected_or_first_available_variant.available == false %}
+                        disabled
+                      {% endif %}
+                    >
                       <span>
-                        {%- if quick_add_variant.available == false -%}
-                          {{ 'products.product.sold_out' | t }}
+                        {%- if card_product.selected_or_first_available_variant.available -%}
+                          {{ 'products.product.add_to_cart' | t }}
                         {%- else -%}
-                          Order Sample
+                          {{ 'products.product.sold_out' | t }}
                         {%- endif -%}
                       </span>
-                    </span>
-
-                    <div class="loading-overlay__spinner hidden">
-                      <svg
-                        aria-hidden="true"
-                        focusable="false"
-                        class="spinner"
-                        viewBox="0 0 66 66"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                      </svg>
-                    </div>
-                  </button>
-                {%- endform -%}
-              </product-form>
+                      <span class="sold-out-message hidden">
+                        {{ 'products.product.sold_out' | t }}
+                      </span>
+                      {%- if horizontal_quick_add -%}
+                        <span class="icon-wrap">{% render 'icon-plus' %}</span>
+                      {%- endif -%}
+                      <div class="loading-overlay__spinner hidden">
+                        <svg
+                          aria-hidden="true"
+                          focusable="false"
+                          class="spinner"
+                          viewBox="0 0 66 66"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                      </div>
+                    </button>
+                  {%- endform -%}
+                </product-form>
+              {%- endif -%}
             </div>
-          {%- endif -%} 
-        {% endcomment %}
-        
-        {% comment %} View full details button {% endcomment %}
-        {% comment %} 
-          {% if hide_overlay_link == true %}
-            <a    
-              href="{{ product_url }}"
-              id="CardLink-{{ section_id }}-{{ card_product.id }}"
-              class="full-unstyled-link h5"
-              aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
-            >
-              View full details
-            </a>
-          {% endif %}
-        {% endcomment %}
-        
-        {% comment %} Badge {% endcomment %}
-        {% if show_badge %}
-          <div class="card__badge {{ settings.badge_position }}">
-            {%- if card_product.available == false -%}
-              <span
-                id="Badge-{{ section_id }}-{{ card_product.id }}"
-                class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
-              >
-                {{- 'products.product.sold_out' | t -}}
-              </span>
-            {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
-              <span
-                id="Badge-{{ section_id }}-{{ card_product.id }}"
-                class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
-              >
-                {{- 'products.product.on_sale' | t -}}
-              </span>
-            {%- endif -%}
-          </div>
-        {% endif %}
+          {%- endif -%}
+          {% comment %} Samples button **needs work** {% endcomment %}
+          {% comment %} 
+            {% if quick_add_variant %}
+              {% assign product_form_id = 'single-variant-quick-add-' | append: section_id | append: quick_add_variant.id %}
+              <div class="quick-add no-js-hidden">
+                <product-form>
+                  {% assign prod = card_product %}
+                  {% if is_variant %}
+                    {% assign prod = prod.product %}
+                  {% endif %}
+                  {%- form 'product',
+                    prod,
+                    id: product_form_id,
+                    class: 'form',
+                    novalidate: 'novalidate',
+                    data-type: 'add-to-cart-form'
+                  -%}
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ single_variant_quick_add.id }}"
+                      disabled
+                    >
+                    <button
+                      id="SampleOrderButton-{{ section_id }}"
+                      name="add"
+                      data-value="{{ quick_add_variant.id }}"
+                      class="product-form__submit button button--full-width"
+                      {% if quick_add_variant.available == false %}
+                        disabled
+                      {% endif %}
+                    >
+                      <span>
+                        <span>
+                          {%- if quick_add_variant.available == false -%}
+                            {{ 'products.product.sold_out' | t }}
+                          {%- else -%}
+                            Order Sample
+                          {%- endif -%}
+                        </span>
+                      </span>
 
-      </div>
+                      <div class="loading-overlay__spinner hidden">
+                        <svg
+                          aria-hidden="true"
+                          focusable="false"
+                          class="spinner"
+                          viewBox="0 0 66 66"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                      </div>
+                    </button>
+                  {%- endform -%}
+                </product-form>
+              </div>
+            {%- endif -%} 
+          {% endcomment %}
+          
+          {% comment %} View full details button {% endcomment %}
+          {% comment %} 
+            {% if hide_overlay_link == true %}
+              <a    
+                href="{{ product_url }}"
+                id="CardLink-{{ section_id }}-{{ card_product.id }}"
+                class="full-unstyled-link h5"
+                aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
+              >
+                View full details
+              </a>
+            {% endif %}
+          {% endcomment %}
+          
+          {% comment %} Badge {% endcomment %}
+          {% if show_badge %}
+            <div class="card__badge {{ settings.badge_position }}">
+              {%- if card_product.available == false -%}
+                <span
+                  id="Badge-{{ section_id }}-{{ card_product.id }}"
+                  class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
+                >
+                  {{- 'products.product.sold_out' | t -}}
+                </span>
+              {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
+                <span
+                  id="Badge-{{ section_id }}-{{ card_product.id }}"
+                  class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
+                >
+                  {{- 'products.product.on_sale' | t -}}
+                </span>
+              {%- endif -%}
+            </div>
+          {% endif %}
+
+        </div>
+      {% endunless %}
     </div>
   </div>
 {%- else -%}
@@ -585,14 +641,26 @@ endif
       >
         <div class="card__content">
           <div class="card__information">
-            <h3 class="card__heading">
+            
+            {% if card_title_text != blank %}
+              <h2 class="card__title">
+                {{- card_title_text | escape -}}
+              </h2>
+            {% endif %}
+            
+            <h3 class="card__heading card__link-underline-wrapper">
               <a role="link" aria-disabled="true" class="full-unstyled-link">
-                {{ 'onboarding.product_title' | t }}
+                {%- if card_link_text != blank -%}
+                  {{- card_link_text | escape -}}
+                {%- else -%}
+                  {{ 'onboarding.product_title' | t }}
+                {%- endif -%}
               </a>
             </h3>
           </div>
         </div>
       </div>
+      {% if card_show_outer_content %}
       <div class="card__content">
         <div class="card__information">
           <h3 class="card__heading{% if settings.card_style == 'standard' %} h5{% endif %}">
@@ -613,6 +681,7 @@ endif
           {% endif %}
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
 {%- endif -%}

@@ -1,4 +1,4 @@
-<!-- sections/side-navigation -->
+<!-- sections/navigation -->
 
 {{ 'navigation.css' | asset_url | stylesheet_tag }}
 
@@ -19,14 +19,15 @@
 
 {% liquid 
   assign makeh1       = section.settings.make_h1
-
+  assign navigationHorizontal = section.settings.navigation_horizontal
+  
   assign headingEl    = 'h2'
   if makeh1 == true and template.name == 'collection'
     assign headingEl  = 'h1'
   endif
 %}
 
-<div class="gradient section--side-navigation">
+<div class="gradient section--navigation">
   <div class="page-width section-{{ section.id }}-padding">
 
     {% if section.settings.title %}
@@ -135,9 +136,9 @@
 
 {% schema %}
 {
-  "name": "Side Navigation",
+  "name": "Navigation",
   "tag": "section",
-  "class": "section side-navigation",
+  "class": "section navigation",
   "settings": [
     {
       "type": "liquid",
@@ -150,10 +151,15 @@
       "label": "Make title an H1"
     },
     {
+      "type":"checkbox",
+      "id":"navigation_horizontal",
+      "label": "Make navigation horizontal"
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
-      "label": "Side Navigation"
+      "label": "Navigation"
     },
     {
       "type": "header",
@@ -182,7 +188,7 @@
   ],
   "presets": [
     {
-      "name": "Side Navigation"
+      "name": "Navigation"
     }
   ]
 }

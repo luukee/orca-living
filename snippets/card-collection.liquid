@@ -7,7 +7,9 @@
   - columns: {Number}
   - extend_height: {Boolean} Card height extends to available container space. Default: false (optional)
   - wrapper_class: {String} Wrapper class for card (optional)
-
+  - card_link_text: {String} Text for card link (optional)
+  - card_title_text: {String} Text for card heading (optional)
+  - card_show_caption_description: {Boolean} Show caption description. Default: false (optional)
   Usage:
   {% render 'card-collection' %}
 {% endcomment %}
@@ -28,9 +30,18 @@
     assign card_color_scheme = settings.collection_card_color_scheme
     assign card_style = settings.collection_card_style
   endif
+  if card_show_outer_content == blank
+    assign card_show_outer_content = false
+  endif
+  if card_link_text == blank
+    assign card_link_text = card_collection.title
+  endif
+  if card_title_text == blank
+    assign card_title_text = card_collection.title
+  endif
 -%}
 
-<div class="card-wrapper animate-arrow {% if wrapper_class and wrapper_class != 'none' %}{{ wrapper_class }}{% else %}collection-card-wrapper{% endif %}">
+<div class="card-wrapper animate-arrow {% if wrapper_class and wrapper_class != 'none' %}{{ wrapper_class }}{% else %}collection-card-wrapper{% endif %} underline-links-hover">
   <div
     class="
       card
@@ -77,7 +88,13 @@
       {%- endif -%}
       <div class="card__content">
         <div class="card__information">
-          <h3 class="card__heading">
+          
+          {% if card_title_text != blank %}
+            <h2 class="card__title">
+              {{- card_title_text | escape -}}
+            </h2>
+          {% endif %}
+          <h3 class="card__heading card__link-underline-wrapper">
             <a
               {% if card_collection == blank %}
                 role="link" aria-disabled="true"
@@ -86,17 +103,21 @@
               {% endif %}
               class="full-unstyled-link"
             >
-              {%- if card_collection.title != blank -%}
+              {%- if card_link_text != blank -%}
+                {{- card_link_text | escape -}}
+              {%- elsif card_collection.title != blank -%}
                 {{- card_collection.title | escape -}}
               {%- else -%}
                 {{ 'onboarding.collection_title' | t }}
               {%- endif -%}
-              {%- if card_collection.description == blank -%}
-                <span class="icon-wrap">{% render 'icon-arrow' %}</span>
+              {%- if card_link_text == blank -%}
+                {%- if card_collection.description == blank or card_link_text == blank -%}
+                  <span class="icon-wrap">{% render 'icon-arrow' %}</span>
+                {%- endif %}
               {%- endif %}
             </a>
           </h3>
-          {%- if card_collection.description != blank -%}
+          {%- if card_collection.description != blank and card_show_caption_description -%}
             <p class="card__caption">
               {{- card_collection.description | strip_html | truncatewords: 12 -}}
               <span class="icon-wrap">&nbsp;{% render 'icon-arrow' %}</span>
@@ -105,10 +126,17 @@
         </div>
       </div>
     </div>
-    {% if card_style == 'card' or card_collection.featured_image %}
+    {% if card_style == 'card' or card_collection.featured_image and card_show_outer_content %}
       <div class="card__content">
         <div class="card__information">
-          <h3 class="card__heading">
+          
+          {% comment %} {% if card_title_text != blank %}
+            <h2 class="card__title">
+              {{- card_title_text | escape -}}
+            </h2>
+          {% endif %}
+           {% endcomment %}
+          <h3 class="card__heading card__link-underline-wrapper">
             <a
               {% if card_collection == blank %}
                 role="link" aria-disabled="true"
@@ -117,14 +145,18 @@
               {% endif %}
               class="full-unstyled-link"
             >
+              {% comment %} {%- if card_link_text != blank -%}
+                {{- card_link_text | escape -}} {% endcomment %}
               {%- if card_collection.title != blank -%}
                 {{- card_collection.title | escape -}}
               {%- else -%}
                 {{ 'onboarding.collection_title' | t }}
               {%- endif -%}
-              {%- if card_collection.featured_image or card_collection.description == blank -%}
-                <span class="icon-wrap">{% render 'icon-arrow' %}</span>
-              {%- endif %}
+              {% if card_link_text == blank %}
+                {%- if card_collection.featured_image or card_collection.description == blank -%}
+                  <span class="icon-wrap">{% render 'icon-arrow' %}</span>
+                {%- endif %}
+              {% endif %}
             </a>
           </h3>
           {%- if card_collection.featured_image == null and card_collection.description != blank -%}
