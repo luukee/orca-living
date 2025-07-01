@@ -1,5 +1,12 @@
+.section--navigation .navigation-mobile .navigation-drawer__toggle > span  {
+  display: flex;
+}
 
 @media only screen and (min-width: 990px) {
+  .section--navigation {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
   .section--navigation .list-menu {
     display: flex;
     gap: calc(var(--base-gutter--half) * 2.5);

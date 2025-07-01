@@ -729,7 +729,7 @@ class HeaderDrawer extends MenuDrawer {
     this.header = this.header || document.querySelector('.section-header');
     this.borderOffset =
       this.borderOffset ||
-      this.closest('.header-wrapper').classList.contains(
+      this.closest('.header').classList.contains(
         'header-wrapper--border-bottom'
       )
         ? 1

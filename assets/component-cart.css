@@ -17,6 +17,12 @@ cart-items.is-empty .title-wrapper-with-link,
   text-align: center;
   padding: 3rem 0 1rem;
 }
+.cart__warnings .underlined-link {
+  display: initial
+}
+.cart__warnings .underlined-link::after {
+  content: none;
+}
 .cart__empty-text {
   margin: 4.5rem 0 2rem;
 }
