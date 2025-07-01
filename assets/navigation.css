@@ -2,7 +2,7 @@
 @media only screen and (min-width: 990px) {
   .section--navigation .list-menu {
     display: flex;
-    gap: var(--base-gutter--half);
+    gap: calc(var(--base-gutter--half) * 2);
   }
 }
 .section--side-navigation h1,
