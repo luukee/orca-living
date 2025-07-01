@@ -64,7 +64,7 @@
             "align_hor": "left",
             "vert_align": 85,
             "hor_align": 0,
-            "width": "780px",
+            "width": "2000px",
             "video_ratio": "56",
             "video_url": "",
             "video_hosted": "https://cdn.shopify.com/videos/c/o/v/7856fbc1d28e4adb9b4092aa6526d17e.mp4",
@@ -229,9 +229,9 @@
             "color_button_hover": "",
             "color_button_border_hover": "",
             "align_hor": "left",
-            "vert_align": 95,
+            "vert_align": 88,
             "hor_align": 0,
-            "width": "450px",
+            "width": "2000px",
             "video_ratio": "56",
             "video_url": "",
             "video_hosted": "",
@@ -315,7 +315,7 @@
       ],
       "custom_css": [
         ".link {margin-top: 0.5rem;}",
-        ".link,.inline-richtext {font-size: calc(var(--font-heading-scale) * 1.8rem); text-transform: uppercase;}"
+        ".link,.inline-richtext:not(.title) {font-size: calc(var(--font-heading-scale) * 1.8rem); text-transform: uppercase;}"
       ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
