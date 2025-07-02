@@ -6,6 +6,7 @@
   .section--navigation {
     padding-top: 14px;
     padding-bottom: 14px;
+    border-bottom: 1px solid #000;
   }
   .section--navigation .list-menu {
     display: flex;
