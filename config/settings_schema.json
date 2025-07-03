@@ -1625,5 +1625,32 @@
             "info": "The ID of the list to add form submissions to"
         }
     ]
+  },
+  {
+    "name": "Localization",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Country/Region Selector",
+        "info": "To add a country/region, go to your market settings."
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_country_selector",
+        "default": false,
+        "label": "Enable country/region selector"
+      },
+      {
+        "type": "header",
+        "content": "Language Selector",
+        "info": "To add a language, go to your language settings."
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_language_selector",
+        "default": false,
+        "label": "Enable language selector"
+      }
+    ]
   }
 ]
