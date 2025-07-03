@@ -262,6 +262,8 @@
 {% endstyle %}
 {{ 'component-grid.css' | asset_url | stylesheet_tag }}
 {{ 'base.css' | asset_url | stylesheet_tag }}
+{{ 'slick.css' | asset_url | stylesheet_tag }}
+{{ 'slick-theme.css' | asset_url | stylesheet_tag }}
 
 {% liquid
   render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-price.css'

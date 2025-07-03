@@ -131,7 +131,8 @@
               show_quick_add: false,
               hide_overlay_link: false,
               media_aspect_ratio: 'portrait'
-              use_primary_collection_url: true
+              use_primary_collection_url: true,
+              card_show_inner_content: section.settings.card_show_inner_content
             %}
           </div>
         {% endif %}
@@ -208,6 +209,16 @@
       "id": "excluded_collections",
       "label": "Excluded Collections",
       "info": "Comma-separated list of collection handles to exclude"
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_inner_content",
+      "default": true,
+      "label": "Show inner content"
     }
   ],
   "presets": [
