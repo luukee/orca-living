@@ -1,15 +1,8 @@
-{% assign delivery_method_types = delivery_agreements | map: 'delivery_method_type' | uniq %}
-{% if delivery_method_types.size > 1 %}
-  {% assign has_split_cart = true %}
-{% else %}
-  {% assign has_split_cart = false %}
-{% endif %}
-
 {% capture email_title %}
   {% if has_pending_payment %}
-    Thank you for your order!
+    Thank you for your order.
   {% else %}
-    Thank you for your purchase!
+    Thank you for your order.
   {% endif %}
 {% endcapture %}
 {% capture email_body %}
@@ -33,14 +26,9 @@
           <p><b>Delivery information:</b> {{ delivery_instructions }}</p>
         {% endif %}
        {% if consolidated_estimated_delivery_time %}
-        {% if has_multiple_delivery_methods %}
-          <h3 class="estimated_delivery__title">Estimated delivery</h3>
-          <p>{{ consolidated_estimated_delivery_time }}</p>
-        {% else %}
-          <p>
-            Estimated delivery <b>{{ consolidated_estimated_delivery_time }}</b>
-          </p>
-        {% endif %}
+         <p>
+           Estimated delivery <b>{{ consolidated_estimated_delivery_time }}</b>
+         </p>
        {% endif %}
     {% endif %}
   {% endif %}
@@ -98,24 +86,22 @@
                   </td>
 
                     <td>
-                      <table class="order-po-number__container">
-                        <tr>
-                          <td class="order-number__cell">
-                            <span class="order-number__text">
-                              Order {{ order_name }}
-                            </span>
-                          </td>
-                        </tr>
-                        {%- if po_number %}
-                            <tr>
-                              <td class="po-number__cell">
-                                <span class="po-number__text">
-                                  PO number #{{ po_number }}
-                                </span>
-                              </td>
-                            </tr>
-                        {%- endif %}
-                      </table>
+                      <tr>
+                        <td class="order-number__cell">
+                          <span class="order-number__text">
+                            Order {{ order_name }}
+                          </span>
+                        </td>
+                      </tr>
+                      {%- if po_number %}
+                          <tr>
+                            <td class="po-number__cell">
+                              <span class="po-number__text">
+                                PO number #{{ po_number }}
+                              </span>
+                            </td>
+                          </tr>
+                      {%- endif %}
                     </td>
                 </tr>
               </table>
