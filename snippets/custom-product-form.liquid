@@ -455,7 +455,7 @@
   // Klaviyo form submission
   document.querySelector('#ContactFormProduct').addEventListener('submit', async function (e) {
     // prevent default submission
-    // e.preventDefault()
+    e.preventDefault()
 
     const form = this
     const submitButton = form.querySelector('button[type="submit"]')
