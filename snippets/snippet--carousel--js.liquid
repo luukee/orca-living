@@ -1,49 +1,94 @@
+<!-- 
+  Carousel Component JavaScript
+  
+  This snippet implements a dynamic carousel using the Splide.js library.
+  The carousel can filter and display slides based on a data attribute value,
+  allowing for dynamic content switching without page reload.
+-->
+
 <script src="{{'splide.min.js' | asset_url}}"></script>
 
-
-
-
+<!-- 
+  Include the Splide CSS styles for proper carousel appearance and functionality
+-->
 {% liquid 
-
   render 'css-splide'
-
 %}
 
 <script>
-  let splide;
-  let initialSlides;
+  // Global variables to maintain carousel state across function calls
+  let splide;        // Stores the Splide carousel instance
+  let initialSlides; // Stores the original slides array for filtering operations
 
+  /**
+   * Initialize the carousel when the page is ready
+   * Uses waitForJavascript to ensure dependencies are loaded before execution
+   */
   waitForJavascript(function() {
     $(document).ready(function() {
+      // Create new Splide carousel instance with configuration
       splide = new Splide('.splide', {
-        heightRatio: 1,
-        cover: true,
-        pagination: false
+        heightRatio: 1,    // Maintain 1:1 aspect ratio for slides
+        cover: true,       // Images will cover the entire slide area
+        pagination: false  // Hide pagination dots for cleaner appearance
       });
+      
+      // Mount the carousel to make it functional
       splide.mount();
+      
+      // Store the initial slides array for later filtering operations
+      // This preserves the original slide order and content
       initialSlides = [... splide.Components.Slides.get()];
+      
+      // Perform initial slide filtering based on current data attribute
       updateCarouselSlides();
     });
   });
 
-// Global function
+  /**
+   * Global function to update carousel slides based on data attribute filtering
+   * 
+   * This function:
+   * 1. Reads the current filter value from the carousel's data-current attribute
+   * 2. Filters the initial slides to show only those matching the current value
+   * 3. Removes all current slides and adds only the filtered ones
+   * 4. Shows/hides the carousel container based on whether filtered slides exist
+   */
   function updateCarouselSlides() {
+    // Get the current filter value from the carousel's data attribute
     const optionValue = document.querySelector('.splide').getAttribute('data-current');
+    
+    // Early return if the option value is the default placeholder
+    // This prevents unnecessary processing when no real filter is selected
     if (optionValue == "default title") 
       return
     
+    // Initialize array to store slides that match the current filter
     let newSlides = [];
+    
+    // Iterate through all initial slides to find matches
     initialSlides.forEach((slide) => {
+      // Check if the slide's data-option attribute matches the current filter value
       if (slide.slide.getAttribute('data-option') == optionValue) {
         newSlides.push(slide);
       }
     });
+    
+    // Remove all current slides from the carousel
+    // The '*' parameter removes all slides at once
     splide.Components.Slides.remove('*');
+    
+    // If no slides match the current filter, hide the carousel container
     if (newSlides.length == 0) {
       document.querySelector('.splide').style.display = "none"
       return
     }
+    
+    // Show the carousel container since we have matching slides
     document.querySelector('.splide').style.display = "block"
+    
+    // Add the filtered slides back to the carousel
+    // Map the slide objects to their DOM elements for proper addition
     splide.Components.Slides.add(newSlides.map((slide) => slide.slide));
   }
 </script>
