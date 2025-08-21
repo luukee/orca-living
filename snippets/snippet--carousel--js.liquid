@@ -6,7 +6,7 @@
   allowing for dynamic content switching without page reload.
 -->
 
-<script src="{{'splide.min.js' | asset_url}}"></script>
+<script src="{{'splide.min.js' | asset_url}}" async></script>
 
 <!-- 
   Include the Splide CSS styles for proper carousel appearance and functionality
@@ -24,26 +24,41 @@
    * Initialize the carousel when the page is ready
    * Uses waitForJavascript to ensure dependencies are loaded before execution
    */
-  waitForJavascript(function() {
+   waitForJavascript(function() {
+    // Wait for both document ready AND Splide to be available
     $(document).ready(function() {
-      // Create new Splide carousel instance with configuration
-      splide = new Splide('.splide', {
-        heightRatio: 1,    // Maintain 1:1 aspect ratio for slides
-        cover: true,       // Images will cover the entire slide area
-        pagination: false  // Hide pagination dots for cleaner appearance
-      });
-      
-      // Mount the carousel to make it functional
-      splide.mount();
-      
-      // Store the initial slides array for later filtering operations
-      // This preserves the original slide order and content
-      initialSlides = [... splide.Components.Slides.get()];
-      
-      // Perform initial slide filtering based on current data attribute
-      updateCarouselSlides();
+      // Wait for Splide to be loaded
+      waitForSplide();
     });
   });
+
+  function waitForSplide() {
+    if (typeof Splide !== 'undefined') {
+      initializeCarousel();
+    } else {
+      // Check again in 50ms
+      setTimeout(waitForSplide, 50);
+    }
+  }
+
+  function initializeCarousel() {
+    // Create new Splide carousel instance with configuration
+    splide = new Splide('.splide', {
+      heightRatio: 1,    // Maintain 1:1 aspect ratio for slides
+      cover: true,       // Images will cover the entire slide area
+      pagination: false  // Hide pagination dots for cleaner appearance
+    });
+    
+    // Mount the carousel to make it functional
+    splide.mount();
+    
+    // Store the initial slides array for later filtering operations
+    // This preserves the original slide order and content
+    initialSlides = [... splide.Components.Slides.get()];
+    
+    // Perform initial slide filtering based on current data attribute
+    updateCarouselSlides();
+  }
 
   /**
    * Global function to update carousel slides based on data attribute filtering
@@ -68,8 +83,11 @@
     
     // Iterate through all initial slides to find matches
     initialSlides.forEach((slide) => {
-      // Check if the slide's data-option attribute matches the current filter value
-      if (slide.slide.getAttribute('data-option') == optionValue) {
+      // Get the slide's data-option attribute
+      const slideOption = slide.slide.getAttribute('data-option');
+      
+      // Check for exact match first, then try normalized matching for multi-word options
+      if (slideOption == optionValue || slideOption.toLowerCase().replace(/[_\-\s]+/g, ' ') === optionValue.toLowerCase().replace(/[_\-\s]+/g, ' ')) {
         newSlides.push(slide);
       }
     });
