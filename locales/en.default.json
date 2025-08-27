@@ -496,12 +496,5 @@
       "message": "Message",
       "max_characters": "{{ max_chars }} characters max"
     }
-  },
-  "shopify": {
-    "store_availability": {
-      "pick_up_time": {
-        "five_or_more_days": "Test Store availability pick up time"
-      }
-    }
   }
 }
