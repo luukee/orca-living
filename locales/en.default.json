@@ -505,7 +505,7 @@
     },
     "store_availability": {
       "pick_up_time": {
-        "five_or_more_days": " "
+        "five_or_more_days": "  "
       }
     }
   }
