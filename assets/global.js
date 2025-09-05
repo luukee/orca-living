@@ -1375,10 +1375,65 @@ class VariantSelects extends HTMLElement {
     if (!pickUpAvailability) return;
 
     if (this.currentVariant && this.currentVariant.available) {
-      pickUpAvailability.fetchAvailability(this.currentVariant.id);
+      // Get pickup availability data from the global data we created
+      const pickupData = window.pickupAvailabilityData && window.pickupAvailabilityData[this.currentVariant.id];
+      const hasPickupAvailability = pickupData && pickupData.hasPickupAvailability;
+      const locationName = pickupData && pickupData.locationName;
+
+      if (hasPickupAvailability) {
+        // Show pickup availability for this variant
+        pickUpAvailability.setAttribute('available', '');
+        pickUpAvailability.setAttribute('data-pickup-loaded', '');
+        pickUpAvailability.setAttribute('data-variant-id', this.currentVariant.id);
+        
+        // Update the content to show pickup availability for this variant
+        this.updatePickupAvailabilityContent(this.currentVariant, locationName);
+      } else {
+        // Hide pickup availability for this variant
+        pickUpAvailability.removeAttribute('available');
+        pickUpAvailability.removeAttribute('data-pickup-loaded');
+        pickUpAvailability.innerHTML = '';
+      }
     } else {
       pickUpAvailability.removeAttribute('available');
+      pickUpAvailability.removeAttribute('data-pickup-loaded');
       pickUpAvailability.innerHTML = '';
+    }
+  }
+
+  updatePickupAvailabilityContent(variant, locationName) {
+    const pickUpAvailability = document.querySelector('pickup-availability');
+    if (!pickUpAvailability) return;
+
+    // Create pickup availability display using the location name from our data
+    if (locationName) {
+      const previewContent = `
+        <pickup-availability-preview class="pickup-availability-preview">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" focusable="false" class="icon icon-shop" viewBox="0 0 20 20">
+            <path fill="currentColor" d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z"/>
+          </svg>
+          <div class="pickup-availability-info">
+            <p class="caption-large">Available for local pick-up ${locationName}</p>
+          </div>
+        </pickup-availability-preview>
+      `;
+
+      pickUpAvailability.innerHTML = previewContent;
+    } else {
+      pickUpAvailability.innerHTML = '';
+    }
+  }
+
+  setupPickupAvailabilityEventListeners() {
+    const pickUpAvailability = document.querySelector('pickup-availability');
+    if (!pickUpAvailability) return;
+
+    const button = pickUpAvailability.querySelector('button');
+    if (button) {
+      button.addEventListener('click', (evt) => {
+        const drawer = document.querySelector('pickup-availability-drawer');
+        if (drawer) drawer.show(evt.target);
+      });
     }
   }
 

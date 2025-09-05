@@ -293,34 +293,72 @@
 
     {%- if show_pickup_availability -%}
       {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
-
-      {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities
-        | where: 'pick_up_enabled', true
-      -%}
-
-      <pickup-availability
-        class='product__pickup-availabilities no-js-hidden quick-add-hidden'
-        {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %}
+    
+      {%- assign current_variant = product.selected_or_first_available_variant -%}
+      {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+      
+      {%- comment -%} DEBUG: Let's see what we're working with {%- endcomment -%}
+      <!-- DEBUG: Current variant ID: {{ current_variant.id }} -->
+      <!-- DEBUG: Current variant title: {{ current_variant.title }} -->
+      <!-- DEBUG: Pick up availabilities size: {{ pick_up_availabilities.size }} -->
+      {%- for availability in pick_up_availabilities -%}
+        <!-- DEBUG: Location: {{ availability.location.name }}, Available: {{ availability.available }}, Pick up enabled: {{ availability.pick_up_enabled }} -->
+      {%- endfor -%}
+      
+      {%- comment -%} Check if there are any pickup locations with actual available stock {%- endcomment -%}
+      {%- assign has_available_pickup = false -%}
+      {%- for availability in pick_up_availabilities -%}
+        {%- if availability.available -%}
+          {%- assign has_available_pickup = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      
+      <!-- DEBUG: Has available pickup: {{ has_available_pickup }} -->
+    
+      {%- if current_variant and current_variant.store_availabilities and pick_up_availabilities.size > 0 and has_available_pickup -%}
+        <!-- DEBUG: Rendering pickup availability component -->
+        <pickup-availability
+          class='product__pickup-availabilities no-js-hidden quick-add-hidden'
           available
-        {% endif %}
-        data-root-url='{{ routes.root_url }}'
-        data-variant-id='{{ product.selected_or_first_available_variant.id }}'
-        data-has-only-default-variant='{{ product.has_only_default_variant }}'
-      >
-        <template>
-          <pickup-availability-preview class='pickup-availability-preview'>
-            {% render 'icon-unavailable' %}
-            <div class='pickup-availability-info'>
-              <p class='caption-large'>{{ 'products.product.pickup_availability.unavailable' | t }}</p>
-              <button class='pickup-availability-button link link--text underlined-link'>
-                {{ 'products.product.pickup_availability.refresh' | t }}
-              </button>
-            </div>
-          </pickup-availability-preview>
-        </template>
-      </pickup-availability>
-
-      <script src='{{ 'pickup-availability.js' | asset_url }}' defer='defer'></script>
+          data-pickup-loaded
+          data-root-url='{{ routes.root_url }}'
+          data-variant-id='{{ current_variant.id }}'
+          data-has-only-default-variant='{{ product.has_only_default_variant }}'
+          data-pickup-available='true'
+          data-pickup-location='{{ pick_up_availabilities.first.location.name }}'
+        >
+          {%- render 'pickup-availability', product_variant: current_variant -%}
+        </pickup-availability>
+    
+        <script src='{{ 'pickup-availability.js' | asset_url }}' defer='defer'></script>
+      {%- else -%}
+        <!-- DEBUG: NOT rendering pickup availability component -->
+        <!-- DEBUG: current_variant: {{ current_variant }} -->
+        <!-- DEBUG: store_availabilities: {{ current_variant.store_availabilities }} -->
+        <!-- DEBUG: pick_up_availabilities.size: {{ pick_up_availabilities.size }} -->
+        <!-- DEBUG: has_available_pickup: {{ has_available_pickup }} -->
+      {%- endif -%}
+      
+      <!-- Add pickup availability data for all variants -->
+      <script>
+        window.pickupAvailabilityData = {
+          {%- for variant in product.variants -%}
+            "{{ variant.id }}": {
+              "hasPickupAvailability": {%- assign variant_pickup_availabilities = variant.store_availabilities | where: 'pick_up_enabled', true -%}
+              {%- assign variant_has_available_pickup = false -%}
+              {%- for availability in variant_pickup_availabilities -%}
+                {%- if availability.available -%}
+                  {%- assign variant_has_available_pickup = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {{ variant_has_available_pickup }},
+              "locationName": {%- if variant_has_available_pickup -%}"{{ variant_pickup_availabilities.first.location.name }}"{%- else -%}null{%- endif -%}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        };
+      </script>
     {%- endif -%}
   </div>
 
