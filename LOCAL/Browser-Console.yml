@@ -1,0 +1,28 @@
+# Browser Console
+
+# Medium variant - not available for pickup
+global.js?v=175368435712405170971757030400:1382 Current variant: {id: 42527917015158, title: 'Moss / Medium', option1: 'Moss', option2: 'Medium', option3: null, …}
+global.js?v=175368435712405170971757030400:1383 Variant available: true
+global.js?v=175368435712405170971757030400:1384 Pickup availability currently visible: true
+global.js?v=175368435712405170971757030400:1392 Pickup data for variant 42527917015158 : {hasPickupAvailability: false, locationName: null}
+global.js?v=175368435712405170971757030400:1393 Has pickup availability: false
+global.js?v=175368435712405170971757030400:1405 --> Pickup Availability is NOT available
+
+
+# Small variant - available for pickup
+global.js?v=175368435712405170971757030400:1382 Current variant: {id: 42492451946614, title: 'Moss / Small', option1: 'Moss', option2: 'Small', option3: null, …}
+global.js?v=175368435712405170971757030400:1383 Variant available: true
+global.js?v=175368435712405170971757030400:1384 Pickup availability currently visible: false
+global.js?v=175368435712405170971757030400:1392 Pickup data for variant 42492451946614 : {hasPickupAvailability: true, locationName: 'Flora Grubb - Marina Del Rey'}
+global.js?v=175368435712405170971757030400:1393 Has pickup availability: true
+global.js?v=175368435712405170971757030400:1396 --> Pickup Availability is available
+
+
+# Large variant - not available for pickup
+global.js?v=175368435712405170971757030400:1382 Current variant: {id: 42527917047926, title: 'Moss / Large', option1: 'Moss', option2: 'Large', option3: null, …}
+global.js?v=175368435712405170971757030400:1383 Variant available: true
+global.js?v=175368435712405170971757030400:1384 Pickup availability currently visible: true
+global.js?v=175368435712405170971757030400:1392 Pickup data for variant 42527917047926 : {hasPickupAvailability: false, locationName: null}
+global.js?v=175368435712405170971757030400:1393 Has pickup availability: false
+global.js?v=175368435712405170971757030400:1405 --> Pickup Availability is NOT available
+
