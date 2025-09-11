@@ -5,8 +5,17 @@ if (!customElements.get('pickup-availability')) {
 
       if(!this.hasAttribute('available')) return;
 
-      this.errorHtml = this.querySelector('template').content.firstElementChild.cloneNode(true);
+      this.errorHtml = this.querySelector('template') ? this.querySelector('template').content.firstElementChild.cloneNode(true) : null;
       this.onClickRefreshList = this.onClickRefreshList.bind(this);
+      
+      // If we already have pickup availability data rendered, don't fetch
+      if (this.hasAttribute('data-pickup-loaded')) {
+        // Set up event listeners for any buttons in the existing content
+        this.setupEventListeners();
+        return;
+      }
+      
+      // Only fetch if we don't already have pickup availability data
       this.fetchAvailability(this.dataset.variantId);
     }
 
@@ -28,7 +37,12 @@ if (!customElements.get('pickup-availability')) {
         .catch(e => {
           const button = this.querySelector('button');
           if (button) button.removeEventListener('click', this.onClickRefreshList);
-          this.renderError();
+          
+          // Don't show error if we already have pickup availability data
+          // This prevents showing "Couldn't load pickup availability" when the section endpoint is not accessible
+          if (!this.hasAttribute('data-pickup-loaded')) {
+            this.renderError();
+          }
         });
     }
 
@@ -41,6 +55,16 @@ if (!customElements.get('pickup-availability')) {
       this.appendChild(this.errorHtml);
 
       this.querySelector('button').addEventListener('click', this.onClickRefreshList);
+    }
+
+    setupEventListeners() {
+      const button = this.querySelector('button');
+      if (button) {
+        button.addEventListener('click', (evt) => {
+          const drawer = document.querySelector('pickup-availability-drawer');
+          if (drawer) drawer.show(evt.target);
+        });
+      }
     }
 
     renderPreview(sectionInnerHTML) {
@@ -57,10 +81,7 @@ if (!customElements.get('pickup-availability')) {
 
       document.body.appendChild(sectionInnerHTML.querySelector('pickup-availability-drawer'));
 
-      const button = this.querySelector('button');
-      if (button) button.addEventListener('click', (evt) => {
-        document.querySelector('pickup-availability-drawer').show(evt.target);
-      });
+      this.setupEventListeners();
     }
   });
 }
