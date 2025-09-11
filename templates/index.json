@@ -120,9 +120,9 @@
         "columns_desktop": 4,
         "full_width": true,
         "show_product_title": false,
+        "card_show_inner_content": false,
         "show_view_all": true,
         "view_all_text": "SHOP HARDWARE",
-        "card_show_inner_content": false,
         "view_all_style": "link",
         "view_all_button_position": "left",
         "enable_desktop_slider": false,
@@ -154,7 +154,7 @@
         "collection_6x6GWm": {
           "type": "collection",
           "settings": {
-            "collection": "furnishings"
+            "collection": "furniture"
           }
         },
         "product_fVXY8j": {
