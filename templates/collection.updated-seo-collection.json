@@ -63,7 +63,7 @@
         "show_only_current_collection": false,
         "exclude_current_collection": false,
         "excluded_collections": "bookshelf,accessories,gift-card",
-        "card_show_inner_content": true
+        "card_show_inner_content": false
       }
     },
     "be769056-a616-4653-a32a-74f9b612fbc4": {
