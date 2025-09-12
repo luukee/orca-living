@@ -15,8 +15,9 @@
   render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-cart-notification.css'
   render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-cart-items.css'
   
-  if section.settings.menu_type_desktop == 'mega' 
+  if section.settings.menu_type_desktop == 'mega' or section.settings.secondary_menu_type_desktop == 'mega'
     render 'snippet--css-output',  lazy: true, preload: false, lnk: 'component-mega-menu.css' 
+    render 'snippet--css-output',  lazy: true, preload: false, lnk: 'component-mega-menu-enhanced.css' 
   endif 
 
   if settings.enable_country_selector or settings.enable_language_selector 
@@ -633,26 +634,123 @@
                         {% render 'icon-caret' %}
                       </summary>
                       <div id="MegaMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
-                        <ul class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}" role="list">
-                          {%- for childlink in link.links -%}
-                            <li class="menu-item__name-{{ childlink.title | handleize }}">
-                              <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-                                {{ childlink.title | escape }}
-                              </a>
-                              {%- if childlink.links != blank -%}
-                                <ul class="list-unstyled" role="list">
-                                  {%- for grandchildlink in childlink.links -%}
-                                    <li class="menu-item__name-{{ grandchildlink.title | handleize }}">
-                                      <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                                        {{ grandchildlink.title | escape }}
-                                      </a>
+                        {%- comment -%} Check if this menu item's collection has rich content metaobject {%- endcomment -%}
+                        {%- assign has_rich_content = false -%}
+                        {%- assign mega_menu_content = null -%}
+                        {%- comment -%} Debug: Check what link.object contains {%- endcomment -%}
+                        {%- comment -%} Try to get collection from URL if link.object is null {%- endcomment -%}
+                        {%- assign collection_handle = null -%}
+                        {%- if link.url contains '/collections/' -%}
+                          {%- assign collection_handle = link.url | split: '/collections/' | last | split: '/' | first -%}
+                        {%- endif -%}
+                        
+                        {%- if collection_handle -%}
+                          {%- assign collection = collections[collection_handle] -%}
+                          {%- if collection and collection.metafields.custom.mega_menu_content != blank -%}
+                            {%- assign mega_menu_content = collection.metafields.custom.mega_menu_content.value -%}
+                            {%- if mega_menu_content.image != blank or mega_menu_content.categories != blank or mega_menu_content.materials != blank or mega_menu_content.use_cases != blank -%}
+                              {%- assign has_rich_content = true -%}
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        
+                        {%- if has_rich_content -%}
+                          {%- comment -%} Enhanced rich content mega menu {%- endcomment -%}
+                          <div class="mega-menu__rich-content">
+                            {%- comment -%} Top navigation row {%- endcomment -%}
+                            <div class="mega-menu__top-nav">
+                              {%- for childlink in link.links -%}
+                                <a href="{{ childlink.url }}" class="mega-menu__top-nav-item{% if childlink.current %} mega-menu__top-nav-item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                                  {{ childlink.title | escape }}
+                                </a>
+                              {%- endfor -%}
+                            </div>
+                            
+                            {%- comment -%} Rich content columns {%- endcomment -%}
+                            <div class="mega-menu__content-column">
+                              {%- if mega_menu_content.categories != blank -%}
+                                <h3 class="mega-menu__column-title">Category</h3>
+                                <ul class="mega-menu__column-list">
+                                  {%- assign categories = mega_menu_content.categories | split: ',' -%}
+                                  {%- for category in categories -%}
+                                    <li class="mega-menu__column-item">
+                                      <a href="{{ link.url }}?filter.p.product_type={{ category | strip | url_encode }}" class="mega-menu__column-link">{{ category | strip | escape }}</a>
                                     </li>
                                   {%- endfor -%}
                                 </ul>
                               {%- endif -%}
-                            </li>
-                          {%- endfor -%}
-                        </ul>
+                            </div>
+                            
+                            <div class="mega-menu__content-column">
+                              {%- if mega_menu_content.materials != blank -%}
+                                <h3 class="mega-menu__column-title">Material</h3>
+                                <ul class="mega-menu__column-list">
+                                  {%- assign materials = mega_menu_content.materials | split: ',' -%}
+                                  {%- for material in materials -%}
+                                    <li class="mega-menu__column-item">
+                                      <a href="{{ link.url }}?filter.v.option.material={{ material | strip | url_encode }}" class="mega-menu__column-link">{{ material | strip | escape }}</a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif -%}
+                            </div>
+                            
+                            <div class="mega-menu__content-column">
+                              {%- if mega_menu_content.use_cases != blank -%}
+                                <h3 class="mega-menu__column-title">Use Case</h3>
+                                <ul class="mega-menu__column-list">
+                                  {%- assign use_cases = mega_menu_content.use_cases | split: ',' -%}
+                                  {%- for use_case in use_cases -%}
+                                    <li class="mega-menu__column-item">
+                                      <a href="{{ link.url }}?filter.p.tag={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif -%}
+                            </div>
+                            
+                            <div class="mega-menu__content-column mega-menu__content-column--image">
+                              {%- if mega_menu_content.image != blank -%}
+                                <div class="mega-menu__image-container">
+                                  <img src="{{ mega_menu_content.image | image_url: width: 400 }}" 
+                                       alt="{{ mega_menu_content.image_alt | default: link.title | escape }}" 
+                                       class="mega-menu__image">
+                                </div>
+                              {%- endif -%}
+                              {%- if mega_menu_content.cta_text != blank and mega_menu_content.cta_url != blank -%}
+                                <a href="{{ mega_menu_content.cta_url }}" class="mega-menu__cta-link">
+                                  {{ mega_menu_content.cta_text | escape }}
+                                </a>
+                              {%- else -%}
+                                <a href="{{ link.url }}" class="mega-menu__cta-link">
+                                  Shop all {{ link.title | downcase }} >
+                                </a>
+                              {%- endif -%}
+                            </div>
+                          </div>
+                        {%- else -%}
+                          {%- comment -%} Fallback to basic mega menu {%- endcomment -%}
+                          <ul class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}" role="list">
+                            {%- for childlink in link.links -%}
+                              <li class="menu-item__name-{{ childlink.title | handleize }}">
+                                <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                                  {{ childlink.title | escape }}
+                                </a>
+                                {%- if childlink.links != blank -%}
+                                  <ul class="list-unstyled" role="list">
+                                    {%- for grandchildlink in childlink.links -%}
+                                      <li class="menu-item__name-{{ grandchildlink.title | handleize }}">
+                                        <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
+                                          {{ grandchildlink.title | escape }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
                       </div>
                     </details>
                   </header-menu>
@@ -1069,6 +1167,27 @@
     },
     {
       "type": "select",
+      "id": "secondary_menu_type_desktop",
+      "options": [
+        {
+          "value": "dropdown",
+          "label": "Dropdown"
+        },
+        {
+          "value": "mega",
+          "label": "Mega"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ],
+      "default": "dropdown",
+      "label": "Secondary Navigation Menu Type",
+      "info": "Menu type is automatically optimized for mobile."
+    },
+    {
+      "type": "select",
       "id": "sticky_secondary_navigation",
       "options": [
         {
@@ -1153,3 +1272,40 @@
   ]
 }
 {% endschema %}
+
+<script>
+// Add hover functionality to mega menus only
+document.addEventListener('DOMContentLoaded', function() {
+  // Target both header and secondary navigation mega menus
+  const megaMenus = document.querySelectorAll('header-menu .mega-menu, .navigation-desktop header-menu .mega-menu');
+  
+  megaMenus.forEach(function(megaMenu) {
+    const summary = megaMenu.querySelector('summary');
+    
+    if (!summary) return;
+    
+    // Add hover events to the summary element
+    summary.addEventListener('mouseenter', function() {
+      megaMenu.setAttribute('open', '');
+      summary.setAttribute('aria-expanded', 'true');
+    });
+    
+    // Close when mouse leaves the entire mega menu area (with small delay)
+    let closeTimeout;
+    megaMenu.addEventListener('mouseleave', function() {
+      closeTimeout = setTimeout(function() {
+        megaMenu.removeAttribute('open');
+        summary.setAttribute('aria-expanded', 'false');
+      }, 150);
+    });
+    
+    // Cancel close if mouse re-enters
+    megaMenu.addEventListener('mouseenter', function() {
+      if (closeTimeout) {
+        clearTimeout(closeTimeout);
+        closeTimeout = null;
+      }
+    });
+  });
+});
+</script>
