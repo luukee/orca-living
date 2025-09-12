@@ -9,16 +9,6 @@
  */
 {
   "sections": {
-    "a9fc5bfd-0b5d-4d04-a71b-98b67a41f0be": {
-      "type": "side-navigation",
-      "settings": {
-        "title": "Shop",
-        "make_h1": true,
-        "menu": "collections-menu",
-        "padding_top": 16,
-        "padding_bottom": 16
-      }
-    },
     "banner": {
       "type": "main-collection-banner",
       "settings": {
@@ -72,7 +62,8 @@
         "show_rating": false,
         "show_only_current_collection": false,
         "exclude_current_collection": false,
-        "excluded_collections": "bookshelf,accessories,gift-card"
+        "excluded_collections": "bookshelf,accessories,gift-card",
+        "card_show_inner_content": true
       }
     },
     "be769056-a616-4653-a32a-74f9b612fbc4": {
@@ -184,7 +175,6 @@
     }
   },
   "order": [
-    "a9fc5bfd-0b5d-4d04-a71b-98b67a41f0be",
     "banner",
     "product-grid",
     "main_collection_value_props_VCwm7G",
