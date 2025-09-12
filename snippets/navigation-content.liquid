@@ -1,6 +1,7 @@
 <!-- snippets/navigation-content.liquid -->
 
 {% liquid 
+  assign secondary_menu_type_desktop = section.settings.secondary_menu_type_desktop
   assign makeh1       = section.settings.make_h1
   assign navigationHorizontal = section.settings.navigation_horizontal
   
@@ -193,11 +194,150 @@
             endif
           %}
           <li>
-            <a href="{{ linkURL }}" class=" list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
-              {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
-              {{ link.title | escape }}
-              {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
-            </a>
+            {%- comment -%} Check if this link should have a mega menu {%- endcomment -%}
+            {%- assign has_mega_menu = false -%}
+            {%- assign mega_menu_content = null -%}
+            {%- assign collection_handle = null -%}
+            
+            {%- comment -%} Only show mega menu if secondary_menu_type_desktop is set to 'mega' {%- endcomment -%}
+            {%- if secondary_menu_type_desktop == 'mega' -%}
+              {%- if link.url contains '/collections/' -%}
+                {%- assign collection_handle = link.url | split: '/collections/' | last | split: '/' | first -%}
+                {%- if collection_handle -%}
+                  {%- assign collection = collections[collection_handle] -%}
+                  {%- if collection and collection.metafields.custom.mega_menu_content != blank -%}
+                    {%- assign mega_menu_content = collection.metafields.custom.mega_menu_content.value -%}
+                    {%- if mega_menu_content.image != blank or mega_menu_content.categories != blank or mega_menu_content.materials != blank or mega_menu_content.use_cases != blank -%}
+                      {%- assign has_mega_menu = true -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+            
+            {%- if has_mega_menu -%}
+              {%- comment -%} Mega menu version {%- endcomment -%}
+              <header-menu>
+                <details id="Details-SecondaryMenu-{{ forloop.index }}" class="mega-menu">
+                  <summary class="list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
+                    {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+                    {{ link.title | escape }}
+                    {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+                    <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+                    </svg>
+                  </summary>
+                  <div id="SecondaryMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
+                    <div class="mega-menu__rich-content">
+                      {%- comment -%} Top navigation row {%- endcomment -%}
+                      <div class="mega-menu__top-nav">
+                        {%- for childlink in link.links -%}
+                          <a href="{{ childlink.url }}" class="mega-menu__top-nav-item{% if childlink.current %} mega-menu__top-nav-item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                            {{ childlink.title | escape }}
+                          </a>
+                        {%- endfor -%}
+                      </div>
+                      
+                      {%- comment -%} Rich content columns {%- endcomment -%}
+                      <div class="mega-menu__content-column">
+                        {%- if mega_menu_content.categories != blank -%}
+                          <h3 class="mega-menu__column-title">Category</h3>
+                          <ul class="mega-menu__column-list">
+                            {%- assign categories = mega_menu_content.categories | split: ',' -%}
+                            {%- for category in categories -%}
+                              <li class="mega-menu__column-item">
+                                <a href="{{ link.url }}?filter.p.product_type={{ category | strip | url_encode }}" class="mega-menu__column-link">{{ category | strip | escape }}</a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+                      
+                      <div class="mega-menu__content-column">
+                        {%- if mega_menu_content.materials != blank -%}
+                          <h3 class="mega-menu__column-title">Material</h3>
+                          <ul class="mega-menu__column-list">
+                            {%- assign materials = mega_menu_content.materials | split: ',' -%}
+                            {%- for material in materials -%}
+                              <li class="mega-menu__column-item">
+                                <a href="{{ link.url }}?filter.v.option.material={{ material | strip | url_encode }}" class="mega-menu__column-link">{{ material | strip | escape }}</a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+                      
+                      <div class="mega-menu__content-column">
+                        {%- if mega_menu_content.use_cases != blank -%}
+                          <h3 class="mega-menu__column-title">Use Case</h3>
+                          <ul class="mega-menu__column-list">
+                            {%- assign use_cases = mega_menu_content.use_cases | split: ',' -%}
+                            {%- for use_case in use_cases -%}
+                              <li class="mega-menu__column-item">
+                                <a href="{{ link.url }}?filter.p.tag={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+                      
+                      <div class="mega-menu__content-column mega-menu__content-column--image">
+                        {%- if mega_menu_content.image != blank -%}
+                          <div class="mega-menu__image-container">
+                            <img src="{{ mega_menu_content.image | image_url: width: 400 }}" 
+                            alt="{{ mega_menu_content.image_alt | default: link.title | escape }}" 
+                            class="mega-menu__image"
+                            width="400" 
+                            height="auto">
+                          </div>
+                        {%- endif -%}
+                        {%- if mega_menu_content.cta_text != blank and mega_menu_content.cta_url != blank -%}
+                          <a href="{{ mega_menu_content.cta_url }}" class="mega-menu__cta-link">
+                            {{ mega_menu_content.cta_text | escape }}
+                          </a>
+                        {%- else -%}
+                          <a href="{{ link.url }}" class="mega-menu__cta-link">
+                            Shop all {{ link.title | downcase }} >
+                          </a>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                </details>
+              </header-menu>
+            {%- elsif secondary_menu_type_desktop == 'dropdown' and ChildLinkSize > 0 -%}
+              {%- comment -%} Dropdown menu version {%- endcomment -%}
+              <header-menu>
+                <details id="Details-SecondaryMenu-{{ forloop.index }}" class="mega-menu">
+                  <summary class="list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
+                    {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+                    {{ link.title | escape }}
+                    {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+                    <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+                    </svg>
+                  </summary>
+                  <div id="SecondaryMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
+                    <ul class="mega-menu__list list-menu" role="list">
+                      {%- for childlink in link.links -%}
+                        <li>
+                          <a href="{{ childlink.url }}" class="mega-menu__link link link--text list-menu__item focus-inset{% if childlink.current %} menu-item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                            {{ childlink.title | escape }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                </details>
+              </header-menu>
+            {%- else -%}
+              {%- comment -%} Regular link version {%- endcomment -%}
+              <a href="{{ linkURL }}" class="list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
+                {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+                {{ link.title | escape }}
+                {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+              </a>
+            {%- endif -%}
             {% if isCurrent %}
               {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
                 <ul class="menu-drawer__menu list-menu medium-down--hide" role="list">
