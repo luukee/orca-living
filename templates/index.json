@@ -9,18 +9,6 @@
  */
 {
   "sections": {
-    "navigation_94Q3nz": {
-      "type": "navigation",
-      "name": "Navigation",
-      "settings": {
-        "title": "",
-        "make_h1": false,
-        "navigation_horizontal": true,
-        "menu": "home-top-nav",
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
     "29db9ca7-acdf-4494-97cc-e78c6a58cae8": {
       "type": "nine15--slider",
       "blocks": {
@@ -92,6 +80,7 @@
         "auto_slide": true,
         "use_arrows": false,
         "use_dots": true,
+        "arrow_background_color": "#ffffff",
         "pause": "5000",
         "custom_css": ""
       }
@@ -259,6 +248,7 @@
         "auto_slide": true,
         "use_arrows": false,
         "use_dots": true,
+        "arrow_background_color": "#ffffff",
         "pause": "5000",
         "custom_css": ""
       }
@@ -338,7 +328,6 @@
     }
   },
   "order": [
-    "navigation_94Q3nz",
     "29db9ca7-acdf-4494-97cc-e78c6a58cae8",
     "custom_liquid_UPeGfQ",
     "featured_collection_AFBrmA",
