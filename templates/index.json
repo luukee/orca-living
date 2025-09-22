@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "29db9ca7-acdf-4494-97cc-e78c6a58cae8": {
@@ -10,13 +19,13 @@
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 12,
-            "image_mob": "shopify:\/\/shop_images\/ORCA_home_page_mobile.png",
+            "image_mob": "shopify://shop_images/ORCA_home_page_mobile.png",
             "align_bg_mob": "center",
             "bg_color_mob": "#000000",
             "opacity_mob": 10,
             "stars": "",
             "align_text": "left",
-            "title": "Landscape design and outdoor product studio re\/connecting humans to earth.",
+            "title": "Landscape design and outdoor product studio re/connecting humans to earth.",
             "make_h1": false,
             "font_size_title": 42,
             "title_color": "#ffffff",
@@ -27,10 +36,10 @@
             "font_size_text": 16,
             "text_color": "#333333",
             "btn_txt": "Design",
-            "btn_url": "shopify:\/\/blogs\/landscapes",
+            "btn_url": "shopify://blogs/landscapes",
             "btn_style": "primary Button--custom",
             "btn_txt2": "Shop",
-            "btn_url2": "shopify:\/\/collections\/all",
+            "btn_url2": "shopify://collections/all",
             "btn_style2": "primary Button--custom",
             "btn_custom_inline": false,
             "btn_size_text": 20,
@@ -46,11 +55,11 @@
             "width": "780px",
             "video_ratio": "56",
             "video_url": "",
-            "video_hosted": "https:\/\/cdn.shopify.com\/videos\/c\/o\/v\/7856fbc1d28e4adb9b4092aa6526d17e.mp4",
-            "video_hosted_thumbnail": "shopify:\/\/shop_images\/Cliff-May-Homepage-Video-creator-1080-thumb.webp",
+            "video_hosted": "https://cdn.shopify.com/videos/c/o/v/d0c64cf9db6a43949b454f24b8857b69.mp4",
+            "video_hosted_thumbnail": "shopify://shop_images/Cliff-May-Homepage-Video-creator-1080-thumb.webp",
             "btn_txt_modal": "Watch Video",
             "video_modal": "",
-            "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  \/\/ background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
+            "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  // background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
             "metafield_image": "",
             "metafield_image_alt": ""
           }
@@ -81,7 +90,7 @@
         "heading_QMmrx8": {
           "type": "heading",
           "settings": {
-            "heading": "Outdoor design and product studio re\/connecting humans to earth.",
+            "heading": "Outdoor design and product studio re/connecting humans to earth.",
             "heading_size": "h1"
           }
         },
@@ -89,10 +98,10 @@
           "type": "button",
           "settings": {
             "button_label": "Design",
-            "button_link": "shopify:\/\/blogs\/landscapes",
+            "button_link": "shopify://blogs/landscapes",
             "button_style_secondary": true,
             "button_label_2": "Shop",
-            "button_link_2": "shopify:\/\/collections\/all",
+            "button_link_2": "shopify://collections/all",
             "button_style_secondary_2": true,
             "button_mobile_menu": true
           }
@@ -120,7 +129,7 @@
         "div {bottom: 0;}"
       ],
       "settings": {
-        "custom_liquid": "<style>\n\n<\/style>",
+        "custom_liquid": "<style>\n\n</style>",
         "color_scheme": "background-1",
         "padding_top": 0,
         "padding_bottom": 52
@@ -161,6 +170,8 @@
         "image_ratio": "portrait",
         "show_secondary_image": false,
         "show_vendor": false,
+        "show_price": false,
+        "show_badge": false,
         "show_rating": false,
         "enable_quick_add": false,
         "enable_quick_ship_card_badge": false,
@@ -178,7 +189,7 @@
       "type": "custom-liquid",
       "disabled": true,
       "settings": {
-        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
+        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
         "color_scheme": "background-1",
         "padding_top": 16,
         "padding_bottom": 16
