@@ -671,12 +671,12 @@
                               {%- if mega_menu_content.categories != blank -%}
                                 <h3 class="mega-menu__column-title">Category</h3>
                                 <ul class="mega-menu__column-list">
-                                  {%- assign categories = mega_menu_content.categories | split: ',' -%}
-                                  {%- for category in categories -%}
-                                    <li class="mega-menu__column-item">
-                                      <a href="{{ link.url }}?filter.p.product_type={{ category | strip | url_encode }}" class="mega-menu__column-link">{{ category | strip | escape }}</a>
-                                    </li>
-                                  {%- endfor -%}
+                            {%- assign categories = mega_menu_content.categories | split: ',' -%}
+                            {%- for category in categories -%}
+                              <li class="mega-menu__column-item">
+                                <a href="{{ link.url }}?filter.p.tag={{ category | strip | url_encode }}" class="mega-menu__column-link">{{ category | strip | escape }}</a>
+                              </li>
+                            {%- endfor -%}
                                 </ul>
                               {%- endif -%}
                             </div>

@@ -246,7 +246,7 @@
                             {%- assign categories = mega_menu_content.categories | split: ',' -%}
                             {%- for category in categories -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.p.product_type={{ category | strip | url_encode }}" class="mega-menu__column-link">{{ category | strip | escape }}</a>
+                                <a href="{{ link.url }}?filter.p.tag={{ category | strip | url_encode }}" class="mega-menu__column-link">{{ category | strip | escape }}</a>
                               </li>
                             {%- endfor -%}
                           </ul>
