@@ -290,6 +290,79 @@
         "padding_bottom": 48,
         "column_spacing": "small"
       }
+    },
+    "multicolumn_e9Ai44": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_8e9BUN": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Mitch_IG_Post.png",
+            "title": "Unearthing Clay",
+            "text": "",
+            "link_label": "listen",
+            "link": "https://open.spotify.com/episode/1mHd2GLi6EsQsUQ5e5wx32?si=e385866d1f1a4816"
+          }
+        },
+        "column_whe6JX": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/JC_250508_SONOKO_DSCF0500_HR.jpg",
+            "title": "Plants + People: Sonoko",
+            "text": "",
+            "link_label": "read",
+            "link": "shopify://blogs/field-notes/sonoko-sakai"
+          }
+        },
+        "column_feyFjM": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ORCA_20252428square.jpg",
+            "title": "Material Study: Rock",
+            "text": "",
+            "link_label": "read",
+            "link": "shopify://blogs/field-notes/material-study-rock"
+          }
+        },
+        "column_fhYqEP": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/JC_ORCA_Factory_01_08831_WEB_1.png",
+            "title": "Benefits of CA clay",
+            "text": "",
+            "link_label": "read",
+            "link": "shopify://blogs/field-notes/orca-clay-pavers"
+          }
+        }
+      },
+      "block_order": [
+        "column_8e9BUN",
+        "column_whe6JX",
+        "column_feyFjM",
+        "column_fhYqEP"
+      ],
+      "custom_css": [
+        ".link {margin-top: 0.5rem;}",
+        ".link,.inline-richtext:not(.title) {font-size: calc(var(--font-heading-scale) * 1.8rem); text-transform: uppercase;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "ON FIELD NOTES",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "portrait",
+        "columns_desktop": 4,
+        "column_alignment": "left",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "background-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 48,
+        "column_spacing": "small"
+      }
     }
   },
   "order": [
