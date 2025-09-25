@@ -714,21 +714,15 @@
       }
       {% endif %}
 
-      /* Prevent video flash on mobile */
-      == .video-ratio.small--hide {
-          display: none !important;
-      }
-      == .video-ratio.medium-up--hide {
-          display: none !important;
-      }
+      /* Prevent video flash on mobile - only hide mobile video on desktop */
       /medium-up/ {
           == .video-ratio.medium-up--hide {
-              display: block !important;
+              display: none !important;
           }
       }
       /small/ {
           == .video-ratio.small--hide {
-              display: block !important;
+              display: none !important;
           }
       }
 
