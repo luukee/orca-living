@@ -8,7 +8,6 @@
 
     assign hght_fallback        = '500px'
     assign site_max_width         = 1400 | append: 'px'
-    assign site_padding          = 15 | times: 2 | append: 'px'
 
     assign mob_relative          = s.mob_rel
     assign use_bg_img             = s.set_height
@@ -482,7 +481,6 @@
         {% if img_main == blank and img_mob == blank  %}
             {% assign norm_mob = true %}
         {% endif %}
-        {% render 'snippet--video', 
         {% render 'snippet--video', 
             vidExt: vid_embd, 
             vidHosted: vid_host, 
