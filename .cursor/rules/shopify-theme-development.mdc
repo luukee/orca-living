@@ -1,0 +1,213 @@
+---
+globs: *.liquid,*.json
+---
+
+# Shopify Theme Development Guidelines
+
+## Section Development
+
+### Section Schema Structure
+```json
+{
+  "name": "Section Name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Default Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image Height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "default": 500,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Slide Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section Name"
+    }
+  ]
+}
+```
+
+### Section Template Patterns
+```liquid
+<!-- sections/section-name.liquid -->
+{% comment %}
+  Section: Section Name
+  Purpose: Brief description of section functionality
+{% endcomment %}
+
+{% liquid
+  assign s = section.settings
+  assign section_id = section.id
+  assign section_class = 'section--' | append: section_id
+%}
+
+<div class="{{ section_class }}">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'slide' %}
+        {% render 'snippet--slide', block: block %}
+    {% endcase %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Section Name",
+  "settings": [],
+  "blocks": [],
+  "presets": []
+}
+{% endschema %}
+```
+
+## Template Development
+
+### JSON Templates
+- Use JSON templates for dynamic content sections
+- Define section configurations with blocks for flexible content management
+- Include presets for easy section setup
+
+### Template Suffixes
+- Use descriptive suffixes: `product.bookshelf.json`, `page.contact.json`
+- Maintain template naming consistency across the theme
+
+## Snippet Development
+
+### Reusable Components
+```liquid
+<!-- snippets/snippet--component-name.liquid -->
+{% comment %}
+  Snippet: Component Name
+  Parameters:
+    - param1: Description
+    - param2: Description
+{% endcomment %}
+
+{% liquid
+  assign param1 = param1 | default: ''
+  assign param2 = param2 | default: ''
+%}
+
+<div class="component-name" data-component="component-name">
+  <!-- Component content -->
+</div>
+```
+
+### Master Snippets
+- Use `master--` prefix for complex, reusable components
+- Examples: [master--slider.liquid](mdc:snippets/master--slider.liquid)
+- Keep master snippets modular and configurable
+
+## Asset Management
+
+### Image Optimization
+```liquid
+{% liquid
+  assign desktop_image = image | img_url: '1400x600'
+  assign mobile_image = image | img_url: '800x600'
+  assign retina_image = image | img_url: '2800x1200'
+%}
+
+<picture>
+  <source media="(min-width: 768px)" srcset="{{ desktop_image }}, {{ retina_image }} 2x">
+  <img src="{{ mobile_image }}" alt="{{ alt_text }}" loading="lazy">
+</picture>
+```
+
+### CSS and JavaScript
+- Use [assets/](mdc:assets/) for compiled CSS and JavaScript
+- Implement critical CSS inline for above-the-fold content
+- Use `defer` for non-critical JavaScript
+
+## Theme Settings Integration
+
+### Settings Schema
+- Define comprehensive settings in [config/settings_schema.json](mdc:config/settings_schema.json)
+- Use appropriate input types for different data types
+- Provide sensible defaults and validation
+
+### Settings Usage
+```liquid
+{% liquid
+  assign site_title = settings.site_title
+  assign logo = settings.logo
+  assign color_primary = settings.color_primary
+%}
+```
+
+## Internationalization
+
+### Translation Keys
+- Use descriptive translation keys in [locales/](mdc:locales/)
+- Follow Shopify's translation key conventions
+- Provide fallbacks for missing translations
+
+```liquid
+{{ 'general.accessibility.skip_to_text' | t }}
+{{ 'products.product.add_to_cart' | t }}
+```
+
+## Performance Considerations
+
+### Lazy Loading
+```liquid
+<img src="{{ image | img_url: '400x400' }}" 
+     alt="{{ image.alt }}" 
+     loading="lazy" 
+     decoding="async">
+```
+
+### Critical CSS
+- Inline critical CSS in [layout/theme.liquid](mdc:layout/theme.liquid)
+- Load non-critical CSS asynchronously
+- Use CSS custom properties for theming
+
+### JavaScript Optimization
+- Minimize JavaScript usage
+- Use vanilla JavaScript when possible
+- Implement progressive enhancement
+
+## Accessibility Standards
+
+### Semantic HTML
+```liquid
+<main id="MainContent" role="main">
+  <section aria-labelledby="section-heading">
+    <h2 id="section-heading">{{ section.settings.title }}</h2>
+    <!-- section content -->
+  </section>
+</main>
+```
+
+### ARIA Labels and Roles
+- Use proper heading hierarchy (h1, h2, h3, etc.)
+- Include skip links for keyboard navigation
+- Provide alt text for all images
+- Use ARIA labels for interactive elements

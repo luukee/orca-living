@@ -1,0 +1,248 @@
+---
+description: Performance optimization guidelines for Shopify theme development
+---
+
+# Performance Optimization Guidelines
+
+## Image Optimization
+
+### Responsive Images
+```liquid
+{% liquid
+  assign desktop_image = image | img_url: '1400x600'
+  assign mobile_image = image | img_url: '800x600'
+  assign retina_image = image | img_url: '2800x1200'
+  assign webp_image = image | img_url: '1400x600', format: 'webp'
+%}
+
+<picture>
+  <source media="(min-width: 768px)" srcset="{{ webp_image }}" type="image/webp">
+  <source media="(min-width: 768px)" srcset="{{ desktop_image }}, {{ retina_image }} 2x">
+  <img src="{{ mobile_image }}" 
+       alt="{{ image.alt | default: section.settings.title }}" 
+       loading="lazy" 
+       decoding="async"
+       width="800" 
+       height="600">
+</picture>
+```
+
+### Image Loading Strategies
+```liquid
+<!-- Above the fold - eager loading -->
+<img src="{{ hero_image | img_url: '1400x600' }}" 
+     alt="{{ hero_image.alt }}" 
+     loading="eager"
+     fetchpriority="high">
+
+<!-- Below the fold - lazy loading -->
+<img src="{{ gallery_image | img_url: '600x600' }}" 
+     alt="{{ gallery_image.alt }}" 
+     loading="lazy">
+```
+
+## CSS Optimization
+
+### Critical CSS Inline
+```liquid
+<!-- In layout/theme.liquid -->
+<style>
+  /* Critical above-the-fold styles */
+  .header { /* styles */ }
+  .hero-slider { /* styles */ }
+</style>
+
+<!-- Non-critical CSS -->
+<link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ 'theme.css' | asset_url }}"></noscript>
+```
+
+### CSS Custom Properties
+```css
+:root {
+  --color-primary: {{ settings.color_primary }};
+  --color-secondary: {{ settings.color_secondary }};
+  --font-size-base: {{ settings.font_size_base }}px;
+  --container-max-width: {{ settings.container_max_width }}px;
+}
+```
+
+## JavaScript Optimization
+
+### Progressive Enhancement
+```liquid
+<!-- Core functionality works without JS -->
+<button type="button" class="slider-nav" data-slider-prev>
+  <span class="visually-hidden">Previous slide</span>
+</button>
+
+<!-- Enhanced with JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize slider functionality
+    initializeSlider();
+  });
+</script>
+```
+
+### Lazy Loading Scripts
+```liquid
+<script defer src="{{ 'slider.js' | asset_url }}"></script>
+<script async src="{{ 'analytics.js' | asset_url }}"></script>
+```
+
+## Liquid Performance
+
+### Variable Caching
+```liquid
+{% liquid
+  assign s = section.settings
+  assign section_id = section.id
+  assign image_url = s.image | img_url: '800x600'
+  assign alt_text = s.image.alt | default: s.title
+%}
+
+<!-- Use cached variables instead of repeated lookups -->
+<img src="{{ image_url }}" alt="{{ alt_text }}">
+```
+
+### Loop Optimization
+```liquid
+<!-- Limit product loops -->
+{% for product in collection.products limit: 24 %}
+  {% render 'card-product', product: product %}
+{% endfor %}
+
+<!-- Cache expensive operations -->
+{% liquid
+  assign featured_products = collections.featured.products | slice: 0, 8
+%}
+{% for product in featured_products %}
+  {% render 'card-product', product: product %}
+{% endfor %}
+```
+
+### Conditional Optimization
+```liquid
+{% liquid
+  assign has_image = section.settings.image != blank
+  assign has_text = section.settings.title != blank
+%}
+
+{% if has_image %}
+  <img src="{{ section.settings.image | img_url: '800x600' }}" alt="{{ section.settings.image.alt }}">
+{% endif %}
+
+{% if has_text %}
+  <h2>{{ section.settings.title }}</h2>
+{% endif %}
+```
+
+## Asset Optimization
+
+### Font Loading
+```liquid
+<!-- Preload critical fonts -->
+<link rel="preload" href="{{ 'font-name.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
+
+<!-- Load fonts asynchronously -->
+<link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}" media="print" onload="this.media='all'">
+```
+
+### Resource Hints
+```liquid
+<!-- DNS prefetch for external resources -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//www.google-analytics.com">
+
+<!-- Preconnect for critical resources -->
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+```
+
+## Third-Party Scripts
+
+### Async Loading
+```liquid
+<!-- Load non-critical scripts asynchronously -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+
+<!-- Initialize after load -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+```
+
+### Conditional Loading
+```liquid
+{% if template contains 'product' %}
+  <script async src="{{ 'product-analytics.js' | asset_url }}"></script>
+{% endif %}
+```
+
+## Mobile Performance
+
+### Touch Optimization
+```css
+/* Optimize touch interactions */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .slider {
+    animation: none;
+  }
+}
+```
+
+### Viewport Optimization
+```liquid
+<!-- In layout/theme.liquid -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+```
+
+## Caching Strategies
+
+### Static Asset Caching
+```liquid
+<!-- Version assets for cache busting -->
+<link rel="stylesheet" href="{{ 'theme.css' | asset_url | append: '?v=' | append: theme.version }}">
+```
+
+### Dynamic Content Caching
+```liquid
+{% liquid
+  assign cache_key = 'featured-products-' | append: collection.id | append: '-' | append: collection.updated_at
+  assign cached_products = cache[cache_key]
+%}
+
+{% unless cached_products %}
+  {% liquid
+    assign featured_products = collections.featured.products | slice: 0, 8
+    assign cache[cache_key] = featured_products
+  %}
+{% endunless %}
+```
+
+## Performance Monitoring
+
+### Core Web Vitals
+- **LCP (Largest Contentful Paint)**: Optimize hero images and above-the-fold content
+- **FID (First Input Delay)**: Minimize JavaScript execution time
+- **CLS (Cumulative Layout Shift)**: Reserve space for images and dynamic content
+
+### Performance Budgets
+- **Images**: Max 1MB per page
+- **CSS**: Max 100KB critical CSS
+- **JavaScript**: Max 200KB total JS
+- **Fonts**: Max 50KB per font file
+
+### Testing Tools
+- Use Lighthouse for performance audits
+- Test on actual devices, not just desktop
+- Monitor Core Web Vitals in production
+- Use Shopify's built-in performance tools

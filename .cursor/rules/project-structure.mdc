@@ -1,0 +1,38 @@
+---
+alwaysApply: true
+---
+
+# Orca Living Shopify Theme - Project Structure
+
+This is a Shopify Liquid theme for Orca Living, an outdoor furniture and garden materials company.
+
+## Core Architecture
+
+- **Layout**: [theme.liquid](mdc:layout/theme.liquid) - Main theme wrapper with head, header, main content, and footer sections
+- **Sections**: Located in [sections/](mdc:sections/) - Reusable theme sections (sliders, headers, product grids, etc.)
+- **Snippets**: Located in [snippets/](mdc:snippets/) - Reusable Liquid components and partials
+- **Templates**: Located in [templates/](mdc:templates/) - Page-specific template configurations
+- **Assets**: Located in [assets/](mdc:assets/) - CSS, SCSS, JavaScript, images, and other static files
+- **Locales**: Located in [locales/](mdc:locales/) - Multi-language translation files
+- **Config**: Located in [config/](mdc:config/) - Theme settings and market configurations
+
+## Key Files
+
+- [package.json](mdc:package.json) - Project dependencies (Prettier with Liquid plugin)
+- [snippets/master--slider.liquid](mdc:snippets/master--slider.liquid) - Master slider component used across sections
+- [sections/nine15--slider.liquid](mdc:sections/nine15--slider.liquid) - Homepage hero slider section
+- [templates/index.json](mdc:templates/index.json) - Homepage template configuration
+
+## File Naming Conventions
+
+- **Sections**: `section-name.liquid` or `prefix--section-name.liquid` for namespaced sections
+- **Snippets**: `snippet--name.liquid` or `master--component-name.liquid` for reusable components
+- **Templates**: `template-name.json` for JSON templates, `template-name.liquid` for Liquid templates
+- **Custom Fields**: Use dot notation like `custom_fields.articles.field_name.liquid`
+
+## Development Workflow
+
+- Use Prettier for code formatting: `npm run prettier`
+- Follow Shopify's Liquid best practices and theme development guidelines
+- Test changes in Shopify's theme development environment before deployment
+- Maintain responsive design principles for mobile and desktop experiences

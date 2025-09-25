@@ -1,0 +1,140 @@
+---
+globs: *.liquid
+---
+
+# Liquid Templating Standards
+
+## Code Style and Formatting
+
+### Variable Assignment and Naming
+```liquid
+{% liquid
+  assign s = section.settings
+  assign s_id = section.id
+  assign fallback_height = '500px'
+  assign site_max_width = 1400 | append: 'px'
+%}
+```
+
+- Use descriptive variable names with snake_case
+- Use liquid tags for complex logic blocks
+- Group related variable assignments together
+- Prefix section settings with `s = section.settings` for brevity
+
+### Conditional Logic
+```liquid
+{% if condition %}
+  <!-- content -->
+{% elsif other_condition %}
+  <!-- content -->
+{% else %}
+  <!-- content -->
+{% endif %}
+```
+
+- Use `{% liquid %}` blocks for complex conditionals
+- Keep conditionals readable and well-indented
+- Use `unless` sparingly - prefer explicit `if` statements
+
+### Comments and Documentation
+```liquid
+{% comment %}
+  Section: Hero Slider
+  Purpose: Displays rotating banner images with text overlay
+  Dependencies: master--slider.liquid snippet
+{% endcomment %}
+```
+
+- Use descriptive comments for complex sections
+- Document purpose and dependencies
+- Comment out debugging code rather than deleting it
+
+## Performance Best Practices
+
+### Variable Assignment Efficiency
+```liquid
+{% liquid
+  assign image_url = block.settings.image | img_url: '800x600'
+  assign alt_text = block.settings.image.alt | default: block.settings.title
+%}
+```
+
+- Assign frequently used values to variables
+- Use appropriate image transformations
+- Cache expensive operations
+
+### Loop Optimization
+```liquid
+{% for product in collection.products limit: 12 %}
+  {% render 'card-product', product: product %}
+{% endfor %}
+```
+
+- Use `limit` to control loop iterations
+- Avoid nested loops when possible
+- Use `render` for reusable components
+
+## Shopify-Specific Patterns
+
+### Section Settings Access
+```liquid
+{% liquid
+  assign s = section.settings
+  assign section_id = section.id
+  assign block_count = section.blocks.size
+%}
+```
+
+### Image Handling
+```liquid
+{% liquid
+  assign desktop_image = s.image | img_url: '1400x600'
+  assign mobile_image = s.image_mob | default: s.image | img_url: '800x600'
+  assign alt_text = s.image.alt | default: s.title
+%}
+```
+
+### Responsive Design Variables
+```liquid
+{% liquid
+  assign desktop_height = s.image_height | default: '500px'
+  assign mobile_height = s.image_height_mob | default: desktop_height
+  
+  if desktop_height contains '%'
+    assign desktop_height = desktop_height | replace: '%', 'vw'
+  endif
+%}
+```
+
+## Error Handling and Fallbacks
+
+```liquid
+{% liquid
+  assign fallback_text = 'Default text'
+  assign display_text = section.settings.title | default: fallback_text
+  
+  assign image_url = section.settings.image | img_url: '800x600'
+  unless section.settings.image
+    assign image_url = 'placeholder-image.jpg' | asset_url
+  endunless
+%}
+```
+
+## CSS Integration
+
+```liquid
+{% liquid
+  assign section_class = 'section--' | append: section.id
+  assign custom_css = section.settings.custom_css
+  
+  if section.settings.border_bottom
+    assign section_class = section_class | append: ' border-bottom'
+  endif
+%}
+
+<style>
+  .{{ section_class }} {
+    {{ custom_css }}
+  }
+</style>
+```

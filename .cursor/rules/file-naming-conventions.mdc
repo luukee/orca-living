@@ -1,0 +1,133 @@
+---
+globs: *.liquid,*.json,*.scss,*.css,*.js
+---
+
+# File Naming and Organization Conventions
+
+## Section Files (sections/)
+
+### Naming Patterns
+- **Standard sections**: `section-name.liquid` (e.g., `header.liquid`, `footer.liquid`)
+- **Namespaced sections**: `prefix--section-name.liquid` (e.g., `nine15--slider.liquid`)
+- **Template-specific sections**: `template--section-name.liquid`
+
+### Section Categories
+- **Navigation**: `navigation.liquid`, `side-navigation.liquid`
+- **Product-related**: `main-product.liquid`, `featured-collection.liquid`, `main-collection-product-grid.liquid`
+- **Content**: `main-page.liquid`, `contact-form.liquid`, `main-article.liquid`
+- **Cart**: `main-cart-items.liquid`, `cart-hear-about-us.liquid`
+- **Custom**: `paver-banner.liquid`, `custom-fields-products.liquid`
+
+## Snippet Files (snippets/)
+
+### Naming Patterns
+- **Master components**: `master--component-name.liquid` (e.g., `master--slider.liquid`)
+- **Reusable snippets**: `snippet--name.liquid` (e.g., `snippet--video.liquid`)
+- **Custom fields**: `custom_fields.entity.field_name.liquid`
+- **Product-specific**: `product-field-name.liquid`
+- **Shopify integrations**: `shopify--service--component.liquid`
+
+### Snippet Categories
+- **Head elements**: `head--meta-tags.liquid`, `head--scripts.liquid`, `head--styles.liquid`
+- **Product components**: `card-product.liquid`, `buy-buttons.liquid`, `product-media-gallery.liquid`
+- **Navigation**: `navigation-content.liquid`, `simple-menu.liquid`
+- **Custom fields**: `custom_fields.articles.*`, `custom_fields.collections.*`
+- **Third-party integrations**: `klaviyo-*.liquid`, `revy-bundle-script.liquid`
+
+## Template Files (templates/)
+
+### JSON Templates
+- **Standard templates**: `template-name.json` (e.g., `index.json`, `product.json`)
+- **Template variants**: `template.template-suffix.json`
+  - `product.bookshelf.json`
+  - `page.contact.json`
+  - `article.field-notes-article.json`
+
+### Liquid Templates
+- **Customer templates**: `customers/template-name.liquid`
+- **Special templates**: `gift_card.liquid`, `password.json`
+
+## Asset Files (assets/)
+
+### CSS/SCSS Files
+- **Main stylesheets**: `theme.css`, `base.css`
+- **Component styles**: `component-name.css`
+- **Page-specific**: `page-name.css`
+
+### JavaScript Files
+- **Core scripts**: `theme.js`, `common.js`
+- **Component scripts**: `component-name.js`
+- **Third-party**: `vendor-library-name.js`
+
+### Image Files
+- **Icons**: `icon-name.svg`, `icon-name.png`
+- **Backgrounds**: `bg-name.jpg`, `pattern-name.png`
+- **Product placeholders**: `product-placeholder.jpg`
+
+## Locale Files (locales/)
+
+### Translation Files
+- **Base language**: `en.default.json`, `en.default.schema.json`
+- **Other languages**: `language-code.json`, `language-code.schema.json`
+- **Regional variants**: `language-REGION.json` (e.g., `pt-BR.json`, `zh-CN.json`)
+
+## Configuration Files (config/)
+
+### Theme Configuration
+- **Settings**: `settings_data.json`, `settings_schema.json`
+- **Markets**: `markets.json`
+
+## File Organization Principles
+
+### Directory Structure
+```
+sections/          # Theme sections
+├── header.liquid
+├── footer.liquid
+├── nine15--slider.liquid
+└── custom-fields-products.liquid
+
+snippets/          # Reusable components
+├── master--slider.liquid
+├── snippet--video.liquid
+├── head--scripts.liquid
+└── custom_fields.articles.*.liquid
+
+templates/         # Page templates
+├── index.json
+├── product.json
+├── product.bookshelf.json
+└── customers/
+    └── account.json
+```
+
+### Naming Best Practices
+
+1. **Use descriptive names**: `main-collection-product-grid.liquid` vs `grid.liquid`
+2. **Consistent prefixes**: `master--` for complex components, `snippet--` for simple snippets
+3. **Hyphen separation**: Use hyphens for multi-word names
+4. **Avoid abbreviations**: `navigation.liquid` vs `nav.liquid`
+5. **Template suffixes**: Use dots for template variants (`product.bookshelf.json`)
+
+### Special File Types
+
+#### Custom Fields
+- **Articles**: `custom_fields.articles.field_name.liquid`
+- **Products**: `custom_fields.products.field_name.liquid`
+- **Collections**: `custom_fields.collections.field_name.liquid`
+
+#### Shopify Integrations
+- **Discovery**: `shopify--discovery--service.liquid`
+- **Apps**: `app-name--component.liquid`
+
+#### Third-party Integrations
+- **Klaviyo**: `klaviyo-form.liquid`, `klaviyo-sold-out.liquid`
+- **Reviews**: `revy-bundle-script.liquid`
+
+### File Extensions
+- **Liquid templates**: `.liquid`
+- **JSON templates**: `.json`
+- **Stylesheets**: `.css`, `.scss`
+- **JavaScript**: `.js`
+- **Images**: `.jpg`, `.png`, `.svg`, `.webp`
+- **Fonts**: `.woff2`, `.woff`, `.ttf`
