@@ -61,7 +61,7 @@
             "video_modal": "",
             "video_hosted_mobile": "https://cdn.shopify.com/videos/c/o/v/04263036ba5b4d0baca43360f29b8be6.mp4",
             "video_hosted_thumbnail_mobile": "shopify://shop_images/orca-chair-mobile.png",
-            "video_ratio_mobile": "300",
+            "video_ratio_mobile": "165",
             "custom_css": "==::before {\n  content:'';\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: calc(var(--header-height) * 3);\n  width: 100%;\n  // background-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 75%);\n  z-index: 10;\n  display: block;\n}",
             "metafield_image": "",
             "metafield_image_alt": ""
