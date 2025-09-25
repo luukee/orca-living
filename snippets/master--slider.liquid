@@ -714,7 +714,16 @@
       }
       {% endif %}
 
-      /* Prevent video flash on mobile - only hide mobile video on desktop */
+      /* Prevent video flash on mobile - hide videos initially */
+      == .video-ratio {
+          opacity: 0;
+          transition: opacity 0.1s ease-in;
+      }
+      == .video-ratio.loaded {
+          opacity: 1;
+      }
+      
+      /* Hide wrong videos on each device */
       /medium-up/ {
           == .video-ratio.medium-up--hide {
               display: none !important;
@@ -933,6 +942,32 @@
                       var src = $(this).attr('src');
                       $(this).attr('src', src);
                   });
+              });
+          });
+          
+          // Prevent video flash on mobile
+          $(function() {
+              function showCorrectVideo() {
+                  var isMobile = window.innerWidth <= 749;
+                  
+                  $('{{cssClass}} .video-ratio').each(function() {
+                      var $video = $(this);
+                      var isMobileVideo = $video.hasClass('medium-up--hide');
+                      var isDesktopVideo = $video.hasClass('small--hide');
+                      
+                      if ((isMobile && isMobileVideo) || (!isMobile && isDesktopVideo)) {
+                          $video.addClass('loaded');
+                      }
+                  });
+              }
+              
+              // Show correct video immediately
+              showCorrectVideo();
+              
+              // Re-check on resize
+              $(window).on('resize', function() {
+                  $('{{cssClass}} .video-ratio').removeClass('loaded');
+                  setTimeout(showCorrectVideo, 50);
               });
           });
       });
