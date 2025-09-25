@@ -1,50 +1,13 @@
 {% if vidExt != blank or vidHosted != blank or metaVideo != blank  %}
-  {% comment %}
-
-    {% include 'snippet--video', 
-      vidExt: s.video_url, 
-      vidHosted: s.video_hosted, 
-      hostedThumb: s.video_hosted_thumbnail,
-      cf: false,
-      vidClass: sectionClass, 
-      autoPlay: false,
-      normalMobile: false,
-      useBG: false 
-    %}
-
-
-    {
-      "type": "header",
-      "content": "Video Settings"
-    },
-    {
-      "type": "video_url",
-      "id": "video_url",
-      "label": "Video url",
-      "accept": [
-        "youtube",
-        "vimeo"
-      ]
-    },
-    {
-      "type": "text",
-      "id": "video_hosted",
-      "label": "Video url if hosted"
-    },
-    {
-      "type": "image_picker",
-      "id": "video_hosted_thumbnail",
-      "label": "Video thumbnail (only if hosted)"
-    },
-
-  {% endcomment %}
   <!-- snippets/snippet--video -->
   {% liquid
 
     assign vID              = vidExt.id
     assign vidType          = vidExt.type
     assign showMobile       = false 
-    assign hideMobile       = ''
+    unless hideMobile
+      assign hideMobile       = ''
+    endunless
     assign hideAutoplay     = '' 
     assign thmbPoster       = '' 
 
@@ -78,6 +41,7 @@
 
     if vidHosted != blank
       assign vidType        = 'video'
+      assign showMobile     = true
     endif
 
     if autoPlay != false and normalMobile == true
@@ -85,7 +49,7 @@
       assign hideAutoplay   = 'small--hide' 
     endif 
 
-    if autoPlay != false and normalMobile != true
+    if autoPlay != false and normalMobile != true and hideMobile == ''
       assign hideMobile     = 'small--hide'
     endif 
 
@@ -182,20 +146,12 @@
     {% endif %}
     {% comment %} if Self-Hosted {% endcomment %}
     {% if vidType == 'video' %}
-      {% comment %} {% unless designMode %}lazyload{% endunless %} {% endcomment %}
-       {% comment %} 
-          {% if thmbPoster == blank %}
-          preload="auto"
-          {% else %}
-          poster="{{thmbPoster}}"
-          {% endif %}
-       {% endcomment %}
       <video 
-        class="html-video {{- hideAutoplay -}}" 
+        class="html-video desktop-video" 
         width="800" 
         height="480" 
         preload="auto"
-        poster="https:{{ thmbPoster }}"
+        {% if thmbPoster != blank and autoPlay == false %}poster="https:{{ thmbPoster }}"{% endif %}
         id="video{{section.id}}{{block.id}}" 
         style="object-fit: cover; object-position: center center;"
         {% unless autoPlay == false %}
@@ -207,29 +163,26 @@
         data-video-ratio="{{videoRatio}}"
         {% endif %}
         src="{{vidHosted}}">Your browser does not support HTML5 video. Please update your browser.</video>
-        {% comment %} {% if thmbPoster == blank %}#t=0.5{% endif %} {% endcomment %}
-        {% comment %} {% unless designMode %}data-{% endunless %} {% endcomment %}
-      {% comment %} Show a version of video on mobile that allows user to press play. {% endcomment %}
       {% if showMobile == true %}
-        <video 
-          class="{% unless designMode %}lazyload{% endunless %} html-video medium-up--hide" 
-          width="800" 
-          height="480" 
-          {% if thmbPoster == blank %}
-          preload="metadata"
-          {% else %}
-          poster="{{thmbPoster}}"
-          {% endif %}
-          {% if autoPlay == true or autoPlayHostedMobile == true %}
-          autoplay muted loop playsinline
-          {% else %}
-          controls
-          {% endif %}
-          {% if useBG == true and videoRatio != blank%}
-          data-video-ratio="{{videoRatio}}"
-          {% endif %}
-          {% unless designMode %}data-{% endunless %}src="{{vidHosted}}{% if thmbPoster == blank %}#t=0.5{% endif %}"></video>
-      {% endif %}
+          <video 
+            class="{% unless designMode %}lazyload{% endunless %} html-video medium-up--hide" 
+            width="800" 
+            height="480" 
+            {% if thmbPoster == blank %}
+            preload="metadata"
+            {% elsif autoPlay == false %}
+            poster="https:{{thmbPoster}}"
+            {% endif %}
+            {% if autoPlay == true or autoPlayHostedMobile == true %}
+            autoplay muted loop playsinline
+            {% else %}
+            controls
+            {% endif %}
+            {% if useBG == true and videoRatio != blank%}
+            data-video-ratio="{{videoRatio}}"
+            {% endif %}
+            {% unless designMode %}data-{% endunless %}src="{{vidHosted}}{% if thmbPoster == blank %}#t=0.5{% endif %}"></video>
+        {% endif %}
     {% endif %}
   {% endcapture %}
 

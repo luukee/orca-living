@@ -43,23 +43,38 @@
 <script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
 <script type="text/javascript">
   lnkDelay = '200'; // Amount of time between Checks
-  var lnkExist = setInterval(function () {
-    lnkObject = $('link[href*="klaviyo_subscribe.css"]');
-    if (lnkObject.length) {
-      clearInterval(lnkExist);
-      setTimeout(function () {
-        lnkObject[0].disabled = true;
-        // console.log('Disabled Conflicting Styles');
+  
+  // Wait for jQuery to be available before running the script
+  function waitForJQuery(callback) {
+    if (window.jQuery) {
+      callback();
+    } else {
+      setTimeout(function() {
+        waitForJQuery(callback);
       }, 50);
     }
-  }, lnkDelay);
-  KlaviyoSubscribe.attachToForms('#{{formId}}', {
-    hide_form_on_success: true,
-    custom_success_message: true,
-    error: function ($form) {
-      console.log('failure?');
-      console.log($form);
-    },
-    success: function ($form) {},
+  }
+  
+  waitForJQuery(function() {
+    var lnkExist = setInterval(function () {
+      lnkObject = $('link[href*="klaviyo_subscribe.css"]');
+      if (lnkObject.length) {
+        clearInterval(lnkExist);
+        setTimeout(function () {
+          lnkObject[0].disabled = true;
+          // console.log('Disabled Conflicting Styles');
+        }, 50);
+      }
+    }, lnkDelay);
+    
+    KlaviyoSubscribe.attachToForms('#{{formId}}', {
+      hide_form_on_success: true,
+      custom_success_message: true,
+      error: function ($form) {
+        console.log('failure?');
+        console.log($form);
+      },
+      success: function ($form) {},
+    });
   });
 </script>

@@ -298,10 +298,6 @@
           "default": 10
         },
         {
-          "type": "paragraph",
-          "content": "--------------------------------"
-        },
-        {
           "type": "header",
           "content": "Mobile Image Settings"
         },
@@ -368,10 +364,6 @@
           "step": 1,
           "label": "Mobile Opacity",
           "default": 10
-        },
-        {
-          "type": "paragraph",
-          "content": "--------------------------------"
         },
         {
           "type": "header",
@@ -600,10 +592,6 @@
           "label": "Border Hover"
         },
         {
-          "type": "paragraph",
-          "content": "--------------------------------"
-        },
-        {
           "type": "header",
           "content": "Alignment Settings"
         },
@@ -654,12 +642,15 @@
           "default": "450px"
         },
         {
-          "type": "paragraph",
-          "content": "--------------------------------"
+          "type": "header",
+          "content": "Desktop Video Settings"
         },
         {
-          "type": "header",
-          "content": "Video Settings"
+          "type": "checkbox",
+          "id": "video_autoplay",
+          "label": "Video Autoplay",
+          "default": true,
+          "info": "Enable video autoplay (separate from slider autoplay)"
         },
         {
           "type": "text",
@@ -681,7 +672,7 @@
         {
           "type": "image_picker",
           "id": "video_hosted_thumbnail",
-          "label": "Video thumbnail (only if hosted)"
+          "label": "Desktop Video thumbnail (only if hosted)"
         },
         {
           "type": "text",
@@ -696,8 +687,24 @@
           "accept": ["youtube", "vimeo"]
         },
         {
-          "type": "paragraph",
-          "content": "--------------------------------"
+          "type": "header",
+          "content": "Mobile Video Settings"
+        },
+        {
+          "type": "text",
+          "id": "video_hosted_mobile",
+          "label": "Mobile video url if hosted"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_hosted_thumbnail_mobile",
+          "label": "Mobile Video thumbnail (only if hosted)"
+        },
+        {
+          "type": "text",
+          "id": "video_ratio_mobile",
+          "label": "Video ratio for mobile",
+          "default": "56"
         },
         {
           "type": "header",

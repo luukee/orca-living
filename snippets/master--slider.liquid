@@ -103,12 +103,24 @@
         assign vidEmbd          = b.video_url
         assign vidHost          = b.video_hosted
         assign hostedThumb      = b.video_hosted_thumbnail
+        assign vidHostMob       = b.video_hosted_mobile
+        assign hostedThumbMob   = b.video_hosted_thumbnail_mobile
         assign vidRatio         = blank
+        assign vidRatioMob      = blank
+        assign videoAutoplay    = b.video_autoplay
 
         if b.video_ratio != blank 
             assign baseNum      = 0.00
             assign vidNum       = baseNum | plus: b.video_ratio
             assign vidRatio     = vidNum | divided_by: 100
+        endif
+
+        if b.video_ratio_mobile != blank 
+            assign baseNumMob   = 0.00
+            assign vidNumMob    = baseNumMob | plus: b.video_ratio_mobile
+            assign vidRatioMob  = vidNumMob | divided_by: 100
+        else
+            assign vidRatioMob  = vidRatio
         endif
 
         assign v_modal          = b.video_modal 
@@ -472,22 +484,31 @@
             {% assign normMob = true %}
         {% endif %}
         {% render 'snippet--video', 
+        {% render 'snippet--video', 
             vidExt: vidEmbd, 
             vidHosted: vidHost, 
             hostedThumb: hostedThumb,
             vidClass: sectionClass, 
             normalMobile: normMob,
             useBG: useBgImg,
-            videoRatio: vidRatio
+            videoRatio: vidRatio,
+            hideMobile: 'small--hide',
+            autoPlay: videoAutoplay
         %}
-            {% comment %}{% assign vCls = sectionClass | append: ' medium-up--hide' %}
+        <!-- Mobile Video (if different from desktop) -->
+        {% if vidHostMob != blank and vidHostMob != vidHost %}
             {% render 'snippet--video', 
-                vidExt: vidEmbd, 
-                vidHosted: vidHost, 
+                vidExt: blank, 
+                vidHosted: vidHostMob, 
+                hostedThumb: hostedThumbMob,
                 vidClass: sectionClass, 
+                normalMobile: normMob,
                 useBG: useBgImg,
-                autoPlay: false 
-            %}{% endcomment %}
+                videoRatio: vidRatioMob,
+                hideMobile: 'medium-up--hide',
+                autoPlay: videoAutoplay
+            %}
+        {% endif %}
     {% endcapture %}
 
 
@@ -589,7 +610,11 @@
                         {% endif %}
                         
                         {% if ttl != blank %}
-                            <h{% if makeh1 %}1{% else %}2{% endif %} class="h2">{{ ttl }}</h{% if makeh1 %}1{% else %}2{% endif %}>
+                            {% if makeh1 %}
+                                <h1 class="h2">{{ ttl }}</h1>
+                            {% else %}
+                                <h2 class="h2">{{ ttl }}</h2>
+                            {% endif %}
                         {% endif %}
                         
                         {% if txt != blank %}
@@ -690,6 +715,27 @@
           width: 100%;
       }
       {% endif %}
+
+      /* Prevent video flash on mobile - hide videos initially */
+      == .video-ratio {
+          opacity: 0;
+          transition: opacity 0.1s ease-in;
+      }
+      == .video-ratio.loaded {
+          opacity: 1;
+      }
+      
+      /* Hide wrong videos on each device */
+      /medium-up/ {
+          == .video-ratio.medium-up--hide {
+              display: none !important;
+          }
+      }
+      /small/ {
+          == .video-ratio.small--hide {
+              display: none !important;
+          }
+      }
 
       /* Other CSS */
       == .slick-slider {
@@ -898,6 +944,32 @@
                       var src = $(this).attr('src');
                       $(this).attr('src', src);
                   });
+              });
+          });
+          
+          // Prevent video flash on mobile
+          $(function() {
+              function showCorrectVideo() {
+                  var isMobile = window.innerWidth <= 749;
+                  
+                  $('{{cssClass}} .video-ratio').each(function() {
+                      var $video = $(this);
+                      var isMobileVideo = $video.hasClass('medium-up--hide');
+                      var isDesktopVideo = $video.hasClass('small--hide');
+                      
+                      if ((isMobile && isMobileVideo) || (!isMobile && isDesktopVideo)) {
+                          $video.addClass('loaded');
+                      }
+                  });
+              }
+              
+              // Show correct video immediately
+              showCorrectVideo();
+              
+              // Re-check on resize
+              $(window).on('resize', function() {
+                  $('{{cssClass}} .video-ratio').removeClass('loaded');
+                  setTimeout(showCorrectVideo, 50);
               });
           });
       });
