@@ -714,6 +714,24 @@
       }
       {% endif %}
 
+      /* Prevent video flash on mobile */
+      == .video-ratio.small--hide {
+          display: none !important;
+      }
+      == .video-ratio.medium-up--hide {
+          display: none !important;
+      }
+      /medium-up/ {
+          == .video-ratio.medium-up--hide {
+              display: block !important;
+          }
+      }
+      /small/ {
+          == .video-ratio.small--hide {
+              display: block !important;
+          }
+      }
+
       /* Other CSS */
       == .slick-slider {
           overflow: hidden;

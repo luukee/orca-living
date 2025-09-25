@@ -146,26 +146,6 @@
     {% endif %}
     {% comment %} if Self-Hosted {% endcomment %}
     {% if vidType == 'video' %}
-      <video 
-        class="html-video desktop-video" 
-        width="800" 
-        height="480" 
-        preload="auto"
-        {% if thmbPoster != blank and autoPlay == false %}poster="https:{{ thmbPoster }}"{% endif %}
-        id="video{{section.id}}{{block.id}}" 
-        style="object-fit: cover; object-position: center center;"
-        {% unless autoPlay == false %}
-        autoplay muted loop playsinline
-        {% else %}
-        controls
-        {% endunless %}
-        {% if useBG == true and videoRatio != blank%}
-        data-video-ratio="{{videoRatio}}"
-        {% endif %}
-        src="{{vidHosted}}">Your browser does not support HTML5 video. Please update your browser.</video>
-        {% comment %} {% if thmbPoster == blank %}#t=0.5{% endif %} {% endcomment %}
-        {% comment %} {% unless designMode %}data-{% endunless %} {% endcomment %}
-      {% comment %} Show a version of video on mobile that allows user to press play. {% endcomment %}
       {% if showMobile == true %}
         <video 
           class="{% unless designMode %}lazyload{% endunless %} html-video medium-up--hide" 
@@ -186,6 +166,23 @@
           {% endif %}
           {% unless designMode %}data-{% endunless %}src="{{vidHosted}}{% if thmbPoster == blank %}#t=0.5{% endif %}"></video>
       {% endif %}
+      <video 
+        class="html-video desktop-video" 
+        width="800" 
+        height="480" 
+        preload="auto"
+        {% if thmbPoster != blank and autoPlay == false %}poster="https:{{ thmbPoster }}"{% endif %}
+        id="video{{section.id}}{{block.id}}" 
+        style="object-fit: cover; object-position: center center;"
+        {% unless autoPlay == false %}
+        autoplay muted loop playsinline
+        {% else %}
+        controls
+        {% endunless %}
+        {% if useBG == true and videoRatio != blank%}
+        data-video-ratio="{{videoRatio}}"
+        {% endif %}
+        src="{{vidHosted}}">Your browser does not support HTML5 video. Please update your browser.</video>
     {% endif %}
   {% endcapture %}
 
