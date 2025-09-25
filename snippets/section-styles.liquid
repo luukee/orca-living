@@ -1,0 +1,89 @@
+{% comment %}
+  Snippet: Section Styles
+  Purpose: Generates CSS custom properties for section styling without duplication
+  Parameters:
+    - section: The section object
+    - prefix: CSS class prefix (default: 'section')
+{% endcomment %}
+
+{% liquid
+  assign prefix = prefix | default: 'section'
+  assign s = section.settings
+  assign section_id = section.id
+  assign css_vars = ''
+  assign has_styles = false
+  
+  #Border bottom styles
+  if s.border_bottom
+    assign css_vars = css_vars | append: '--border-bottom: 1px solid #000;'
+    assign css_vars = css_vars | append: '--border-padding-bottom: 4rem;'
+    assign css_vars = css_vars | append: '--border-margin-bottom: 4rem;'
+    assign has_styles = true
+  endif
+  
+  # Border top styles
+  if s.border_top
+    assign css_vars = css_vars | append: '--border-top: 1px solid #000;'
+    assign css_vars = css_vars | append: '--border-padding-top: 4rem;'
+    assign css_vars = css_vars | append: '--border-margin-top: 4rem;'
+    assign has_styles = true
+  endif
+  
+  # Background color override
+  if s.background_color != blank
+    assign css_vars = css_vars | append: '--background-color: ' | append: s.background_color | append: ';'
+    assign has_styles = true
+  endif
+  
+  # Custom spacing
+  if s.spacing_top != blank
+    assign css_vars = css_vars | append: '--spacing-top: ' | append: s.spacing_top | append: ';'
+    assign has_styles = true
+  endif
+  
+  if s.spacing_bottom != blank
+    assign css_vars = css_vars | append: '--spacing-bottom: ' | append: s.spacing_bottom | append: ';'
+    assign has_styles = true
+  endif
+  
+  # Custom CSS
+  if s.custom_css != blank
+    assign css_vars = css_vars | append: s.custom_css
+    assign has_styles = true
+  endif
+%}
+
+{% if has_styles %}
+  <style>
+    .{{ prefix }}-{{ section_id }} {
+      {{ css_vars }}
+      
+      /* Apply border styles */
+      {% if s.border_top %}
+        border-top: var(--border-top, none);
+        padding-top: var(--border-padding-top, 0);
+        margin-top: var(--border-margin-top, 0);
+      {% endif %}
+      
+      {% if s.border_bottom %}
+        border-bottom: var(--border-bottom, none);
+        padding-bottom: var(--border-padding-bottom, 0);
+        margin-bottom: var(--border-margin-bottom, 0);
+      {% endif %}
+      
+      /* Apply background color */
+      {% if s.background_color != blank %}
+        background-color: var(--background-color, inherit);
+      {% endif %}
+      
+      /* Apply custom spacing */
+      {% if s.spacing_top != blank %}
+        padding-top: var(--spacing-top, inherit);
+      {% endif %}
+      
+      {% if s.spacing_bottom != blank %}
+        padding-bottom: var(--spacing-bottom, inherit);
+      {% endif %}
+    }
+  </style>
+{% endif %}

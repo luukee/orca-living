@@ -1,0 +1,43 @@
+{% comment %}
+  Snippet: Section Styles Schema
+  Purpose: Reusable settings schema for section styling options
+  Usage: Include this in any section's schema settings array
+{% endcomment %}
+
+{
+	"type": "header",
+	"content": "Section Styling"
+},
+{
+	"type": "checkbox",
+	"id": "border_top",
+	"label": "Add top border",
+	"default": false
+},
+{
+	"type": "checkbox", 
+	"id": "border_bottom",
+	"label": "Add bottom border",
+	"default": false
+},
+{
+	"type": "color",
+	"id": "background_color",
+	"label": "Background color override",
+	"info": "Override the section's background color"
+},
+{
+	"type": "text",
+	"id": "spacing_top",
+	"label": "Top spacing",
+	"info": "CSS value (e.g., '2rem', '40px')",
+	"placeholder": "2rem"
+},
+{
+	"type": "text", 
+	"id": "spacing_bottom",
+	"label": "Bottom spacing",
+	"info": "CSS value (e.g., '2rem', '40px')",
+	"placeholder": "2rem"
+},
+

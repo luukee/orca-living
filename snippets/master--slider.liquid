@@ -17,11 +17,10 @@
     assign autoSlide            = s.auto_slide
     assign useArrows            = s.use_arrows
     assign useDots              = s.use_dots
-
-
+    
     assign sectionCustomCSS     = s.custom_css
     assign class                = 'section--' | append: s_id
-    assign cssClass             = '.' | append: class
+    assign css_class            = '.' | append: class
 
     assign dskHght              = s.image_height | default: hght_fallback
     if dskHght contains '%'
@@ -875,22 +874,35 @@
 
   {% render 'custom-css', 
       css: sectionCSS, 
-      class: cssClass,
+      class: css_class,
       important: false
   %}
-
-
-
-  <section class="nine15--slider section--nine15-slider {{class}} {% if mobRelative == true %}mobile-relative{% endif %}">
-    {{slides}}
-  </section>
+  {% liquid
+    assign additional_classes = 'nine15--slider section--nine15-slider'
+    
+    # Add base classes
+    if class != blank
+      assign additional_classes = additional_classes | append: ' ' | append: class
+    endif
+    
+    if mobRelative == true
+      assign additional_classes = additional_classes | append: ' mobile-relative'
+    endif
+  %}
+  
+  {% render 'section-wrapper', 
+      section: section, 
+      base_class: 'section',
+      additional_classes: additional_classes,
+      content: slides
+  %}
 
   {{modal}}
 
 
   {% render 'custom-css', 
       css: sectionCustomCSS, 
-      class: cssClass 
+      class: css_class 
   %}
 
 
@@ -899,7 +911,7 @@
       waitForJavascript(function () {
           $(document).ready(function () {
 
-              $('{{cssClass}}').slick({
+              $('{{css_class}}').slick({
                   // fade:true,
                   infinite: true,
                   autoplay: {{autoSlide}},
@@ -923,7 +935,7 @@
           })
           $(function(){
 
-              var section = '{{cssClass}}',
+              var section = '{{css_class}}',
                   open = '.open-modal',
                   close = '.close-modal, .bg_close',
                   content = '.video-modal',
@@ -952,7 +964,7 @@
               function showCorrectVideo() {
                   var isMobile = window.innerWidth <= 749;
                   
-                  $('{{cssClass}} .video-ratio').each(function() {
+                  $('{{css_class}} .video-ratio').each(function() {
                       var $video = $(this);
                       var isMobileVideo = $video.hasClass('medium-up--hide');
                       var isDesktopVideo = $video.hasClass('small--hide');
@@ -968,7 +980,7 @@
               
               // Re-check on resize
               $(window).on('resize', function() {
-                  $('{{cssClass}} .video-ratio').removeClass('loaded');
+                  $('{{css_class}} .video-ratio').removeClass('loaded');
                   setTimeout(showCorrectVideo, 50);
               });
           });

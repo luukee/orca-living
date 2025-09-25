@@ -43,6 +43,7 @@
   endif
 -%}
 
+{% capture section_content %}
 <div class='color-{{ section.settings.color_scheme }} isolate gradient'>
   <div class='collection section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}'>
     <div class='collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}'>
@@ -144,6 +145,14 @@
     {%- endif -%}
   </div>
 </div>
+{% endcapture %}
+
+{% render 'section-wrapper', 
+  section: section, 
+  base_class: 'section',
+  additional_classes: 'color-' | append: section.settings.color_scheme | append: ' isolate gradient',
+  content: section_content
+%}
 
 {% schema %}
 {
@@ -445,6 +454,42 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Section Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Add top border",
+      "default": false
+    },
+    {
+      "type": "checkbox", 
+      "id": "border_bottom",
+      "label": "Add bottom border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color override",
+      "info": "Override the section's background color"
+    },
+    {
+      "type": "text",
+      "id": "spacing_top",
+      "label": "Top spacing",
+      "info": "CSS value (e.g., '2rem', '40px')",
+      "placeholder": "2rem"
+    },
+    {
+      "type": "text", 
+      "id": "spacing_bottom",
+      "label": "Bottom spacing",
+      "info": "CSS value (e.g., '2rem', '40px')",
+      "placeholder": "2rem"
     }
   ],
   "presets": [

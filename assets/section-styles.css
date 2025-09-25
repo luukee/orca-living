@@ -1,0 +1,76 @@
+/* Section Styles Foundation */
+/* This file provides the CSS foundation for the reusable section styles system */
+
+/* Apply styles to all sections with the section- prefix */
+[class*="section-"] {
+  /* Border styles */
+  &.has-border-top {
+    border-top: var(--border-top, none);
+    padding-top: var(--border-padding-top, 0);
+    margin-top: var(--border-margin-top, 0);
+  }
+  
+  &.has-border-bottom {
+    border-bottom: var(--border-bottom, none);
+    padding-bottom: var(--border-padding-bottom, 0);
+    margin-bottom: var(--border-margin-bottom, 0);
+  }
+  
+  /* Background override */
+  background-color: var(--background-color, inherit);
+  
+  /* Custom spacing */
+  padding-top: var(--spacing-top, inherit);
+  padding-bottom: var(--spacing-bottom, inherit);
+}
+
+/* Utility classes for common section styling patterns */
+.section-styles {
+  /* Ensure proper box model */
+  box-sizing: border-box;
+  
+  /* Default spacing reset */
+  --default-padding: 0;
+  --default-margin: 0;
+}
+
+/* Border utility classes */
+.border-top {
+  border-top: 1px solid #000;
+  padding-top: 4rem;
+  margin-top: 4rem;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #000;
+  padding-bottom: 4rem;
+  margin-bottom: 4rem;
+}
+
+/* Spacing utility classes */
+.spacing-top {
+  padding-top: var(--spacing-top, 2rem);
+}
+
+.spacing-bottom {
+  padding-bottom: var(--spacing-bottom, 2rem);
+}
+
+/* Background utility classes */
+.bg-override {
+  background-color: var(--background-color);
+}
+
+/* Responsive considerations */
+@media screen and (max-width: 749px) {
+  [class*="section-"] {
+    &.has-border-top,
+    &.has-border-bottom {
+      /* Reduce spacing on mobile */
+      --border-padding-top: 2rem;
+      --border-padding-bottom: 2rem;
+      --border-margin-top: 2rem;
+      --border-margin-bottom: 2rem;
+    }
+  }
+}

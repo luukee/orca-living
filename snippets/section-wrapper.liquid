@@ -1,0 +1,41 @@
+{% comment %}
+  Snippet: Section Wrapper
+  Purpose: Provides a reusable wrapper for sections with styling capabilities
+  Parameters:
+    - section: The section object
+    - base_class: Base CSS class for the section (default: 'section')
+    - additional_classes: Additional CSS classes to add
+    - content: The section content to wrap
+{% endcomment %}
+
+{% liquid
+  assign s = section.settings
+  assign section_id = section.id
+  assign base_class = base_class | default: 'section'
+  assign additional_classes = additional_classes | default: ''
+  
+  assign section_class = base_class
+  
+  # Add additional classes
+  if additional_classes != blank
+    assign section_class = section_class | append: ' ' | append: additional_classes
+  endif
+  
+  # Add section styles classes
+  assign section_class = section_class | append: ' section-' | append: section_id
+  
+  # Check for any section styling options
+  assign has_section_styles = false
+  if s.border_bottom or s.border_top or s.background_color != blank or s.spacing_top != blank or s.spacing_bottom != blank or s.custom_css != blank
+    assign has_section_styles = true
+  endif
+%}
+
+{% # Render section styles CSS %}
+{% if has_section_styles %}
+  {% render 'section-styles', section: section, prefix: 'section' %}
+{% endif %}
+
+<section class="{{ section_class }}">
+  {{ content }}
+</section>
