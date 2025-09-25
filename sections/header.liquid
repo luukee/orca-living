@@ -1273,39 +1273,3 @@
 }
 {% endschema %}
 
-<script>
-// Add hover functionality to mega menus only
-document.addEventListener('DOMContentLoaded', function() {
-  // Target both header and secondary navigation mega menus
-  const megaMenus = document.querySelectorAll('header-menu .mega-menu, .navigation-desktop header-menu .mega-menu');
-  
-  megaMenus.forEach(function(megaMenu) {
-    const summary = megaMenu.querySelector('summary');
-    
-    if (!summary) return;
-    
-    // Add hover events to the summary element
-    summary.addEventListener('mouseenter', function() {
-      megaMenu.setAttribute('open', '');
-      summary.setAttribute('aria-expanded', 'true');
-    });
-    
-    // Close when mouse leaves the entire mega menu area (with small delay)
-    let closeTimeout;
-    megaMenu.addEventListener('mouseleave', function() {
-      closeTimeout = setTimeout(function() {
-        megaMenu.removeAttribute('open');
-        summary.setAttribute('aria-expanded', 'false');
-      }, 150);
-    });
-    
-    // Cancel close if mouse re-enters
-    megaMenu.addEventListener('mouseenter', function() {
-      if (closeTimeout) {
-        clearTimeout(closeTimeout);
-        closeTimeout = null;
-      }
-    });
-  });
-});
-</script>
