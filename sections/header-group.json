@@ -19,7 +19,7 @@
     "header": {
       "type": "header",
       "custom_css": [
-        "header {padding-top: 11px; padding-bottom: 11px;}"
+        "header {padding-top: 11px;}"
       ],
       "settings": {
         "logo_position": "middle-left",
