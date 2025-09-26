@@ -227,51 +227,163 @@
                   <div id="SecondaryMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
                     <div class="mega-menu__rich-content">
                       {%- comment -%} Top navigation row {%- endcomment -%}
-                      <div class="mega-menu__top-nav">
+                      {% comment %} <div class="mega-menu__top-nav">
                         {%- for childlink in link.links -%}
                           <a href="{{ childlink.url }}" class="mega-menu__top-nav-item{% if childlink.current %} mega-menu__top-nav-item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
                             {{ childlink.title | escape }}
                           </a>
                         {%- endfor -%}
-                      </div>
+                      </div> {% endcomment %}
                       
-                      {%- comment -%} Rich content columns {%- endcomment -%}
-                      <div class="mega-menu__content-column">
+                      {%- comment -%} Categories/tags - Dynamically pulled from product tags {%- endcomment -%}
+                      <div class="mega-menu__content-column mega-menu--categories">
+                        {%- comment -%} Get unique tags from all products in the collection {%- endcomment -%}
+                        {%- assign unique_tags = '' -%}
+                        {%- assign excluded_tags = '' -%}
+                        
+                        {%- comment -%} Get excluded tags from metaobject {%- endcomment -%}
                         {%- if mega_menu_content.categories != blank -%}
-                          <h3 class="mega-menu__column-title">Category</h3>
+                          {%- assign excluded_tags = mega_menu_content.categories | split: ',' -%}
+                        {%- endif -%}
+                        
+                        {%- for product in collection.products -%}
+                          {%- for tag in product.tags -%}
+                            {%- assign should_exclude = false -%}
+                            {%- comment -%} Check if tag should be excluded {%- endcomment -%}
+                            {%- for excluded_tag in excluded_tags -%}
+                              {%- assign excluded_tag_clean = excluded_tag | strip -%}
+                              {%- if tag == excluded_tag_clean or tag contains excluded_tag_clean -%}
+                                {%- assign should_exclude = true -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            
+                            {%- unless should_exclude -%}
+                              {%- unless unique_tags contains tag -%}
+                                {%- if unique_tags == blank -%}
+                                  {%- assign unique_tags = tag -%}
+                                {%- else -%}
+                                  {%- assign unique_tags = unique_tags | append: ',' | append: tag -%}
+                                {%- endif -%}
+                              {%- endunless -%}
+                            {%- endunless -%}
+                          {%- endfor -%}
+                        {%- endfor -%}
+                        
+                        {%- if unique_tags != blank -%}
+                          <h3 class="mega-menu__column-title">Category/Tags</h3>
                           <ul class="mega-menu__column-list">
-                            {%- assign categories = mega_menu_content.categories | split: ',' -%}
-                            {%- for category in categories -%}
+                            {%- assign tags_list = unique_tags | split: ',' -%}
+                            {%- for tag in tags_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.p.tag={{ category | strip | url_encode }}" class="mega-menu__column-link">{{ category | strip | escape }}</a>
+                                {%- assign category_handle = tag | strip | replace: ' ', '-' -%}
+                                {%- unless category_handle contains '_' -%}
+                                  {%- assign category_handle = '_' | append: category_handle -%}
+                                {%- endunless -%}
+                                {%- assign display_text = tag | strip | replace: '_', '' | capitalize -%}
+                                <a href="{{ link.url }}/{{ category_handle }}" class="mega-menu__column-link">{{ display_text }}</a>
                               </li>
                             {%- endfor -%}
                           </ul>
                         {%- endif -%}
                       </div>
                       
-                      <div class="mega-menu__content-column">
+                      {% comment %} Materials - Dynamically pulled from product metafields {% endcomment %}
+                      <div class="mega-menu__content-column mega-menu--materials">
+                        {%- comment -%} Get unique materials from all products in the collection {%- endcomment -%}
+                        {%- assign unique_materials = '' -%}
+                        {%- assign excluded_materials = '' -%}
+                        
+                        {%- comment -%} Get excluded materials from metaobject {%- endcomment -%}
                         {%- if mega_menu_content.materials != blank -%}
+                          {%- assign excluded_materials = mega_menu_content.materials | split: ',' -%}
+                        {%- endif -%}
+                        
+                        {%- for product in collection.products -%}
+                          {%- if product.metafields.custom.material != blank -%}
+                            {%- assign material = product.metafields.custom.material.value | strip -%}
+                            {%- assign should_exclude = false -%}
+                            
+                            {%- comment -%} Check if material should be excluded {%- endcomment -%}
+                            {%- for excluded_material in excluded_materials -%}
+                              {%- assign excluded_material_clean = excluded_material | strip -%}
+                              {%- if material == excluded_material_clean or material contains excluded_material_clean -%}
+                                {%- assign should_exclude = true -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            
+                            {%- unless should_exclude -%}
+                              {%- unless unique_materials contains material -%}
+                                {%- if unique_materials == blank -%}
+                                  {%- assign unique_materials = material -%}
+                                {%- else -%}
+                                  {%- assign unique_materials = unique_materials | append: ',' | append: material -%}
+                                {%- endif -%}
+                              {%- endunless -%}
+                            {%- endunless -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                        
+                        {%- if unique_materials != blank -%}
                           <h3 class="mega-menu__column-title">Material</h3>
                           <ul class="mega-menu__column-list">
-                            {%- assign materials = mega_menu_content.materials | split: ',' -%}
-                            {%- for material in materials -%}
+                            {%- assign materials_list = unique_materials | split: ',' -%}
+                            {%- for material in materials_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.v.option.material={{ material | strip | url_encode }}" class="mega-menu__column-link">{{ material | strip | escape }}</a>
+                                <a href="{{ link.url }}?metafields.custom.material={{ material | strip | url_encode }}" class="mega-menu__column-link">
+                                  {{ material | strip | escape }}
+                                </a>
                               </li>
                             {%- endfor -%}
                           </ul>
                         {%- endif -%}
                       </div>
                       
-                      <div class="mega-menu__content-column">
+                      {% comment %} Use Cases - Dynamically pulled from product metafields {% endcomment %}
+                      <div class="mega-menu__content-column mega-menu--use-cases">
+                        {%- comment -%} Get unique use cases from all products in the collection {%- endcomment -%}
+                        {%- assign unique_use_cases = '' -%}
+                        {%- assign excluded_use_cases = '' -%}
+                        
+                        {%- comment -%} Get excluded use cases from metaobject {%- endcomment -%}
                         {%- if mega_menu_content.use_cases != blank -%}
+                          {%- assign excluded_use_cases = mega_menu_content.use_cases | split: ',' -%}
+                        {%- endif -%}
+                        
+                        {%- for product in collection.products -%}
+                          {%- if product.metafields.custom.use_case != blank -%}
+                            {%- assign use_case = product.metafields.custom.use_case.value | strip -%}
+                            {%- assign should_exclude = false -%}
+                            
+                            {%- comment -%} Check if use case should be excluded {%- endcomment -%}
+                            {%- for excluded_use_case in excluded_use_cases -%}
+                              {%- assign excluded_use_case_clean = excluded_use_case | strip -%}
+                              {%- if use_case == excluded_use_case_clean or use_case contains excluded_use_case_clean -%}
+                                {%- assign should_exclude = true -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            
+                            {%- unless should_exclude -%}
+                              {%- unless unique_use_cases contains use_case -%}
+                                {%- if unique_use_cases == blank -%}
+                                  {%- assign unique_use_cases = use_case -%}
+                                {%- else -%}
+                                  {%- assign unique_use_cases = unique_use_cases | append: ',' | append: use_case -%}
+                                {%- endif -%}
+                              {%- endunless -%}
+                            {%- endunless -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                        
+                        {%- if unique_use_cases != blank -%}
                           <h3 class="mega-menu__column-title">Use Case</h3>
                           <ul class="mega-menu__column-list">
-                            {%- assign use_cases = mega_menu_content.use_cases | split: ',' -%}
-                            {%- for use_case in use_cases -%}
+                            {%- assign use_cases_list = unique_use_cases | split: ',' -%}
+                            {%- for use_case in use_cases_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.p.tag={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
+                                <a href="{{ link.url }}?metafields.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
                               </li>
                             {%- endfor -%}
                           </ul>
