@@ -9,7 +9,7 @@
             {% for image in section.images.value %}
               <div class='cell__item medium-up--one-half'>
                 <div class='inner-container'>
-                  {{ image | image_url: width: 600 | image_tag }}
+                  {{ image | image_url: width: 600 | image_tag: loading: 'lazy' }}
                 </div>
               </div>
             {% endfor %}
@@ -33,7 +33,7 @@
                 {% endif %}
               </div>
               <div class='image'>
-                {{ section.text_image | image_url: height: 800 | image_tag: loading: 'lazy' }}
+                {{ section.text_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
               </div>
             </div>
           </div>
@@ -57,12 +57,11 @@
           {% assign height = 800 %}
         {% endif %}
         {% assign focal_point = section.full_width_image.presentation.focal_point %}
-        <img
-          src="{{ section.full_width_image | image_url: height: height }}"
-          loading="lazy"
-          style="object-fit: cover;{% if focal_point != blank %} object-position: {{ focal_point }};{% endif %}"
-          alt="{{ section.full_width_image.alt | escape }}"
-        >        
+        {% assign image_style = 'object-fit: cover;' %}
+        {% if focal_point != blank %}
+          {% assign image_style = image_style | append: ' object-position: ' | append: focal_point | append: ';' %}
+        {% endif %}
+        {{ section.full_width_image | image_url: height: height | image_tag: loading: 'lazy', class: 'standardized-image', style: image_style, alt: section.full_width_image.alt }}
       </section>
     {% elsif section.first_image %}
       {% comment %}This is a two_grid_section{% endcomment %}
@@ -71,10 +70,10 @@
           <div class='cell__item'>
             <div class='two-grid'>
               <div class='{% if section.first_image_caption %}caption{% else %}image{% endif %}'>
-                {{ section.first_image | image_url: width: 600, height: 800 | image_tag: loading: 'lazy' }}
+                {{ section.first_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
               </div>
               <div class='{% if section.second_image_caption %}caption{% else %}image{% endif %}'>
-                {{ section.second_image | image_url: width: 600, height: 800 | image_tag: loading: 'lazy' }}
+                {{ section.second_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
               </div>
             </div>
           </div>

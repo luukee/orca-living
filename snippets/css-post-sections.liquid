@@ -4,7 +4,7 @@
   }
   .post-sections {
     margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin-bottom: 0;
   }
   .post-sections--quote em:not(.caption em) {
     text-align: center;
@@ -16,7 +16,7 @@
   @media only screen and (max-width: 989px) {
     .post-sections {
       margin-top: 4rem;
-      margin-bottom: 4rem;
+      margin-bottom: 0;
     }
     .post-sections--quote em:not(.caption em) {
       margin: 15px 15px 3px;
@@ -35,10 +35,16 @@
   }
   /* image and text section */
   .article-template__content--post-sections .post-sections--text-image img {
-    /* height: auto; */
-    width: auto;
+    width: 100%;
     border: none;
-    min-height: 100%;
+    height: 600px;
+    object-fit: cover;
+    object-position: center;
+  }
+  @media only screen and (max-width: 989px) {
+    .article-template__content--post-sections .post-sections--text-image img {
+      height: 400px;
+    }
   }
   .post-sections--gallery img {
     object-fit: contain;
@@ -49,4 +55,8 @@
   .post-sections--full-width-image {
     margin-bottom: 3em;
   }
+  .post-sections--text-image .two-grid .image,
+    .post-sections--two-grid .two-grid .image {
+      display: flex;
+    }
 </style>
