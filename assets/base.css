@@ -7409,6 +7409,7 @@ em:not(.caption em) {
   }
   .two-grid .caption {
     margin: 0;
+    padding: 15px;
   }
   .template--article-field-notes-article .section--side-navigation .list-menu {
     padding-right: 22vw;
