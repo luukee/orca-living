@@ -821,7 +821,7 @@ hr {
   }
 }
 .full-unstyled-link {
-  font-family: var(--font-heading-family);
+  /* font-family: var(--font-heading-family); */
   text-decoration: none;
   color: currentColor;
   display: block;
@@ -6298,7 +6298,7 @@ details-disclosure > details {
 }
 @media only screen and (min-width: 990px) and (max-width: 1199px) {
   .feed--view-type {
-    margin: 10px 0 var(--base-gutter--half);
+    margin: 10px 0 0;
   }
 }
 .feed--view-type > * {
