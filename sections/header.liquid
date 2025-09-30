@@ -965,7 +965,7 @@
     <!-- Secondary Navigation Section -->
     {%- if section.settings.show_secondary_navigation and section.settings.secondary_menu_handle != blank -%}
       <{% if section.settings.sticky_secondary_navigation != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_secondary_navigation }}"{% else %}div{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient">
-        {%- render 'navigation-content', section: section -%}
+        {%- render 'navigation-secondary', section: section -%}
       </{% if section.settings.sticky_secondary_navigation != 'none' %}sticky-header{% else %}div{% endif %}>
     {%- endif -%}
     
