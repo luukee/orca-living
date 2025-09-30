@@ -2,12 +2,11 @@
 
 {% liquid 
   assign secondary_menu_type_desktop = section.settings.secondary_menu_type_desktop
-  assign makeh1       = section.settings.make_h1
-  assign navigationHorizontal = section.settings.navigation_horizontal
+  assign makeh1                      = section.settings.make_h1
   
-  assign headingEl    = 'h2'
+  assign heading_element    = 'h2'
   if makeh1 == true and template.name == 'collection'
-    assign headingEl  = 'h1'
+    assign heading_element  = 'h1'
   endif
   
   # Get the secondary menu using the handle
@@ -18,7 +17,7 @@
   <div class="page-width section-{{ section.id }}-padding">
 
     {% if section.settings.title %}
-      <{{headingEl}} class="h4">{{section.settings.title}}</{{headingEl}}>
+      <{{heading_element}} class="h4">{{section.settings.title}}</{{heading_element}}>
     {% endif %}
 
     <!-- Mobile Navigation Drawer -->
@@ -50,46 +49,46 @@
                   <ul class="navigation-drawer__menu" role="list">
                     {%- for link in secondary_menu.links -%}
                       {% liquid 
-                        assign isCurrent          = false 
-                        assign linkHandle         = link.handle 
+                        assign is_current          = false 
+                        assign link_handle         = link.handle 
 
-                        assign collectionHandle   = collection.handle 
-                        capture collectionURL 
+                        assign collection_handle   = collection.handle 
+                        capture collection_url 
                           render 'snippet--url-query', queryString: 'collection'
                         endcapture
-                        if collectionURL != ''
-                          if link.url contains collectionURL
-                            assign isCurrent      = true 
+                        if collection_url != ''
+                          if link.url contains collection_url
+                            assign is_current      = true 
                           endif
                         endif
 
                         if link.current
-                          assign isCurrent        = true 
+                          assign is_current        = true 
                         endif 
 
-                        if collectionHandle == linkHandle
-                          assign isCurrent        = true
+                        if collection_handle == link_handle
+                          assign is_current        = true
                         endif 
 
-                        if collectionHandle == 'quick-ship' and linkHandle == 'pavers'
-                          assign isCurrent        = true
+                        if collection_handle == 'quick-ship' and link_handle == 'pavers'
+                          assign is_current        = true
                         endif
 
-                        assign linkURL            = link.url
-                        if isCurrent and template.name != 'article'
-                          assign linkURL          = linkURL | split: '/tagged' | first
+                        assign link_url            = link.url
+                        if is_current and template.name != 'article'
+                          assign link_url          = link_url | split: '/tagged' | first
                         endif 
 
                         for tag in article.tags
-                          assign linkHndl         = link.url | handleize
-                          assign tagHndl          = tag |handleize 
-                          if linkHndl contains tagHndl
-                            assign isCurrent      = true
+                          assign link_handle         = link.url | handleize
+                          assign tag_handle          = tag |handleize 
+                          if link_handle contains tag_handle
+                            assign is_current      = true
                             break
                           endif 
                         endfor 
 
-                        assign ChildLinkSize      = link.links | size
+                        assign child_link_size      = link.links | size
                         
                         assign path = request.path
                         assign show_nav_child_links = false
@@ -98,31 +97,27 @@
                         endif
                       %}
                       <li>
-                        <a href="{{ linkURL }}" class="navigation-drawer__menu-item link link--text focus-inset{% if isCurrent %} navigation-drawer__menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
+                        <a href="{{ link_url }}" class="navigation-drawer__menu-item link link--text focus-inset{% if is_current %} navigation-drawer__menu-item--active{% endif %}"{% if is_current %} aria-current="page"{% endif %}>
                           {{ link.title | escape }}
                         </a>
-                        {% if isCurrent %}
-                          {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
+                        {% if is_current %}
+                          {%- if child_link_size > 0 and template.name == 'collection' or show_nav_child_links -%}
                             <ul class="navigation-drawer__submenu" role="list">
                               {%- for childlink in link.links -%}
                                 {% liquid 
-                                  assign showChildLink      = false
-                                  assign isCurrentInner     = false
-                                  assign taggedHandle       = ''
-                                  assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
+                                  assign is_current_inner     = false
+                                  assign tagged_handle       = ''
                                   for tag in current_tags
-                                    assign taggedHandle     = tag | handleize | replace: '_',''
+                                    assign tagged_handle     = tag | handleize | replace: '_',''
                                   endfor 
-                                  assign currentChildLink   = childlink.handle | handleize | replace: '_',''
-                                  if currentChildLink contains taggedHandle and taggedHandle != ''
-                                    assign isCurrentInner   = true
+                                  assign current_child_link   = childlink.handle | handleize | replace: '_',''
+                                  if current_child_link contains tagged_handle and tagged_handle != ''
+                                    assign is_current_inner   = true
                                   endif
-                                  if allTagsHandles contains currentChildLink
-                                    assign showChildLink    = true 
-                                  endif 
+
                                 %}
                                 <li>
-                                  <a href="{{ childlink.url }}" class="navigation-drawer__menu-item link link--text focus-inset {% if isCurrentInner %} navigation-drawer__menu-item--active{% endif %}">
+                                  <a href="{{ childlink.url }}" class="navigation-drawer__menu-item link link--text focus-inset {% if is_current_inner %} navigation-drawer__menu-item--active{% endif %}">
                                     {{ childlink.title | escape }}
                                   </a>
                                 </li>
@@ -146,46 +141,46 @@
       <ul class="list-menu" role="list">
         {%- for link in secondary_menu.links -%}
           {% liquid 
-            assign isCurrent          = false 
-            assign linkHandle         = link.handle 
+            assign is_current          = false 
+            assign link_handle         = link.handle 
 
-            assign collectionHandle   = collection.handle 
-            capture collectionURL 
+            assign collection_handle   = collection.handle 
+            capture collection_url 
               render 'snippet--url-query', queryString: 'collection'
             endcapture
-            # if collectionURL != ''
-            #   if link.url contains collectionURL
-            #     assign isCurrent      = true 
+            # if collection_url != ''
+            #   if link.url contains collection_url
+            #     assign is_current      = true 
             #   endif
             # endif
 
             if link.current
-              assign isCurrent        = true 
+              assign is_current        = true 
             endif 
 
-            if collectionHandle == linkHandle
-              assign isCurrent        = true
+            if collection_handle == link_handle
+              assign is_current        = true
             endif 
 
-            if collectionHandle == 'quick-ship' and linkHandle == 'pavers'
-              assign isCurrent        = true
+            if collection_handle == 'quick-ship' and link_handle == 'pavers'
+              assign is_current        = true
             endif
 
-            assign linkURL            = link.url
-            if isCurrent and template.name != 'article'
-              assign linkURL          = linkURL | split: '/tagged' | first
+            assign link_url            = link.url
+            if is_current and template.name != 'article'
+              assign link_url          = link_url | split: '/tagged' | first
             endif 
 
             for tag in article.tags
-              assign linkHndl         = link.url | handleize
-              assign tagHndl          = tag |handleize 
-              if linkHndl contains tagHndl
-                assign isCurrent      = true
+              assign link_handle         = link.url | handleize
+              assign tag_handle          = tag |handleize 
+              if link_handle contains tag_handle
+                assign is_current      = true
                 break
               endif 
             endfor 
 
-            assign ChildLinkSize      = link.links | size
+            assign child_link_size      = link.links | size
             
             assign path = request.path
             assign show_nav_child_links = false
@@ -218,10 +213,10 @@
               {%- comment -%} Mega menu version {%- endcomment -%}
               <header-menu>
                 <details id="Details-SecondaryMenu-{{ forloop.index }}" class="mega-menu">
-                  <summary class="list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
-                    {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+                  <summary class="list-menu__item link link--text focus-inset{% if is_current %} menu-item--active{% endif %}"{% if is_current %} aria-current="page"{% endif %}>
+                    {% if is_current and template.name == 'collection' %}<h1>{% endif %}
                     {{ link.title | escape }}
-                    {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+                    {% if is_current and template.name == 'collection' %}</h1>{% endif %}
                   </summary>
                   <div id="SecondaryMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
                     <div class="mega-menu__rich-content">
@@ -237,13 +232,18 @@
                           {%- assign excluded_tags = mega_menu_content.categories | split: ',' -%}
                         {%- endif -%}
                         
+                        {% render 'dump' with 'initial excluded_tags' %}
+                        {% render 'dump' with excluded_tags %}
+                        
                         {%- for product in collection.products -%}
                           {%- for tag in product.tags -%}
                             {%- assign should_exclude = false -%}
-                            {%- comment -%} Check if tag should be excluded {%- endcomment -%}
+                            {%- comment -%} Check if tag should be excluded (case-insensitive) {%- endcomment -%}
                             {%- for excluded_tag in excluded_tags -%}
                               {%- assign excluded_tag_clean = excluded_tag | strip -%}
-                              {%- if tag == excluded_tag_clean or tag contains excluded_tag_clean -%}
+                              {%- assign tag_lower = tag | downcase -%}
+                              {%- assign excluded_tag_lower = excluded_tag_clean | downcase -%}
+                              {%- if tag_lower == excluded_tag_lower or tag_lower contains excluded_tag_lower -%}
                                 {%- assign should_exclude = true -%}
                                 {%- break -%}
                               {%- endif -%}
@@ -261,26 +261,41 @@
                           {%- endfor -%}
                         {%- endfor -%}
                         
+                        {% render 'dump' with 'processed unique_tags' %}
+                        {% render 'dump' with unique_tags %}
+                        
                         {%- if unique_tags != blank -%}
                           <h3 class="mega-menu__column-title">Category/Tags</h3>
                           <ul class="mega-menu__column-list">
-                            {%- assign tags_list = unique_tags | split: ',' -%}
+                            {%- assign tags_list = unique_tags | split: ',' | sort -%}
                             {%- for tag in tags_list -%}
                               <li class="mega-menu__column-item">
+                                {%- comment -%} Create URL-friendly handle for collection filtering {%- endcomment -%}
                                 {%- assign category_handle = tag | strip | replace: ' ', '-' -%}
                                 {%- unless category_handle contains '_' -%}
                                   {%- assign category_handle = '_' | append: category_handle -%}
                                 {%- endunless -%}
-                                {% comment %} Format the tag for display {% endcomment %}
-                                {%- assign display_text = tag | strip | replace: '_', ' ' | split: ' ' -%}
-                                {%- for word in display_text -%}
-                                  {%- assign capitalized_word = word | capitalize -%}
-                                  {%- if forloop.first -%}
-                                    {%- assign display_text = capitalized_word -%}
-                                  {%- else -%}
-                                    {%- assign display_text = display_text | append: ' ' | append: capitalized_word -%}
-                                  {%- endif -%}
-                                {%- endfor -%}
+                                
+                                {%- comment -%} Format display text: remove underscores/dashes and capitalize all words {%- endcomment -%}
+                                {%- assign display_text = tag | strip | replace: '_', '' | replace: '-', ' ' -%}
+                                
+                                {%- comment -%} Special case: rename "_Quick ship" to "In Stock" {%- endcomment -%}
+                                {%- if display_text == 'Quick ship' -%}
+                                  {%- assign display_text = 'In Stock' -%}
+                                {%- else -%}
+                                  {%- assign words = display_text | split: ' ' -%}
+                                  {%- assign display_text = '' -%}
+                                  {%- for word in words -%}
+                                    {%- assign capitalized_word = word | capitalize -%}
+                                    {%- if display_text == blank -%}
+                                      {%- assign display_text = capitalized_word -%}
+                                    {%- else -%}
+                                      {%- assign display_text = display_text | append: ' ' | append: capitalized_word -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                {%- endif -%}
+                                
+                                {%- comment -%} Create clickable link with formatted display text {%- endcomment -%}
                                 <a href="{{ link.url }}/{{ category_handle }}" class="mega-menu__column-link">{{ display_text }}</a>
                               </li>
                             {%- endfor -%}
@@ -318,7 +333,10 @@
                                 {%- endfor -%}
                                 
                                 {%- unless should_exclude -%}
-                                  {%- unless unique_materials contains material -%}
+                                  {%- comment -%} Check for case-insensitive duplicates {%- endcomment -%}
+                                  {%- assign material_lower = material | downcase -%}
+                                  {%- assign unique_materials_lower = unique_materials | downcase -%}
+                                  {%- unless unique_materials_lower contains material_lower -%}
                                     {%- if unique_materials == blank -%}
                                       {%- assign unique_materials = material -%}
                                     {%- else -%}
@@ -342,7 +360,10 @@
                               {%- endfor -%}
                               
                               {%- unless should_exclude -%}
-                                {%- unless unique_materials contains material -%}
+                                {%- comment -%} Check for case-insensitive duplicates {%- endcomment -%}
+                                {%- assign material_lower = material | downcase -%}
+                                {%- assign unique_materials_lower = unique_materials | downcase -%}
+                                {%- unless unique_materials_lower contains material_lower -%}
                                   {%- if unique_materials == blank -%}
                                     {%- assign unique_materials = material -%}
                                   {%- else -%}
@@ -358,7 +379,9 @@
                           <h3 class="mega-menu__column-title">Material</h3>
                           <ul class="mega-menu__column-list">
                             {%- assign materials_list = unique_materials | split: ',' -%}
-                            {% render 'dump' with materials_list %}
+                           
+                            {% comment %} {% render 'dump' with materials_list %} {% endcomment %}
+                           
                             {%- for material in materials_list -%}
                               <li class="mega-menu__column-item">
                                 <a href="{{ link.url }}?filter.p.m.custom.material={{ material | strip | url_encode }}" class="mega-menu__column-link">
@@ -473,14 +496,14 @@
                   </div>
                 </details>
               </header-menu>
-            {%- elsif secondary_menu_type_desktop == 'dropdown' and ChildLinkSize > 0 -%}
+            {%- elsif secondary_menu_type_desktop == 'dropdown' and child_link_size > 0 -%}
               {%- comment -%} Dropdown menu version {%- endcomment -%}
               <header-menu>
                 <details id="Details-SecondaryMenu-{{ forloop.index }}" class="mega-menu">
-                  <summary class="list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
-                    {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+                  <summary class="list-menu__item link link--text focus-inset{% if is_current %} menu-item--active{% endif %}"{% if is_current %} aria-current="page"{% endif %}>
+                    {% if is_current and template.name == 'collection' %}<h1>{% endif %}
                     {{ link.title | escape }}
-                    {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+                    {% if is_current and template.name == 'collection' %}</h1>{% endif %}
                     <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
                     </svg>
@@ -500,10 +523,10 @@
               </header-menu>
             {%- else -%}
               {%- comment -%} Regular link version {%- endcomment -%}
-              <a href="{{ linkURL }}" class="list-menu__item link link--text focus-inset{% if isCurrent %} menu-item--active{% endif %}"{% if isCurrent %} aria-current="page"{% endif %}>
-                {% if isCurrent and template.name == 'collection' %}<h1>{% endif %}
+              <a href="{{ link_url }}" class="list-menu__item link link--text focus-inset{% if is_current %} menu-item--active{% endif %}"{% if is_current %} aria-current="page"{% endif %}>
+                {% if is_current and template.name == 'collection' %}<h1>{% endif %}
                 {{ link.title | escape }}
-                {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
+                {% if is_current and template.name == 'collection' %}</h1>{% endif %}
               </a>
             {%- endif -%}
           </li>
