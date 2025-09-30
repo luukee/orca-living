@@ -271,7 +271,16 @@
                                 {%- unless category_handle contains '_' -%}
                                   {%- assign category_handle = '_' | append: category_handle -%}
                                 {%- endunless -%}
-                                {%- assign display_text = tag | strip | replace: '_', '' | capitalize -%}
+                                {% comment %} Format the tag for display {% endcomment %}
+                                {%- assign display_text = tag | strip | replace: '_', ' ' | split: ' ' -%}
+                                {%- for word in display_text -%}
+                                  {%- assign capitalized_word = word | capitalize -%}
+                                  {%- if forloop.first -%}
+                                    {%- assign display_text = capitalized_word -%}
+                                  {%- else -%}
+                                    {%- assign display_text = display_text | append: ' ' | append: capitalized_word -%}
+                                  {%- endif -%}
+                                {%- endfor -%}
                                 <a href="{{ link.url }}/{{ category_handle }}" class="mega-menu__column-link">{{ display_text }}</a>
                               </li>
                             {%- endfor -%}
