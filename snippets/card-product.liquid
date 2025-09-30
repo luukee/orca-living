@@ -173,6 +173,10 @@ endif
     if mainImage == nil and settings.card_style == 'card'
       assign card_classes = card_classes | append: ' ratio'
     endif
+
+    if title_above_image
+      assign card_classes = card_classes | append: ' card--title-above-image'
+    endif
     
     # Card Inner Classes
     assign card_inner_classes = 'card__inner'

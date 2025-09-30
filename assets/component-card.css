@@ -349,4 +349,15 @@
   text-decoration: none;
   color: inherit;
 }
+
+.card--title-above-image {
+  display: flex;
+  flex-direction: column;
+}
+.card--title-above-image .card__inner {
+  order: 2;
+}
+.card--title-above-image .card__content {
+  padding: 0 0 var(--base-gutter--quarter);
+}
 /*# sourceMappingURL=component-card.css.map */
