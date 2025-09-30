@@ -3,11 +3,10 @@
   id="MainProduct-{{ section.id }}"
   class="page-width section-{{ section.id }}-padding"
   data-section="{{ section.id }}"
-> 
+> <!-- assets/section-main-product.css -->
   {% liquid 
     # render 'css-section-main-product' 
-    echo '<!-- assets/section-main-product.css -->'
-    echo 'section-main-product.css' | asset_url | stylesheet_tag
+    echo 'section-main-product-new.css' | asset_url | stylesheet_tag
     render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-accordion.css' 
     render 'snippet--css-output', lazy: true, preload: false, lnk: 'component-slider.css' 
   %}
@@ -81,8 +80,23 @@
    </style>
   {% endunless %}
   
-  <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
-    <div class="grid__item product__media-wrapper{% if section.settings.media_position == 'right' %} medium-hide large-up-hide{% endif %}">
+  {% liquid
+  assign product_media_block = ''
+  for block in section.blocks
+    case block.type
+      when 'selected_product_media'
+        assign product_media_block = ' product__media-default'
+        break
+      when 'selected_color_carousel'
+        assign product_media_block = ' product__media-nine15'
+        break
+    endcase
+  endfor
+  %}
+  
+  <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}{{ product_media_block }}">
+    <div class="grid__item product__media-wrapper">
+      {% comment %} {% if section.settings.media_position == 'right' %} medium-hide large-up-hide{% endif %} {% endcomment %}
       {% render 'product-media-gallery', variant_images: variant_images %}
     </div>
     <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}">
@@ -465,12 +479,6 @@
         </a>
       </product-info>
     </div>
-    {%- if section.settings.media_position == 'right' -%}
-      {% comment %} Duplicate gallery to display after product content on tablet/desktop breakpoint {% endcomment %}
-      <div class="grid__item product__media-wrapper small-hide">
-        {% render 'product-media-gallery', variant_images: variant_images, is_duplicate: true %}
-      </div>
-    {%- endif -%}
   </div>
 
   {% render 'product-media-modal' variant_images: variant_images %}
