@@ -232,9 +232,6 @@
                           {%- assign excluded_tags = mega_menu_content.categories | split: ',' -%}
                         {%- endif -%}
                         
-                        {% render 'dump' with 'initial excluded_tags' %}
-                        {% render 'dump' with excluded_tags %}
-                        
                         {%- for product in collection.products -%}
                           {%- for tag in product.tags -%}
                             {%- assign should_exclude = false -%}
@@ -260,9 +257,6 @@
                             {%- endunless -%}
                           {%- endfor -%}
                         {%- endfor -%}
-                        
-                        {% render 'dump' with 'processed unique_tags' %}
-                        {% render 'dump' with unique_tags %}
                         
                         {%- if unique_tags != blank -%}
                           <h3 class="mega-menu__column-title">Category/Tags</h3>
@@ -379,13 +373,11 @@
                           <h3 class="mega-menu__column-title">Material</h3>
                           <ul class="mega-menu__column-list">
                             {%- assign materials_list = unique_materials | split: ',' -%}
-                           
-                            {% comment %} {% render 'dump' with materials_list %} {% endcomment %}
-                           
+                                                      
                             {%- for material in materials_list -%}
                               <li class="mega-menu__column-item">
                                 <a href="{{ link.url }}?filter.p.m.custom.material={{ material | strip | url_encode }}" class="mega-menu__column-link">
-                                  {{ material | strip | escape }}
+                                  {{ material | strip | capitalize | escape }}
                                 </a>
                               </li>
                             {%- endfor -%}
@@ -465,7 +457,7 @@
                             {%- assign use_cases_list = unique_use_cases | split: ',' -%}
                             {%- for use_case in use_cases_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.p.m.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
+                                <a href="{{ link.url }}?filter.p.m.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | capitalize | escape }}</a>
                               </li>
                             {%- endfor -%}
                           </ul>
