@@ -497,35 +497,6 @@
                 {% if isCurrent and template.name == 'collection' %}</h1>{% endif %}
               </a>
             {%- endif -%}
-            {% if show_nav_child_links %}
-              {%- if ChildLinkSize > 0 and template.name == 'collection' or show_nav_child_links -%}
-                <ul class="menu-drawer__menu list-menu medium-down--hide" role="list">
-                  {%- for childlink in link.links -%}
-                    {% liquid 
-                      assign showChildLink      = false
-                      assign isCurrentInner     = false
-                      assign taggedHandle       = ''
-                      assign allTagsHandles     = collection.all_tags | handleize  | replace: '_',''
-                      for tag in current_tags
-                        assign taggedHandle     = tag | handleize | replace: '_',''
-                      endfor 
-                      assign currentChildLink   = childlink.handle | handleize | replace: '_',''
-                      if currentChildLink contains taggedHandle and taggedHandle != ''
-                        assign isCurrentInner   = true
-                      endif
-                      if allTagsHandles contains currentChildLink
-                        assign showChildLink    = true 
-                      endif 
-                    %}
-                    <li>
-                      <a href="{{ childlink.url }}" class=" list-menu__item link link--text focus-inset {% if isCurrentInner %} menu-item--active{% endif %}">
-                        {{ childlink.title | escape }}
-                      </a>
-                    </li>
-                  {%- endfor -%}  
-                </ul>          
-              {%- endif -%}            
-            {% endif %}
           </li>
         {%- endfor -%}
       </ul>
