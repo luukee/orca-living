@@ -403,7 +403,6 @@ html.no-js .no-js-hidden {
 .template--account .simple-footer,
 .template--activate_account #MainContent,
 .template--activate_account .simple-footer,
-.template--product #MainContent,
 .template--product .simple-footer,
 .template--blog #MainContent,
 .template--blog .simple-footer,
@@ -4778,6 +4777,9 @@ details-disclosure > details {
     grid-area: 1 / 1 / 1 / 3;
   }
   /* Product page layout */
+  .template--product #MainContent {
+    
+  }
   .template--product #MainContent > *:first-child {
     grid-area: 1 / 1 / 1 / -1;
   }
@@ -4903,7 +4905,6 @@ details-disclosure > details {
   .template--account .simple-footer,
   .template--activate_account #MainContent,
   .template--activate_account .simple-footer,
-  .template--product #MainContent,
   .template--product .simple-footer,
   .template--blog #MainContent,
   .template--blog .simple-footer,

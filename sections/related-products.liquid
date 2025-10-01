@@ -36,7 +36,9 @@
               media_aspect_ratio: section.settings.image_ratio,
               show_secondary_image: section.settings.show_secondary_image,
               show_vendor: section.settings.show_vendor,
-              show_rating: section.settings.show_rating
+              show_rating: section.settings.show_rating,
+              hide_overlay_link: false,
+              card_show_inner_content: section.settings.card_show_inner_content
             %}
           </li>
         {% endfor %}
@@ -170,6 +172,12 @@
       "default": false,
       "label": "t:sections.related-products.settings.show_rating.label",
       "info": "t:sections.related-products.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_inner_content",
+      "default": true,
+      "label": "Show inner content"
     },
     {
       "type": "header",

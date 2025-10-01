@@ -36,7 +36,7 @@ product-info {
   }
 
   .product__info-wrapper--extra-padding {
-    padding: 0 0 0 8rem;
+    padding: 0 0 0 2rem;
   }
 
   .product--right .product__info-wrapper {
@@ -78,8 +78,8 @@ product-info {
 
   .product--medium:not(.product--no-media) .product__media-wrapper,
   .product--small:not(.product--no-media) .product__info-wrapper {
-    max-width: 55%;
-    width: calc(55% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 50%;
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
   }
 
   .product--medium:not(.product--no-media) .product__info-wrapper,
@@ -252,6 +252,7 @@ a.product__text {
 
 .product__title > * {
   margin: 0;
+  font-family: inherit;
 }
 
 .product__title > a {
@@ -264,6 +265,10 @@ a.product__text {
 
 .product__text.caption-with-letter-spacing + .product__title {
   margin-top: 0;
+}
+
+.accordion__title {
+  font-family: inherit;
 }
 
 .product__accordion .accordion__content {
@@ -289,7 +294,7 @@ a.product__text {
 
 @media screen and (min-width: 750px) {
   .product__info-container {
-    max-width: 60rem;
+    max-width: 65rem;
   }
 
   .product__info-container .price--on-sale .price-item--regular {
@@ -1496,6 +1501,35 @@ a.product__text {
 /* ============================================
    ORCA LIVING CUSTOM STYLES
    ============================================ */
+/* Responsive Layout */
+@media only screen and (max-width: 749px) {
+  .template--product #MainContent {
+    padding: 0 0 0 1rem;
+  }
+  .product--small:not(.product--no-media) .product__info-wrapper,
+  .related-products__heading {
+    padding: 0 2rem;
+  }
+	.out-of-stock h5 {
+		margin-right: 8px
+	}
+}
+@media only screen and (min-width: 750px) {
+  .product--small:not(.product--no-media) .product__info-wrapper {
+    
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .product__media-default {
+    grid-area: 1 / 1 / 1 / -1;
+  }
+  .product--stacked .product__media-item {
+    max-width: 100%;
+    width: 100%;
+  }
+}   
+
 
 /* Variant Selection System */
 variant-radios,
@@ -1514,12 +1548,6 @@ variant-selects {
 	margin: 0;
 	margin-right: 15px;
 	white-space: nowrap
-}
-
-@media only screen and (max-width: 749px) {
-	.out-of-stock h5 {
-		margin-right: 8px
-	}
 }
 
 .out-of-stock .waitlist-form {
@@ -1581,7 +1609,7 @@ variant-selects {
 }
 
 /* Custom Product Info Container */
-.product .product__info-wrapper {
+.product.product__media-nine15 .product__info-wrapper {
 	width: 100% !important;
 	max-width: 100% !important;
 	padding: 0 !important
@@ -1788,12 +1816,21 @@ variant-selects {
 	}
 }
 
+.product-form__input input[type=radio] {
+	clip: rect(0, 0, 0, 0);
+	overflow: hidden;
+	position: absolute;
+	height: 1px;
+	width: 1px
+}
+
 .product fieldset.product-form__input input[type=radio]+label {
 	border-radius: 0;
 	border: none;
 	padding: 0;
 	color: rgba(var(--color-foreground), 1);
-	background-color: transparent
+	background-color: transparent;
+  cursor: pointer;
 }
 
 .product fieldset.product-form__input input[type=radio]+label:before {
