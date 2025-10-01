@@ -403,6 +403,7 @@ html.no-js .no-js-hidden {
 .template--account .simple-footer,
 .template--activate_account #MainContent,
 .template--activate_account .simple-footer,
+.template--product #MainContent,
 .template--product .simple-footer,
 .template--blog #MainContent,
 .template--blog .simple-footer,
@@ -4886,8 +4887,6 @@ details-disclosure > details {
   .template--article .simple-footer > *:nth-child(n + 4) {
     grid-column: span 2;
   }
-}
-@media only screen and (min-width: 750px) {
   .template--collection #MainContent,
   .template--collection .simple-footer,
   .template--page-contact #MainContent,
@@ -4903,6 +4902,7 @@ details-disclosure > details {
   .page--edit-account .simple-footer,
   .template--account #MainContent,
   .template--account .simple-footer,
+  /* .template--product #MainContent, */
   .template--activate_account #MainContent,
   .template--activate_account .simple-footer,
   .template--product .simple-footer,
