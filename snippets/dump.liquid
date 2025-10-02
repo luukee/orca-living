@@ -3,8 +3,41 @@
 		Snippet to dump the content of an object in the console
 	Usage:
 		{% render 'dump' with [OBJECT] %}
+		{% render 'dump', object: [OBJECT], label: 'Optional Label' %}
 {% endcomment %}
 
 <script type="text/javascript">
-	console.log({{ dump | json }});
+  {% comment %} Support both old and new parameter names {% endcomment %}
+  {% assign debug_object = object | default: dump %}
+  {% assign debug_label = label | default: 'Debug Object' %}
+  
+  console.group('🔍 Debug: {{ debug_label }}');
+  
+  {% if debug_object %}
+    console.log('Handle:', '{{ debug_object.handle }}');
+    console.log('Title:', '{{ debug_object.title }}');
+    console.log('Links count:', {{ debug_object.links.size }});
+    
+    {% comment %} Dump each link individually to avoid JSON serialization issues {% endcomment %}
+    {% for link in debug_object.links %}
+      console.log('Link {{ forloop.index }}:', {
+        title: '{{ link.title | escape }}',
+        url: '{{ link.url }}',
+        handle: '{{ link.handle }}',
+        has_sublinks: {{ link.links.size }},
+        sublinks_count: {{ link.links.size }}
+      });
+      
+      {% if link.links.size > 0 %}
+        console.log('  Sublinks for {{ link.title | escape }}:');
+        {% for sublink in link.links %}
+          console.log('    - {{ sublink.title | escape }}: {{ sublink.url }}');
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    console.log('Object is null or empty');
+  {% endif %}
+  
+  console.groupEnd();
 </script>
