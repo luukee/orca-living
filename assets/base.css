@@ -2430,21 +2430,18 @@ product-info .loading-overlay:not(.hidden) ~ *,
   position: absolute;
   background: var(--gradient-base-background-1);
 }
-.secondary-navigation-section {
+.navigation-secondary {
   display: none;
 }
 @media only screen and (min-width: 990px) {
-  .secondary-navigation-section {
+  .navigation-secondary {
     display: block;
   }
 }
 menu-drawer + .header__search {
   display: none;
 }
-.header__inner > .header__search {
-  grid-area: left-icons;
-  justify-self: start;
-}
+
 .header--top-center.drawer-menu > .header__search {
   margin-left: 3.2rem;
 }
@@ -2456,9 +2453,9 @@ menu-drawer + .header__search {
     display: block;
   }
 } */
-.header--top-center header-drawer {
-  grid-area: left-icons;
-}
+/* header-drawer {
+  grid-area: icons;
+} */
 .header:not(.header--has-menu) * > .header__search {
   display: none;
 }

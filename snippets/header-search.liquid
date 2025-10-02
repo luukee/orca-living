@@ -30,7 +30,7 @@
 						<form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
 							<div class="field">
 								<input class="search__input field__input"
-									id="Search-In-Modal-1"
+									id="{{ input_id }}"
 									type="search"
 									name="q"
 									value="{{ search.terms | escape }}"
