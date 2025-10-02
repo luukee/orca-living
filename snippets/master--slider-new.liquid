@@ -242,9 +242,6 @@
         {% capture img %}
             {% capture imgCls %}{% if imgMob != blank or mobRelative == true %}{% if mobOvSooner %}medium-down{% else %}small{% endif %}--hide{% endif %}{% endcapture %}
             {% capture mobImgCls %}{% if mobOvSooner %}large-up{% else %}medium-up{% endif %}--hide{% endcapture %}
-            {% render 'dump' with imgMain %}
-            {% render 'dump' with imgMainAlt %}
-            {% render 'dump' with useBgImg %}
             {% include 'snippet--image', 
                 img: imgMain,
                 alt: imgMainAlt, 
@@ -271,7 +268,7 @@
                 %}
             {% endif %}
         {% endcapture %}
-        {% render 'dump' with img %}
+
         {% if v_modal != blank %}
             {% capture modal %}
                 {{modal}}
