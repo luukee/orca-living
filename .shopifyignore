@@ -7,3 +7,4 @@ notToWeb/*
 .DS_Store
 LOCAL/*
 .cursor/*
+assets/backup/*
