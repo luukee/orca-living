@@ -20,7 +20,7 @@ shopify auth logout
 Login:
 
 ```
-shopify theme dev --store orcaliving.myshopify.com
+shopify theme dev --store orcaliving.myshopify.com --theme-editor-sync
 ```
 
 ## Accordion Page Requirements
