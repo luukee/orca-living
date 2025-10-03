@@ -1,7 +1,7 @@
 <!-- main-product.liquid -->
 <section
   id="MainProduct-{{ section.id }}"
-  class="page-width section-{{ section.id }}-padding"
+  class="section-{{ section.id }}-padding"
   data-section="{{ section.id }}"
 > <!-- assets/section-main-product.css -->
   {% liquid 
@@ -96,7 +96,7 @@
   assign product_section_border_bottom = section.settings.product_section_border_bottom
   %}
   
-  <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}{{ product_media_block }} {% if product_section_border_bottom %}product-section-border-bottom{% endif %}">
+  <div class="product page-width product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}{{ product_media_block }} {% if product_section_border_bottom %}product-section-border-bottom{% endif %}">
     <div class="grid__item product__media-wrapper">
       {% comment %} {% if section.settings.media_position == 'right' %} medium-hide large-up-hide{% endif %} {% endcomment %}
       {% render 'product-media-gallery', variant_images: variant_images %}

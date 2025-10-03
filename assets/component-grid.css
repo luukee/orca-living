@@ -469,13 +469,15 @@
 .page-width {
   width: 100%;
   margin: 0 auto;
-  padding-left: var(--grid-gutter--mobile);
-  padding-right: var(--grid-gutter--mobile);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  /* padding-left: var(--grid-gutter--mobile);
+  padding-right: var(--grid-gutter--mobile); */
 }
 @media only screen and (min-width: 750px) {
   .page-width {
-    padding-left: var(--grid-gutter);
-    padding-right: var(--grid-gutter);
+    padding-left: calc(var(--grid-gutter) * 0.5);
+    padding-right: calc(var(--grid-gutter) * 0.5);
   }
 }
 .page-width.no-padding {

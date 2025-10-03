@@ -1,0 +1,2694 @@
+
+.page-width,
+.template--collection #MainContent,
+.template--collection .simple-footer,
+.template--page-contact #MainContent,
+.template--page-contact .simple-footer,
+.template--register #MainContent,
+.template--register .simple-footer,
+.template--addresses #MainContent,
+.template--addresses .simple-footer,
+.template--login #MainContent,
+.template--login .simple-footer,
+.page--edit-account #MainContent,
+.page--edit-account .simple-footer,
+.template--account #MainContent,
+.template--account .simple-footer,
+.template--activate_account #MainContent,
+.template--activate_account .simple-footer,
+.template--product #MainContent,
+.template--product .simple-footer,
+.template--blog #MainContent,
+.template--blog .simple-footer,
+.template--article #MainContent,
+.template--article .simple-footer {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  padding: 0 var(--base-gutter--half);
+}
+.page-width.drawer-menu,
+.template--collection .drawer-menu#MainContent,
+.template--collection .drawer-menu.simple-footer,
+.template--page-contact .drawer-menu#MainContent,
+.template--page-contact .drawer-menu.simple-footer,
+.template--register .drawer-menu#MainContent,
+.template--register .drawer-menu.simple-footer,
+.template--addresses .drawer-menu#MainContent,
+.template--addresses .drawer-menu.simple-footer,
+.template--login .drawer-menu#MainContent,
+.template--login .drawer-menu.simple-footer,
+.page--edit-account .drawer-menu#MainContent,
+.page--edit-account .drawer-menu.simple-footer,
+.template--account .drawer-menu#MainContent,
+.template--account .drawer-menu.simple-footer,
+.template--activate_account .drawer-menu#MainContent,
+.template--activate_account .drawer-menu.simple-footer,
+.template--product .drawer-menu#MainContent,
+.template--product .drawer-menu.simple-footer,
+.template--blog .drawer-menu#MainContent,
+.template--blog .drawer-menu.simple-footer,
+.template--article .drawer-menu#MainContent,
+.template--article .drawer-menu.simple-footer {
+  max-width: 100%;
+}
+.page--edit-account .template--collection #MainContent #MainContent,
+.template--collection #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--collection #MainContent .simple-footer,
+.template--collection #MainContent .template--account #MainContent,
+.template--account .template--collection #MainContent #MainContent,
+.template--collection #MainContent .template--account .simple-footer,
+.template--account .template--collection #MainContent .simple-footer,
+.template--collection #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--collection #MainContent #MainContent,
+.template--collection #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--collection #MainContent .simple-footer,
+.template--collection #MainContent .template--product #MainContent,
+.template--product .template--collection #MainContent #MainContent,
+.template--collection #MainContent .template--product .simple-footer,
+.template--product .template--collection #MainContent .simple-footer,
+.template--collection #MainContent .template--blog #MainContent,
+.template--blog .template--collection #MainContent #MainContent,
+.template--collection #MainContent .template--blog .simple-footer,
+.template--blog .template--collection #MainContent .simple-footer,
+.template--collection #MainContent .template--article #MainContent,
+.template--article .template--collection #MainContent #MainContent,
+.template--collection #MainContent .template--article .simple-footer,
+.template--article .template--collection #MainContent .simple-footer,
+.template--collection .simple-footer .page-width,
+.template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--register #MainContent,
+.template--register .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--register .simple-footer,
+.template--register .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--addresses #MainContent,
+.template--addresses .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--login #MainContent,
+.template--login .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--login .simple-footer,
+.template--login .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--account #MainContent,
+.template--account .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--account .simple-footer,
+.template--account .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--product #MainContent,
+.template--product .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--product .simple-footer,
+.template--product .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--blog #MainContent,
+.template--blog .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--blog .simple-footer,
+.template--blog .template--collection .simple-footer .simple-footer,
+.template--collection .simple-footer .template--article #MainContent,
+.template--article .template--collection .simple-footer #MainContent,
+.template--collection .simple-footer .template--article .simple-footer,
+.template--article .template--collection .simple-footer .simple-footer,
+.template--page-contact #MainContent .page-width,
+.template--page-contact #MainContent .template--collection #MainContent,
+.template--collection .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--collection .simple-footer,
+.template--collection .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--register #MainContent,
+.template--register .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--register .simple-footer,
+.template--register .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--addresses #MainContent,
+.template--addresses .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--addresses .simple-footer,
+.template--addresses .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--login #MainContent,
+.template--login .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--login .simple-footer,
+.template--login .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--account #MainContent,
+.template--account .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--account .simple-footer,
+.template--account .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--product #MainContent,
+.template--product .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--product .simple-footer,
+.template--product .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--blog #MainContent,
+.template--blog .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--blog .simple-footer,
+.template--blog .template--page-contact #MainContent .simple-footer,
+.template--page-contact #MainContent .template--article #MainContent,
+.template--article .template--page-contact #MainContent #MainContent,
+.template--page-contact #MainContent .template--article .simple-footer,
+.template--article .template--page-contact #MainContent .simple-footer,
+.template--page-contact .simple-footer .page-width,
+.template--page-contact .simple-footer .template--collection #MainContent,
+.template--collection .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--collection .simple-footer,
+.template--collection .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .template--register #MainContent,
+.template--register .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--register .simple-footer,
+.template--register .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .template--addresses #MainContent,
+.template--addresses .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .template--login #MainContent,
+.template--login .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--login .simple-footer,
+.template--login .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .template--account #MainContent,
+.template--account .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--account .simple-footer,
+.template--account .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--page-contact .simple-footer #MainContent,
+.template--page-contact
+  .simple-footer
+  .template--activate_account
+  .simple-footer,
+.template--activate_account
+  .template--page-contact
+  .simple-footer
+  .simple-footer,
+.template--page-contact .simple-footer .template--product #MainContent,
+.template--product .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--product .simple-footer,
+.template--product .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .template--blog #MainContent,
+.template--blog .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--blog .simple-footer,
+.template--blog .template--page-contact .simple-footer .simple-footer,
+.template--page-contact .simple-footer .template--article #MainContent,
+.template--article .template--page-contact .simple-footer #MainContent,
+.template--page-contact .simple-footer .template--article .simple-footer,
+.template--article .template--page-contact .simple-footer .simple-footer,
+.template--register #MainContent .page-width,
+.template--register #MainContent .template--collection #MainContent,
+.template--collection .template--register #MainContent #MainContent,
+.template--register #MainContent .template--collection .simple-footer,
+.template--collection .template--register #MainContent .simple-footer,
+.template--register #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--register #MainContent #MainContent,
+.template--register #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--register #MainContent .simple-footer,
+.template--register #MainContent #MainContent,
+.template--register #MainContent .simple-footer,
+.template--register #MainContent .template--addresses #MainContent,
+.template--addresses .template--register #MainContent #MainContent,
+.template--register #MainContent .template--addresses .simple-footer,
+.template--addresses .template--register #MainContent .simple-footer,
+.template--register #MainContent .template--login #MainContent,
+.template--login .template--register #MainContent #MainContent,
+.template--register #MainContent .template--login .simple-footer,
+.template--login .template--register #MainContent .simple-footer,
+.template--register #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--register #MainContent #MainContent,
+.template--register #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--register #MainContent .simple-footer,
+.template--register #MainContent .template--account #MainContent,
+.template--account .template--register #MainContent #MainContent,
+.template--register #MainContent .template--account .simple-footer,
+.template--account .template--register #MainContent .simple-footer,
+.template--register #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--register #MainContent #MainContent,
+.template--register #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--register #MainContent .simple-footer,
+.template--register #MainContent .template--product #MainContent,
+.template--product .template--register #MainContent #MainContent,
+.template--register #MainContent .template--product .simple-footer,
+.template--product .template--register #MainContent .simple-footer,
+.template--register #MainContent .template--blog #MainContent,
+.template--blog .template--register #MainContent #MainContent,
+.template--register #MainContent .template--blog .simple-footer,
+.template--blog .template--register #MainContent .simple-footer,
+.template--register #MainContent .template--article #MainContent,
+.template--article .template--register #MainContent #MainContent,
+.template--register #MainContent .template--article .simple-footer,
+.template--article .template--register #MainContent .simple-footer,
+.template--register .simple-footer .page-width,
+.template--register .simple-footer .template--collection #MainContent,
+.template--collection .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--collection .simple-footer,
+.template--collection .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--register .simple-footer .simple-footer,
+.template--register .simple-footer #MainContent,
+.template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--addresses #MainContent,
+.template--addresses .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--login #MainContent,
+.template--login .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--login .simple-footer,
+.template--login .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--register .simple-footer #MainContent,
+.template--register .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--account #MainContent,
+.template--account .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--account .simple-footer,
+.template--account .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--product #MainContent,
+.template--product .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--product .simple-footer,
+.template--product .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--blog #MainContent,
+.template--blog .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--blog .simple-footer,
+.template--blog .template--register .simple-footer .simple-footer,
+.template--register .simple-footer .template--article #MainContent,
+.template--article .template--register .simple-footer #MainContent,
+.template--register .simple-footer .template--article .simple-footer,
+.template--article .template--register .simple-footer .simple-footer,
+.template--addresses #MainContent .page-width,
+.template--addresses #MainContent .template--collection #MainContent,
+.template--collection .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--collection .simple-footer,
+.template--collection .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--register #MainContent,
+.template--register .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--register .simple-footer,
+.template--register .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--login #MainContent,
+.template--login .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--login .simple-footer,
+.template--login .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--account #MainContent,
+.template--account .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--account .simple-footer,
+.template--account .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--product #MainContent,
+.template--product .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--product .simple-footer,
+.template--product .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--blog #MainContent,
+.template--blog .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--blog .simple-footer,
+.template--blog .template--addresses #MainContent .simple-footer,
+.template--addresses #MainContent .template--article #MainContent,
+.template--article .template--addresses #MainContent #MainContent,
+.template--addresses #MainContent .template--article .simple-footer,
+.template--article .template--addresses #MainContent .simple-footer,
+.template--addresses .simple-footer .page-width,
+.template--addresses .simple-footer .template--collection #MainContent,
+.template--collection .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--collection .simple-footer,
+.template--collection .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--register #MainContent,
+.template--register .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--register .simple-footer,
+.template--register .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--login #MainContent,
+.template--login .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--login .simple-footer,
+.template--login .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--account #MainContent,
+.template--account .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--account .simple-footer,
+.template--account .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--product #MainContent,
+.template--product .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--product .simple-footer,
+.template--product .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--blog #MainContent,
+.template--blog .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--blog .simple-footer,
+.template--blog .template--addresses .simple-footer .simple-footer,
+.template--addresses .simple-footer .template--article #MainContent,
+.template--article .template--addresses .simple-footer #MainContent,
+.template--addresses .simple-footer .template--article .simple-footer,
+.template--article .template--addresses .simple-footer .simple-footer,
+.template--login #MainContent .page-width,
+.template--login #MainContent .template--collection #MainContent,
+.template--collection .template--login #MainContent #MainContent,
+.template--login #MainContent .template--collection .simple-footer,
+.template--collection .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--login #MainContent #MainContent,
+.template--login #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--register #MainContent,
+.template--register .template--login #MainContent #MainContent,
+.template--login #MainContent .template--register .simple-footer,
+.template--register .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--addresses #MainContent,
+.template--addresses .template--login #MainContent #MainContent,
+.template--login #MainContent .template--addresses .simple-footer,
+.template--addresses .template--login #MainContent .simple-footer,
+.template--login #MainContent #MainContent,
+.template--login #MainContent .simple-footer,
+.template--login #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--login #MainContent #MainContent,
+.template--login #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--account #MainContent,
+.template--account .template--login #MainContent #MainContent,
+.template--login #MainContent .template--account .simple-footer,
+.template--account .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--login #MainContent #MainContent,
+.template--login #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--product #MainContent,
+.template--product .template--login #MainContent #MainContent,
+.template--login #MainContent .template--product .simple-footer,
+.template--product .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--blog #MainContent,
+.template--blog .template--login #MainContent #MainContent,
+.template--login #MainContent .template--blog .simple-footer,
+.template--blog .template--login #MainContent .simple-footer,
+.template--login #MainContent .template--article #MainContent,
+.template--article .template--login #MainContent #MainContent,
+.template--login #MainContent .template--article .simple-footer,
+.template--article .template--login #MainContent .simple-footer,
+.template--login .simple-footer .page-width,
+.template--login .simple-footer .template--collection #MainContent,
+.template--collection .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--collection .simple-footer,
+.template--collection .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--register #MainContent,
+.template--register .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--register .simple-footer,
+.template--register .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--addresses #MainContent,
+.template--addresses .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--login .simple-footer .simple-footer,
+.template--login .simple-footer #MainContent,
+.template--login .simple-footer .simple-footer,
+.template--login .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--login .simple-footer #MainContent,
+.template--login .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--account #MainContent,
+.template--account .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--account .simple-footer,
+.template--account .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--product #MainContent,
+.template--product .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--product .simple-footer,
+.template--product .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--blog #MainContent,
+.template--blog .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--blog .simple-footer,
+.template--blog .template--login .simple-footer .simple-footer,
+.template--login .simple-footer .template--article #MainContent,
+.template--article .template--login .simple-footer #MainContent,
+.template--login .simple-footer .template--article .simple-footer,
+.template--article .template--login .simple-footer .simple-footer,
+.page--edit-account #MainContent .page-width,
+.page--edit-account #MainContent .template--collection #MainContent,
+.template--collection .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--collection .simple-footer,
+.template--collection .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--page-contact #MainContent,
+.template--page-contact .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--page-contact .simple-footer,
+.template--page-contact .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--register #MainContent,
+.template--register .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--register .simple-footer,
+.template--register .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--addresses #MainContent,
+.template--addresses .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--addresses .simple-footer,
+.template--addresses .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--login #MainContent,
+.template--login .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--login .simple-footer,
+.template--login .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--account #MainContent,
+.template--account .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--account .simple-footer,
+.template--account .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--activate_account #MainContent,
+.template--activate_account .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--activate_account .simple-footer,
+.template--activate_account .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--product #MainContent,
+.template--product .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--product .simple-footer,
+.template--product .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--blog #MainContent,
+.template--blog .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--blog .simple-footer,
+.template--blog .page--edit-account #MainContent .simple-footer,
+.page--edit-account #MainContent .template--article #MainContent,
+.template--article .page--edit-account #MainContent #MainContent,
+.page--edit-account #MainContent .template--article .simple-footer,
+.template--article .page--edit-account #MainContent .simple-footer,
+.page--edit-account .simple-footer .page-width,
+.page--edit-account .simple-footer .template--collection #MainContent,
+.template--collection .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--collection .simple-footer,
+.template--collection .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--page-contact #MainContent,
+.template--page-contact .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--register #MainContent,
+.template--register .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--register .simple-footer,
+.template--register .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--addresses #MainContent,
+.template--addresses .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--addresses .simple-footer,
+.template--addresses .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--login #MainContent,
+.template--login .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--login .simple-footer,
+.template--login .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--account #MainContent,
+.template--account .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--account .simple-footer,
+.template--account .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--activate_account #MainContent,
+.template--activate_account .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--product #MainContent,
+.template--product .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--product .simple-footer,
+.template--product .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--blog #MainContent,
+.template--blog .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--blog .simple-footer,
+.template--blog .page--edit-account .simple-footer .simple-footer,
+.page--edit-account .simple-footer .template--article #MainContent,
+.template--article .page--edit-account .simple-footer #MainContent,
+.page--edit-account .simple-footer .template--article .simple-footer,
+.template--article .page--edit-account .simple-footer .simple-footer,
+.template--account #MainContent .page-width,
+.template--account #MainContent .template--collection #MainContent,
+.template--collection .template--account #MainContent #MainContent,
+.template--account #MainContent .template--collection .simple-footer,
+.template--collection .template--account #MainContent .simple-footer,
+.template--account #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--account #MainContent #MainContent,
+.template--account #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--account #MainContent .simple-footer,
+.template--account #MainContent .template--register #MainContent,
+.template--register .template--account #MainContent #MainContent,
+.template--account #MainContent .template--register .simple-footer,
+.template--register .template--account #MainContent .simple-footer,
+.template--account #MainContent .template--addresses #MainContent,
+.template--addresses .template--account #MainContent #MainContent,
+.template--account #MainContent .template--addresses .simple-footer,
+.template--addresses .template--account #MainContent .simple-footer,
+.template--account #MainContent .template--login #MainContent,
+.template--login .template--account #MainContent #MainContent,
+.template--account #MainContent .template--login .simple-footer,
+.template--login .template--account #MainContent .simple-footer,
+.template--account #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--account #MainContent #MainContent,
+.template--account #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--account #MainContent .simple-footer,
+.template--account #MainContent #MainContent,
+.template--account #MainContent .simple-footer,
+.template--account #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--account #MainContent #MainContent,
+.template--account #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--account #MainContent .simple-footer,
+.template--account #MainContent .template--product #MainContent,
+.template--product .template--account #MainContent #MainContent,
+.template--account #MainContent .template--product .simple-footer,
+.template--product .template--account #MainContent .simple-footer,
+.template--account #MainContent .template--blog #MainContent,
+.template--blog .template--account #MainContent #MainContent,
+.template--account #MainContent .template--blog .simple-footer,
+.template--blog .template--account #MainContent .simple-footer,
+.template--account #MainContent .template--article #MainContent,
+.template--article .template--account #MainContent #MainContent,
+.template--account #MainContent .template--article .simple-footer,
+.template--article .template--account #MainContent .simple-footer,
+.template--account .simple-footer .page-width,
+.template--account .simple-footer .template--collection #MainContent,
+.template--collection .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--collection .simple-footer,
+.template--collection .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--register #MainContent,
+.template--register .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--register .simple-footer,
+.template--register .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--addresses #MainContent,
+.template--addresses .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--login #MainContent,
+.template--login .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--login .simple-footer,
+.template--login .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--account .simple-footer #MainContent,
+.template--account .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--account .simple-footer .simple-footer,
+.template--account .simple-footer #MainContent,
+.template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--product #MainContent,
+.template--product .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--product .simple-footer,
+.template--product .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--blog #MainContent,
+.template--blog .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--blog .simple-footer,
+.template--blog .template--account .simple-footer .simple-footer,
+.template--account .simple-footer .template--article #MainContent,
+.template--article .template--account .simple-footer #MainContent,
+.template--account .simple-footer .template--article .simple-footer,
+.template--article .template--account .simple-footer .simple-footer,
+.template--activate_account #MainContent .page-width,
+.template--activate_account #MainContent .template--collection #MainContent,
+.template--collection .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--collection .simple-footer,
+.template--collection .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--register #MainContent,
+.template--register .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--register .simple-footer,
+.template--register .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--addresses #MainContent,
+.template--addresses .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--addresses .simple-footer,
+.template--addresses .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--login #MainContent,
+.template--login .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--login .simple-footer,
+.template--login .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--account #MainContent,
+.template--account .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--account .simple-footer,
+.template--account .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--product #MainContent,
+.template--product .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--product .simple-footer,
+.template--product .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--blog #MainContent,
+.template--blog .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--blog .simple-footer,
+.template--blog .template--activate_account #MainContent .simple-footer,
+.template--activate_account #MainContent .template--article #MainContent,
+.template--article .template--activate_account #MainContent #MainContent,
+.template--activate_account #MainContent .template--article .simple-footer,
+.template--article .template--activate_account #MainContent .simple-footer,
+.template--activate_account .simple-footer .page-width,
+.template--activate_account .simple-footer .template--collection #MainContent,
+.template--collection .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--collection .simple-footer,
+.template--collection .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--activate_account .simple-footer #MainContent,
+.template--activate_account
+  .simple-footer
+  .template--page-contact
+  .simple-footer,
+.template--page-contact
+  .template--activate_account
+  .simple-footer
+  .simple-footer,
+.template--activate_account .simple-footer .template--register #MainContent,
+.template--register .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--register .simple-footer,
+.template--register .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .template--addresses #MainContent,
+.template--addresses .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .template--login #MainContent,
+.template--login .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--login .simple-footer,
+.template--login .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .template--account #MainContent,
+.template--account .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--account .simple-footer,
+.template--account .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .template--product #MainContent,
+.template--product .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--product .simple-footer,
+.template--product .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .template--blog #MainContent,
+.template--blog .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--blog .simple-footer,
+.template--blog .template--activate_account .simple-footer .simple-footer,
+.template--activate_account .simple-footer .template--article #MainContent,
+.template--article .template--activate_account .simple-footer #MainContent,
+.template--activate_account .simple-footer .template--article .simple-footer,
+.template--article .template--activate_account .simple-footer .simple-footer,
+.template--product #MainContent .page-width,
+.template--product #MainContent .template--collection #MainContent,
+.template--collection .template--product #MainContent #MainContent,
+.template--product #MainContent .template--collection .simple-footer,
+.template--collection .template--product #MainContent .simple-footer,
+.template--product #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--product #MainContent #MainContent,
+.template--product #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--product #MainContent .simple-footer,
+.template--product #MainContent .template--register #MainContent,
+.template--register .template--product #MainContent #MainContent,
+.template--product #MainContent .template--register .simple-footer,
+.template--register .template--product #MainContent .simple-footer,
+.template--product #MainContent .template--addresses #MainContent,
+.template--addresses .template--product #MainContent #MainContent,
+.template--product #MainContent .template--addresses .simple-footer,
+.template--addresses .template--product #MainContent .simple-footer,
+.template--product #MainContent .template--login #MainContent,
+.template--login .template--product #MainContent #MainContent,
+.template--product #MainContent .template--login .simple-footer,
+.template--login .template--product #MainContent .simple-footer,
+.template--product #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--product #MainContent #MainContent,
+.template--product #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--product #MainContent .simple-footer,
+.template--product #MainContent .template--account #MainContent,
+.template--account .template--product #MainContent #MainContent,
+.template--product #MainContent .template--account .simple-footer,
+.template--account .template--product #MainContent .simple-footer,
+.template--product #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--product #MainContent #MainContent,
+.template--product #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--product #MainContent .simple-footer,
+.template--product #MainContent #MainContent,
+.template--product #MainContent .simple-footer,
+.template--product #MainContent .template--blog #MainContent,
+.template--blog .template--product #MainContent #MainContent,
+.template--product #MainContent .template--blog .simple-footer,
+.template--blog .template--product #MainContent .simple-footer,
+.template--product #MainContent .template--article #MainContent,
+.template--article .template--product #MainContent #MainContent,
+.template--product #MainContent .template--article .simple-footer,
+.template--article .template--product #MainContent .simple-footer,
+.template--product .simple-footer .page-width,
+.template--product .simple-footer .template--collection #MainContent,
+.template--collection .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--collection .simple-footer,
+.template--collection .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--register #MainContent,
+.template--register .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--register .simple-footer,
+.template--register .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--addresses #MainContent,
+.template--addresses .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--login #MainContent,
+.template--login .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--login .simple-footer,
+.template--login .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--product .simple-footer #MainContent,
+.template--product .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--account #MainContent,
+.template--account .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--account .simple-footer,
+.template--account .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--product .simple-footer .simple-footer,
+.template--product .simple-footer #MainContent,
+.template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--blog #MainContent,
+.template--blog .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--blog .simple-footer,
+.template--blog .template--product .simple-footer .simple-footer,
+.template--product .simple-footer .template--article #MainContent,
+.template--article .template--product .simple-footer #MainContent,
+.template--product .simple-footer .template--article .simple-footer,
+.template--article .template--product .simple-footer .simple-footer,
+.template--blog #MainContent .page-width,
+.template--blog #MainContent .template--collection #MainContent,
+.template--collection .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--collection .simple-footer,
+.template--collection .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--register #MainContent,
+.template--register .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--register .simple-footer,
+.template--register .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--addresses #MainContent,
+.template--addresses .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--addresses .simple-footer,
+.template--addresses .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--login #MainContent,
+.template--login .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--login .simple-footer,
+.template--login .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--blog #MainContent #MainContent,
+.template--blog #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--account #MainContent,
+.template--account .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--account .simple-footer,
+.template--account .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--product #MainContent,
+.template--product .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--product .simple-footer,
+.template--product .template--blog #MainContent .simple-footer,
+.template--blog #MainContent #MainContent,
+.template--blog #MainContent .simple-footer,
+.template--blog #MainContent .template--article #MainContent,
+.template--article .template--blog #MainContent #MainContent,
+.template--blog #MainContent .template--article .simple-footer,
+.template--article .template--blog #MainContent .simple-footer,
+.template--blog .simple-footer .page-width,
+.template--blog .simple-footer .template--collection #MainContent,
+.template--collection .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--collection .simple-footer,
+.template--collection .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--register #MainContent,
+.template--register .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--register .simple-footer,
+.template--register .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--addresses #MainContent,
+.template--addresses .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--login #MainContent,
+.template--login .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--login .simple-footer,
+.template--login .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--account #MainContent,
+.template--account .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--account .simple-footer,
+.template--account .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--product #MainContent,
+.template--product .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--product .simple-footer,
+.template--product .template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .simple-footer,
+.template--blog .simple-footer .template--article #MainContent,
+.template--article .template--blog .simple-footer #MainContent,
+.template--blog .simple-footer .template--article .simple-footer,
+.template--article .template--blog .simple-footer .simple-footer,
+.template--article #MainContent .page-width,
+.template--article #MainContent .template--collection #MainContent,
+.template--collection .template--article #MainContent #MainContent,
+.template--article #MainContent .template--collection .simple-footer,
+.template--collection .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--page-contact #MainContent,
+.template--page-contact .template--article #MainContent #MainContent,
+.template--article #MainContent .template--page-contact .simple-footer,
+.template--page-contact .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--register #MainContent,
+.template--register .template--article #MainContent #MainContent,
+.template--article #MainContent .template--register .simple-footer,
+.template--register .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--addresses #MainContent,
+.template--addresses .template--article #MainContent #MainContent,
+.template--article #MainContent .template--addresses .simple-footer,
+.template--addresses .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--login #MainContent,
+.template--login .template--article #MainContent #MainContent,
+.template--article #MainContent .template--login .simple-footer,
+.template--login .template--article #MainContent .simple-footer,
+.template--article #MainContent .page--edit-account #MainContent,
+.page--edit-account .template--article #MainContent #MainContent,
+.template--article #MainContent .page--edit-account .simple-footer,
+.page--edit-account .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--account #MainContent,
+.template--account .template--article #MainContent #MainContent,
+.template--article #MainContent .template--account .simple-footer,
+.template--account .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--activate_account #MainContent,
+.template--activate_account .template--article #MainContent #MainContent,
+.template--article #MainContent .template--activate_account .simple-footer,
+.template--activate_account .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--product #MainContent,
+.template--product .template--article #MainContent #MainContent,
+.template--article #MainContent .template--product .simple-footer,
+.template--product .template--article #MainContent .simple-footer,
+.template--article #MainContent .template--blog #MainContent,
+.template--blog .template--article #MainContent #MainContent,
+.template--article #MainContent .template--blog .simple-footer,
+.template--blog .template--article #MainContent .simple-footer,
+.template--article #MainContent #MainContent,
+.template--article #MainContent .simple-footer,
+.template--article .simple-footer .page-width,
+.template--article .simple-footer .template--collection #MainContent,
+.template--collection .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--collection .simple-footer,
+.template--collection .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--page-contact #MainContent,
+.template--page-contact .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--page-contact .simple-footer,
+.template--page-contact .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--register #MainContent,
+.template--register .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--register .simple-footer,
+.template--register .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--addresses #MainContent,
+.template--addresses .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--addresses .simple-footer,
+.template--addresses .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--login #MainContent,
+.template--login .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--login .simple-footer,
+.template--login .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .page--edit-account #MainContent,
+.page--edit-account .template--article .simple-footer #MainContent,
+.template--article .simple-footer .page--edit-account .simple-footer,
+.page--edit-account .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--account #MainContent,
+.template--account .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--account .simple-footer,
+.template--account .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--activate_account #MainContent,
+.template--activate_account .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--activate_account .simple-footer,
+.template--activate_account .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--product #MainContent,
+.template--product .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--product .simple-footer,
+.template--product .template--article .simple-footer .simple-footer,
+.template--article .simple-footer .template--blog #MainContent,
+.template--blog .template--article .simple-footer #MainContent,
+.template--article .simple-footer .template--blog .simple-footer,
+.template--blog .template--article .simple-footer .simple-footer,
+.template--article .simple-footer #MainContent,
+.template--article .simple-footer .simple-footer {
+  padding-left: 0;
+  padding-right: 0;
+}
+@media only screen and (min-width: 750px) {
+  .template--collection #MainContent,
+  .template--collection .simple-footer,
+  .template--page-contact #MainContent,
+  .template--page-contact .simple-footer,
+  .template--register #MainContent,
+  .template--register .simple-footer,
+  .template--addresses #MainContent,
+  .template--addresses .simple-footer,
+  .template--login #MainContent,
+  .template--login .simple-footer,
+  .page--edit-account #MainContent,
+  .page--edit-account .simple-footer,
+  .template--account #MainContent,
+  .template--account .simple-footer,
+  .template--activate_account #MainContent,
+  .template--activate_account .simple-footer,
+  .template--product #MainContent,
+  .template--product .simple-footer,
+  .template--blog #MainContent,
+  .template--blog .simple-footer,
+  .template--article #MainContent,
+  .template--article .simple-footer {
+    -moz-column-gap: var(--columns--gap);
+    column-gap: var(--columns--gap);
+    display: grid;
+    grid-template-areas: 'left left' 'banner banner' 'middle right';
+    grid-template-columns: var(--columns--content);
+    grid-auto-rows: minmax(min-content, max-content);
+  }
+  .template--collection #MainContent > *,
+  .template--collection .simple-footer > *,
+  .template--page-contact #MainContent > *,
+  .template--page-contact .simple-footer > *,
+  .template--register #MainContent > *,
+  .template--register .simple-footer > *,
+  .template--addresses #MainContent > *,
+  .template--addresses .simple-footer > *,
+  .template--login #MainContent > *,
+  .template--login .simple-footer > *,
+  .page--edit-account #MainContent > *,
+  .page--edit-account .simple-footer > *,
+  .template--account #MainContent > *,
+  .template--account .simple-footer > *,
+  .template--activate_account #MainContent > *,
+  .template--activate_account .simple-footer > *,
+  .template--product #MainContent > *,
+  .template--product .simple-footer > *,
+  .template--blog #MainContent > *,
+  .template--blog .simple-footer > *,
+  .template--article #MainContent > *,
+  .template--article .simple-footer > * {
+    width: 100%;
+  }
+  .template--collection #MainContent > *:first-child,
+  .template--collection .simple-footer > *:first-child,
+  .template--page-contact #MainContent > *:first-child,
+  .template--page-contact .simple-footer > *:first-child,
+  .template--register #MainContent > *:first-child,
+  .template--register .simple-footer > *:first-child,
+  .template--addresses #MainContent > *:first-child,
+  .template--addresses .simple-footer > *:first-child,
+  .template--login #MainContent > *:first-child,
+  .template--login .simple-footer > *:first-child,
+  .page--edit-account #MainContent > *:first-child,
+  .page--edit-account .simple-footer > *:first-child,
+  .template--account #MainContent > *:first-child,
+  .template--account .simple-footer > *:first-child,
+  .template--activate_account #MainContent > *:first-child,
+  .template--activate_account .simple-footer > *:first-child,
+  .template--product .simple-footer > *:first-child {
+    grid-area: 1 / 1 / 1 / 3;
+  }
+  /* Product page layout */
+  .template--product #MainContent {
+    
+  }
+  .template--product #MainContent > *:first-child {
+    grid-area: 1 / 1 / 1 / -1;
+  }
+  .template--product #MainContent > *:nth-child(2) {
+    grid-area: 2 / 1 / 2 / -1;
+  }
+  .template--collection-updated-seo-collection #MainContent > *:first-child,
+  .template--collection-updated-seo-collection .simple-footer > *:first-child {
+    grid-area: var(--grid-row1-col1); 
+  }
+  .template--collection #MainContent > *:nth-child(2),
+  .template--collection .simple-footer > *:nth-child(2),
+  .template--page-contact #MainContent > *:nth-child(2),
+  .template--page-contact .simple-footer > *:nth-child(2),
+  .template--register #MainContent > *:nth-child(2),
+  .template--register .simple-footer > *:nth-child(2),
+  .template--addresses #MainContent > *:nth-child(2),
+  .template--addresses .simple-footer > *:nth-child(2),
+  .template--login #MainContent > *:nth-child(2),
+  .template--login .simple-footer > *:nth-child(2),
+  .page--edit-account #MainContent > *:nth-child(2),
+  .page--edit-account .simple-footer > *:nth-child(2),
+  .template--account #MainContent > *:nth-child(2),
+  .template--account .simple-footer > *:nth-child(2),
+  .template--activate_account #MainContent > *:nth-child(2),
+  .template--activate_account .simple-footer > *:nth-child(2),
+  .template--product .simple-footer > *:nth-child(2),
+  .template--article #MainContent > *:nth-child(2),
+  .template--article .simple-footer > *:nth-child(2) {
+    grid-row: 2 / 1;
+  }
+  .template--blog #MainContent > *:nth-child(1),
+  .template--blog .simple-footer > *:nth-child(1),
+  .template--article #MainContent > *:first-child,
+  .template--article .simple-footer > *:first-child {
+    grid-area: var(--grid-row1-col1);
+  }
+  .template--product-updated-seo-product #MainContent > *:nth-child(2),
+  .template--product-updated-seo-product .simple-footer > *:nth-child(2) {
+    grid-area: banner;
+  }
+  
+  .template--collection-updated-seo-collection #MainContent > *:nth-child(2),
+  .template--collection-updated-seo-collection .simple-footer > *:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1 / 4;
+  }
+  .template--article-landscapes-article #MainContent > *:nth-child(2) {
+    grid-area: banner;
+  }
+  .template--collection #MainContent > *:nth-child(3),
+  .template--collection .simple-footer > *:nth-child(3),
+  .template--page-contact #MainContent > *:nth-child(3),
+  .template--page-contact .simple-footer > *:nth-child(3),
+  .template--register #MainContent > *:nth-child(3),
+  .template--register .simple-footer > *:nth-child(3),
+  .template--addresses #MainContent > *:nth-child(3),
+  .template--addresses .simple-footer > *:nth-child(3),
+  .template--login #MainContent > *:nth-child(3),
+  .template--login .simple-footer > *:nth-child(3),
+  .page--edit-account #MainContent > *:nth-child(3),
+  .page--edit-account .simple-footer > *:nth-child(3),
+  .template--account #MainContent > *:nth-child(3),
+  .template--account .simple-footer > *:nth-child(3),
+  .template--activate_account #MainContent > *:nth-child(3),
+  .template--activate_account .simple-footer > *:nth-child(3),
+  .template--product #MainContent > *:nth-child(3),
+  .template--product .simple-footer > *:nth-child(3),
+  .template--blog #MainContent > *:nth-child(3),
+  .template--blog .simple-footer > *:nth-child(3),
+  .template--article #MainContent > *:nth-child(3),
+  .template--article .simple-footer > *:nth-child(3) {
+    grid-area: right;
+  }
+  .template--product-updated-seo-product #MainContent > *:nth-child(3) {
+    grid-column-start: middle;
+    grid-column-end: right;
+  }
+  .template--collection-updated-seo-collection #MainContent > *:nth-child(3),
+  .template--collection-updated-seo-collection .simple-footer > *:nth-child(3) {
+    grid-area: var(--grid-row3-col2);
+  }
+  .template--collection #MainContent > *:nth-child(n + 4),
+  .template--collection .simple-footer > *:nth-child(n + 4),
+  .template--page-contact #MainContent > *:nth-child(n + 4),
+  .template--page-contact .simple-footer > *:nth-child(n + 4),
+  .template--register #MainContent > *:nth-child(n + 4),
+  .template--register .simple-footer > *:nth-child(n + 4),
+  .template--addresses #MainContent > *:nth-child(n + 4),
+  .template--addresses .simple-footer > *:nth-child(n + 4),
+  .template--login #MainContent > *:nth-child(n + 4),
+  .template--login .simple-footer > *:nth-child(n + 4),
+  .page--edit-account #MainContent > *:nth-child(n + 4),
+  .page--edit-account .simple-footer > *:nth-child(n + 4),
+  .template--account #MainContent > *:nth-child(n + 4),
+  .template--account .simple-footer > *:nth-child(n + 4),
+  .template--activate_account #MainContent > *:nth-child(n + 4),
+  .template--activate_account .simple-footer > *:nth-child(n + 4),
+  .template--product #MainContent > *:nth-child(n + 4),
+  .template--product .simple-footer > *:nth-child(n + 4),
+  .template--blog #MainContent > *:nth-child(n + 4),
+  .template--blog .simple-footer > *:nth-child(n + 4),
+  .template--article #MainContent > *:nth-child(n + 4),
+  .template--article .simple-footer > *:nth-child(n + 4) {
+    grid-column: span 2;
+  }
+  .template--collection #MainContent,
+  .template--collection .simple-footer,
+  .template--page-contact #MainContent,
+  .template--page-contact .simple-footer,
+  .template--page-page-with-sidebar #MainContent,
+  .template--register #MainContent,
+  .template--register .simple-footer,
+  .template--addresses #MainContent,
+  .template--addresses .simple-footer,
+  .template--login #MainContent,
+  .template--login .simple-footer,
+  .page--edit-account #MainContent,
+  .page--edit-account .simple-footer,
+  .template--account #MainContent,
+  .template--account .simple-footer,
+  /* .template--product #MainContent, */
+  .template--activate_account #MainContent,
+  .template--activate_account .simple-footer,
+  .template--product .simple-footer,
+  .template--blog #MainContent,
+  .template--blog .simple-footer,
+  .template--article #MainContent,
+  .template--article .simple-footer {
+    width: calc(100% - var(--columns--gap));
+  }
+}
+@media only screen and (min-width: 990px) {
+  .template--collection #MainContent,
+  .template--collection .simple-footer,
+  .template--page-contact #MainContent,
+  .template--page-contact .simple-footer,
+  .template--register #MainContent,
+  .template--register .simple-footer,
+  .template--addresses #MainContent,
+  .template--addresses .simple-footer,
+  .template--login #MainContent,
+  .template--login .simple-footer,
+  .page--edit-account #MainContent,
+  .page--edit-account .simple-footer,
+  .template--account #MainContent,
+  .template--account .simple-footer,
+  .template--activate_account #MainContent,
+  .template--activate_account .simple-footer,
+  .template--product #MainContent,
+  .template--product .simple-footer,
+  .template--blog #MainContent,
+  .template--blog .simple-footer,
+  .template--article #MainContent,
+  .template--article .simple-footer {
+    display: grid;
+    grid-template-areas: 'left banner banner' 'left middle right';
+  }
+  .template--collection #MainContent > *:nth-child(n + 4),
+  .template--collection .simple-footer > *:nth-child(n + 4),
+  .template--page-contact #MainContent > *:nth-child(n + 4),
+  .template--page-contact .simple-footer > *:nth-child(n + 4),
+  .template--register #MainContent > *:nth-child(n + 4),
+  .template--register .simple-footer > *:nth-child(n + 4),
+  .template--addresses #MainContent > *:nth-child(n + 4),
+  .template--addresses .simple-footer > *:nth-child(n + 4),
+  .template--login #MainContent > *:nth-child(n + 4),
+  .template--login .simple-footer > *:nth-child(n + 4),
+  .page--edit-account #MainContent > *:nth-child(n + 4),
+  .page--edit-account .simple-footer > *:nth-child(n + 4),
+  .template--account #MainContent > *:nth-child(n + 4),
+  .template--account .simple-footer > *:nth-child(n + 4),
+  .template--activate_account #MainContent > *:nth-child(n + 4),
+  .template--activate_account .simple-footer > *:nth-child(n + 4),
+  .template--product #MainContent > *:nth-child(n + 4),
+  .template--product .simple-footer > *:nth-child(n + 4),
+  .template--blog #MainContent > *:nth-child(n + 4),
+  .template--blog .simple-footer > *:nth-child(n + 4),
+  .template--article #MainContent > *:nth-child(n + 4),
+  .template--article .simple-footer > *:nth-child(n + 4) {
+    grid-column: 1 / -1;
+  }
+}
+/* @media only screen and (min-width: 1200px) {
+  .template--collection #MainContent > *:nth-child(2),
+  .template--collection .simple-footer > *:nth-child(2),
+  .template--page-contact #MainContent > *:nth-child(2),
+  .template--page-contact .simple-footer > *:nth-child(2),
+  .template--register #MainContent > *:nth-child(2),
+  .template--register .simple-footer > *:nth-child(2),
+  .template--addresses #MainContent > *:nth-child(2),
+  .template--addresses .simple-footer > *:nth-child(2),
+  .template--login #MainContent > *:nth-child(2),
+  .template--login .simple-footer > *:nth-child(2),
+  .page--edit-account #MainContent > *:nth-child(2),
+  .page--edit-account .simple-footer > *:nth-child(2),
+  .template--account #MainContent > *:nth-child(2),
+  .template--account .simple-footer > *:nth-child(2),
+  .template--activate_account #MainContent > *:nth-child(2),
+  .template--activate_account .simple-footer > *:nth-child(2),
+  .template--product #MainContent > *:nth-child(2),
+  .template--product .simple-footer > *:nth-child(2),
+  .template--blog #MainContent > *:nth-child(2),
+  .template--blog .simple-footer > *:nth-child(2),
+  .template--article #MainContent > *:nth-child(2),
+  .template--article .simple-footer > *:nth-child(2) {
+    padding-right: var(--base-gutter--double);
+  }
+} */
+@media only screen and (min-width: 990px) {
+  .template--article-portfolio #MainContent > *:nth-child(1) > * .page-width,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--collection
+    #MainContent,
+  .template--collection
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--collection
+    .simple-footer,
+  .template--collection
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--page-contact
+    #MainContent,
+  .template--page-contact
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--page-contact
+    .simple-footer,
+  .template--page-contact
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--register
+    #MainContent,
+  .template--register
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--register
+    .simple-footer,
+  .template--register
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--addresses
+    #MainContent,
+  .template--addresses
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--addresses
+    .simple-footer,
+  .template--addresses
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--login
+    #MainContent,
+  .template--login
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--login
+    .simple-footer,
+  .template--login
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .page--edit-account
+    #MainContent,
+  .page--edit-account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .page--edit-account
+    .simple-footer,
+  .page--edit-account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--account
+    #MainContent,
+  .template--account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--account
+    .simple-footer,
+  .template--account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--activate_account
+    #MainContent,
+  .template--activate_account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--activate_account
+    .simple-footer,
+  .template--activate_account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--product
+    #MainContent,
+  .template--product
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--product
+    .simple-footer,
+  .template--product
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--blog
+    #MainContent,
+  .template--blog
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--blog
+    .simple-footer,
+  .template--blog
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--article
+    #MainContent,
+  .template--article
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--article
+    .simple-footer,
+  .template--article
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer {
+    padding-top: 0;
+  }
+  .template--article-portfolio #MainContent > *:nth-child(1) > * .page-width h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--collection
+    #MainContent
+    h2,
+  .template--collection
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--collection
+    .simple-footer
+    h2,
+  .template--collection
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--page-contact
+    #MainContent
+    h2,
+  .template--page-contact
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--page-contact
+    .simple-footer
+    h2,
+  .template--page-contact
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--register
+    #MainContent
+    h2,
+  .template--register
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--register
+    .simple-footer
+    h2,
+  .template--register
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--addresses
+    #MainContent
+    h2,
+  .template--addresses
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--addresses
+    .simple-footer
+    h2,
+  .template--addresses
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--login
+    #MainContent
+    h2,
+  .template--login
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--login
+    .simple-footer
+    h2,
+  .template--login
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .page--edit-account
+    #MainContent
+    h2,
+  .page--edit-account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .page--edit-account
+    .simple-footer
+    h2,
+  .page--edit-account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--account
+    #MainContent
+    h2,
+  .template--account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--account
+    .simple-footer
+    h2,
+  .template--account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--activate_account
+    #MainContent
+    h2,
+  .template--activate_account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--activate_account
+    .simple-footer
+    h2,
+  .template--activate_account
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--product
+    #MainContent
+    h2,
+  .template--product
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--product
+    .simple-footer
+    h2,
+  .template--product
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--blog
+    #MainContent
+    h2,
+  .template--blog
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--blog
+    .simple-footer
+    h2,
+  .template--blog
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--article
+    #MainContent
+    h2,
+  .template--article
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    #MainContent
+    h2,
+  .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .template--article
+    .simple-footer
+    h2,
+  .template--article
+    .template--article-portfolio
+    #MainContent
+    > *:nth-child(1)
+    > *
+    .simple-footer
+    h2 {
+    margin-top: var(--base-gutter--half);
+  }
+}
+.template--page-contact #MainContent,
+.template--page-contact .simple-footer,
+.template--register #MainContent,
+.template--register .simple-footer,
+.template--login #MainContent,
+.template--login .simple-footer,
+.template--addresses #MainContent,
+.template--addresses .simple-footer,
+.page--edit-account #MainContent,
+.page--edit-account .simple-footer,
+.template--account #MainContent,
+.template--account .simple-footer,
+.template--activate_account #MainContent,
+.template--activate_account .simple-footer {
+  --columns--middle: 50%;
+  --columns--content: calc(var(--columns--first) - var(--columns--gap))
+    calc(var(--columns--middle) - var(--columns--gap)) auto;
+}
+@media only screen and (min-width: 750px) and (max-width: 989px) {
+  .template--page-contact #MainContent,
+  .template--page-contact .simple-footer,
+  .template--register #MainContent,
+  .template--register .simple-footer,
+  .template--login #MainContent,
+  .template--login .simple-footer,
+  .template--addresses #MainContent,
+  .template--addresses .simple-footer,
+  .page--edit-account #MainContent,
+  .page--edit-account .simple-footer,
+  .template--account #MainContent,
+  .template--account .simple-footer,
+  .template--activate_account #MainContent,
+  .template--activate_account .simple-footer {
+    display: block;
+  }
+  .template--page-contact #MainContent > *:first-child,
+  .template--page-contact #MainContent > *:nth-child(2),
+  .template--page-contact #MainContent > *:nth-child(3),
+  .template--page-contact .simple-footer > *:first-child,
+  .template--page-contact .simple-footer > *:nth-child(2),
+  .template--page-contact .simple-footer > *:nth-child(3),
+  .template--register #MainContent > *:first-child,
+  .template--register #MainContent > *:nth-child(2),
+  .template--register #MainContent > *:nth-child(3),
+  .template--register .simple-footer > *:first-child,
+  .template--register .simple-footer > *:nth-child(2),
+  .template--register .simple-footer > *:nth-child(3),
+  .template--login #MainContent > *:first-child,
+  .template--login #MainContent > *:nth-child(2),
+  .template--login #MainContent > *:nth-child(3),
+  .template--login .simple-footer > *:first-child,
+  .template--login .simple-footer > *:nth-child(2),
+  .template--login .simple-footer > *:nth-child(3),
+  .template--addresses #MainContent > *:first-child,
+  .template--addresses #MainContent > *:nth-child(2),
+  .template--addresses #MainContent > *:nth-child(3),
+  .template--addresses .simple-footer > *:first-child,
+  .template--addresses .simple-footer > *:nth-child(2),
+  .template--addresses .simple-footer > *:nth-child(3),
+  .page--edit-account #MainContent > *:first-child,
+  .page--edit-account #MainContent > *:nth-child(2),
+  .page--edit-account #MainContent > *:nth-child(3),
+  .page--edit-account .simple-footer > *:first-child,
+  .page--edit-account .simple-footer > *:nth-child(2),
+  .page--edit-account .simple-footer > *:nth-child(3),
+  .template--account #MainContent > *:first-child,
+  .template--account #MainContent > *:nth-child(2),
+  .template--account #MainContent > *:nth-child(3),
+  .template--account .simple-footer > *:first-child,
+  .template--account .simple-footer > *:nth-child(2),
+  .template--account .simple-footer > *:nth-child(3),
+  .template--activate_account #MainContent > *:first-child,
+  .template--activate_account #MainContent > *:nth-child(2),
+  .template--activate_account #MainContent > *:nth-child(3),
+  .template--activate_account .simple-footer > *:first-child,
+  .template--activate_account .simple-footer > *:nth-child(2),
+  .template--activate_account .simple-footer > *:nth-child(3) {
+    margin: 0 auto;
+    padding: 0;
+  }
+}
+.template--page-contact h1,
+.template--page-contact .login label,
+.template--register h1,
+.template--register .login label,
+.template--login h1,
+.template--login .login label,
+.template--addresses h1,
+.template--addresses .login label,
+.template--account h1,
+.template--account .login label,
+.template--activate_account h1,
+.template--activate_account .login label,
+.page--edit-account h1,
+.page--edit-account .login label {
+  font-size: 1.6rem;
+}
+.template--page-contact .login label,
+.template--register .login label,
+.template--login .login label,
+.template--addresses .login label,
+.template--account .login label,
+.template--activate_account .login label,
+.page--edit-account .login label {
+  top: calc(var(--inputs-border-width) - 0.35rem) !important;
+}
+.template--page-contact .page-width.page-width--narrow,
+.template--page-contact .template--collection .page-width--narrow#MainContent,
+.template--collection .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--collection .page-width--narrow.simple-footer,
+.template--collection .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--register .page-width--narrow#MainContent,
+.template--register .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--register .page-width--narrow.simple-footer,
+.template--register .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--login .page-width--narrow#MainContent,
+.template--login .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--login .page-width--narrow.simple-footer,
+.template--login .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--account .page-width--narrow#MainContent,
+.template--account .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--account .page-width--narrow.simple-footer,
+.template--account .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact
+  .template--activate_account
+  .page-width--narrow#MainContent,
+.template--activate_account
+  .template--page-contact
+  .page-width--narrow#MainContent,
+.template--page-contact
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--page-contact
+  .page-width--narrow.simple-footer,
+.template--page-contact .template--product .page-width--narrow#MainContent,
+.template--product .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--product .page-width--narrow.simple-footer,
+.template--product .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--blog .page-width--narrow#MainContent,
+.template--blog .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--blog .page-width--narrow.simple-footer,
+.template--blog .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--article .page-width--narrow#MainContent,
+.template--article .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--article .page-width--narrow.simple-footer,
+.template--article .template--page-contact .page-width--narrow.simple-footer,
+.template--register .page-width.page-width--narrow,
+.template--register .template--collection .page-width--narrow#MainContent,
+.template--collection .template--register .page-width--narrow#MainContent,
+.template--register .template--collection .page-width--narrow.simple-footer,
+.template--collection .template--register .page-width--narrow.simple-footer,
+.template--register .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--register .page-width--narrow#MainContent,
+.template--register .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--register .page-width--narrow.simple-footer,
+.template--register .page-width--narrow#MainContent,
+.template--register .page-width--narrow.simple-footer,
+.template--register .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--register .page-width--narrow#MainContent,
+.template--register .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--register .page-width--narrow.simple-footer,
+.template--register .template--login .page-width--narrow#MainContent,
+.template--login .template--register .page-width--narrow#MainContent,
+.template--register .template--login .page-width--narrow.simple-footer,
+.template--login .template--register .page-width--narrow.simple-footer,
+.template--register .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--register .page-width--narrow#MainContent,
+.template--register .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--register .page-width--narrow.simple-footer,
+.template--register .template--account .page-width--narrow#MainContent,
+.template--account .template--register .page-width--narrow#MainContent,
+.template--register .template--account .page-width--narrow.simple-footer,
+.template--account .template--register .page-width--narrow.simple-footer,
+.template--register .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account .template--register .page-width--narrow#MainContent,
+.template--register
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--register
+  .page-width--narrow.simple-footer,
+.template--register .template--product .page-width--narrow#MainContent,
+.template--product .template--register .page-width--narrow#MainContent,
+.template--register .template--product .page-width--narrow.simple-footer,
+.template--product .template--register .page-width--narrow.simple-footer,
+.template--register .template--blog .page-width--narrow#MainContent,
+.template--blog .template--register .page-width--narrow#MainContent,
+.template--register .template--blog .page-width--narrow.simple-footer,
+.template--blog .template--register .page-width--narrow.simple-footer,
+.template--register .template--article .page-width--narrow#MainContent,
+.template--article .template--register .page-width--narrow#MainContent,
+.template--register .template--article .page-width--narrow.simple-footer,
+.template--article .template--register .page-width--narrow.simple-footer,
+.template--login .page-width.page-width--narrow,
+.template--login .template--collection .page-width--narrow#MainContent,
+.template--collection .template--login .page-width--narrow#MainContent,
+.template--login .template--collection .page-width--narrow.simple-footer,
+.template--collection .template--login .page-width--narrow.simple-footer,
+.template--login .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--login .page-width--narrow#MainContent,
+.template--login .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--login .page-width--narrow.simple-footer,
+.template--login .template--register .page-width--narrow#MainContent,
+.template--register .template--login .page-width--narrow#MainContent,
+.template--login .template--register .page-width--narrow.simple-footer,
+.template--register .template--login .page-width--narrow.simple-footer,
+.template--login .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--login .page-width--narrow#MainContent,
+.template--login .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--login .page-width--narrow.simple-footer,
+.template--login .page-width--narrow#MainContent,
+.template--login .page-width--narrow.simple-footer,
+.template--login .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--login .page-width--narrow#MainContent,
+.template--login .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--login .page-width--narrow.simple-footer,
+.template--login .template--account .page-width--narrow#MainContent,
+.template--account .template--login .page-width--narrow#MainContent,
+.template--login .template--account .page-width--narrow.simple-footer,
+.template--account .template--login .page-width--narrow.simple-footer,
+.template--login .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account .template--login .page-width--narrow#MainContent,
+.template--login .template--activate_account .page-width--narrow.simple-footer,
+.template--activate_account .template--login .page-width--narrow.simple-footer,
+.template--login .template--product .page-width--narrow#MainContent,
+.template--product .template--login .page-width--narrow#MainContent,
+.template--login .template--product .page-width--narrow.simple-footer,
+.template--product .template--login .page-width--narrow.simple-footer,
+.template--login .template--blog .page-width--narrow#MainContent,
+.template--blog .template--login .page-width--narrow#MainContent,
+.template--login .template--blog .page-width--narrow.simple-footer,
+.template--blog .template--login .page-width--narrow.simple-footer,
+.template--login .template--article .page-width--narrow#MainContent,
+.template--article .template--login .page-width--narrow#MainContent,
+.template--login .template--article .page-width--narrow.simple-footer,
+.template--article .template--login .page-width--narrow.simple-footer,
+.template--addresses .page-width.page-width--narrow,
+.template--addresses .template--collection .page-width--narrow#MainContent,
+.template--collection .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--collection .page-width--narrow.simple-footer,
+.template--collection .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--register .page-width--narrow#MainContent,
+.template--register .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--register .page-width--narrow.simple-footer,
+.template--register .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .page-width--narrow#MainContent,
+.template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--login .page-width--narrow#MainContent,
+.template--login .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--login .page-width--narrow.simple-footer,
+.template--login .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--addresses .page-width--narrow#MainContent,
+.template--addresses .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--account .page-width--narrow#MainContent,
+.template--account .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--account .page-width--narrow.simple-footer,
+.template--account .template--addresses .page-width--narrow.simple-footer,
+.template--addresses
+  .template--activate_account
+  .page-width--narrow#MainContent,
+.template--activate_account
+  .template--addresses
+  .page-width--narrow#MainContent,
+.template--addresses
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--addresses
+  .page-width--narrow.simple-footer,
+.template--addresses .template--product .page-width--narrow#MainContent,
+.template--product .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--product .page-width--narrow.simple-footer,
+.template--product .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--blog .page-width--narrow#MainContent,
+.template--blog .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--blog .page-width--narrow.simple-footer,
+.template--blog .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--article .page-width--narrow#MainContent,
+.template--article .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--article .page-width--narrow.simple-footer,
+.template--article .template--addresses .page-width--narrow.simple-footer,
+.template--account .page-width.page-width--narrow,
+.template--account .template--collection .page-width--narrow#MainContent,
+.template--collection .template--account .page-width--narrow#MainContent,
+.template--account .template--collection .page-width--narrow.simple-footer,
+.template--collection .template--account .page-width--narrow.simple-footer,
+.template--account .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .template--account .page-width--narrow#MainContent,
+.template--account .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .template--account .page-width--narrow.simple-footer,
+.template--account .template--register .page-width--narrow#MainContent,
+.template--register .template--account .page-width--narrow#MainContent,
+.template--account .template--register .page-width--narrow.simple-footer,
+.template--register .template--account .page-width--narrow.simple-footer,
+.template--account .template--addresses .page-width--narrow#MainContent,
+.template--addresses .template--account .page-width--narrow#MainContent,
+.template--account .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .template--account .page-width--narrow.simple-footer,
+.template--account .template--login .page-width--narrow#MainContent,
+.template--login .template--account .page-width--narrow#MainContent,
+.template--account .template--login .page-width--narrow.simple-footer,
+.template--login .template--account .page-width--narrow.simple-footer,
+.template--account .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--account .page-width--narrow#MainContent,
+.template--account .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--account .page-width--narrow.simple-footer,
+.template--account .page-width--narrow#MainContent,
+.template--account .page-width--narrow.simple-footer,
+.template--account .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account .template--account .page-width--narrow#MainContent,
+.template--account
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--account
+  .page-width--narrow.simple-footer,
+.template--account .template--product .page-width--narrow#MainContent,
+.template--product .template--account .page-width--narrow#MainContent,
+.template--account .template--product .page-width--narrow.simple-footer,
+.template--product .template--account .page-width--narrow.simple-footer,
+.template--account .template--blog .page-width--narrow#MainContent,
+.template--blog .template--account .page-width--narrow#MainContent,
+.template--account .template--blog .page-width--narrow.simple-footer,
+.template--blog .template--account .page-width--narrow.simple-footer,
+.template--account .template--article .page-width--narrow#MainContent,
+.template--article .template--account .page-width--narrow#MainContent,
+.template--account .template--article .page-width--narrow.simple-footer,
+.template--article .template--account .page-width--narrow.simple-footer,
+.template--activate_account .page-width.page-width--narrow,
+.template--activate_account
+  .template--collection
+  .page-width--narrow#MainContent,
+.template--collection
+  .template--activate_account
+  .page-width--narrow#MainContent,
+.template--activate_account
+  .template--collection
+  .page-width--narrow.simple-footer,
+.template--collection
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--page-contact
+  .page-width--narrow#MainContent,
+.template--page-contact
+  .template--activate_account
+  .page-width--narrow#MainContent,
+.template--activate_account
+  .template--page-contact
+  .page-width--narrow.simple-footer,
+.template--page-contact
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account .template--register .page-width--narrow#MainContent,
+.template--register .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account
+  .template--register
+  .page-width--narrow.simple-footer,
+.template--register
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--addresses
+  .page-width--narrow#MainContent,
+.template--addresses
+  .template--activate_account
+  .page-width--narrow#MainContent,
+.template--activate_account
+  .template--addresses
+  .page-width--narrow.simple-footer,
+.template--addresses
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account .template--login .page-width--narrow#MainContent,
+.template--login .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account .template--login .page-width--narrow.simple-footer,
+.template--login .template--activate_account .page-width--narrow.simple-footer,
+.template--activate_account .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account
+  .page--edit-account
+  .page-width--narrow.simple-footer,
+.page--edit-account
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account .template--account .page-width--narrow#MainContent,
+.template--account .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account
+  .template--account
+  .page-width--narrow.simple-footer,
+.template--account
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account .page-width--narrow#MainContent,
+.template--activate_account .page-width--narrow.simple-footer,
+.template--activate_account .template--product .page-width--narrow#MainContent,
+.template--product .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account
+  .template--product
+  .page-width--narrow.simple-footer,
+.template--product
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account .template--blog .page-width--narrow#MainContent,
+.template--blog .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account .template--blog .page-width--narrow.simple-footer,
+.template--blog .template--activate_account .page-width--narrow.simple-footer,
+.template--activate_account .template--article .page-width--narrow#MainContent,
+.template--article .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account
+  .template--article
+  .page-width--narrow.simple-footer,
+.template--article
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.page--edit-account .page-width.page-width--narrow,
+.page--edit-account .template--collection .page-width--narrow#MainContent,
+.template--collection .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--collection .page-width--narrow.simple-footer,
+.template--collection .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--page-contact .page-width--narrow#MainContent,
+.template--page-contact .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--page-contact .page-width--narrow.simple-footer,
+.template--page-contact .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--register .page-width--narrow#MainContent,
+.template--register .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--register .page-width--narrow.simple-footer,
+.template--register .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--addresses .page-width--narrow#MainContent,
+.template--addresses .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--addresses .page-width--narrow.simple-footer,
+.template--addresses .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--login .page-width--narrow#MainContent,
+.template--login .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--login .page-width--narrow.simple-footer,
+.template--login .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--account .page-width--narrow#MainContent,
+.template--account .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--account .page-width--narrow.simple-footer,
+.template--account .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--activate_account .page-width--narrow#MainContent,
+.template--activate_account .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .page--edit-account
+  .page-width--narrow.simple-footer,
+.page--edit-account .template--product .page-width--narrow#MainContent,
+.template--product .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--product .page-width--narrow.simple-footer,
+.template--product .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--blog .page-width--narrow#MainContent,
+.template--blog .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--blog .page-width--narrow.simple-footer,
+.template--blog .page--edit-account .page-width--narrow.simple-footer,
+.page--edit-account .template--article .page-width--narrow#MainContent,
+.template--article .page--edit-account .page-width--narrow#MainContent,
+.page--edit-account .template--article .page-width--narrow.simple-footer,
+.template--article .page--edit-account .page-width--narrow.simple-footer {
+  max-width: var(--page-width);
+}
+@media only screen and (min-width: 750px) and (max-width: 989px) {
+  .template--page-contact #MainContent,
+  .template--register #MainContent,
+  .template--login #MainContent,
+  .template--addresses #MainContent,
+  .template--account #MainContent,
+  .template--activate_account #MainContent,
+  .page--edit-account #MainContent {
+    width: 100%;
+    --columns--first: 50%;
+    --columns--middle: 50%;
+    --columns--content: calc(var(--columns--first) - var(--columns--gap))
+      calc(var(--columns--middle) - var(--columns--gap));
+  }
+}
+@media only screen and (min-width: 990px) and (max-width: 1199px) {
+  .template--page-contact #MainContent,
+  .template--register #MainContent,
+  .template--login #MainContent,
+  .template--addresses #MainContent,
+  .template--account #MainContent,
+  .template--activate_account #MainContent,
+  .page--edit-account #MainContent {
+    width: 100%;
+    --columns--first: 50%;
+    --columns--middle: 50%;
+    --columns--content: calc(var(--columns--first) - var(--columns--gap))
+      calc(var(--columns--middle) - var(--columns--gap));
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .template--page-contact #MainContent,
+  .template--register #MainContent,
+  .template--login #MainContent,
+  .template--addresses #MainContent,
+  .template--account #MainContent,
+  .template--activate_account #MainContent,
+  .page--edit-account #MainContent {
+    --columns--middle: 45%;
+  }
+}
+@media only screen and (min-width: 750px) and (max-width: 989px) {
+  .template--page-contact .simple-footer,
+  .template--register .simple-footer,
+  .template--login .simple-footer,
+  .template--addresses .simple-footer,
+  .template--account .simple-footer,
+  .template--activate_account .simple-footer,
+  .page--edit-account .simple-footer {
+    width: 100%;
+    --columns--first: 50%;
+    --columns--middle: 50%;
+    --columns--content: calc(var(--columns--first) - var(--columns--gap))
+      calc(var(--columns--middle) - var(--columns--gap));
+  }
+}
+@media only screen and (min-width: 990px) and (max-width: 1199px) {
+  .template--page-contact .simple-footer,
+  .template--register .simple-footer,
+  .template--login .simple-footer,
+  .template--addresses .simple-footer,
+  .template--account .simple-footer,
+  .template--activate_account .simple-footer,
+  .page--edit-account .simple-footer {
+    width: 100%;
+    --columns--first: 25%;
+    --columns--middle: 25%;
+    --columns--content: calc(var(--columns--first) - var(--columns--gap))
+      calc(var(--columns--middle) - var(--columns--gap));
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .template--page-contact .simple-footer,
+  .template--register .simple-footer,
+  .template--login .simple-footer,
+  .template--addresses .simple-footer,
+  .template--account .simple-footer,
+  .template--activate_account .simple-footer,
+  .page--edit-account .simple-footer {
+    --columns--middle: 45%;
+  }
+}
+.template--article-field-notes-article .page-width.page-width--narrow,
+.template--article-field-notes-article
+  .template--collection
+  .page-width--narrow#MainContent,
+.template--collection
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--collection
+  .page-width--narrow.simple-footer,
+.template--collection
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--page-contact
+  .page-width--narrow#MainContent,
+.template--page-contact
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--page-contact
+  .page-width--narrow.simple-footer,
+.template--page-contact
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--register
+  .page-width--narrow#MainContent,
+.template--register
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--register
+  .page-width--narrow.simple-footer,
+.template--register
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--addresses
+  .page-width--narrow#MainContent,
+.template--addresses
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--addresses
+  .page-width--narrow.simple-footer,
+.template--addresses
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--login
+  .page-width--narrow#MainContent,
+.template--login
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--login
+  .page-width--narrow.simple-footer,
+.template--login
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .page--edit-account
+  .page-width--narrow#MainContent,
+.page--edit-account
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .page--edit-account
+  .page-width--narrow.simple-footer,
+.page--edit-account
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--account
+  .page-width--narrow#MainContent,
+.template--account
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--account
+  .page-width--narrow.simple-footer,
+.template--account
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--activate_account
+  .page-width--narrow#MainContent,
+.template--activate_account
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--product
+  .page-width--narrow#MainContent,
+.template--product
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--product
+  .page-width--narrow.simple-footer,
+.template--product
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--blog
+  .page-width--narrow#MainContent,
+.template--blog
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--blog
+  .page-width--narrow.simple-footer,
+.template--blog
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--article
+  .page-width--narrow#MainContent,
+.template--article
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--article
+  .page-width--narrow.simple-footer,
+.template--article
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer {
+  max-width: 1400px;
+}
+.template--article-field-notes-article .page-width.page-width--narrow,
+.template--article-field-notes-article
+  .template--collection
+  .page-width--narrow#MainContent,
+.template--collection
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--collection
+  .page-width--narrow.simple-footer,
+.template--collection
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--page-contact
+  .page-width--narrow#MainContent,
+.template--page-contact
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--page-contact
+  .page-width--narrow.simple-footer,
+.template--page-contact
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--register
+  .page-width--narrow#MainContent,
+.template--register
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--register
+  .page-width--narrow.simple-footer,
+.template--register
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--addresses
+  .page-width--narrow#MainContent,
+.template--addresses
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--addresses
+  .page-width--narrow.simple-footer,
+.template--addresses
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--login
+  .page-width--narrow#MainContent,
+.template--login
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--login
+  .page-width--narrow.simple-footer,
+.template--login
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .page--edit-account
+  .page-width--narrow#MainContent,
+.page--edit-account
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .page--edit-account
+  .page-width--narrow.simple-footer,
+.page--edit-account
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--account
+  .page-width--narrow#MainContent,
+.template--account
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--account
+  .page-width--narrow.simple-footer,
+.template--account
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--activate_account
+  .page-width--narrow#MainContent,
+.template--activate_account
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--activate_account
+  .page-width--narrow.simple-footer,
+.template--activate_account
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--product
+  .page-width--narrow#MainContent,
+.template--product
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--product
+  .page-width--narrow.simple-footer,
+.template--product
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--blog
+  .page-width--narrow#MainContent,
+.template--blog
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--blog
+  .page-width--narrow.simple-footer,
+.template--blog
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer,
+.template--article-field-notes-article
+  .template--article
+  .page-width--narrow#MainContent,
+.template--article
+  .template--article-field-notes-article
+  .page-width--narrow#MainContent,
+.template--article-field-notes-article
+  .template--article
+  .page-width--narrow.simple-footer,
+.template--article
+  .template--article-field-notes-article
+  .page-width--narrow.simple-footer {
+  max-width: 1400px;
+}
