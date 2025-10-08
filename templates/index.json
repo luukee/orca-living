@@ -36,17 +36,17 @@
             "text": "",
             "font_size_text": 16,
             "text_color": "#333333",
-            "btn_txt": "SHOP OUTDOOR PAVERS",
-            "btn_url": "shopify://collections/pavers",
+            "btn_txt": "",
+            "btn_url": "",
             "btn_style": "primary Button--custom",
-            "btn_txt2": "",
-            "btn_url2": "",
-            "btn_style2": "primary Button--custom",
+            "btn_txt2": "Shop Outdoor Pavers",
+            "btn_url2": "shopify://collections/pavers",
+            "btn_style2": "primary Button--custom underlined-link",
             "btn_custom_inline": false,
             "btn_size_text": 20,
             "color_button_text": "#ffffff",
             "color_button": "",
-            "color_button_border": "",
+            "color_button_border": "#ffffff",
             "color_button_text_hover": "#ffffff",
             "color_button_hover": "",
             "color_button_border_hover": "",
@@ -83,6 +83,7 @@
         "background_color": "",
         "spacing_top": "",
         "spacing_bottom": "3rem",
+        "full_width": true,
         "set_height": true,
         "mob_rel": false,
         "show_mobile_overlay_sooner": false,
@@ -102,7 +103,7 @@
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "title": "FUNCTIONAL ELEMENTS FOR THE GARDEN",
+        "title": "Functional elements for the garden",
         "heading_size": "h1",
         "description": "",
         "show_description": false,
@@ -114,9 +115,10 @@
         "show_product_title": false,
         "card_show_inner_content": false,
         "show_view_all": true,
-        "view_all_text": "SHOP HARDWARE",
+        "view_all_text": "Shop Hardware",
         "view_all_style": "link",
         "view_all_button_position": "center",
+        "view_all_button_color": "#000000",
         "enable_desktop_slider": false,
         "color_scheme": "background-1",
         "image_ratio": "portrait",
@@ -141,14 +143,22 @@
         "collection_6x6GWm": {
           "type": "collection",
           "settings": {
-            "collection": "furniture"
+            "collection": "furniture",
+            "collection_card_title_text": "Sundial Bistro",
+            "collection_card_link_text": "Shop Now",
+            "collection_card_link_url": "",
+            "collection_card_show_caption_description": false
           }
         },
         "product_fVXY8j": {
           "type": "product",
           "settings": {
             "product": "orca-sauna",
-            "second_image": false
+            "second_image": false,
+            "product_card_title_text": "ORCA Sauna",
+            "product_card_link_text": "Shop Now",
+            "product_card_link_url": "shopify://products/orca-sauna",
+            "product_card_show_caption_description": false
           }
         }
       },
@@ -165,12 +175,9 @@
         "card_styles": "product-card-wrapper",
         "card_max_height": "90vh",
         "color_scheme": "background-1",
-        "card_title_text": "",
-        "card_link_text": "",
-        "card_show_caption_description": false,
-        "card_show_outer_content": true,
-        "card_text_color": "#000000",
-        "card_inner_padding": "",
+        "card_show_outer_content": false,
+        "card_text_color": "#ffffff",
+        "card_inner_padding": "2rem 2rem 6rem 2rem",
         "padding_top": 0,
         "padding_bottom": 36
       }
@@ -192,6 +199,65 @@
             "stars": "",
             "align_text": "left",
             "title": "LANDSCAPE \nDESIGNS",
+            "make_h1": false,
+            "font_size_title": 60,
+            "title_color": "#ffffff",
+            "subtitle": "",
+            "font_size_subtitle": 20,
+            "subtitle_color": "#000000",
+            "text": "",
+            "font_size_text": 16,
+            "text_color": "#ffffff",
+            "btn_txt": "",
+            "btn_url": "",
+            "btn_style": "primary",
+            "btn_txt2": "View Projects",
+            "btn_url2": "shopify://blogs/field-notes",
+            "btn_style2": "primary Button--custom underlined-link",
+            "btn_custom_inline": false,
+            "btn_size_text": 20,
+            "color_button_text": "",
+            "color_button": "",
+            "color_button_border": "#ffffff",
+            "color_button_text_hover": "",
+            "color_button_hover": "",
+            "color_button_border_hover": "",
+            "align_hor": "left",
+            "vert_align": 88,
+            "hor_align": 0,
+            "width": "2000px",
+            "video_autoplay": true,
+            "video_ratio": "56",
+            "video_url": "",
+            "video_hosted": "",
+            "btn_txt_modal": "Watch Video",
+            "video_modal": "",
+            "video_hosted_mobile": "",
+            "video_ratio_mobile": "56",
+            "custom_css": "",
+            "border_top": false,
+            "border_bottom": false,
+            "background_color": "",
+            "spacing_top": "",
+            "spacing_bottom": "",
+            "metafield_image": "",
+            "metafield_image_alt": ""
+          }
+        },
+        "slider_Qn4JDF": {
+          "type": "slider",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/90148_SMO_001_27.jpg",
+            "align_bg": "center",
+            "bg_color": "#000000",
+            "opacity": 10,
+            "align_bg_mob": "center",
+            "bg_color_mob": "#000000",
+            "opacity_mob": 10,
+            "stars": "",
+            "align_text": "left",
+            "title": "SECOND\nSLIDE",
             "make_h1": false,
             "font_size_title": 60,
             "title_color": "#ffffff",
@@ -239,7 +305,8 @@
         }
       },
       "block_order": [
-        "slider_97pUVj"
+        "slider_97pUVj",
+        "slider_Qn4JDF"
       ],
       "name": "Slider - NINE15",
       "settings": {
@@ -249,6 +316,7 @@
         "background_color": "",
         "spacing_top": "",
         "spacing_bottom": "",
+        "full_width": true,
         "set_height": true,
         "mob_rel": false,
         "show_mobile_overlay_sooner": false,
@@ -334,7 +402,7 @@
         "swipe_on_mobile": false,
         "padding_top": 36,
         "padding_bottom": 48,
-        "column_spacing": "medium"
+        "column_spacing": "small"
       }
     }
   },
