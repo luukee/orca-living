@@ -176,7 +176,6 @@
                             <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
                               <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}">
                                 {{ link.title | escape }}
-                                {% render 'icon-arrow' %}
                                 {% render 'icon-caret' %}
                               </summary>
                               <div id="link-{{ link.handle | escape }}" class="menu-drawer__submenu has-submenu gradient motion-reduce" tabindex="-1">
@@ -196,7 +195,6 @@
                                           <details id="Details-menu-drawer-submenu-{{ forloop.index }}">
                                             <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
                                               {{ childlink.title | escape }}
-                                              {% render 'icon-arrow' %}
                                               {% render 'icon-caret' %}
                                             </summary>
                                             <div id="childlink-{{ childlink.handle | escape }}" class="menu-drawer__submenu has-submenu motion-reduce">
@@ -204,13 +202,42 @@
                                                 {% render 'icon-caret' %}
                                                 {{ childlink.title | escape }}
                                               </button>
-                                              <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+                                              <ul class="menu-drawer__menu list-menu list-menu--grandchild" role="list" tabindex="-1">
                                                 {%- for grandchildlink in childlink.links -%}
-                                                  <li  class="menu-item__name-{{ grandchildlink.title | handleize }}">
-                                                    <a href="{{ grandchildlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drawer__menu-item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                                                      {{ grandchildlink.title | escape }}
-                                                    </a>
-                                                  </li>
+                                                  
+                                                  {% comment %} break/line item {% endcomment %}
+                                                  {%- if grandchildlink.title == "--break" -%}
+                                                    <li  class="menu-item__name-{{ grandchildlink.title | handleize }}">
+                                                      <hr class="menu-drawer__menu-item-divider">
+                                                    </li>
+                                                    
+                                                  {% comment %} menu title {% endcomment %}
+                                                  {% elsif grandchildlink.title == "--menu-title" -%}
+                                                    <li  class="menu-item__name-{{ grandchildlink.title | handleize }}">
+                                                      {% comment %} grandchildlink.url will be: "/use-case", for example. we need to strip the "/", replace "-" with " " and capitalize all words {% endcomment %}
+                                                      {% assign menu_title = grandchildlink.url | remove_first: "/" | replace: "-", " " %}
+                                                      {% assign menu_title_words = menu_title | split: " " %}
+                                                      {% assign menu_title_capitalized = "" %}
+                                                      {% for word in menu_title_words %}
+                                                        {% assign capitalized_word = word | capitalize %}
+                                                        {% if forloop.first %}
+                                                          {% assign menu_title_capitalized = capitalized_word %}
+                                                        {% else %}
+                                                          {% assign menu_title_capitalized = menu_title_capitalized | append: " " | append: capitalized_word %}
+                                                        {% endif %}
+                                                      {% endfor %}
+                                                      {% assign menu_title = menu_title_capitalized %}
+                                                      <span class="menu-drawer__menu-item list-menu__item">{{ menu_title | escape }}</span>
+                                                    </li>
+                                                    
+                                                  {%- else -%}
+                                                    <li  class="menu-item__name-{{ grandchildlink.title | handleize }}">
+                                                      <a href="{{ grandchildlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drawer__menu-item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
+                                                        {{ grandchildlink.title | escape }}
+                                                      </a>
+                                                    </li>
+                                                  {%- endif -%}
+                                                  
                                                 {%- endfor -%}
                                               </ul>
                                             </div>
