@@ -129,7 +129,6 @@
   grid-column: 4;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .mega-menu__column-title {
@@ -169,8 +168,8 @@
 
 .mega-menu__image-container {
   width: 100%;
-  max-width: 300px;
-  margin-bottom: 1.5rem;
+  max-width: 400px;
+  margin-bottom: 1rem;
 }
 
 .mega-menu__image {
