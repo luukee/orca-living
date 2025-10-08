@@ -21,6 +21,11 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  {% if section.settings.view_all_button_color != blank %}
+    .collection__view-all .button::after {
+      background: {{ section.settings.view_all_button_color }};
+    }
+  {% endif %}
 {%- endstyle -%}
 
 {%- liquid
@@ -129,7 +134,7 @@
     {%- if section.settings.show_view_all and more_in_collection -%}
       <div class='{{ section.settings.view_all_button_position }} page-width collection__view-all'>
         <div class="card__link-underline-wrapper">  
-        <a
+          <a style="color: {{ section.settings.view_all_button_color }};"
             href='{{ section.settings.collection.url }}'
             class='{% if section.settings.view_all_style == 'link' %}link underlined-link{% elsif section.settings.view_all_style == 'solid' %}button{% else %}button button--secondary{% endif %}'
             aria-label='{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title }}'
@@ -316,6 +321,12 @@
         }
       ],
       "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "view_all_button_color",
+      "label": "View all button color",
+      "default": "#000"
     },
     {
       "type": "header",
