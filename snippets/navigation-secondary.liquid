@@ -220,84 +220,87 @@
                   </summary>
                   <div id="SecondaryMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
                     <div class="mega-menu__rich-content">
-                      
+
                       {%- comment -%} Categories/tags - Dynamically pulled from product tags {%- endcomment -%}
-                      <div class="mega-menu__content-column mega-menu--categories">
-                        {%- comment -%} Get unique tags from all products in the collection {%- endcomment -%}
-                        {%- assign unique_tags = '' -%}
-                        {%- assign excluded_tags = '' -%}
-                        
-                        {%- comment -%} Get excluded tags from metaobject {%- endcomment -%}
-                        {%- if mega_menu_content.categories != blank -%}
-                          {%- assign excluded_tags = mega_menu_content.categories | split: ',' -%}
-                        {%- endif -%}
-                        
-                        {%- for product in collection.products -%}
-                          {%- for tag in product.tags -%}
-                            {%- assign should_exclude = false -%}
-                            {%- comment -%} Check if tag should be excluded (case-insensitive) {%- endcomment -%}
-                            {%- for excluded_tag in excluded_tags -%}
-                              {%- assign excluded_tag_clean = excluded_tag | strip -%}
-                              {%- assign tag_lower = tag | downcase -%}
-                              {%- assign excluded_tag_lower = excluded_tag_clean | downcase -%}
-                              {%- if tag_lower == excluded_tag_lower or tag_lower contains excluded_tag_lower -%}
-                                {%- assign should_exclude = true -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-                            
-                            {%- unless should_exclude -%}
-                              {%- unless unique_tags contains tag -%}
-                                {%- if unique_tags == blank -%}
-                                  {%- assign unique_tags = tag -%}
-                                {%- else -%}
-                                  {%- assign unique_tags = unique_tags | append: ',' | append: tag -%}
+                      {% if mega_menu_content.hide_categories != true %}
+                        <div class="mega-menu__content-column mega-menu--categories">
+                          {%- comment -%} Get unique tags from all products in the collection {%- endcomment -%}
+                          {%- assign unique_tags = '' -%}
+                          {%- assign excluded_tags = '' -%}
+                          
+                          {%- comment -%} Get excluded tags from metaobject {%- endcomment -%}
+                          {%- if mega_menu_content.categories != blank -%}
+                            {%- assign excluded_tags = mega_menu_content.categories | split: ',' -%}
+                          {%- endif -%}
+                          
+                          {%- for product in collection.products -%}
+                            {%- for tag in product.tags -%}
+                              {%- assign should_exclude = false -%}
+                              {%- comment -%} Check if tag should be excluded (case-insensitive) {%- endcomment -%}
+                              {%- for excluded_tag in excluded_tags -%}
+                                {%- assign excluded_tag_clean = excluded_tag | strip -%}
+                                {%- assign tag_lower = tag | downcase -%}
+                                {%- assign excluded_tag_lower = excluded_tag_clean | downcase -%}
+                                {%- if tag_lower == excluded_tag_lower or tag_lower contains excluded_tag_lower -%}
+                                  {%- assign should_exclude = true -%}
+                                  {%- break -%}
                                 {%- endif -%}
-                              {%- endunless -%}
-                            {%- endunless -%}
-                          {%- endfor -%}
-                        {%- endfor -%}
-                        
-                        {%- if unique_tags != blank -%}
-                          <h3 class="mega-menu__column-title">Category</h3>
-                          <ul class="mega-menu__column-list">
-                            {%- assign tags_list = unique_tags | split: ',' | sort -%}
-                            {%- for tag in tags_list -%}
-                              <li class="mega-menu__column-item">
-                                {%- comment -%} Create URL-friendly handle for collection filtering {%- endcomment -%}
-                                {%- assign category_handle = tag | strip | replace: ' ', '-' -%}
-                                {%- unless category_handle contains '_' -%}
-                                  {%- assign category_handle = '_' | append: category_handle -%}
+                              {%- endfor -%}
+                              
+                              {%- unless should_exclude -%}
+                                {%- unless unique_tags contains tag -%}
+                                  {%- if unique_tags == blank -%}
+                                    {%- assign unique_tags = tag -%}
+                                  {%- else -%}
+                                    {%- assign unique_tags = unique_tags | append: ',' | append: tag -%}
+                                  {%- endif -%}
                                 {%- endunless -%}
-                                
-                                {%- comment -%} Format display text: remove underscores/dashes and capitalize all words {%- endcomment -%}
-                                {%- assign display_text = tag | strip | replace: '_', '' | replace: '-', ' ' -%}
-                                
-                                {%- comment -%} Special case: rename "_Quick ship" to "In Stock" {%- endcomment -%}
-                                {%- if display_text == 'Quick ship' -%}
-                                  {%- assign display_text = 'In Stock' -%}
-                                {%- else -%}
-                                  {%- assign words = display_text | split: ' ' -%}
-                                  {%- assign display_text = '' -%}
-                                  {%- for word in words -%}
-                                    {%- assign capitalized_word = word | capitalize -%}
-                                    {%- if display_text == blank -%}
-                                      {%- assign display_text = capitalized_word -%}
-                                    {%- else -%}
-                                      {%- assign display_text = display_text | append: ' ' | append: capitalized_word -%}
-                                    {%- endif -%}
-                                  {%- endfor -%}
-                                {%- endif -%}
-                                
-                                {%- comment -%} Create clickable link with formatted display text {%- endcomment -%}
-                                <a href="{{ link.url }}/{{ category_handle }}" class="mega-menu__column-link">{{ display_text }}</a>
-                              </li>
+                              {%- endunless -%}
                             {%- endfor -%}
-                          </ul>
-                        {%- endif -%}
-                      </div>
+                          {%- endfor -%}
+                          
+                          {%- if unique_tags != blank -%}
+                            <h3 class="mega-menu__column-title">Category</h3>
+                            <ul class="mega-menu__column-list">
+                              {%- assign tags_list = unique_tags | split: ',' | sort -%}
+                              {%- for tag in tags_list -%}
+                                <li class="mega-menu__column-item">
+                                  {%- comment -%} Create URL-friendly handle for collection filtering {%- endcomment -%}
+                                  {%- assign category_handle = tag | strip | replace: ' ', '-' -%}
+                                  {%- unless category_handle contains '_' -%}
+                                    {%- assign category_handle = '_' | append: category_handle -%}
+                                  {%- endunless -%}
+                                  
+                                  {%- comment -%} Format display text: remove underscores/dashes and capitalize all words {%- endcomment -%}
+                                  {%- assign display_text = tag | strip | replace: '_', '' | replace: '-', ' ' -%}
+                                  
+                                  {%- comment -%} Special case: rename "_Quick ship" to "In Stock" {%- endcomment -%}
+                                  {%- if display_text == 'Quick ship' -%}
+                                    {%- assign display_text = 'In Stock' -%}
+                                  {%- else -%}
+                                    {%- assign words = display_text | split: ' ' -%}
+                                    {%- assign display_text = '' -%}
+                                    {%- for word in words -%}
+                                      {%- assign capitalized_word = word | capitalize -%}
+                                      {%- if display_text == blank -%}
+                                        {%- assign display_text = capitalized_word -%}
+                                      {%- else -%}
+                                        {%- assign display_text = display_text | append: ' ' | append: capitalized_word -%}
+                                      {%- endif -%}
+                                    {%- endfor -%}
+                                  {%- endif -%}
+                                  
+                                  {%- comment -%} Create clickable link with formatted display text {%- endcomment -%}
+                                  <a href="{{ link.url }}/{{ category_handle }}" class="mega-menu__column-link">{{ display_text }}</a>
+                                </li>
+                              {%- endfor -%}
+                            </ul>
+                          {%- endif -%}
+                        </div>
+                      {% endif %}
                       
                       {% comment %} Materials - Dynamically pulled from product metafields {% endcomment %}
+                      {% if mega_menu_content.hide_materials != true %}
                       <div class="mega-menu__content-column mega-menu--materials">
                         {%- comment -%} Get unique materials from all products in the collection {%- endcomment -%}
                         {%- assign unique_materials = '' -%}
@@ -384,8 +387,10 @@
                           </ul>
                         {%- endif -%}
                       </div>
+                      {% endif %}
                       
                       {% comment %} Use Cases - Dynamically pulled from product metafields {% endcomment %}
+                      {% if mega_menu_content.hide_use_cases != true %}
                       <div class="mega-menu__content-column mega-menu--use-cases">
                         {%- comment -%} Get unique use cases from all products in the collection {%- endcomment -%}
                         {%- assign unique_use_cases = '' -%}
@@ -463,6 +468,7 @@
                           </ul>
                         {%- endif -%}
                       </div>
+                      {% endif %}
                       
                       <div class="mega-menu__content-column mega-menu__content-column--image">
                         {%- if mega_menu_content.image != blank -%}
