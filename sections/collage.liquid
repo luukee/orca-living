@@ -93,9 +93,10 @@
                 media_aspect_ratio: 'adapt',
                 show_secondary_image: block.settings.second_image,
                 extend_height: true,
-                card_link_text: section.settings.card_link_text,
-                card_title_text: card_heading,
-                card_show_caption_description: section.settings.card_show_caption_description,
+                card_link_text: block.settings.product_card_link_text,
+                card_link_url: block.settings.product_card_link_url,
+                card_title_text: block.settings.product_card_title_text,
+                card_show_caption_description: block.settings.product_card_show_caption_description,
                 card_show_outer_content: section.settings.card_show_outer_content
               %}
             {%- when 'collection' -%}
@@ -105,9 +106,10 @@
                 columns: 2,
                 extend_height: true,
                 wrapper_class: section.settings.card_styles,
-                card_link_text: section.settings.card_link_text,
-                card_title_text: card_heading,
-                card_show_caption_description: section.settings.card_show_caption_description,
+                card_title_text: block.settings.collection_card_title_text,
+                card_link_text: block.settings.collection_card_link_text,
+                card_link_url: block.settings.collection_card_link_url,
+                card_show_caption_description: block.settings.collection_card_show_caption_description,
                 card_show_outer_content: section.settings.card_show_outer_content
               %}
             {%- when 'video' -%}
@@ -371,24 +373,6 @@
       "content": "Card text"
     },
     {
-      "type": "text",
-      "id": "card_title_text",
-      "label": "Card title text",
-      "info": "Separate each card heading with a bar (|). Leave blank to not show the heading."
-    },
-    {
-      "type": "text",
-      "id": "card_link_text",
-      "label": "Card link text",
-      "info": "Leave blank to use collection title"
-    },
-    {
-      "type": "checkbox",
-      "id": "card_show_caption_description",
-      "default": false,
-      "label": "Show caption description"
-    },
-    {
       "type": "checkbox",
       "id": "card_show_outer_content",
       "default": true,
@@ -457,6 +441,30 @@
           "id": "second_image",
           "default": false,
           "label": "t:sections.collage.blocks.product.settings.second_image.label"
+        },
+        {
+          "type": "text",
+          "id": "product_card_title_text",
+          "label": "Card title text",
+          "info": "Leave blank to use product title"
+        },
+        {
+          "type": "text",
+          "id": "product_card_link_text",
+          "label": "Card link text",
+          "info": "Leave blank to use collection title"
+        },
+        {
+          "type": "url",
+          "id": "product_card_link_url",
+          "label": "Card link URL",
+          "info": "Leave blank to use product URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "product_card_show_caption_description",
+          "default": false,
+          "label": "Show caption description"
         }
       ]
     },
@@ -468,6 +476,30 @@
           "type": "collection",
           "id": "collection",
           "label": "t:sections.collage.blocks.collection.settings.collection.label"
+        },
+        {
+          "type": "text",
+          "id": "collection_card_title_text",
+          "label": "Card title text",
+          "info": "Separate each card heading with a bar (|). Leave blank to not show the heading."
+        },
+        {
+          "type": "text",
+          "id": "collection_card_link_text",
+          "label": "Card link text",
+          "info": "Leave blank to use collection title"
+        },
+        {
+          "type": "url",
+          "id": "collection_card_link_url",
+          "label": "Card link URL",
+          "info": "Leave blank to use collection URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "collection_card_show_caption_description",
+          "default": false,
+          "label": "Show caption description"
         }
       ]
     },

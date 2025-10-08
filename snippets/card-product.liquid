@@ -21,6 +21,7 @@
   - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
   - use_primary_collection_url: {Boolean} Use product's primary collection for URL instead of current collection (optional)
   - card_link_text: {String} Text for card link (optional)
+  - card_link_url: {String} URL for card link (optional)
   - card_title_text: {String} Text for card heading (optional)
   - card_show_outer_content: {Boolean} Show the outer content. Default: false (optional)
   - card_show_inner_content: {Boolean} Show the inner content. Default: false (optional)
@@ -206,6 +207,11 @@ endif
     if card_title_text != blank
       assign card_title_text = card_title_text
     endif
+    if card_link_url == blank
+      assign card_link_url = product_url
+    else 
+      assign card_link_url = card_link_url
+    endif
   -%}
 
   <div class="card-wrapper product-card-wrapper underline-links-hover">
@@ -306,7 +312,9 @@ endif
               {% endif %}
               
               <h3 class="card__heading card__link-underline-wrapper">
-                <a role="link" aria-disabled="true" class="full-unstyled-link">
+                <a role="link" aria-disabled="true" class="full-unstyled-link" {% if card_link_url != blank %}
+                  href="{{ card_link_url }}"
+                {% endif %}>
                   {%- if card_link_text != blank -%}
                     {{- card_link_text | escape -}}
                   {%- else -%}
