@@ -39,6 +39,7 @@
 
     assign modal                = ''
 
+    assign full_width           = s.full_width
 %}
 
 {% for block in section.blocks %}
@@ -205,6 +206,13 @@
             {{alignment}}
             font-family: var(--font-heading-family);
         }
+        {% if full_width %}
+            .full-width .center-content {
+                width: 100%;
+                padding-left: calc(var(--grid-gutter) * 0.5);
+                padding-right: calc(var(--grid-gutter) * 0.5);
+            }
+        {% endif %}
         {{slide_class}} .but-div {
             display: flex;
             gap: 2em;
@@ -332,6 +340,9 @@
                 border-color: {{b.color_button_border_hover|default:'rgba(0,0,0,0)'}} ;
                 color: {{b.color_button_text_hover|default:'rgba(0,0,0,0)'}} ;
             }
+            {{slide_class}} .underlined-link::after {
+                background: {{b.color_button_border|default:'rgba(0,0,0,0)'}} ;
+            }
             @media only screen and (min-width: 750px) {
                 .rich-text:not(.rich-text--full-width) .rich-text__wrapper {
                     width: calc(100% - 21rem / var(--font-body-scale));
@@ -360,10 +371,12 @@
             .button::after {
             box-shadow: none;
             }
+            {% comment %}
             .button::after {
             content: "";
             border-bottom: 1px solid #fff !important;
             }
+            {% endcomment %}
             .button:not([disabled]):hover::after {
             box-shadow: none;
             border-bottom-width: 2px !important;
@@ -581,7 +594,7 @@
                 </a>
             {% endif %}
 
-            <div class="page-width">
+            <div class="page-width {% if full_width == true %}full-width{% endif %}">
                 {% if 
                     use_btn == true or 
                     ttl != blank or 
@@ -702,9 +715,15 @@
           position: absolute;
           top: 50%;
           left: 50%;
+          {% if full_width == true %}
+          width: 100%;
+          padding-left: calc(var(--grid-gutter) * 0.5);
+          padding-right: calc(var(--grid-gutter) * 0.5);
+          {% else %}
           width: calc(100% - 7rem / var(--font-body-scale));
-          transform: translate(-50%,-50%);
           max-width: {{site_max_width}};
+          {% endif %}
+          transform: translate(-50%,-50%);
           z-index: 2;
       }
       {% else %}
