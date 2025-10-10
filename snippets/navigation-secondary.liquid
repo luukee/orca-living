@@ -21,7 +21,7 @@
     {% endif %}
 
     <!-- Mobile Navigation Drawer -->
-    <div class="navigation-mobile">
+    {% comment %} <div class="navigation-mobile">
       <navigation-drawer>
         <details id="Details-navigation-drawer-container" class="navigation-drawer-container">
           <summary class="navigation-drawer__toggle" aria-label="{{ 'sections.header.menu' | t }}">
@@ -37,7 +37,7 @@
                   {% if section.settings.title %}
                     {{ section.settings.title }}
                   {% else %}
-                    {% comment %} {{ 'sections.header.menu' | t }} {% endcomment %}
+                    {{ 'sections.header.menu' | t }}
                   {% endif %}
                 </h2>
                 <button type="button" class="navigation-drawer__close-button link link--text focus-inset" aria-label="{{ 'accessibility.close' | t }}">
@@ -134,7 +134,7 @@
           </div>
         </details>
       </navigation-drawer>
-    </div>
+    </div> {% endcomment %}
 
     <!-- Desktop Navigation -->
     <div class="navigation-desktop">
@@ -212,6 +212,7 @@
             {%- if has_mega_menu -%}
               {%- comment -%} Mega menu version {%- endcomment -%}
               <header-menu>
+                {% comment %} Keep this open for Pavers: {% if link.title == 'Pavers' %}open{% endif %} {% endcomment %}
                 <details id="Details-SecondaryMenu-{{ forloop.index }}" class="mega-menu">
                   <summary class="list-menu__item link link--text focus-inset{% if is_current %} menu-item--active{% endif %}"{% if is_current %} aria-current="page"{% endif %}>
                     {% if is_current and template.name == 'collection' %}<h1>{% endif %}

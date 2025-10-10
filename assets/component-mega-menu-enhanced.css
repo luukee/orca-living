@@ -113,11 +113,11 @@
 /* Enhanced Layout for Rich Content */
 .mega-menu__rich-content {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 columns for categories, materials, use cases, and image */
+  grid-template-columns: repeat(4, 252px); /* 4 columns for categories, materials, use cases, and image */
   gap: 3rem;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  /* margin: 0 auto; */
+  padding: 0;
 }
 
 .mega-menu__content-column {
