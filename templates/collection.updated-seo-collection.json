@@ -11,7 +11,6 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
-      "disabled": true,
       "settings": {
         "show_collection_description": true,
         "show_collection_image": true,
@@ -29,6 +28,7 @@
         "columns_desktop": 4,
         "filter_on_tag": "_Cobble",
         "image_ratio": "portrait",
+        "title_above_image": false,
         "show_secondary_image": false,
         "show_vendor": false,
         "show_price": true,
