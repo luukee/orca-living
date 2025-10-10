@@ -157,7 +157,7 @@
     margin-left: 0;
     margin-right: 0;
   }
-  .background-none .multicolumn-list .multicolumn-card__info,
+  /* .background-none .multicolumn-list .multicolumn-card__info, */
   .background-none
     .multicolumn-list:not(.slider)
     .center

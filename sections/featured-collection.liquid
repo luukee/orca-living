@@ -27,9 +27,9 @@
     }
   {% endif %}
 {%- endstyle -%}
-
+<!-- Products to show: {{section.settings.products_to_show}}, All products count: {{section.settings.collection.all_products_count}}, Enable desktop slider: {{section.settings.enable_desktop_slider}} -->
 {%- liquid
-  assign products_to_display = section.settings.collection.all_products_count
+  assign products_to_display = section.settings.products_to_show
 
   if section.settings.collection.all_products_count > section.settings.products_to_show
     assign products_to_display = section.settings.products_to_show

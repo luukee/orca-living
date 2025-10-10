@@ -42,7 +42,7 @@
     assign mainClass = ''
   endif
 %}
-    <main id="MainContent" class="content-for-layout focus-none{{ mainClass }}" role="main" tabindex="-1">
+    <main id="MainContent" class="content-for-layout focus-none{{ mainClass }} main--{{template.name|handleize}} main--{{template|handleize}}" role="main" tabindex="-1">
       {{ content_for_layout }}<!-- End of layout -->
       <noscript class="endOfLayoutContentX" type="text/mark"></noscript>
     </main>
