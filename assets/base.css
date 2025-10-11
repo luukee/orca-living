@@ -526,7 +526,7 @@ h5,
 .h3,
 .h4,
 .h5 {
-  font-family: MonumentGrotesk-mono, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body-family);
   font-style: var(--font-heading-style);
   font-weight: var(--font-heading-weight);
   color: rgb(var(--color-foreground));
