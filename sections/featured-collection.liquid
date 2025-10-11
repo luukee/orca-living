@@ -101,8 +101,18 @@
           {%- endfor -%}
         {%- endfor -%}
       </ul>
+      {% liquid
+        assign desktop_slider_arrow_position = section.settings.desktop_slider_arrow_position
+        assign desktop_slider_counter_show = true
+        if desktop_slider_arrow_position == 'middle'
+          assign desktop_slider_arrow_position = 'middle'
+          assign desktop_slider_counter_show = false
+        else
+          assign desktop_slider_arrow_position = 'bottom'
+        endif
+      %}
       {%- if show_mobile_slider or show_desktop_slider -%}
-        <div class='slider-buttons no-js-hidden'>
+        <div class='slider-buttons slider-buttons--{{ desktop_slider_arrow_position }} no-js-hidden'>
           <button
             type='button'
             class='slider-button slider-button--prev'
@@ -112,12 +122,16 @@
           >
             {% render 'icon-caret' %}
           </button>
-          <div class='slider-counter caption'>
-            <span class='slider-counter--current'>1</span>
-            <span aria-hidden='true'> / </span>
-            <span class='visually-hidden'>{{ 'general.slider.of' | t }}</span>
-            <span class='slider-counter--total'>{{ products_to_display }}</span>
-          </div>
+          
+          {% if desktop_slider_counter_show %}
+            <div class='slider-counter caption'>
+              <span class='slider-counter--current'>1</span>
+              <span aria-hidden='true'> / </span>
+              <span class='visually-hidden'>{{ 'general.slider.of' | t }}</span>
+              <span class='slider-counter--total'>{{ products_to_display }}</span>
+            </div>
+          {% endif %}
+          
           <button
             type='button'
             class='slider-button slider-button--next'
@@ -348,6 +362,23 @@
       "id": "enable_desktop_slider",
       "label": "t:sections.featured-collection.settings.enable_desktop_slider.label",
       "default": false
+    },
+    {
+      "type": "select",
+      "id": "desktop_slider_arrow_position",
+      "options": [
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        }
+      ],
+      "default": "bottom",
+      "label": "Desktop slider arrow position",
+      "info": "Only applies if desktop slider is enabled"
     },
     {
       "type": "select",

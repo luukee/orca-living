@@ -311,6 +311,18 @@ slider-component.slider-component-full-width {
   justify-content: center;
 }
 @media only screen and (min-width: 990px) {
+	.slider-buttons--middle .slider-button {
+		position: absolute;
+    top: 44%;
+  }
+	.slider-buttons--middle .slider-button.slider-button--next {
+		right: 0;
+	}
+	.slider-buttons--middle .slider-button.slider-button--prev {
+		left: 0;
+	}
+}
+@media only screen and (min-width: 990px) {
   .slider:not(.slider--everywhere):not(.slider--desktop) + .slider-buttons {
     display: none;
   }

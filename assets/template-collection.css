@@ -50,15 +50,18 @@
   .collection__title--desktop-slider .title {
     margin-bottom: 2.5rem;
   }
-  .collection__title.title-wrapper--self-padded-tablet-down {
-    padding: 0 5rem;
-  }
   .collection slider-component:not(.page-width-desktop) {
     padding: 0;
   }
   .collection--full-width slider-component:not(.slider-component-desktop) {
     padding: 0 1.5rem;
     max-width: none;
+  }
+}
+@media only screen and (min-width: 750px) {
+  .collection__title.title-wrapper--self-padded-tablet-down {
+    padding-left: calc(var(--grid-gutter) * 0.5);
+    padding-right: calc(var(--grid-gutter) * 0.5);
   }
 }
 .collection__view-all a:not(.link) {
