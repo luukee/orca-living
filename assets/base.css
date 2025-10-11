@@ -825,7 +825,6 @@ details > * {
   font-size: 2rem;
 }
 .underlined-link {
-  font-family: var(--font-heading-family);
   text-decoration: none;
   cursor: pointer;
   display: flex;

@@ -42,6 +42,7 @@
   margin-top: 0;
   margin-bottom: 0;
   padding: 0;
+  justify-content: space-between;
 }
 .multicolumn-list__item:only-child {
   max-width: 72rem;
@@ -187,8 +188,6 @@
 }
 .multicolumn-card__info .link {
   text-decoration: none;
-  font-size: 22px;
-  /* margin-top: 1.5rem; */
 }
 .multicolumn-card__info .icon-wrap {
   margin-left: 0.8rem;
