@@ -390,14 +390,11 @@
         "column_feyFjM",
         "column_fhYqEP"
       ],
-      "custom_css": [
-        ".link {margin-top: 0.5rem;}",
-        ".link,.inline-richtext:not(.title) {font-size: calc(var(--font-heading-scale) * 1.8rem); text-transform: uppercase;}"
-      ],
+      "custom_css": [],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
         "title": "ON FIELD NOTES",
-        "heading_size": "h1",
+        "heading_size": "h2",
         "image_width": "full",
         "image_ratio": "portrait",
         "columns_desktop": 4,
@@ -406,8 +403,8 @@
         "button_label": "",
         "button_link": "",
         "color_scheme": "background-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
         "padding_top": 36,
         "padding_bottom": 48,
         "column_spacing": "small"

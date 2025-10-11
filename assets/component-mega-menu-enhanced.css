@@ -113,7 +113,7 @@
 /* Enhanced Layout for Rich Content */
 .mega-menu__rich-content {
   display: grid;
-  grid-template-columns: repeat(4, 252px); /* 4 columns for categories, materials, use cases, and image */
+  grid-template-columns: repeat(4, 250px); /* 4 columns for categories, materials, use cases, and image */
   gap: 3rem;
   max-width: 1200px;
   /* margin: 0 auto; */
