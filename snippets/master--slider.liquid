@@ -41,7 +41,6 @@
 
     assign full_width           = s.full_width
 %}
-
 {% for block in section.blocks %}
 
     {% liquid 
@@ -222,7 +221,6 @@
 
             {{slide_class}} .center-content {
                 width: 100%;
-                // text-align: center;
                 {% if mob_relative == true %}
                     position: relative;
                     top: initial;
@@ -234,15 +232,16 @@
                     margin: 0 auto;
                 {% else %}
                     top: 50%;
-                    left: 50%;
-                    transform: translate(-50%,-50%);
+                    left: 0;
+                    transform: translate(0, -50%);
+                    padding-left: calc(var(--grid-gutter) * 0.5);
 
                 {% endif %}
             }
 
-            .slick-dotted {{slide_class}} .center-content {
-                max-width: calc(100% - 120px);
-            }
+            // .slick-dotted {{slide_class}} .center-content {
+            //     max-width: calc(100% - 120px);
+            // }
             {% if mob_relative == true %}
             {{slide_class}} .page-width {
                 position: relative;
@@ -272,9 +271,7 @@
             font-size: {{ttl_sze}}px;
             font-weight: 500;
             color: {{ttl_clr}};
-            // line-height: 1;
             font-family: var(--font-heading-family);
-            // text-transform: uppercase;
         }
         {{slide_class}} h3 {
             margin-top: 0;
@@ -410,17 +407,17 @@
             }
         {% endif %}
         {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
-                {{slide_class}} .h2,
-                {{slide_class}} h2 {
-                    font-size: 32px;
-                }
-                {{slide_class}} h3 {
-                    font-size: 20px;
-                }
-                {{slide_class}} .rte,
-                {{slide_class}} .rte * {
-                    font-size: 16px;
-                }
+                // {{slide_class}} .h2,
+                // {{slide_class}} h2 {
+                //     font-size: 32px;
+                // }
+                // {{slide_class}} h3 {
+                //     font-size: 20px;
+                // }
+                // {{slide_class}} .rte,
+                // {{slide_class}} .rte * {
+                //     font-size: 16px;
+                // }
                 // {{slide_class}} .btn {
                 //     font-size: 15px;
                 // }
