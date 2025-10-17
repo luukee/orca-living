@@ -17,9 +17,35 @@
     }
   }
   {% if section.settings.card_max_height != blank %}
-    @media screen and (min-width: 750px) {
+    {% liquid
+      # Extract the numeric value from the height setting (e.g., "70vh" -> 70)
+      assign desktop_height = section.settings.card_max_height | remove: 'vh' | remove: 'px' | remove: '%'
+      assign tablet_height = desktop_height | minus: 20 | append: 'vh'
+    %}
+    /* Desktop */
+    @media screen and (min-width: 1025px) {
       .collage__item {
         height: {{ section.settings.card_max_height }};
+      }
+      .card.card--media {
+        overflow: hidden;
+      }
+    }
+    
+    /* iPad / Tablet (768px - 1024px) */
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      .collage__item {
+        height: {{ tablet_height }};
+      }
+      .card.card--media {
+        overflow: hidden;
+      }
+    }
+    
+    /* Mobile */
+    @media screen and (max-width: 767px) {
+      .collage__item {
+        height: {{ tablet_height }};
       }
       .card.card--media {
         overflow: hidden;
