@@ -576,7 +576,7 @@ h3,
 @media only screen and (min-width: 750px) {
   h3,
   .h3 {
-    font-size: calc(var(--font-heading-scale) * 2rem);
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
   }
 }
 h4,
@@ -822,7 +822,7 @@ details > * {
 }
  .underlined-link,
 .card-wrapper:not(.product-card-wrapper) .card__content .card__heading {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 .underlined-link {
   text-decoration: none;
