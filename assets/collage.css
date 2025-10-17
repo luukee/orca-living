@@ -186,7 +186,7 @@
 .collage .card__inner .card__information {
   grid-row: -1;
 }
-@media only screen and (min-width: 990px) {
+/* @media only screen and (min-width: 990px) { */
   .collage .card__link-underline-wrapper {
     position: relative;
     display: inline-block;
@@ -212,5 +212,5 @@
   .collage .underline-links-hover:focus a::after {
     transform: translateY(0);
   }
-}
+/* } */
 /*# sourceMappingURL=collage.css.map */
