@@ -234,7 +234,7 @@
             "color_button_border_hover": "rgba(0,0,0,0)",
             "stars": "",
             "align_hor": "left",
-            "vert_align": 70,
+            "vert_align": 75,
             "hor_align": 29,
             "width": "2000px",
             "video_autoplay": true,
@@ -355,7 +355,7 @@
             "image": "shopify://shop_images/Mitch_IG_Post.png",
             "title": "Unearthing Clay",
             "text": "",
-            "link_label": "listen",
+            "link_label": "Listen",
             "link": "https://open.spotify.com/episode/1mHd2GLi6EsQsUQ5e5wx32?si=e385866d1f1a4816"
           }
         },
@@ -365,7 +365,7 @@
             "image": "shopify://shop_images/JC_250508_SONOKO_DSCF0500_HR.jpg",
             "title": "Plants + People: Sonoko",
             "text": "",
-            "link_label": "read",
+            "link_label": "Read",
             "link": "shopify://blogs/field-notes/sonoko-sakai"
           }
         },
@@ -375,7 +375,7 @@
             "image": "shopify://shop_images/ORCA_20252428square.jpg",
             "title": "Material Study: Rock",
             "text": "",
-            "link_label": "read",
+            "link_label": "Read",
             "link": "shopify://blogs/field-notes/material-study-rock"
           }
         },
@@ -385,7 +385,7 @@
             "image": "shopify://shop_images/JC_ORCA_Factory_01_08831_WEB_1.png",
             "title": "Benefits of CA clay",
             "text": "",
-            "link_label": "read",
+            "link_label": "Read",
             "link": "shopify://blogs/field-notes/orca-clay-pavers"
           }
         }
@@ -399,7 +399,7 @@
       "custom_css": [],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
-        "title": "ON FIELD NOTES",
+        "title": "On field notes",
         "heading_size": "h2",
         "image_width": "full",
         "image_ratio": "portrait",
