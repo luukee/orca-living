@@ -91,6 +91,8 @@
         "image_height": "70vh",
         "image_height_mob": "",
         "show_nav": false,
+        "nav_hover": false,
+        "nav_color": "#ffffff",
         "auto_slide": true,
         "use_arrows": false,
         "use_dots": false,
@@ -170,7 +172,8 @@
       ],
       "custom_css": [
         ".full-unstyled-link {font-size: 15px;}",
-        ".page-width {padding-right: 0; padding-left: 0;}"
+        ".page-width {padding-right: 0; padding-left: 0;}",
+        ".card__title {margin-bottom: calc(var(--base-gutter--half) - 5px);}"
       ],
       "name": "t:sections.collage.presets.name",
       "settings": {
@@ -333,6 +336,8 @@
         "image_height": "70vh",
         "image_height_mob": "50vh",
         "show_nav": true,
+        "nav_hover": false,
+        "nav_color": "#ffffff",
         "auto_slide": false,
         "use_arrows": true,
         "use_dots": false,
