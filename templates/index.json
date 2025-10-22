@@ -396,7 +396,9 @@
         "column_feyFjM",
         "column_fhYqEP"
       ],
-      "custom_css": [],
+      "custom_css": [
+        ".multicolumn-card__info {padding-left: 0;}"
+      ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
         "title": "On field notes",
