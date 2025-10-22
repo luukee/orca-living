@@ -749,7 +749,39 @@
               display: none !important;
           }
       }
+      /* Arrows */
+      .slick-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: 0;
+        background: transparent;
+        color: #111;            /* arrow color via currentColor */
+        cursor: pointer
+        }
 
+        /* changed: rotate your caret to point left/right */
+        .slick-prev .icon-caret { transform: rotate(90deg) }
+        .slick-next .icon-caret { transform: rotate(-90deg) }
+
+        /* optional sizing */
+        .slick-arrow .icon-caret { height: 1rem }
+
+        /* optional hover/focus states */
+        .slick-arrow:hover,
+        .slick-arrow:focus { color: #000 }
+
+        .slick-arrow.slick-next:hover .icon-caret { transform: rotate(-90deg) scale(1.1); }
+        .slick-arrow.slick-prev:hover .icon-caret { transform: rotate(90deg) scale(1.1); }
+        /* disabled state from Slick */
+        .slick-arrow.slick-disabled { opacity: .35; pointer-events: none }
+
+        /* position arrows if you want them over the slider */
+        .slider { position: relative }
+        .slick-prev { position: absolute; left: 8px; top: 50%; transform: translateY(-50%) }
+        .slick-next { position: absolute; right: 8px; top: 50%; transform: translateY(-50%) }
       /* Other CSS */
       == .slick-slider {
           overflow: hidden;
@@ -789,13 +821,16 @@
           /*filter: drop-shadow(0px 0px 6px black);*/
           z-index: 1;
       }
+      {% if section.settings.nav_hover == true %}
       == .slick-prev:hover,
       == .slick-prev:focus,
       == .slick-next:hover,
       == .slick-next:focus
       {
-          background-color: {{section.settings.arrow_background_color}};
+        transform: scale(1.1);
+        background-color: {{section.settings.arrow_background_color}};
       }
+      {% endif %}
       == .slick-prev::before, 
       == .slick-next::before {
           content: none !important;
@@ -810,7 +845,7 @@
           background: transparent;
           border-color: transparent;
           z-index: 10;
-          color: #fff;
+          color: {{section.settings.nav_color}};
           font-size: 24px;
           font-weight: bold;
           display: flex;
@@ -945,10 +980,13 @@
 
 
   <script type="text/javascript">
-
       waitForJavascript(function () {
           $(document).ready(function () {
-
+            const caretSvg = `
+            <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+            </svg>
+            `
               $('{{css_class}}').slick({
                   // fade:true,
                   infinite: true,
@@ -956,8 +994,8 @@
                   autoplaySpeed: {{s.pause}},
                   lazyLoad:"progressive",
                   arrows: {{use_arrows}},
-                  prevArrow: '<button type="button" class="slick-prev">‹</button>',
-                  nextArrow: '<button type="button" class="slick-next">›</button>',
+                  prevArrow: `<button type="button" class="slick-arrow slick-prev" aria-label="Previous slide">${caretSvg}</button>`,
+                  nextArrow: `<button type="button" class="slick-arrow slick-next" aria-label="Next slide">${caretSvg}</button>`,
                   {% if use_bg_img == false %}
                   apaptiveHeight: true,
                   {% endif %}
