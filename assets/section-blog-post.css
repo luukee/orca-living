@@ -78,6 +78,9 @@
 .article-template__content {
   margin-top: 3rem;
   margin-bottom: 3rem;
+	max-width: 1200px;
+	margin-left: 0;
+	margin-right: 0;
 }
 .article-template__social-sharing {
   margin-top: 3rem;

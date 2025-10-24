@@ -769,7 +769,6 @@ hr {
   }
 }
 .full-unstyled-link {
-  /* font-family: var(--font-heading-family); */
   text-decoration: none;
   color: currentColor;
   display: block;
@@ -819,10 +818,6 @@ details > * {
 .inline-richtext a:hover {
   color: rgb(var(--color-link));
   text-decoration-thickness: 0.2rem;
-}
- .underlined-link,
-.card-wrapper:not(.product-card-wrapper) .card__content .card__heading {
-  font-size: 1.5rem;
 }
 .underlined-link {
   text-decoration: none;
@@ -3211,7 +3206,8 @@ details-disclosure > details {
 
 /* Tablet and desktop layout */
 @media (min-width: 750px) {
-  .template-container {
+  .template-container,
+  .main--register {
     display: grid;
     grid-template-areas: 'left left' 'banner banner' 'middle right';
     grid-template-columns: var(--columns--content);
@@ -3240,10 +3236,11 @@ details-disclosure > details {
 @media (min-width: 990px) {
   .template-container,
   .main--blog,
-  .main--article {
+  .main--article,
+  .main--register {
     display: grid;
     grid-template-areas: 'left banner banner' 'left middle right';
-    grid-template-columns: 175px auto auto;
+    grid-template-columns: 200px auto auto;
     grid-template-rows: auto;
     column-gap: 2rem;
   }
@@ -3271,6 +3268,10 @@ details-disclosure > details {
 /* Hide collection value props if empty */
 .collection-value-props:has(>div[hidden]) {
   display: none;
+}
+.template--article .article-template {
+  max-width: 1200px;
+  margin-bottom: 7rem;
 }
 .article-template__content.page-width--narrow {
   margin-left: 0;
@@ -3331,7 +3332,7 @@ details-disclosure > details {
   --sticky-top: var(--sticky-top--offset);
 }
 @media only screen and (min-width: 750px) {
-  .template--collection #MainContent > *:nth-child(1) > *,
+  /* .template--collection #MainContent > *:nth-child(1) > *,
   .template--page-page-with-sidebar #MainContent > *:nth-child(1) > *,
   .template--collection #MainContent > *:nth-child(3) > *,
   .template--blog #MainContent > *:nth-child(1) > *,
@@ -3342,7 +3343,7 @@ details-disclosure > details {
     top: 95px;
     margin-top: var(--base-gutter--half);
     transition: top 0.15s ease-out;
-  }
+  } */
   .template--collection #MainContent > *:nth-child(1) > * > *:first-child,
   .template--page-page-with-sidebar #MainContent > *:nth-child(1) > * > *:first-child,
   .template--collection #MainContent > *:nth-child(3) > * > *:first-child,
@@ -4062,13 +4063,15 @@ em:not(.caption em) {
 @media only screen and (min-width: 990px) {
   .template--blog-landscapes-blog #MainContent > *:nth-child(1),
   .template--blog-fieldnotes #MainContent > *:nth-child(1),
-  .template--article-field-notes-article #MainContent > *:nth-child(1) {
+  .template--article-field-notes-article #MainContent > *:nth-child(1),
+  .template--register #MainContent > *:nth-child(1) {
     display: block;
     grid-area: left;
   }
   .template--blog-landscapes-blog #MainContent > *:nth-child(2),
   .template--blog-fieldnotes #MainContent > *:nth-child(2),
-  .template--article-field-notes-article #MainContent > *:nth-child(2) {
+  .template--article-field-notes-article #MainContent > *:nth-child(2),
+  .template--article-sections-blog-post #MainContent > *:nth-child(2) {
     grid-area: banner;
     grid-column-start: 2;
     grid-column-end: 4;

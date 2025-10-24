@@ -1,3 +1,6 @@
+.section--navigation {
+  position: relative;
+}
 .section--navigation .navigation-mobile .navigation-drawer__toggle > span  {
   display: flex;
 }
@@ -7,6 +10,12 @@
     padding-top: 14px;
     padding-bottom: 14px;
     border-bottom: 1px solid #000;
+  }
+  .section--side-navigation {
+    position: sticky;
+    top: 20px;
+    transition: top 0.15s ease-out;
+    padding-top: 2rem;
   }
   .section--navigation .list-menu {
     display: flex;
