@@ -1,5 +1,6 @@
 <!-- sections/landscapes-article.liquid -->
 
+<!-- css-section-blog-post -->
 {% render 'css-section-blog-post' %}
 
 {% liquid
@@ -18,10 +19,6 @@
 
   assign dateUpdated = mf.date_modified
 %}
-
-{% comment %}theme-check-disable NestedSnippet{% endcomment %}
-{% comment %} {% include 'snippet--article-includes' %} {% endcomment %}
-{% comment %}theme-check-enable NestedSnippet{% endcomment %}
 
 <article class='article-template template--article-field-notes-article {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
   {%- for block in section.blocks -%}
@@ -62,7 +59,7 @@
         {%- endif -%}
 
       {%- when 'title' -%}
-        <header class='page-width page-width--narrow' {{ block.shopify_attributes }}>
+        <header {{ block.shopify_attributes }}>
           <h1 class='article-template__title' itemprop='headline'>{{ article.title | escape }}</h1>
           <div class='details'>
             {%- if block.settings.blog_show_author -%}

@@ -1,4 +1,4 @@
-<!-- sections/main-article -->
+<!-- sections/fieldnote-article -->
 
 {% comment %} {% render 'css-section-blog-post' %} {% endcomment %}
 
@@ -22,11 +22,11 @@
 {% include 'snippet--article-includes' %}
 {% comment %}theme-check-enable NestedSnippet{% endcomment %}
 
-<article class='article-template {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
+<article class='article-template page-width {{class}}' itemscope itemtype='http://schema.org/BlogPosting'>
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
-        <div class='page-width page-width--narrow'>
+        <div class='page-width'>
           {% render block %}
         </div>
       {%- when 'featured_image' -%}
@@ -61,7 +61,7 @@
         {%- endif -%}
 
       {%- when 'title' -%}
-        <header class='page-width page-width--narrow' {{ block.shopify_attributes }}>
+        <header class='page-width' {{ block.shopify_attributes }}>
           <h1 class='article-template__title' itemprop='headline'>{{ article.title | escape }}</h1>
           <div class='details'>
             {%- if block.settings.blog_show_author -%}
@@ -88,7 +88,7 @@
 
       {%- when 'content' -%}
         <div
-          class='article-template__content page-width page-width--narrow rte'
+          class='article-template__content page-width rte'
           itemprop='articleBody'
           {{ block.shopify_attributes }}
         >

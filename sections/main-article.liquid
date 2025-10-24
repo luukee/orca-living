@@ -18,6 +18,7 @@
     {% endstyle %}
   {% endif %}
 {% endfor %}
+<!-- sections/main-article -->
 <article class='article-template' itemscope itemtype='http://schema.org/BlogPosting'>
   {%- for block in section.blocks -%}
     {%- case block.type -%}
@@ -75,7 +76,7 @@
 
       {%- when 'content' -%}
         <div
-          class='article-template__content page-width page-width--{{ section.settings.page_width }} rte'
+          class='article-template__content page-width rte'
           itemprop='articleBody'
           {{ block.shopify_attributes }}
         >
@@ -337,6 +338,10 @@
         {
           "value": "narrow",
           "label": "Narrow"
+        },
+        {
+          "value": "default",
+          "label": "Default"
         },
         {
           "value": "wide",
