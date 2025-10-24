@@ -1,5 +1,10 @@
+.template-search__search h1 {
+  text-align: left;
+}
 .search__input.field__input {
   padding-right: 9.8rem;
+  padding-left: calc(var(--inputs-border-width) + 2rem);
+  font-size: 1.4rem;
 }
 .search__button {
   right: var(--inputs-border-width);

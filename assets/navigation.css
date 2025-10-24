@@ -17,6 +17,9 @@
 .section--side-navigation h2 {
   margin: 0 0 var(--base-gutter--half);
 }
+.section--side-navigation h2 {
+  font-family: var(--font-body-family);
+}
 .section--side-navigation .list-menu__item,
 .section--navigation .list-menu__item {
   padding: 1px 0;
@@ -24,7 +27,7 @@
   text-underline-offset: 0.3rem;
 }
 .section--side-navigation .list-menu__item:hover,
-.section--navigation .list-menu__item:hover {
+.section--navigation .list-menu__item:not([aria-expanded]):hover {
   text-decoration: underline;
 }
 .section--side-navigation .list-menu__item h1,

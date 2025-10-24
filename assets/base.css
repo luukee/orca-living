@@ -3329,6 +3329,7 @@ details-disclosure > details {
   .template--blog #MainContent > *:nth-child(3) > * {
     position: sticky;
     top: 95px;
+    margin-top: var(--base-gutter--half);
     transition: top 0.15s ease-out;
   }
   .template--collection #MainContent > *:nth-child(1) > * > *:first-child,
@@ -4006,7 +4007,8 @@ em:not(.caption em) {
 }
 @media only screen and (min-width: 750px) and (max-width: 989px) {
   .template--blog-fieldnotes #MainContent > *:nth-child(2),
-  .template--blog-landscapes-blog #MainContent > *:nth-child(2) {
+  .template--blog-landscapes-blog #MainContent > *:nth-child(2),
+  .template--blog-fieldnotes #MainContent > *:nth-child(2) {
     grid-area: unset;
     grid-column: 1 / span 2;
     grid-row: 2;
@@ -4023,7 +4025,8 @@ em:not(.caption em) {
   .list-menu__item {
   padding: 0 20px 0 0;
 }
-.template--blog-landscapes-blog #MainContent > *:nth-child(2) {
+.template--blog-landscapes-blog #MainContent > *:nth-child(2),
+.template--blog-fieldnotes #MainContent > *:nth-child(2) {
   display: grid;
   grid-column-start: 2;
   grid-column-end: 4;
