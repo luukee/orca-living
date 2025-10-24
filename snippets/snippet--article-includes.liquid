@@ -3,39 +3,39 @@
 {% liquid 
   assign mf                     = article.metafields.custom_fields
 
-  assign h6_is_wrong              = '<h6><span>'
-  if article_rte contains h6_is_wrong
-    assign article_rte           = article_rte | replace: h6_is_wrong,'<h6>'
-    assign article_rte           = article_rte | replace: '</span></h6>','</h6>'
+  assign H6isWrong              = '<h6><span>'
+  if articleRTE contains H6isWrong
+    assign articleRTE           = articleRTE | replace: H6isWrong,'<h6>'
+    assign articleRTE           = articleRTE | replace: '</span></h6>','</h6>'
   endif 
 
-  assign end_rte_split             = '</h6>' 
-  assign start_rte_split           = end_rte_split | replace: '/','' 
+  assign endRteSplt             = '</h6>' 
+  assign startRteSplt           = endRteSplt | replace: '/','' 
 
-  assign has_splitter            = false
-  if article_rte contains end_rte_split
-    assign has_splitter          = true
+  assign hasSplitter            = false
+  if articleRTE contains endRteSplt
+    assign hasSplitter          = true
   endif
 
-  assign article_images          = mf["images"]
-  assign image_groups            = '' 
+  assign articleImages          = mf["images"]
+  assign imageGroups            = '' 
 
-  assign article_two_grids        = mf["two_grid"]
-  assign two_grid_groups          = ''
+  assign articleTwoGrids        = mf["two_grid"]
+  assign twoGridGroups          = ''
 
-  assign width_replace               = "|WIDTH_REPLACE|"  
-  assign width_data_replace           = "|WIDTH_DATA_REPLACE|"  
+  assign wdthRplc               = "|WIDTH_REPLACE|"  
+  assign wdthDataRplc           = "|WIDTH_DATA_REPLACE|"  
 
-  assign split_comment            = '<!-- split -->' 
-  assign split_start                 = '<!-- replace_' 
-  assign split_end                = ' -->' 
-  assign split_single_item         = '<!-- SINGLE_ITEM -->'
-  assign split_big                = split_end | append: split_comment 
+  assign spltComment            = '<!-- split -->' 
+  assign spltSt                 = '<!-- replace_' 
+  assign spltEnd                = ' -->' 
+  assign spltSingleItem         = '<!-- SINGLE_ITEM -->'
+  assign spltBig                = spltEnd | append: spltComment 
 
 
 %}
 
-{% if has_splitter %}
+{% if hasSplitter %}
 
 
 
@@ -47,54 +47,54 @@
       Create Image Item. 
       Then add Image Item to Image Group.
     {% endcomment %}
-      {%- for item in article_images -%}
+      {%- for item in articleImages -%}
         {%- liquid 
 
-          assign show_image          = false
-          assign group_handle        = item["group_name"] | strip | handleize 
-          assign img_replace           = split_start | append: group_handle | append: split_big 
+          assign showImage          = false
+          assign groupHandle        = item["group_name"] | strip | handleize 
+          assign imgRplc           = spltSt | append: groupHandle | append: spltBig 
           
           assign img                = item["image"]
-          assign img_height            = item["image_height"]
+          assign imgHght            = item["image_height"]
           assign txt                = item["caption"]
           assign offset             = item["enable_offset"]
           
-          assign width_close            = width_replace
-          assign width_data           = width_data_replace
-          assign images_per_row         = item["images_per_row"]
-          if images_per_row != '' and images_per_row != blank
-            assign width_data         = images_per_row
-            capture width_close 
-              render 'snippet--grid-widths', perRow: images_per_row 
+          assign wdthCls            = wdthRplc
+          assign wdthData           = wdthDataRplc
+          assign imgsPerRow         = item["images_per_row"]
+          if imgsPerRow != '' and imgsPerRow != blank
+            assign wdthData         = imgsPerRow
+            capture wdthCls 
+              include 'snippet--grid-widths', perRow: imgsPerRow 
             endcapture 
           endif
          
           assign style              = '--image--set-height: 56%;'
-          if img_height != '' and img_height != blank
-            assign style            = '--image--set-height:' | append: img_height | append: ';'
+          if imgHght != '' and imgHght != blank
+            assign style            = '--image--set-height:' | append: imgHght | append: ';'
           endif 
 
-          assign images_use_slider      = false
-          assign slider_data         = 'data-slider'
+          assign imgsUseSlider      = false
+          assign sliderData         = 'data-slider'
 
-          assign images_full_width      = false
-          assign page_width_data      = 'data-page-width'
+          assign imgsFullWidth      = false
+          assign pageWidthData      = 'data-page-width'
 
           if img != blank
             
-            assign show_image        = true
+            assign showImage        = true
 
-            unless image_groups contains img_replace 
-              assign image_groups    = image_groups | append: img_replace 
-              assign images_full_width  = false
-              assign images_use_slider  = false
+            unless imageGroups contains imgRplc 
+              assign imageGroups    = imageGroups | append: imgRplc 
+              assign imgsFullWidth  = false
+              assign imgsUseSlider  = false
 
               if item["make_section_full_width"] contains 1 or item["make_section_full_width"] contains '1'
-                assign images_full_width = true
+                assign imgsFullWidth = true
               endif 
 
               if item["make_images_a_slider"] contains 1 or item["make_images_a_slider"] contains '1'
-                assign images_use_slider = true
+                assign imgsUseSlider = true
               endif 
 
             endunless 
@@ -103,30 +103,30 @@
         -%}
 
         {% comment %}  Create Image Item. {% endcomment %}
-        {%- if show_image -%}
-          {%- capture image_item -%}
+        {%- if showImage -%}
+          {%- capture imgItem -%}
             <div 
-              class="cell__item {%if width_data == '2'%} medium-up--one-half {%endif%} {% if offset == '1' %} image-margin-top {%endif%}" 
-              data-width="{{width_data}}" 
-              {% if images_use_slider == true %}{{slider_data}}{% endif %} 
-              {% if images_full_width == true %}{{page_width_data}}{% endif %}
+              class="cell__item {%if wdthData == '2'%} medium-up--one-half {%endif%} {% if offset == '1' %} image-margin-top {%endif%}" 
+              data-width="{{wdthData}}" 
+              {% if imgsUseSlider == true %}{{sliderData}}{% endif %} 
+              {% if imgsFullWidth == true %}{{pageWidthData}}{% endif %}
             >
               <div class="inner-container">
                 <!-- include 'snippet--image' -->
                 {% comment %} {% render 'dump' with img %} {% endcomment %}
-                {% render 'snippet--image', img: img, cf: true, customStyle: style %}
+                {% include 'snippet--image', img: img, cf: true, customStyle: style %}
                 {% if txt != blank and txt != '' %}
                   <div class="caption">{{txt}}</div>
                 {% endif %}
                 
               </div>
             </div>
-            {{split_single_item}}
-            {{img_replace}}
+            {{spltSingleItem}}
+            {{imgRplc}}
           {%- endcapture -%}
 
           {% comment %}  Add Image Item to Image Group.  {% endcomment %}
-          {%- assign image_groups    = image_groups | replace: img_replace, image_item -%}
+          {%- assign imageGroups    = imageGroups | replace: imgRplc, imgItem -%}
         {%- endif %}
       {%- endfor %}
 
@@ -135,45 +135,45 @@
       Split Image Group. 
       Then apply Grid Width and create handle. 
       Then wrap Image Group in Grid Container. 
-      Then Insert into article_rte.  
+      Then Insert into articleRTE.  
     {% endcomment %}
-      {%- assign image_groups        = image_groups | split: split_comment -%}
-      {%- for group in image_groups -%}
+      {%- assign imageGroups        = imageGroups | split: spltComment -%}
+      {%- for group in imageGroups -%}
         {%- if group != '' and group != blank -%}
           
           {% comment %} Then apply Grid Width and create handle. {% endcomment %}
           {%- liquid 
-            assign group_handle      = group | split: split_start | last | split: split_end | first | handleize
-            assign split_article_rte   = article_rte | strip | split: start_rte_split
-            assign item_length       = group | split: split_single_item | size | minus: 1 
+            assign groupHandle      = group | split: spltSt | last | split: spltEnd | first | handleize
+            assign spltArticleRTE   = articleRTE | strip | split: startRteSplt
+            assign itemLength       = group | split: spltSingleItem | size | minus: 1 
             capture width 
-              render 'snippet--grid-widths', perRow: item_length 
+              include 'snippet--grid-widths', perRow: itemLength 
             endcapture 
 
-            assign group_with_width   = group | replace: width_replace, width | replace: width_data, item_length
+            assign groupWithWidth   = group | replace: wdthRplc, width | replace: wdthData, itemLength
           -%}
 
           {% comment %} Then wrap Image Group in Grid Container. {% endcomment %}
-          {%- capture grid_container -%}
-            <div class="article-template__image-gallery {% if group contains page_width_data %}full-width{% endif %}">
-              <div class="cell  half_gutter vert-top {% if group contains slider_data %}slider{% endif %}">
-                {{group_with_width}}
+          {%- capture gridContainer -%}
+            <div class="article-template__image-gallery {% if group contains pageWidthData %}full-width{% endif %}">
+              <div class="cell  half_gutter vert-top {% if group contains sliderData %}slider{% endif %}">
+                {{groupWithWidth}}
               </div>
             </div>
           {%- endcapture -%}
 
-          {% comment %} Then Insert into article_rte.  {% endcomment %}
-          {%- capture article_rte -%}
-            {%- for rte in split_article_rte -%}
+          {% comment %} Then Insert into articleRTE.  {% endcomment %}
+          {%- capture articleRTE -%}
+            {%- for rte in spltArticleRTE -%}
               {%- liquid
-                assign rte_group_handle = rte | split: end_rte_split | first | trim | remove_first: 'Gallery' | handleize
-                assign rte_cleaned   = rte | remove: rte_group_handle | replace: end_rte_split, ''
-                assign rte_cleaned   = rte | prepend: start_rte_split
+                assign rteGroupHandle = rte | split: endRteSplt | first | trim | remove_first: 'Gallery' | handleize
+                assign rteCleaned   = rte | remove: rteGroupHandle | replace: endRteSplt, ''
+                assign rteCleaned   = rte | prepend: startRteSplt
               -%}
-              {%- if group_handle == rte_group_handle -%}
-                {{grid_container}}
+              {%- if groupHandle == rteGroupHandle -%}
+                {{gridContainer}}
               {%- endif -%}
-              {{rte_cleaned}}
+              {{rteCleaned}}
             {%- endfor -%}
           {%- endcapture -%}
 
@@ -189,38 +189,39 @@ TWO GRID
     {% comment %}
     TWO GRID
     {% endcomment %}
-      {%- for item in article_two_grids -%}
+      {%- for item in articleTwoGrids -%}
         {%- liquid 
 
-          assign show_image          = false
-          assign group_handle        = item["group_name"] | strip | handleize 
-          assign img_replace            = split_start | append: group_handle | append: split_big 
+          assign showImage          = false
+          assign groupHandle        = item["group_name"] | strip | handleize 
+          assign imgRplc            = spltSt | append: groupHandle | append: spltBig 
           
           assign img                = item["image"]
           assign img_2              = item["description_image"]
-          assign img_height            = item["image_height"]
+          assign imgHght            = item["image_height"]
           assign order              = item["flip_grid"]
           assign background         = item["background_color"]
           
           assign desc               = item["description"]
           assign reverse_col        = item["reverse_col"]
           
-          assign width_data           = width_data_replace
+          assign wdthCls            = wdthRplc
+          assign wdthData           = wdthDataRplc
          
 
           assign style              = '--image--set-height: 56%;'
-          if img_height != '' and img_height != blank
-            assign style            = '--image--set-height:' | append: img_height | append: ';'
+          if imgHght != '' and imgHght != blank
+            assign style            = '--image--set-height:' | append: imgHght | append: ';'
           endif 
           if img != blank
             
-            assign show_image        = true
+            assign showImage        = true
 
-            unless two_grid_groups contains img_replace 
+            unless twoGridGroups contains imgRplc 
               
-              assign two_grid_groups    = two_grid_groups | append: img_replace 
-              assign images_full_width  = false
-              assign images_use_slider  = false
+              assign twoGridGroups    = twoGridGroups | append: imgRplc 
+              assign imgsFullWidth  = false
+              assign imgsUseSlider  = false
 
 
             endunless 
@@ -229,28 +230,28 @@ TWO GRID
         -%}
 
         {% comment %}  Create Image Item. {% endcomment %}
-        {%- if show_image -%}
-          {%- capture image_item -%}
+        {%- if showImage -%}
+          {%- capture imgItem -%}
             <div class="cell__item">
               <div class="two-grid {%if reverse_col == '1' %} reserve-col {%endif%} {%if background != blank%}  custom-style {%endif%}" {%if background != blank%} style="background:{{background}};" {%endif%}>
                 <div class="caption{% if order == '1' %} order-2 {%endif%}" {%if background != blank %} style="padding:60px; margin:auto;" {% endif %} >
                   {%if img_2 %}
-                  <img src="{{img_2 | asset_url }}" width="100%" height="auto" alt="">
+                  <img src="{{img_2 }}" width="100%" alt="">
                   {%endif%}
                   <p>{{desc}}</p>
                 </div>
                 <div class="image  {% if order == '1' %} order-1 {%endif%}">
-                {% render 'snippet--image', img: img, cf: true, customStyle: style %}
+                {% include 'snippet--image', img: img, cf: true, customStyle: style %}
                 </div>
                 
               </div>
             </div>
-            {{split_single_item}}
-            {{img_replace}}
+            {{spltSingleItem}}
+            {{imgRplc}}
           {%- endcapture -%}
 
           {% comment %}  Add Image Item to Image Group.  {% endcomment %}
-          {%- assign two_grid_groups    = two_grid_groups | replace: img_replace, image_item -%}
+          {%- assign twoGridGroups    = twoGridGroups | replace: imgRplc, imgItem -%}
         {%- endif %}
       {%- endfor %}
 
@@ -259,44 +260,44 @@ TWO GRID
       Split Image Group. 
       Then apply Grid Width and create handle. 
       Then wrap Image Group in Grid Container. 
-      Then Insert into article_rte.  
+      Then Insert into articleRTE.  
     {% endcomment %}
-      {%- assign two_grid_groups        = two_grid_groups | split: split_comment -%}
-      {%- for group in two_grid_groups -%}
+      {%- assign twoGridGroups        = twoGridGroups | split: spltComment -%}
+      {%- for group in twoGridGroups -%}
         {%- if group != '' and group != blank -%}
           
           {% comment %} Then apply Grid Width and create handle. {% endcomment %}
           {%- liquid 
-            assign group_handle      = group | split: split_start | last | split: split_end | first | handleize
-            assign split_article_rte   = article_rte | strip | split: start_rte_split
-            assign item_length       = group | split: split_single_item | size | minus: 1 
+            assign groupHandle      = group | split: spltSt | last | split: spltEnd | first | handleize
+            assign spltArticleRTE   = articleRTE | strip | split: startRteSplt
+            assign itemLength       = group | split: spltSingleItem | size | minus: 1 
             capture width 
-              render 'snippet--grid-widths', perRow: item_length 
+              include 'snippet--grid-widths', perRow: itemLength 
             endcapture 
-            assign group_with_width   = group | replace: width_replace, width | replace: width_data, item_length
+            assign groupWithWidth   = group | replace: wdthRplc, width | replace: wdthData, itemLength
           -%}
 
           {% comment %} Then wrap Image Group in Grid Container. {% endcomment %}
-          {%- capture grid_container -%}
-            <div class="two-grid-section {% if group contains page_width_data %}full-width{% endif %}">
-              <div class="cell  half_gutter vert-top {% if group contains slider_data %}slider{% endif %}">
-                {{group_with_width}}
+          {%- capture gridContainer -%}
+            <div class="two-grid-section {% if group contains pageWidthData %}full-width{% endif %}">
+              <div class="cell  half_gutter vert-top {% if group contains sliderData %}slider{% endif %}">
+                {{groupWithWidth}}
               </div>
             </div>
           {%- endcapture -%}
 
-          {% comment %} Then Insert into article_rte.  {% endcomment %}
-          {%- capture article_rte -%}
-            {%- for rte in split_article_rte -%}
+          {% comment %} Then Insert into articleRTE.  {% endcomment %}
+          {%- capture articleRTE -%}
+            {%- for rte in spltArticleRTE -%}
               {%- liquid
-                assign rte_group_handle = rte | split: end_rte_split | first | trim | remove_first: 'Gallery' | handleize
-                assign rte_cleaned   = rte | remove: rte_group_handle | replace: end_rte_split, ''
-                assign rte_cleaned   = rte | prepend: start_rte_split
+                assign rteGroupHandle = rte | split: endRteSplt | first | trim | remove_first: 'Gallery' | handleize
+                assign rteCleaned   = rte | remove: rteGroupHandle | replace: endRteSplt, ''
+                assign rteCleaned   = rte | prepend: startRteSplt
               -%}
-              {%- if group_handle == rte_group_handle -%}
-                {{grid_container}}
+              {%- if groupHandle == rteGroupHandle -%}
+                {{gridContainer}}
               {%- endif -%}
-              {{rte_cleaned}}
+              {{rteCleaned}}
             {%- endfor -%}
           {%- endcapture -%}
 
@@ -314,16 +315,16 @@ TWO GRID
   !!!!!!!!!!!!!!!!!
 {% endcomment %}
     {%- liquid
-      capture article_rte 
-        assign split_article_rte     = article_rte | strip | split: start_rte_split 
-        for rte in split_article_rte 
-          if rte contains end_rte_split
-            assign rte_group_handle = rte | split: end_rte_split | first
-            assign rte_cleaned     = rte | remove: rte_group_handle | replace: end_rte_split, ''
+      capture articleRTE 
+        assign spltArticleRTE     = articleRTE | strip | split: startRteSplt 
+        for rte in spltArticleRTE 
+          if rte contains endRteSplt
+            assign rteGroupHandle = rte | split: endRteSplt | first
+            assign rteCleaned     = rte | remove: rteGroupHandle | replace: endRteSplt, ''
           else 
-            assign rte_cleaned     = rte 
+            assign rteCleaned     = rte 
           endif 
-          echo rte_cleaned
+          echo rteCleaned
         endfor 
       endcapture 
     -%}
