@@ -321,22 +321,11 @@
                                   {%- endunless -%}
                                   
                                   {%- comment -%} Format display text: remove underscores/dashes and capitalize all words {%- endcomment -%}
-                                  {%- assign display_text = tag | strip | replace: '_', '' | replace: '-', ' ' -%}
+                                  {%- assign display_text = tag | strip | replace: '_', '' | replace: '-', ' ' -%} 
                                   
                                   {%- comment -%} Special case: rename "_Quick ship" to "In Stock" {%- endcomment -%}
-                                  {%- if display_text == 'Quick ship' -%}
+                                  {%- if display_text == 'Quick ship' or display_text == 'quick ship' -%}
                                     {%- assign display_text = 'In Stock' -%}
-                                  {%- else -%}
-                                    {%- assign words = display_text | split: ' ' -%}
-                                    {%- assign display_text = '' -%}
-                                    {%- for word in words -%}
-                                      {%- assign capitalized_word = word | capitalize -%}
-                                      {%- if display_text == blank -%}
-                                        {%- assign display_text = capitalized_word -%}
-                                      {%- else -%}
-                                        {%- assign display_text = display_text | append: ' ' | append: capitalized_word -%}
-                                      {%- endif -%}
-                                    {%- endfor -%}
                                   {%- endif -%}
                                   
                                   {%- comment -%} Create clickable link with formatted display text {%- endcomment -%}
@@ -490,7 +479,7 @@
                             {%- for material in materials_list -%}
                               <li class="mega-menu__column-item">
                                 <a href="{{ link.url }}?{{ material_filter_type }}={{ material | strip | url_encode }}" class="mega-menu__column-link">
-                                  {{ material | strip | capitalize | escape }}
+                                  {{ material | strip | escape }}
                                 </a>
                               </li>
                             {%- endfor -%}
@@ -633,7 +622,7 @@
                             {%- assign use_cases_list = unique_use_cases | split: ',' -%}
                             {%- for use_case in use_cases_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.v.m.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | capitalize | escape }}</a>
+                                <a href="{{ link.url }}?filter.v.m.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
                               </li>
                             {%- endfor -%}
                           </ul>

@@ -426,6 +426,16 @@ html.no-js .no-js-hidden {
   .section + .section {
     margin-top: var(--spacing-sections-desktop);
   }
+  main.content-for-layout > .section:last-of-type {
+    padding-bottom: 8rem;
+  }
+  main.content-for-layout > .section:first-of-type,
+  .sidebar-links {
+    padding-top: 2rem;
+  }
+  .section--register {
+    grid-column: 2 / span 1;
+  }
 }
 .element-margin-top {
   margin-top: 5rem;
@@ -3240,7 +3250,7 @@ details-disclosure > details {
   .main--register {
     display: grid;
     grid-template-areas: 'left banner banner' 'left middle right';
-    grid-template-columns: 200px auto auto;
+    grid-template-columns: 200px 1fr 1fr;
     grid-template-rows: auto;
     column-gap: 2rem;
   }

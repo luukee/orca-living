@@ -560,10 +560,10 @@ a.product__text {
     opacity: 0;
   }
 
-  .product__modal-opener:hover .product__media-icon,
+  /* .product__modal-opener:hover .product__media-icon,
   .product__modal-opener:focus .product__media-icon {
     opacity: 1;
-  }
+  } */
 }
 
 .product__media-item > * {

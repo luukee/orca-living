@@ -15,7 +15,6 @@
     position: sticky;
     top: 20px;
     transition: top 0.15s ease-out;
-    padding-top: 2rem;
   }
   .section--navigation .list-menu {
     display: flex;
@@ -113,5 +112,8 @@
       rgba(var(--color-base-background-1), 1) 100%
     );
   }
+}
+.mega-menu__column-link {
+  text-transform: capitalize;
 }
 /*# sourceMappingURL=navigation.css.map */

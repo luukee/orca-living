@@ -16,7 +16,7 @@
 }
 .nine15--accordion-section {
   position: relative;
-  padding: var(--base-gutter--double) 0;
+  /* padding: var(--base-gutter--double) 0; */
   z-index: 1;
 }
 .nine15--accordion-section .acc-item + .acc-item {

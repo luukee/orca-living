@@ -1,5 +1,5 @@
 {{ 'customer.css' | asset_url | stylesheet_tag }}
-<h1>Use padding: {{ section.settings.use_padding }}</h1>
+
 {% if section.settings.use_padding == true %}
   {%- style -%}
     .section-{{ section.id }}-padding {

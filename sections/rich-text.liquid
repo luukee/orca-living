@@ -1,5 +1,6 @@
 {{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
 
+{% if section.settings.use_padding == true %}
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -13,6 +14,16 @@
     }
   }
 {%- endstyle -%}
+{% endif %}
+
+{% liquid 
+  assign make_h1       = section.settings.make_h1
+
+  assign heading_el    = 'h2'
+  if make_h1 == true
+    assign heading_el  = 'h1'
+  endif
+%}
 
 <div class='isolate{% unless section.settings.full_width %} page-width{% endunless %}'>
   <div class='rich-text content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} rich-text--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding'>
@@ -21,12 +32,12 @@
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
-              <h2
+              <{{heading_el}}
                 class='rich-text__heading rte inline-richtext {{ block.settings.heading_size }}'
                 {{ block.shopify_attributes }}
               >
                 {{ block.settings.heading }}
-              </h2>
+              </{{heading_el}}>
             {%- when 'caption' -%}
               <p
                 class='rich-text__caption {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }}'
@@ -216,8 +227,20 @@
       "label": "t:sections.rich-text.settings.full_width.label"
     },
     {
+      "type":"checkbox",
+      "id":"make_h1",
+      "label": "Make heading an H1",
+      "default": false
+    },
+    {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_padding",
+      "label": "Use padding",
+      "default": false
     },
     {
       "type": "range",
@@ -256,6 +279,10 @@
           "type": "select",
           "id": "heading_size",
           "options": [
+            {
+              "value": "h3",
+              "label": "X-small"
+            },
             {
               "value": "h2",
               "label": "t:sections.all.heading_size.options__1.label"
