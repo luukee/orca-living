@@ -191,7 +191,7 @@ summary.list-menu__item {
   text-underline-offset: 0.3rem;
 }
 
-.section--navigation .list-menu__item:hover {
+.section--navigation .list-menu__item:not([aria-expanded]):hover {
   text-decoration: underline;
 }
 
@@ -420,7 +420,9 @@ summary.list-menu__item {
   .header__inline-menu
   .list-menu
   .header__menu-item
-  .header__active-menu-item:before {
+  .header__active-menu-item:before,
+.navigation-secondary
+  .list-menu__item.menu-item--active:before {
   content: '_';
 }
 @media only screen and (max-width: 749px) {

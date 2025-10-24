@@ -52,7 +52,18 @@
                         assign is_current          = false 
                         assign link_handle         = link.handle 
 
-                        assign collection_handle   = collection.handle 
+                        assign collection_handle   = collection.handle
+                        
+                        # Fallback: get collection handle from URL if collection.handle is not correct
+                        if collection_handle == 'all' or collection_handle == blank
+                          assign path_parts = request.path | split: '/'
+                          for part in path_parts
+                            if part == 'collections' and forloop.index < path_parts.size
+                              assign collection_handle = path_parts[forloop.index]
+                              break
+                            endif
+                          endfor
+                        endif 
                         capture collection_url 
                           render 'snippet--url-query', queryString: 'collection'
                         endcapture
@@ -79,14 +90,17 @@
                           assign link_url          = link_url | split: '/tagged' | first
                         endif 
 
-                        for tag in article.tags
-                          assign link_handle         = link.url | handleize
-                          assign tag_handle          = tag |handleize 
-                          if link_handle contains tag_handle
-                            assign is_current      = true
-                            break
-                          endif 
-                        endfor 
+                        # Check article tags only if we're on an article page and article exists
+                        if template.name == 'article' and article.tags.size > 0
+                          assign link_handle_for_tags = link.url | handleize
+                          for tag in article.tags
+                            assign tag_handle = tag | handleize 
+                            if link_handle_for_tags contains tag_handle
+                              assign is_current = true
+                              break
+                            endif 
+                          endfor
+                        endif 
 
                         assign child_link_size      = link.links | size
                         
@@ -135,7 +149,6 @@
         </details>
       </navigation-drawer>
     </div> {% endcomment %}
-
     <!-- Desktop Navigation -->
     <div class="navigation-desktop">
       <ul class="list-menu" role="list">
@@ -144,15 +157,37 @@
             assign is_current          = false 
             assign link_handle         = link.handle 
 
-            assign collection_handle   = collection.handle 
+            assign collection_handle   = collection.handle
+            
+            # Fallback: get collection handle from URL if collection.handle is not correct
+            if collection_handle == 'all' or collection_handle == blank
+              assign path_parts = request.path | split: '/'
+              for part in path_parts
+                if part == 'collections' and forloop.index < path_parts.size
+                  assign collection_handle = path_parts[forloop.index]
+                  break
+                endif
+              endfor
+            endif
+            
+            # Debug collection info
+            # if link.title == 'Pavers'
+            #   echo ' | collection.title=' | append: collection.title | append: ' collection.id=' | append: collection.id | append: ' path_collection=' | append: collection_handle
+            # endif 
             capture collection_url 
               render 'snippet--url-query', queryString: 'collection'
             endcapture
-            # if collection_url != ''
-            #   if link.url contains collection_url
-            #     assign is_current      = true 
-            #   endif
+            
+            # Debug output - remove after fixing
+            # if link.title == 'Pavers'
+            #   echo 'DEBUG: link_handle=' | append: link_handle | append: ' collection_handle=' | append: collection_handle | append: ' collection_url=' | append: collection_url | append: ' link.current=' | append: link.current | append: ' link.url=' | append: link.url
             # endif
+            
+            if collection_url != ''
+              if link.url contains collection_url
+                assign is_current      = true 
+              endif
+            endif
 
             if link.current
               assign is_current        = true 
@@ -165,20 +200,28 @@
             if collection_handle == 'quick-ship' and link_handle == 'pavers'
               assign is_current        = true
             endif
+            
+            # Temporary test - remove after debugging
+            if link.title == 'Pavers' and collection_handle == 'pavers'
+              assign is_current = true
+            endif
 
             assign link_url            = link.url
             if is_current and template.name != 'article'
               assign link_url          = link_url | split: '/tagged' | first
             endif 
 
-            for tag in article.tags
-              assign link_handle         = link.url | handleize
-              assign tag_handle          = tag |handleize 
-              if link_handle contains tag_handle
-                assign is_current      = true
-                break
-              endif 
-            endfor 
+            # Check article tags only if we're on an article page and article exists
+            if template.name == 'article' and article.tags.size > 0
+              assign link_handle_for_tags = link.url | handleize
+              for tag in article.tags
+                assign tag_handle = tag | handleize 
+                if link_handle_for_tags contains tag_handle
+                  assign is_current = true
+                  break
+                endif 
+              endfor
+            endif 
 
             assign child_link_size      = link.links | size
             
@@ -187,6 +230,11 @@
             if path contains 'pavers' or path contains 'quick-ship'
               assign show_nav_child_links = true
             endif
+            
+            # Debug final is_current value - remove after fixing
+            # if link.title == 'Pavers'
+            #   echo ' | is_current=' | append: is_current
+            # endif
           %}
           <li>
             {%- comment -%} Check if this link should have a mega menu {%- endcomment -%}
@@ -215,9 +263,9 @@
                 {% comment %} Keep this open for Pavers: {% if link.title == 'Pavers' %}open{% endif %} {% endcomment %}
                 <details id="Details-SecondaryMenu-{{ forloop.index }}" class="mega-menu">
                   <summary class="list-menu__item link link--text focus-inset{% if is_current %} menu-item--active{% endif %}"{% if is_current %} aria-current="page"{% endif %}>
-                    {% if is_current and template.name == 'collection' %}<h1>{% endif %}
+                    {% comment %} {% if is_current and template.name == 'collection' %}<h1>{% endif %} {% endcomment %}
                     {{ link.title | escape }}
-                    {% if is_current and template.name == 'collection' %}</h1>{% endif %}
+                    {% comment %} {% if is_current and template.name == 'collection' %}</h1>{% endif %} {% endcomment %}
                   </summary>
                   <div id="SecondaryMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
                     <div class="mega-menu__rich-content">
@@ -313,12 +361,81 @@
                         {%- endif -%}
                         
                         {%- for product in collection.products -%}
-                          {%- if product.metafields.custom.material != blank -%}
-                            {%- comment -%} Handle both single values and list values {%- endcomment -%}
-                            {%- if product.metafields.custom.material.value.first -%}
-                              {%- comment -%} It's a list of values {%- endcomment -%}
-                              {%- for material_item in product.metafields.custom.material.value -%}
-                                {%- assign material = material_item | strip -%}
+                          {%- comment -%} First try to get materials from variant options {%- endcomment -%}
+                          {%- assign has_variant_materials = false -%}
+                          {%- for variant in product.variants -%}
+                            {%- comment -%} Check if this variant has a material option {%- endcomment -%}
+                            {%- for option in product.options -%}
+                              {%- if option == 'Material' -%}
+                                {%- assign has_variant_materials = true -%}
+                                <!-- Has variant materials==> {{ has_variant_materials }} -->
+                                {%- assign option_index = forloop.index0 -%}
+                                {%- assign material = variant.options[option_index] | strip -%}
+                                {%- if material != blank -%}
+                                  {%- assign should_exclude = false -%}
+                                  
+                                  {%- comment -%} Check if material should be excluded {%- endcomment -%}
+                                  {%- for excluded_material in excluded_materials -%}
+                                    {%- assign excluded_material_clean = excluded_material | strip -%}
+                                    {%- if material == excluded_material_clean or material contains excluded_material_clean -%}
+                                      {%- assign should_exclude = true -%}
+                                      {%- break -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                  
+                                  {%- unless should_exclude -%}
+                                    {%- comment -%} Check for case-insensitive duplicates {%- endcomment -%}
+                                    {%- assign material_lower = material | downcase -%}
+                                    {%- assign unique_materials_lower = unique_materials | downcase -%}
+                                    {%- unless unique_materials_lower contains material_lower -%}
+                                      {%- if unique_materials == blank -%}
+                                        {%- assign unique_materials = material -%}
+                                      {%- else -%}
+                                        {%- assign unique_materials = unique_materials | append: ',' | append: material -%}
+                                      {%- endif -%}
+                                    {%- endunless -%}
+                                  {%- endunless -%}
+                                {%- endif -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endfor -%}
+                          
+                          {%- comment -%} Fallback to product metafields if no variant materials found {%- endcomment -%}
+                          {%- unless has_variant_materials -%}
+                            {%- if product.metafields.custom.material != blank -%}
+                              {%- comment -%} Handle both single values and list values {%- endcomment -%}
+                              {%- if product.metafields.custom.material.value.first -%}
+                                {%- comment -%} It's a list of values {%- endcomment -%}
+                                {%- for material_item in product.metafields.custom.material.value -%}
+                                  {%- assign material = material_item | strip -%}
+                                  {%- assign should_exclude = false -%}
+                                  
+                                  {%- comment -%} Check if material should be excluded {%- endcomment -%}
+                                  {%- for excluded_material in excluded_materials -%}
+                                    {%- assign excluded_material_clean = excluded_material | strip -%}
+                                    {%- if material == excluded_material_clean or material contains excluded_material_clean -%}
+                                      {%- assign should_exclude = true -%}
+                                      {%- break -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                  
+                                  {%- unless should_exclude -%}
+                                    {%- comment -%} Check for case-insensitive duplicates {%- endcomment -%}
+                                    {%- assign material_lower = material | downcase -%}
+                                    {%- assign unique_materials_lower = unique_materials | downcase -%}
+                                    {%- unless unique_materials_lower contains material_lower -%}
+                                      {%- if unique_materials == blank -%}
+                                        {%- assign unique_materials = material -%}
+                                      {%- else -%}
+                                        {%- assign unique_materials = unique_materials | append: ',' | append: material -%}
+                                      {%- endif -%}
+                                    {%- endunless -%}
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                              {%- else -%}
+                                {%- comment -%} It's a single value {%- endcomment -%}
+                                {%- assign material = product.metafields.custom.material.value | strip -%}
                                 {%- assign should_exclude = false -%}
                                 
                                 {%- comment -%} Check if material should be excluded {%- endcomment -%}
@@ -342,36 +459,28 @@
                                     {%- endif -%}
                                   {%- endunless -%}
                                 {%- endunless -%}
-                              {%- endfor -%}
-                            {%- else -%}
-                              {%- comment -%} It's a single value {%- endcomment -%}
-                              {%- assign material = product.metafields.custom.material.value | strip -%}
-                              {%- assign should_exclude = false -%}
-                              
-                              {%- comment -%} Check if material should be excluded {%- endcomment -%}
-                              {%- for excluded_material in excluded_materials -%}
-                                {%- assign excluded_material_clean = excluded_material | strip -%}
-                                {%- if material == excluded_material_clean or material contains excluded_material_clean -%}
-                                  {%- assign should_exclude = true -%}
-                                  {%- break -%}
-                                {%- endif -%}
-                              {%- endfor -%}
-                              
-                              {%- unless should_exclude -%}
-                                {%- comment -%} Check for case-insensitive duplicates {%- endcomment -%}
-                                {%- assign material_lower = material | downcase -%}
-                                {%- assign unique_materials_lower = unique_materials | downcase -%}
-                                {%- unless unique_materials_lower contains material_lower -%}
-                                  {%- if unique_materials == blank -%}
-                                    {%- assign unique_materials = material -%}
-                                  {%- else -%}
-                                    {%- assign unique_materials = unique_materials | append: ',' | append: material -%}
-                                  {%- endif -%}
-                                {%- endunless -%}
-                              {%- endunless -%}
+                              {%- endif -%}
                             {%- endif -%}
-                          {%- endif -%}
+                          {%- endunless -%}
                         {%- endfor -%}
+                        
+                        {%- comment -%} Determine filter type based on data source {%- endcomment -%}
+                        {%- assign material_filter_type = 'filter.v.option.material' -%}
+                        {%- if has_variant_materials == false -%}
+                          {%- comment -%} Check if materials come from product metafields (not variant metafields) {%- endcomment -%}
+                          {%- assign has_product_metafield_materials = false -%}
+                          {%- for product in collection.products limit: 1 -%}
+                            {%- if product.metafields.custom.material != blank -%}
+                              {%- assign has_product_metafield_materials = true -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                          
+                          {%- if has_product_metafield_materials -%}
+                            {%- assign material_filter_type = 'filter.p.m.custom.material' -%}
+                          {%- else -%}
+                            {%- assign material_filter_type = 'filter.v.m.custom.material' -%}
+                          {%- endif -%}
+                        {%- endif -%}
                         
                         {%- if unique_materials != blank -%}
                           <h3 class="mega-menu__column-title">Material</h3>
@@ -380,7 +489,7 @@
                                                       
                             {%- for material in materials_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.p.m.custom.material={{ material | strip | url_encode }}" class="mega-menu__column-link">
+                                <a href="{{ link.url }}?{{ material_filter_type }}={{ material | strip | url_encode }}" class="mega-menu__column-link">
                                   {{ material | strip | capitalize | escape }}
                                 </a>
                               </li>
@@ -403,12 +512,40 @@
                         {%- endif -%}
                         
                         {%- for product in collection.products -%}
-                          {%- if product.metafields.custom.use_case != blank -%}
-                            {%- comment -%} Handle both single values and list values {%- endcomment -%}
-                            {%- if product.metafields.custom.use_case.value.first -%}
-                              {%- comment -%} It's a list of values {%- endcomment -%}
-                              {%- for use_case_item in product.metafields.custom.use_case.value -%}
-                                {%- assign use_case = use_case_item | strip -%}
+                          {%- comment -%} First try to get use cases from variant metafields {%- endcomment -%}
+                          {%- assign has_variant_use_cases = false -%}
+                          {%- for variant in product.variants -%}
+                            {%- if variant.metafields.custom.use_case != blank -%}
+                              {%- assign has_variant_use_cases = true -%}
+                              {%- comment -%} Handle both single values and list values {%- endcomment -%}
+                              {%- if variant.metafields.custom.use_case.value.first -%}
+                                {%- comment -%} It's a list of values {%- endcomment -%}
+                                {%- for use_case_item in variant.metafields.custom.use_case.value -%}
+                                  {%- assign use_case = use_case_item | strip -%}
+                                  {%- assign should_exclude = false -%}
+                                  
+                                  {%- comment -%} Check if use case should be excluded {%- endcomment -%}
+                                  {%- for excluded_use_case in excluded_use_cases -%}
+                                    {%- assign excluded_use_case_clean = excluded_use_case | strip -%}
+                                    {%- if use_case == excluded_use_case_clean or use_case contains excluded_use_case_clean -%}
+                                      {%- assign should_exclude = true -%}
+                                      {%- break -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                  
+                                  {%- unless should_exclude -%}
+                                    {%- unless unique_use_cases contains use_case -%}
+                                      {%- if unique_use_cases == blank -%}
+                                        {%- assign unique_use_cases = use_case -%}
+                                      {%- else -%}
+                                        {%- assign unique_use_cases = unique_use_cases | append: ',' | append: use_case -%}
+                                      {%- endif -%}
+                                    {%- endunless -%}
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                              {%- else -%}
+                                {%- comment -%} It's a single value {%- endcomment -%}
+                                {%- assign use_case = variant.metafields.custom.use_case.value | strip -%}
                                 {%- assign should_exclude = false -%}
                                 
                                 {%- comment -%} Check if use case should be excluded {%- endcomment -%}
@@ -429,32 +566,65 @@
                                     {%- endif -%}
                                   {%- endunless -%}
                                 {%- endunless -%}
-                              {%- endfor -%}
-                            {%- else -%}
-                              {%- comment -%} It's a single value {%- endcomment -%}
-                              {%- assign use_case = product.metafields.custom.use_case.value | strip -%}
-                              {%- assign should_exclude = false -%}
-                              
-                              {%- comment -%} Check if use case should be excluded {%- endcomment -%}
-                              {%- for excluded_use_case in excluded_use_cases -%}
-                                {%- assign excluded_use_case_clean = excluded_use_case | strip -%}
-                                {%- if use_case == excluded_use_case_clean or use_case contains excluded_use_case_clean -%}
-                                  {%- assign should_exclude = true -%}
-                                  {%- break -%}
-                                {%- endif -%}
-                              {%- endfor -%}
-                              
-                              {%- unless should_exclude -%}
-                                {%- unless unique_use_cases contains use_case -%}
-                                  {%- if unique_use_cases == blank -%}
-                                    {%- assign unique_use_cases = use_case -%}
-                                  {%- else -%}
-                                    {%- assign unique_use_cases = unique_use_cases | append: ',' | append: use_case -%}
-                                  {%- endif -%}
-                                {%- endunless -%}
-                              {%- endunless -%}
+                              {%- endif -%}
                             {%- endif -%}
-                          {%- endif -%}
+                          {%- endfor -%}
+                          
+                          {%- comment -%} Fallback to product metafields if no variant use cases found {%- endcomment -%}
+                          {%- unless has_variant_use_cases -%}
+                            {%- if product.metafields.custom.use_case != blank -%}
+                              {%- comment -%} Handle both single values and list values {%- endcomment -%}
+                              {%- if product.metafields.custom.use_case.value.first -%}
+                                {%- comment -%} It's a list of values {%- endcomment -%}
+                                {%- for use_case_item in product.metafields.custom.use_case.value -%}
+                                  {%- assign use_case = use_case_item | strip -%}
+                                  {%- assign should_exclude = false -%}
+                                  
+                                  {%- comment -%} Check if use case should be excluded {%- endcomment -%}
+                                  {%- for excluded_use_case in excluded_use_cases -%}
+                                    {%- assign excluded_use_case_clean = excluded_use_case | strip -%}
+                                    {%- if use_case == excluded_use_case_clean or use_case contains excluded_use_case_clean -%}
+                                      {%- assign should_exclude = true -%}
+                                      {%- break -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                  
+                                  {%- unless should_exclude -%}
+                                    {%- unless unique_use_cases contains use_case -%}
+                                      {%- if unique_use_cases == blank -%}
+                                        {%- assign unique_use_cases = use_case -%}
+                                      {%- else -%}
+                                        {%- assign unique_use_cases = unique_use_cases | append: ',' | append: use_case -%}
+                                      {%- endif -%}
+                                    {%- endunless -%}
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                              {%- else -%}
+                                {%- comment -%} It's a single value {%- endcomment -%}
+                                {%- assign use_case = product.metafields.custom.use_case.value | strip -%}
+                                {%- assign should_exclude = false -%}
+                                
+                                {%- comment -%} Check if use case should be excluded {%- endcomment -%}
+                                {%- for excluded_use_case in excluded_use_cases -%}
+                                  {%- assign excluded_use_case_clean = excluded_use_case | strip -%}
+                                  {%- if use_case == excluded_use_case_clean or use_case contains excluded_use_case_clean -%}
+                                    {%- assign should_exclude = true -%}
+                                    {%- break -%}
+                                  {%- endif -%}
+                                {%- endfor -%}
+                                
+                                {%- unless should_exclude -%}
+                                  {%- unless unique_use_cases contains use_case -%}
+                                    {%- if unique_use_cases == blank -%}
+                                      {%- assign unique_use_cases = use_case -%}
+                                    {%- else -%}
+                                      {%- assign unique_use_cases = unique_use_cases | append: ',' | append: use_case -%}
+                                    {%- endif -%}
+                                  {%- endunless -%}
+                                {%- endunless -%}
+                              {%- endif -%}
+                            {%- endif -%}
+                          {%- endunless -%}
                         {%- endfor -%}
                         
                         {%- if unique_use_cases != blank -%}
@@ -463,7 +633,7 @@
                             {%- assign use_cases_list = unique_use_cases | split: ',' -%}
                             {%- for use_case in use_cases_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.p.m.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | capitalize | escape }}</a>
+                                <a href="{{ link.url }}?filter.v.m.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | capitalize | escape }}</a>
                               </li>
                             {%- endfor -%}
                           </ul>

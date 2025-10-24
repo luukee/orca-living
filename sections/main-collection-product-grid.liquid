@@ -178,6 +178,30 @@
               assign quick_ship_tag = true
             endif
           %}
+
+          {%- comment -%}
+          NEW: capture active material and use_case from Shopify filters
+          Supports variant option (filter.v.option.material) and variant metafield (filter.v.m.custom.use_case)
+          {%- endcomment -%}
+          {%- assign active_material = '' -%}
+          {%- assign active_use_case = '' -%}
+          {%- for f in collection.filters -%}
+            {%- assign pname = f.param_name | downcase -%}
+            {%- if pname contains 'filter.v.option.material' -%}
+              {%- for v in f.values -%}
+                {%- if v.active -%}
+                  {%- assign active_material = v.label | downcase | strip -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- elsif pname contains 'filter.v.m.custom.use_case' -%}
+              {%- for v in f.values -%}
+                {%- if v.active -%}
+                  {%- assign active_use_case = v.label | downcase | strip -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+
           {% comment %} DEBUG INFO {% endcomment %}
           {% comment %}
           <div class='debug-info'>
@@ -267,7 +291,6 @@
                         endfor
                       %}
                       {% for option_variant in option_variants.values %}
-                        {% comment %} {% render 'dump' with option_variant %} {% endcomment %}
                         {% assign filtered_prods = collection_product.variants | where: option_pos, option_variant %}
 
                         {% for p in filtered_prods %}
@@ -444,6 +467,73 @@
                               if displayed_variants contains p.id or p.options contains 'Sample'
                                 continue
                               endif
+                            endif
+                            
+                            ## Material filter - NEW
+                            # If we have an active material filter, only show variants with that material
+                            if active_material != ''
+                              assign variant_material = ''
+                              assign material_match = false
+                              
+                              # First try to get material from variant options (for products with Material as option)
+                              for option in product.options
+                                if option == 'Material'
+                                  assign option_index = forloop.index0
+                                  assign variant_material = p.options[option_index] | downcase | strip
+                                  if variant_material == active_material
+                                    assign material_match = true
+                                  endif
+                                  break
+                                endif
+                              endfor
+                              # If no match found in options, try variant metafields (for products with Material as metafield)
+                              unless material_match
+                                if p.metafields.custom.material != blank
+                                  if p.metafields.custom.material.value.first
+                                    # It's a list of values
+                                    for material_item in p.metafields.custom.material.value
+                                      assign variant_material = material_item | downcase | strip
+                                      if variant_material == active_material
+                                        assign material_match = true
+                                        break
+                                      endif
+                                    endfor
+                                  else
+                                    # It's a single value
+                                    assign variant_material = p.metafields.custom.material.value | downcase | strip
+                                    if variant_material == active_material
+                                      assign material_match = true
+                                    endif
+                                  endif
+                                endif
+                              endunless
+                              
+                              # If still no match, try product metafields as fallback
+                              unless material_match
+                                if product.metafields.custom.material != blank
+                                  if product.metafields.custom.material.value.first
+                                    # It's a list of values
+                                    for material_item in product.metafields.custom.material.value
+                                      assign variant_material = material_item | downcase | strip
+                                      if variant_material == active_material
+                                        assign material_match = true
+                                        break
+                                      endif
+                                    endfor
+                                  else
+                                    # It's a single value
+                                    assign variant_material = product.metafields.custom.material.value | downcase | strip
+                                    if variant_material == active_material
+                                      assign material_match = true
+                                    endif
+                                  endif
+                                endif
+                              endunless
+                              
+                              # Skip this variant if no material match found
+                              unless material_match
+                                continue
+                              endunless
                             endif
                           
                             # Add the variant ID to the displayed_variants array
