@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "b9321e40-9a0b-456e-bb05-4e652513eb31": {
@@ -6,7 +15,7 @@
         "title": "{{ blog.title }}",
         "make_h1": true,
         "menu": "landscapes-menu",
-        "padding_top": 16,
+        "padding_top": 0,
         "padding_bottom": 16
       }
     },
@@ -19,9 +28,16 @@
         "products_per_page": 48,
         "layout": "grid",
         "show_image": true,
+        "show_blog_title": true,
+        "show_blog_view_options": true,
         "image_height": "adapt",
+        "show_article_tags": false,
+        "show_excerpt": false,
+        "show_content": true,
         "show_date": false,
         "show_author": false,
+        "show_read_more": false,
+        "read_more_text": "",
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -29,7 +45,7 @@
     "895e2c76-87a7-4bac-8ae5-344f946100e1": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"><\/div>\n  <div class=\"hovered-item__image\"><\/div>\n<\/div>",
+        "custom_liquid": "<div class=\"hovered-item small--hide\">\n  <div class=\"hovered-item__title\"></div>\n  <div class=\"hovered-item__image\"></div>\n</div>",
         "color_scheme": "background-1",
         "padding_top": 16,
         "padding_bottom": 16

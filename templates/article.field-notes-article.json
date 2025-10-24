@@ -15,8 +15,8 @@
         "title": "Field Notes",
         "make_h1": false,
         "menu": "fieldnotes",
-        "padding_top": 20,
-        "padding_bottom": 52
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "7b7a1dc6-7480-4a22-bf60-d2b44005951c": {
