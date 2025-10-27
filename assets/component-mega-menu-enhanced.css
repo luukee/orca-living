@@ -134,11 +134,11 @@
 .mega-menu__column-title {
   font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 1.2rem;
+  margin-top: 0;
   color: #000;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding-bottom: 0.5rem;
+  padding-top: 0;
 }
 
 .mega-menu__column-list {
