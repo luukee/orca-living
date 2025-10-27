@@ -438,7 +438,9 @@ html.no-js .no-js-hidden {
     min-width: 1200px;
     max-width: 100%;
   }
-  .section--register {
+  /* Prevent section from taking up the full width */
+  main.content-for-layout > .section.section--register {
+    min-width: unset;
     grid-column: 2 / span 1;
   }
 }
