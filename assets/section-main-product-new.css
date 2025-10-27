@@ -486,7 +486,7 @@ a.product__text {
   border-radius: 50%;
   border: 0.1rem solid rgba(var(--color-foreground), 0.1);
   color: rgb(var(--color-foreground));
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   height: 3rem;
@@ -1516,15 +1516,14 @@ a.product__text {
    ============================================ */
 .related-products__heading {
   font-family: inherit;
-  padding: 0 2rem;
+  padding: 0;
 }
 /* Responsive Layout */
 @media only screen and (max-width: 749px) {
   .template--product #MainContent {
     padding: 0 0 0 0;
   }
-  .product--small:not(.product--no-media) .product__info-wrapper,
-  .related-products__heading {
+  .product--small:not(.product--no-media) .product__info-wrapper {
     padding: 0 2rem;
   }
 	.out-of-stock h5 {
