@@ -435,7 +435,7 @@ html.no-js .no-js-hidden {
   }
   main.content-for-layout > .section:nth-child(2) {
     width: 100%;
-    min-width: 1200px;
+    /* min-width: 1200px; */
     max-width: 100%;
   }
   /* Prevent section from taking up the full width */
