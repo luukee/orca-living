@@ -83,7 +83,7 @@
 {%- endstyle -%}
 
 
-
+<!-- main-collection-product-grid -->
 <div class='section-{{ section.id }}-padding section--main-collection-product-grid'>
   <div class='collection{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}'>
     {% comment %} {% unless is_samples %} {% endcomment %}
@@ -253,7 +253,8 @@
                       {% assign has_quick_ship = true %}
                       {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
                       <li class='grid__item grid__item-PRODUCT-by-quick-ship'>
-                        {% render 'card-product',
+                        {% comment %} use card-product-nine15 instead of card-product for the product title {% endcomment %}
+                        {% render 'card-product-nine15',
                           product_title: collection_product.title,
                           card_product: variant,
                           hide_overlay_link: is_samples,
@@ -327,7 +328,7 @@
                               {% assign variant_title = variant_title | append: ' - ' | append: option_variant %}
                             {% endif %}
                             <li class='grid__item grid__item-PRODUCT-by-variant{% if product_expanded %} product-expanded{% endif %}'>
-                              {% render 'card-product',
+                              {% render 'card-product-nine15',
                                 product_title: variant_title,
                                 card_product: p,
                                 hide_overlay_link: is_samples,
@@ -354,7 +355,7 @@
                   {% endfor %}
                   {% unless product_expanded %}
                     <li class="grid__item grid__item-PRODUCT-general-product {%- if product_expanded -%}product-expanded{%- endif -%}">
-                      {% render 'card-product', 
+                      {% render 'card-product-nine15', 
                         card_product: collection_product,
                         is_samples: is_samples,
                         hide_overlay_link: is_samples,
@@ -396,7 +397,7 @@
                   {%- if variant.metafields.custom.quick_ship == 'True' and quick_ship_tag -%}
                     {% assign displayed_variants = true %}
                     <li class='grid__item grid__item-COLLECTION-quick-ship'>
-                      {% render 'card-product',
+                      {% render 'card-product-nine15',
                         product_title: product.title,
                         card_product: variant,
                         hide_overlay_link: is_samples,
@@ -560,7 +561,7 @@
                             endif
                           %}
                           <li class='grid__item grid__item-COLLECTION-by-variant' {% if p.metafields.custom.group != blank %}data-group='{{p.metafields.custom.group}}'{% endif %}>
-                            {% render 'card-product',
+                            {% render 'card-product-nine15',
                               product_title: prod_title,
                               card_product: p,
                               hide_overlay_link: is_samples,
@@ -592,7 +593,7 @@
       
                   {% unless product_expanded %}
                     <li class='grid__item grid__item-COLLECTION-by-product'>
-                      {% render 'card-product',
+                      {% render 'card-product-nine15',
                         product_title: product.title,
                         card_product: product,
                         is_samples: is_samples,
