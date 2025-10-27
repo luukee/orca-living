@@ -26,7 +26,7 @@
       ],
       "settings": {
         "products_per_page": 40,
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "filter_on_tag": "_Cobble",
         "image_ratio": "square",
         "title_above_image": false,
