@@ -15,7 +15,7 @@
         "show_collection_description": true,
         "show_collection_image": true,
         "color_scheme": "background-1",
-        "collection_image_height": 75
+        "collection_image_height": 60
       }
     },
     "product-grid": {
@@ -27,7 +27,7 @@
         "products_per_page": 24,
         "columns_desktop": 4,
         "filter_on_tag": "_Cobble",
-        "image_ratio": "portrait",
+        "image_ratio": "square",
         "title_above_image": false,
         "show_secondary_image": false,
         "show_vendor": false,
