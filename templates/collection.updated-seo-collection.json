@@ -62,7 +62,7 @@
         "show_vendor": false,
         "show_rating": false,
         "show_only_current_collection": false,
-        "exclude_current_collection": false,
+        "exclude_current_collection": true,
         "excluded_collections": "bookshelf,accessories,gift-card",
         "card_show_inner_content": false
       }
