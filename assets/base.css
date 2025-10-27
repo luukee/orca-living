@@ -431,7 +431,7 @@ html.no-js .no-js-hidden {
   }
   main.content-for-layout > .section:first-of-type,
   .sidebar-links {
-    padding-top: 2rem;
+    padding-top: 1.5rem;
   }
   main.content-for-layout > .section:nth-child(2) {
     width: 100%;
