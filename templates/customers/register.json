@@ -11,6 +11,7 @@
   "sections": {
     "09a61d0d-4c4f-4b77-8a63-9aa79f471eb9": {
       "type": "custom-liquid",
+      "disabled": true,
       "settings": {
         "custom_liquid": "<h1 class=\"account-register page-title\">\n  Trade Application\n</h1>",
         "color_scheme": "background-1",
@@ -18,9 +19,36 @@
         "padding_bottom": 12
       }
     },
+    "rich_text_4JqNBf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_bCdVNg": {
+          "type": "heading",
+          "settings": {
+            "heading": "Trade Application",
+            "heading_size": "h3"
+          }
+        }
+      },
+      "block_order": [
+        "heading_bCdVNg"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "background-1",
+        "full_width": true,
+        "make_h1": true,
+        "use_padding": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "main": {
       "type": "main-register",
       "settings": {
+        "use_padding": false,
         "padding_top": 0,
         "padding_bottom": 16
       }
@@ -28,6 +56,7 @@
   },
   "order": [
     "09a61d0d-4c4f-4b77-8a63-9aa79f471eb9",
+    "rich_text_4JqNBf",
     "main"
   ]
 }
