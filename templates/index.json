@@ -147,8 +147,8 @@
         "collection_6x6GWm": {
           "type": "collection",
           "settings": {
-            "collection": "furniture",
-            "collection_card_title_text": "Sundial Bistro",
+            "collection": "lighting",
+            "collection_card_title_text": "Outdoor Lighting",
             "collection_card_link_text": "Shop Now",
             "collection_card_link_url": "",
             "collection_card_show_caption_description": false
@@ -157,11 +157,11 @@
         "product_fVXY8j": {
           "type": "product",
           "settings": {
-            "product": "orca-sauna",
+            "product": "sundial-bistro-set",
             "second_image": false,
-            "product_card_title_text": "ORCA Sauna",
+            "product_card_title_text": "Sundial Bistro Set",
             "product_card_link_text": "Shop Now",
-            "product_card_link_url": "shopify://products/orca-sauna",
+            "product_card_link_url": "shopify://products/sundial-bistro-set",
             "product_card_show_caption_description": false
           }
         }
