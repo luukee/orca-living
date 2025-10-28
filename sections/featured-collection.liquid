@@ -91,6 +91,7 @@
               section_id: section.id,
               show_product_title: section.settings.show_product_title,
               card_show_inner_content: section.settings.card_show_inner_content
+              card_text_color: section.settings.card_text_color
             %}
           </li>
         {%- else -%}
@@ -457,6 +458,12 @@
       "id": "enable_quick_add",
       "default": false,
       "label": "t:sections.featured-collection.settings.enable_quick_buy.label"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#000000"
     },
     {
       "type": "header",

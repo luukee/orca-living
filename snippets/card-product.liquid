@@ -25,6 +25,7 @@
   - card_title_text: {String} Text for card heading (optional)
   - card_show_outer_content: {Boolean} Show the outer content. Default: false (optional)
   - card_show_inner_content: {Boolean} Show the inner content. Default: false (optional)
+  - card_text_color: {String} Text color for card. Default: "#000000" (optional)
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
@@ -213,6 +214,16 @@ endif
       assign card_link_url = card_link_url
     endif
   -%}
+  
+  {% if card_text_color != blank %}
+    <style>
+     #Slider-{{ section_id }} .full-unstyled-link {
+        color: {{ card_text_color }};
+        font-size: 15px;
+      }
+    </style>
+    
+  {% endif %}
 
   <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div class="{{ card_classes }}" style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">

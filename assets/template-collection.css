@@ -67,4 +67,29 @@
 .collection__view-all a:not(.link) {
   margin-top: 1rem;
 }
+.collection slider-component .card__link-underline-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.collection slider-component .underline-links-hover a {
+  text-decoration: none;
+  cursor: pointer;
+}
+.collection slider-component .underline-links-hover a::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0; /* space below text */
+  top: auto;
+  width: auto;
+  height: 2px;
+  background: #000; /* or your desired color */
+  transform: translateY(6px);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.collection slider-component .underline-links-hover:hover a::after,
+.collection slider-component .underline-links-hover:focus a::after {
+  transform: translateY(0);
+}
 /*# sourceMappingURL=template-collection.css.map */
