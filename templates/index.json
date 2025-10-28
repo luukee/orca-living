@@ -199,7 +199,7 @@
           "name": "Landscape Designs",
           "settings": {
             "show_image": true,
-            "image": "shopify://shop_images/ORCA_Ggiata_Cafe_2.jpg",
+            "image": "shopify://shop_images/JC_250807_ORCA_DSCF0707_HR.png",
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 10,
@@ -260,7 +260,7 @@
           "name": "Slide Two",
           "settings": {
             "show_image": true,
-            "image": "shopify://shop_images/90148_SMO_001_27.jpg",
+            "image": "shopify://shop_images/JC_ORCA_DSCF4980_HR_1.png",
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 10,
@@ -268,7 +268,7 @@
             "bg_color_mob": "#000000",
             "opacity_mob": 10,
             "align_text": "left",
-            "title": "SECOND SLIDE",
+            "title": "Landscape designs",
             "make_h1": true,
             "font_size_title": 30,
             "title_color": "#ffffff",
