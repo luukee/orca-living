@@ -231,10 +231,6 @@
               assign show_nav_child_links = true
             endif
             
-            # Debug final is_current value - remove after fixing
-            # if link.title == 'Pavers'
-            #   echo ' | is_current=' | append: is_current
-            # endif
           %}
           <li>
             {%- comment -%} Check if this link should have a mega menu {%- endcomment -%}
@@ -616,13 +612,19 @@
                           {%- endunless -%}
                         {%- endfor -%}
                         
+                        {%- comment -%} Determine filter type based on data source {%- endcomment -%}
+                        {%- assign use_case_filter_type = 'filter.p.m.custom.use_case' -%}
+                        {%- if has_variant_use_cases == true -%}
+                          {%- assign use_case_filter_type = 'filter.v.m.custom.use_case' -%}
+                        {%- endif -%}
+                        
                         {%- if unique_use_cases != blank -%}
                           <h3 class="mega-menu__column-title">Use Case</h3>
                           <ul class="mega-menu__column-list">
                             {%- assign use_cases_list = unique_use_cases | split: ',' -%}
                             {%- for use_case in use_cases_list -%}
                               <li class="mega-menu__column-item">
-                                <a href="{{ link.url }}?filter.v.m.custom.use_case={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
+                                <a href="{{ link.url }}?{{ use_case_filter_type }}={{ use_case | strip | url_encode }}" class="mega-menu__column-link">{{ use_case | strip | escape }}</a>
                               </li>
                             {%- endfor -%}
                           </ul>

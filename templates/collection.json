@@ -38,7 +38,7 @@
         "enable_quick_add": false,
         "enable_quick_ship_card_badge": true,
         "quick_ship_card_badge_text": "In Stock",
-        "enable_filtering": false,
+        "enable_filtering": true,
         "filter_type": "horizontal",
         "enable_sorting": false,
         "columns_mobile": "2",

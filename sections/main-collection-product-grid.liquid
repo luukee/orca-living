@@ -84,13 +84,41 @@
 
 
 <!-- main-collection-product-grid -->
+{% comment %} Calculate active filters for display {% endcomment %}
+{%- assign active_filters = '' -%}
+{%- for f in collection.filters -%}
+  {%- assign filter_values = '' -%}
+  {%- for v in f.values -%}
+    {%- if v.active -%}
+      {%- if filter_values == '' -%}
+        {%- assign filter_values = v.label -%}
+      {%- else -%}
+        {%- assign filter_values = filter_values | append: ' and ' | append: v.label -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if filter_values != '' -%}
+    {%- assign filter_name = f.label | default: f.param_name | split: '.' | last | capitalize | replace: '_', ' ' -%}
+    {%- if active_filters == '' -%}
+      {%- assign active_filters = filter_name | append: ': ' | append: filter_values -%}
+    {%- else -%}
+      {%- assign active_filters = active_filters | append: ' • ' | append: filter_name | append: ': ' | append: filter_values -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
 <div class='section-{{ section.id }}-padding section--main-collection-product-grid'>
   <div class='collection{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}'>
     {% comment %} {% unless is_samples %} {% endcomment %}
-      <div class='feed--view-type page-width'>
-        <span>View: </span>
-        <a href='#images' data-type='images' class='current'>Images</a>,
-        <a href='#list' data-type='list'>List</a>
+      <div class='page-width filter-display'>
+        <div class='feed--view-type'>
+          <span>View: </span>
+          <a href='#images' data-type='images' class='current'>Images</a>,
+          <a href='#list' data-type='list'>List</a>
+        </div>  
+        {%- if active_filters != '' -%}
+          <div class='filter-display__text'>{{ active_filters }}</div>
+        {%- endif -%}
       </div>
     {% comment %} {% endunless %} {% endcomment %}
     <div class='product-grid-container' id='ProductGridContainer'>
