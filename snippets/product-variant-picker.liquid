@@ -11,6 +11,20 @@
 {% endcomment %}
 <!-- product-variant-picker.liquid -->
 <!-- product_form_id: {{product_form_id}} -->
+{%- liquid
+# assign is_paver_product = false
+
+# Check by collection handle
+# if product.collections.size > 0
+#   for product_collection in product.collections
+#     if product_collection.handle == 'pavers'
+#       assign is_paver_product = true
+#       break
+#     endif
+#   endfor
+# endif
+-%}
+
 {%- unless product.has_only_default_variant -%}
   {%- if block.settings.picker_type == 'button' -%}
     <variant-radios
@@ -24,47 +38,11 @@
       {{ block.shopify_attributes }}
     >
       {%- for option in product.options_with_values -%}
-                {% comment %} For paver products, don't display the 'material' option {% endcomment %}
-        {%- liquid
-          assign is_paver_product = false
-          
-          # Check by collection handle
-          if product.collections.size > 0
-            for product_collection in product.collections
-              if product_collection.handle == 'pavers'
-                assign is_paver_product = true
-                break
-              endif
-            endfor
-          endif
-          
-          # Check by product type
-          unless is_paver_product
-            assign product_type_lower = product.type | downcase
-            if product_type_lower contains 'paver'
-              assign is_paver_product = true
-            endif
-          endunless
-          
-          # Check by tags (case-insensitive)
-          unless is_paver_product
-            for tag in product.tags
-              assign tag_lower = tag | downcase
-              if tag_lower contains 'paver'
-                assign is_paver_product = true
-                break
-              endif
-            endfor
-          endunless
-        -%}
-        
-        {%- unless is_paver_product and option.name == 'Material' -%}
-        <fieldset class="js product-form__input">
+        <fieldset class="js product-form__input product-form__input--{{ option.name | downcase }}">
           <legend class="form__label">{{ option.name }}: </legend>
           <span class="form__label hide h4">{{ option.name }}: </span>
           {% render 'product-variant-options', product: product, option: option, block: block %}
         </fieldset>
-        {%- endunless -%}
       {%- endfor -%}
       <script type="application/json">
         {{ product.variants | json }}

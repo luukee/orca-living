@@ -54,10 +54,16 @@
     
     // Store the initial slides array for later filtering operations
     // This preserves the original slide order and content
-    initialSlides = [... splide.Components.Slides.get()];
-    
-    // Perform initial slide filtering based on current data attribute
-    updateCarouselSlides();
+    // Use a small delay to ensure Splide has processed all DOM elements
+    setTimeout(function() {
+      initialSlides = [... splide.Components.Slides.get()];
+      
+      // Only perform filtering if we have slides
+      if (initialSlides && initialSlides.length > 0) {
+        // Perform initial slide filtering based on current data attribute
+        updateCarouselSlides();
+      }
+    }, 100);
   }
 
   /**
@@ -70,42 +76,194 @@
    * 4. Shows/hides the carousel container based on whether filtered slides exist
    */
   function updateCarouselSlides() {
-    // Get the current filter value from the carousel's data attribute
-    const optionValue = document.querySelector('.splide').getAttribute('data-current');
+    // Early return if initialSlides is empty or undefined
+    if (!initialSlides || initialSlides.length === 0) {
+      return;
+    }
     
-    // Early return if the option value is the default placeholder
+    // Get the current filter value from the carousel's data attribute
+    const splideElement = document.querySelector('.splide');
+    if (!splideElement) return;
+    
+    const optionValue = splideElement.getAttribute('data-current');
+    
+    // Debug logging
+    // console.log('updateCarouselSlides - optionValue:', optionValue);
+    
+    // Early return if the option value is the default placeholder or empty
     // This prevents unnecessary processing when no real filter is selected
-    if (optionValue == "default title") 
-      return
+    if (!optionValue || optionValue == "default title") {
+      // If no filter, show all slides
+      splideElement.style.display = "block";
+      return;
+    }
     
     // Initialize array to store slides that match the current filter
     let newSlides = [];
     
+    // Extract key components from optionValue using pattern analysis
+    // Format is typically: prefix_color_suffix or size_color_material
+    const optionParts = optionValue.toLowerCase().split(/[_\-\s]+/);
+    
+    let colorName = '';
+    let sizeType = '';
+    
+    // Analyze slide options to identify common patterns
+    // This helps us determine which parts are sizes vs colors dynamically
+    const slidePrefixes = new Set();
+    if (initialSlides && initialSlides.length > 0) {
+      initialSlides.forEach((slide) => {
+        const slideOption = slide.slide.getAttribute('data-option');
+        if (slideOption) {
+          const slideParts = slideOption.toLowerCase().split(/[_\-\s]+/);
+          if (slideParts.length > 0 && slideParts[0].length > 2) {
+            slidePrefixes.add(slideParts[0]);
+          }
+        }
+      });
+    }
+    
+    // Pattern-based extraction:
+    // - First part that appears as a prefix in multiple slides is likely size/type
+    // - Middle parts are typically colors
+    // - Last part is often material/descriptor
+    
+    if (optionParts.length >= 3) {
+      // Format: size_color_material (e.g., "tile_umber_clay")
+      // First part is likely size if it appears as a common prefix
+      if (slidePrefixes.has(optionParts[0])) {
+        sizeType = optionParts[0];
+        colorName = optionParts[1];
+      } else {
+        // First part might be something else, try second as color
+        colorName = optionParts[1] || optionParts[0];
+        sizeType = optionParts[0];
+      }
+    } else if (optionParts.length === 2) {
+      // Format: size_color or prefix_color
+      // If first part is a common prefix, it's likely size
+      if (slidePrefixes.has(optionParts[0])) {
+        sizeType = optionParts[0];
+        colorName = optionParts[1];
+      } else {
+        // Both could be relevant, prioritize the second as color
+        colorName = optionParts[1] || optionParts[0];
+        sizeType = optionParts[0];
+      }
+    } else if (optionParts.length === 1) {
+      // Single word - likely just color
+      colorName = optionParts[0];
+    }
+    
+    // Validate extracted values (must have at least 2 characters)
+    if (colorName && colorName.length < 2) colorName = '';
+    if (sizeType && sizeType.length < 2) sizeType = '';
+    
+    // console.log('Extracted color:', colorName, 'size/type:', sizeType, 'from:', optionValue);
+    
     // Iterate through all initial slides to find matches
+    // We'll collect slides in two passes:
+    // 1. First pass: slides that match BOTH size and color (preferred)
+    // 2. Second pass: slides that match only color (fallback if no size matches)
+    let sizeAndColorMatches = [];
+    let colorOnlyMatches = [];
+    
     initialSlides.forEach((slide) => {
       // Get the slide's data-option attribute
       const slideOption = slide.slide.getAttribute('data-option');
       
-      // Check for exact match first, then try normalized matching for multi-word options
-      if (slideOption == optionValue || slideOption.toLowerCase().replace(/[_\-\s]+/g, ' ') === optionValue.toLowerCase().replace(/[_\-\s]+/g, ' ')) {
-        newSlides.push(slide);
+      if (!slideOption) return;
+      
+      // Normalize both values for comparison
+      const normalizedSlideOption = slideOption.toLowerCase().replace(/[_\-\s]+/g, ' ');
+      const normalizedOptionValue = optionValue.toLowerCase().replace(/[_\-\s]+/g, ' ');
+      
+      // Check for exact match first
+      if (slideOption.toLowerCase() === optionValue.toLowerCase() || normalizedSlideOption === normalizedOptionValue) {
+        sizeAndColorMatches.push(slide);
+        // console.log('Exact match found:', slideOption);
+        return;
+      }
+      
+      // Split slide option into parts
+      const slideParts = normalizedSlideOption.split(' ');
+      
+      // Try to match based on color name
+      if (colorName) {
+        const slideHasColor = slideParts.some(part => {
+          // Check if the slide part contains the color name or vice versa
+          return part === colorName || 
+                 (part.length > 2 && colorName.length > 2 && (
+                   part.includes(colorName) || 
+                   colorName.includes(part)
+                 ));
+        });
+        
+        if (slideHasColor) {
+          // Check if size/type also matches
+          if (sizeType) {
+            const slideHasSizeType = slideParts.some(part => 
+              part === sizeType || (part.length > 2 && sizeType.length > 2 && (
+                part.includes(sizeType) || sizeType.includes(part)
+              ))
+            );
+            
+            // If size type matches too, add to preferred matches
+            if (slideHasSizeType) {
+              sizeAndColorMatches.push(slide);
+              // console.log('Color + Size match found:', slideOption);
+              return;
+            }
+          }
+          
+          // Color matches but size doesn't (or no size specified) - add to fallback matches
+          colorOnlyMatches.push(slide);
+          // console.log('Color match found:', slideOption);
+        }
+      } else {
+        // Fallback: if no color was extracted, try normalized prefix matching
+        const slidePrefix = normalizedSlideOption.substring(0, Math.min(normalizedSlideOption.length, normalizedOptionValue.length));
+        const optionPrefix = normalizedOptionValue.substring(0, Math.min(normalizedOptionValue.length, normalizedSlideOption.length));
+        
+        if (slidePrefix === optionPrefix || normalizedSlideOption.startsWith(optionPrefix) || normalizedOptionValue.startsWith(slidePrefix)) {
+          colorOnlyMatches.push(slide);
+          // console.log('Prefix match found:', slideOption);
+        }
       }
     });
+    
+    // Use size+color matches if available, otherwise fall back to color-only matches
+    if (sizeType && sizeAndColorMatches.length > 0) {
+      // We have a size specified and found matches with both size and color
+      newSlides = sizeAndColorMatches;
+      // console.log('Using size+color matches:', sizeAndColorMatches.length);
+    } else if (sizeType && sizeAndColorMatches.length === 0) {
+      // Size specified but no size matches found - this might be an error, but we'll still show color matches
+      // console.log('Size specified but no size+color matches found, using color-only matches');
+      newSlides = colorOnlyMatches;
+    } else {
+      // No size specified, use all color matches
+      newSlides = sizeAndColorMatches.concat(colorOnlyMatches);
+    }
+    
+    // console.log('Total matches found:', newSlides.length);
     
     // Remove all current slides from the carousel
     // The '*' parameter removes all slides at once
     splide.Components.Slides.remove('*');
     
-    // If no slides match the current filter, hide the carousel container
+    // If no slides match the current filter, show all slides as fallback
     if (newSlides.length == 0) {
-      document.querySelector('.splide').style.display = "none"
-      return
+      // console.log('No matches found, showing all slides');
+      // Show all slides instead of hiding the carousel
+      newSlides = initialSlides;
+      splideElement.style.display = "block";
+    } else {
+      // Show the carousel container since we have matching slides
+      splideElement.style.display = "block";
     }
     
-    // Show the carousel container since we have matching slides
-    document.querySelector('.splide').style.display = "block"
-    
-    // Add the filtered slides back to the carousel
+    // Add the slides back to the carousel
     // Map the slide objects to their DOM elements for proper addition
     splide.Components.Slides.add(newSlides.map((slide) => slide.slide));
   }
