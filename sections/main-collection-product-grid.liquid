@@ -182,9 +182,12 @@
           {%- comment -%}
           NEW: capture active material and use_case from Shopify filters
           Supports variant option (filter.v.option.material) and variant metafield (filter.v.m.custom.use_case)
+          Try collection.filters first, then fallback to URL parameters for when filtering is disabled
           {%- endcomment -%}
           {%- assign active_material = '' -%}
           {%- assign active_use_case = '' -%}
+          
+          {%- comment -%} Try to get filters from collection.filters first {%- endcomment -%}
           {%- for f in collection.filters -%}
             {%- assign pname = f.param_name | downcase -%}
             {%- if pname contains 'filter.v.option.material' -%}
@@ -193,7 +196,8 @@
                   {%- assign active_material = v.label | downcase | strip -%}
                 {%- endif -%}
               {%- endfor -%}
-            {%- elsif pname contains 'filter.v.m.custom.use_case' -%}
+            {%- elsif pname contains 'filter.v.m.custom.use_case' or pname contains 'filter.p.m.custom.use_case' -%}
+              {%- comment -%} Handle both variant and product use_case metafields {%- endcomment -%}
               {%- for v in f.values -%}
                 {%- if v.active -%}
                   {%- assign active_use_case = v.label | downcase | strip -%}
@@ -201,18 +205,20 @@
               {%- endfor -%}
             {%- endif -%}
           {%- endfor -%}
+          
+          {%- comment -%} Since filters aren't marked as active, manually parse from URL {%- endcomment -%}
+          {%- assign full_url = request.path -%}
+          {%- if request.page_type == 'collection' -%}
+            {%- assign full_url = collection.url | split: '?' | last -%}
+            {%- if full_url contains 'filter.p.m.custom.use_case=' -%}
+              {%- assign url_parts = full_url | split: 'filter.p.m.custom.use_case=' -%}
+              {%- if url_parts.size > 1 -%}
+                {%- assign use_case_and_rest = url_parts[1] | split: '&' -%}
+                {%- assign active_use_case = use_case_and_rest[0] | url_decode | downcase | strip -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
 
-          {% comment %} DEBUG INFO {% endcomment %}
-          {% comment %}
-          <div class='debug-info'>
-            <h1>is_product_page: {{ is_product_page }}</h1>
-            <h1>current_collection: {{ current_collection.title }}</h1>
-            <h1>should_filter_by_tag: {{ should_filter_by_tag }}</h1>
-            {% if should_filter_by_tag %}
-              <h1>material_tags: {{ material_tags }}</h1>
-            {% endif %}
-          </div>
-          {% endcomment %}
           {% if is_product_page %}
             {%- for collection_product in current_collection.products -%}
               {% comment %}Only process products that share any material tags with current product{% endcomment %}
@@ -536,6 +542,59 @@
                                 continue
                               endunless
                             endif
+                            
+                            ## Use case filter
+                            # If we have an active use_case filter, only show variants with that use_case
+                            if active_use_case != ''
+                              assign variant_use_case = ''
+                              assign use_case_match = false
+                              
+                              # Try variant metafield first
+                              if p.metafields.custom.use_case != blank
+                                if p.metafields.custom.use_case.value.first
+                                  # It's a list of values
+                                  for use_case_item in p.metafields.custom.use_case.value
+                                    assign variant_use_case = use_case_item | downcase | strip
+                                    # Check if the use_case contains the filter value (handles "Downlight • Steps" type values)
+                                    if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                      assign use_case_match = true
+                                      break
+                                    endif
+                                  endfor
+                                else
+                                  # It's a single value - check if it contains the filter value
+                                  assign variant_use_case = p.metafields.custom.use_case.value | downcase | strip
+                                  if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                    assign use_case_match = true
+                                  endif
+                                endif
+                              endif
+                              
+                              # If still no match, try product metafield as fallback
+                              unless use_case_match
+                                if product.metafields.custom.use_case != blank
+                                  if product.metafields.custom.use_case.value.first
+                                    for use_case_item in product.metafields.custom.use_case.value
+                                      assign variant_use_case = use_case_item | downcase | strip
+                                      if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                        assign use_case_match = true
+                                        break
+                                      endif
+                                    endfor
+                                  else
+                                    assign variant_use_case = product.metafields.custom.use_case.value | downcase | strip
+                                    if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                      assign use_case_match = true
+                                    endif
+                                  endif
+                                endif
+                              endunless
+                              
+                              # Skip this variant if no use_case match found
+                              unless use_case_match
+                                continue
+                              endunless
+                            endif
                           
                             # Add the variant ID to the displayed_variants array
                             assign displayed_variants = displayed_variants | append: ' ' | append: p.id
@@ -592,27 +651,166 @@
                   {% endfor %}
       
                   {% unless product_expanded %}
-                    <li class='grid__item grid__item-COLLECTION-by-product'>
-                      {% render 'card-product-nine15',
-                        product_title: product.title,
-                        card_product: product,
-                        is_samples: is_samples,
-                        hide_overlay_link: is_samples,
-                        media_aspect_ratio: section.settings.image_ratio,
-                        title_above_image: section.settings.title_above_image,
-                        show_secondary_image: section.settings.show_secondary_image,
-                        show_vendor: section.settings.show_vendor,
-                        show_price: section.settings.show_price,
-                        show_badge: section.settings.show_badge,
-                        show_rating: section.settings.show_rating,
-                        lazy_load: lazy_load,
-                        show_quick_add: section.settings.enable_quick_add,
-                        single_variant_quick_add: single_variant_quick_add,
-                        section_id: section.id,
-                        enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
-                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
-                      %}
-                    </li>
+                    {% liquid
+                      # Check if we should display this product based on material filter
+                      assign should_display_product = true
+                      if active_material != ''
+                        assign has_matching_variant = false
+                        # Check if any variant matches the material filter
+                        for variant in product.variants
+                          assign variant_material = ''
+                          assign material_match = false
+                          
+                          # First try to get material from variant options
+                          for option in product.options
+                            if option == 'Material'
+                              assign option_index = forloop.index0
+                              assign variant_material = variant.options[option_index] | downcase | strip
+                              if variant_material == active_material
+                                assign material_match = true
+                                assign has_matching_variant = true
+                              endif
+                              break
+                            endif
+                          endfor
+                          
+                          # If no match found in options, try variant metafields
+                          unless material_match
+                            if variant.metafields.custom.material != blank
+                              if variant.metafields.custom.material.value.first
+                                for material_item in variant.metafields.custom.material.value
+                                  assign variant_material = material_item | downcase | strip
+                                  if variant_material == active_material
+                                    assign material_match = true
+                                    assign has_matching_variant = true
+                                    break
+                                  endif
+                                endfor
+                              else
+                                assign variant_material = variant.metafields.custom.material.value | downcase | strip
+                                if variant_material == active_material
+                                  assign material_match = true
+                                  assign has_matching_variant = true
+                                endif
+                              endif
+                            endif
+                          endunless
+                          
+                          # If still no match, try product metafields as fallback
+                          unless material_match
+                            if product.metafields.custom.material != blank
+                              if product.metafields.custom.material.value.first
+                                for material_item in product.metafields.custom.material.value
+                                  assign variant_material = material_item | downcase | strip
+                                  if variant_material == active_material
+                                    assign material_match = true
+                                    assign has_matching_variant = true
+                                    break
+                                  endif
+                                endfor
+                              else
+                                assign variant_material = product.metafields.custom.material.value | downcase | strip
+                                if variant_material == active_material
+                                  assign material_match = true
+                                  assign has_matching_variant = true
+                                endif
+                              endif
+                            endif
+                          endunless
+                          
+                          if has_matching_variant
+                            break
+                          endif
+                        endfor
+                        
+                        unless has_matching_variant
+                          assign should_display_product = false
+                        endunless
+                      endif
+                      
+                      # Also check use_case filter
+                      if active_use_case != '' and should_display_product
+                        assign has_matching_use_case = false
+                        # Check if any variant matches the use_case filter
+                        for variant in product.variants
+                          assign variant_use_case = ''
+                          assign use_case_match = false
+                          
+                          # Try variant metafield first
+                          if variant.metafields.custom.use_case != blank
+                            if variant.metafields.custom.use_case.value.first
+                              for use_case_item in variant.metafields.custom.use_case.value
+                                assign variant_use_case = use_case_item | downcase | strip
+                                if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                  assign use_case_match = true
+                                  assign has_matching_use_case = true
+                                  break
+                                endif
+                              endfor
+                            else
+                              assign variant_use_case = variant.metafields.custom.use_case.value | downcase | strip
+                              if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                assign use_case_match = true
+                                assign has_matching_use_case = true
+                              endif
+                            endif
+                          endif
+                          
+                          # If still no match, try product metafield as fallback
+                          unless use_case_match
+                            if product.metafields.custom.use_case != blank
+                              if product.metafields.custom.use_case.value.first
+                                for use_case_item in product.metafields.custom.use_case.value
+                                  assign variant_use_case = use_case_item | downcase | strip
+                                  if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                    assign use_case_match = true
+                                    assign has_matching_use_case = true
+                                    break
+                                  endif
+                                endfor
+                              else
+                                assign variant_use_case = product.metafields.custom.use_case.value | downcase | strip
+                                if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                  assign use_case_match = true
+                                  assign has_matching_use_case = true
+                                endif
+                              endif
+                            endif
+                          endunless
+                          
+                          if has_matching_use_case
+                            break
+                          endif
+                        endfor
+                        
+                        unless has_matching_use_case
+                          assign should_display_product = false
+                        endunless
+                      endif
+                    %}
+                    {% if should_display_product %}
+                      <li class='grid__item grid__item-COLLECTION-by-product'>
+                        {% render 'card-product-nine15',
+                          product_title: product.title,
+                          card_product: product,
+                          is_samples: is_samples,
+                          hide_overlay_link: is_samples,
+                          media_aspect_ratio: section.settings.image_ratio,
+                          title_above_image: section.settings.title_above_image,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          show_vendor: section.settings.show_vendor,
+                          show_price: section.settings.show_price,
+                          show_badge: section.settings.show_badge,
+                          show_rating: section.settings.show_rating,
+                          lazy_load: lazy_load,
+                          show_quick_add: section.settings.enable_quick_add,
+                          single_variant_quick_add: single_variant_quick_add,
+                          section_id: section.id,
+                          enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
+                          quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                        %}
+                      </li>
+                    {% endif %}
                   {% endunless %}
                 {% endunless %}
       
