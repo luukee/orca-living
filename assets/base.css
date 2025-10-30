@@ -3291,6 +3291,11 @@ details-disclosure > details {
   max-width: 1200px;
   margin-bottom: 7rem;
 }
+@media only screen and (min-width: 750px) {
+  .template--article .article-template {
+    padding-right: 15px;
+  }
+}
 .article-template__content.page-width--narrow {
   margin-left: 0;
   margin-right: 0;
@@ -4096,7 +4101,8 @@ em:not(.caption em) {
   .template--blog-landscapes-blog #MainContent > *:nth-child(2),
   .template--blog-fieldnotes #MainContent > *:nth-child(2),
   .template--article-field-notes-article #MainContent > *:nth-child(2),
-  .template--article-sections-blog-post #MainContent > *:nth-child(2) {
+  .template--article-sections-blog-post #MainContent > *:nth-child(2),
+  .template--article-landscapes-article #MainContent > *:nth-child(2) {
     grid-area: banner;
     grid-column-start: 2;
     grid-column-end: 4;
