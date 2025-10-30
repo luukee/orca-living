@@ -53,8 +53,66 @@
     >
   {%- endif -%}
 
-  {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
+  {% liquid
+    assign v = product.selected_or_first_available_variant
+    assign variant_images_str = ''
 
+    if v.featured_media
+      assign variant_images_str = variant_images_str | append: v.featured_media.id | append: '||'
+      assign variant_images_str = variant_images_str | append: v.featured_media.src | append: '||'
+      if v.featured_media.preview_image
+        assign variant_images_str = variant_images_str | append: v.featured_media.preview_image.src | append: '||'
+      endif
+    elsif v.featured_image
+      assign variant_images_str = variant_images_str | append: v.featured_image.src | append: '||'
+    endif
+
+    assign vi_raw = v.metafields.custom.variant_images
+    assign vi_list = '' | split: ''
+    if vi_raw and vi_raw.value
+      assign vi_list = vi_raw.value
+    elsif vi_raw
+      assign vi_list = vi_raw
+    endif
+
+    for media in vi_list
+      assign variant_images_str = variant_images_str | append: media.id | append: '||'
+      if media.src
+        assign variant_images_str = variant_images_str | append: media.src | append: '||'
+      endif
+      if media.preview_image
+        assign variant_images_str = variant_images_str | append: media.preview_image.src | append: '||'
+      endif
+      assign variant_images_str = variant_images_str | append: media | image_url | append: '||'
+    endfor
+
+    assign variant_images = variant_images_str | split: '||'
+  %}
+  {% render 'dump' with variant_images %}
+
+  {% comment %}DEBUG - remove after verifying{% endcomment %}
+  <div style="background:#fffbcc;border:1px solid #e6db55;padding:8px;margin:8px 0;font:12px/1.4 system-ui;">
+    <strong>Selected variant:</strong> {{ v.id }} / {{ v.title }}<br>
+    <strong>featured_media:</strong> {% if v.featured_media %}id={{ v.featured_media.id }}, src={{ v.featured_media.src }}{% else %}none{% endif %}<br>
+    <strong>metafield raw present:</strong> {% if vi_raw %}yes{% else %}no{% endif %} | <strong>value present:</strong> {% if vi_raw and vi_raw.value %}yes{% else %}no{% endif %}<br>
+    <strong>vi_list size:</strong> {{ vi_list.size }}<br>
+    <div style="max-height:120px;overflow:auto;border:1px dashed #e6db55;padding:6px;margin:6px 0;">
+      <em>vi_raw.value (json):</em><br>
+      <pre style="white-space:pre-wrap;">{{ vi_raw.value | json }}</pre>
+      <em>Iterated vi_list:</em><br>
+      {% for m in vi_list %}id={{ m.id }} | url={{ m | image_url }} | preview={{ m.preview_image.src }}<br>{% endfor %}
+    </div>
+    <strong>variant_images ({{ variant_images.size }})</strong>
+    <div style="max-height:120px;overflow:auto;border:1px dashed #e6db55;padding:6px;margin-top:6px;">
+      {% for s in variant_images %}{{ s }}<br>{% endfor %}
+    </div>
+  </div>
+  {% comment %}DEBUG - remove after verifying{% endcomment %}
+  <div style="background:#fffbcc;border:1px solid #e6db55;padding:8px;margin:8px 0;font:12px/1.4 system-ui;">
+    <strong>variant_images ({{ variant_images.size }})</strong><br>
+    {% for s in variant_images %}{{ s }}<br>{% endfor %}
+  </div>
+  
   {% liquid
     assign match_found = false
     for collection in product.collections

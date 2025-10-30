@@ -423,7 +423,7 @@ class QuantityInput extends HTMLElement {
     const max = Number.isNaN(parseInt(this.input.max))
       ? Number.MAX_VALUE
       : parseInt(this.input.max)
-
+      
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']")
       buttonMinus.classList.toggle('disabled', value <= min)
@@ -1234,7 +1234,7 @@ class VariantSelects extends HTMLElement {
       }
     }
   }
-
+  
   updateFormVisibility() {
     if (
       !this.currentVariant ||
@@ -1281,10 +1281,13 @@ class VariantSelects extends HTMLElement {
       }
     }
     // console.log(`PRODUCT_OPTION: ${product_option}`);
-    document
-      .querySelector('.splide')
-      .setAttribute('data-current', product_option)
-    updateCarouselSlides()
+    const splideEl = document.querySelector('.splide')
+    if (splideEl) {
+      splideEl.setAttribute('data-current', product_option)
+      if (typeof window.updateCarouselSlides === 'function') {
+        window.updateCarouselSlides()
+      }
+    }
   }
   updateOptions() {
     this.options = Array.from(
@@ -1302,11 +1305,11 @@ class VariantSelects extends HTMLElement {
         .includes(false)
     })
   }
-
+  
   updateMedia() {
     if (!this.currentVariant) return
     if (!this.currentVariant.featured_media) return
-
+    
     const mediaGalleries = document.querySelectorAll(
       `[id^="MediaGallery-${this.dataset.section}"]`
     )
@@ -1413,7 +1416,7 @@ class VariantSelects extends HTMLElement {
           'data-variant-id',
           this.currentVariant.id
         )
-
+        
         // Update the content to show pickup availability for this variant
         this.updatePickupAvailabilityContent(this.currentVariant, locationName)
       } else {
@@ -1608,6 +1611,33 @@ class VariantSelects extends HTMLElement {
             sampleButton.disabled = sampleButtonUpdated.hasAttribute('disabled')
           }
         }
+        
+        // Swap gallery, thumbnails, and modal content with server-rendered HTML for the selected variant
+        const newGallery = html.getElementById(`Slider-Gallery-${sectionId}`)
+        const destGallery = document.getElementById(
+          `Slider-Gallery-${this.dataset.section}`
+        )
+        if (newGallery && destGallery) {
+          destGallery.innerHTML = newGallery.innerHTML
+        }
+
+        const newThumbs = html.getElementById(`Slider-Thumbnails-${sectionId}`)
+        const destThumbs = document.getElementById(
+          `Slider-Thumbnails-${this.dataset.section}`
+        )
+        if (newThumbs && destThumbs) {
+          destThumbs.innerHTML = newThumbs.innerHTML
+        }
+
+        const newModalContent = html.querySelector(
+          `#ProductModal-${sectionId} .product-media-modal__content`
+        )
+        const destModalContent = document.querySelector(
+          `#ProductModal-${this.dataset.section} .product-media-modal__content`
+        )
+        if (newModalContent && destModalContent) {
+          destModalContent.innerHTML = newModalContent.innerHTML
+        }
 
         // Update quick ship text visibility based on variant metafield
         const quickShipTextElement = document.querySelector(
@@ -1616,7 +1646,7 @@ class VariantSelects extends HTMLElement {
         const quickShipTextSourceElement = html.querySelector(
           `[data-quick-ship-text="${sectionId}"]`
         )
-
+        
         if (quickShipTextElement && quickShipTextSourceElement) {
           const sourceState = quickShipTextSourceElement.getAttribute(
             'data-quick-ship-state'
@@ -1629,8 +1659,10 @@ class VariantSelects extends HTMLElement {
             sourceState
           )
         }
-
+        
         this.updateFormVisibility()
+        // Refocus featured media after DOM swap
+        this.updateMedia()
         this.updateVariantMetafields(html)
         publish(PUB_SUB_EVENTS.variantChange, {
           data: {
@@ -1749,16 +1781,16 @@ class VariantRadios extends VariantSelects {
         const checkedInput = Array.from(
           fieldset.querySelectorAll('input:not([disabled])')
         ).find((radio) => radio.checked)
-        if (!checkedInput) {
-          // If no input is checked, find the first enabled input and check it
+      if (!checkedInput) {
+        // If no input is checked, find the first enabled input and check it
           const firstEnabledInput = fieldset.querySelector(
             'input:not([disabled])'
           )
-          if (firstEnabledInput) {
+        if (firstEnabledInput) {
             firstEnabledInput.checked = true
             return firstEnabledInput.value
-          }
         }
+      }
         return checkedInput ? checkedInput.value : null
       })
       .filter(Boolean) // Remove any null values
@@ -1824,49 +1856,49 @@ if (!customElements.get('quick-ship-text')) {
   customElements.define(
     'quick-ship-text',
     class QuickShipText extends HTMLElement {
-      constructor() {
+    constructor() {
         super()
         this.variantChangeUnsubscriber = undefined
-      }
+    }
 
-      connectedCallback() {
-        // Set initial state based on current variant
+    connectedCallback() {
+      // Set initial state based on current variant
         this.updateVisibility(
           this.getAttribute('data-quick-ship-state') === 'true'
         )
 
-        // Subscribe to variant changes
+      // Subscribe to variant changes
         this.variantChangeUnsubscriber = subscribe(
           PUB_SUB_EVENTS.variantChange,
           (event) => {
             const sectionId = this.dataset.quickShipText
             if (event.data.sectionId !== sectionId) return
-
-            // Get the quick ship state from the HTML response
+        
+        // Get the quick ship state from the HTML response
             const html = event.data.html
             const quickShipElement = html.querySelector(
               `quick-ship-text[data-quick-ship-text="${sectionId}"]`
             )
             if (!quickShipElement) return
-
-            // Check if the quick ship value is exactly "True"
+        
+        // Check if the quick ship value is exactly "True"
             const hasQuickShip =
               quickShipElement.getAttribute('data-quick-ship-state') === 'true'
             this.updateVisibility(hasQuickShip)
           }
         )
-      }
+    }
 
-      updateVisibility(shouldShow) {
+    updateVisibility(shouldShow) {
         this.style.display = shouldShow ? 'block' : 'none'
         this.setAttribute('data-quick-ship-state', shouldShow.toString())
-      }
+    }
 
-      disconnectedCallback() {
-        if (this.variantChangeUnsubscriber) {
+    disconnectedCallback() {
+      if (this.variantChangeUnsubscriber) {
           this.variantChangeUnsubscriber()
-        }
       }
+    }
     }
   )
 }

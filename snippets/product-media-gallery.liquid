@@ -43,6 +43,11 @@
   if is_duplicate
     assign id_append = '-duplicate'
   endif
+
+  assign has_variant_images = false
+  if variant_images and variant_images.size > 0
+    assign has_variant_images = true
+  endif
 -%}
 
 <media-gallery
@@ -68,9 +73,30 @@
     >
       {%- if product.selected_or_first_available_variant.featured_media != null -%}
         {%- assign featured_media = product.selected_or_first_available_variant.featured_media -%}
+        {%- liquid
+          assign allow_featured = false
+          if has_variant_images == false
+            assign allow_featured = true
+          elsif variant_images contains featured_media.id
+            assign allow_featured = true
+          elsif featured_media.preview_image and variant_images contains featured_media.preview_image.src
+            assign allow_featured = true
+          elsif featured_media.src and variant_images contains featured_media.src
+            assign allow_featured = true
+          endif
+        -%}
+        {%- if allow_featured -%}
+        {%- liquid
+          assign is_variant_featured = false
+          if section.settings.hide_variants
+            if variant_images contains featured_media.src or variant_images contains featured_media.id or featured_media.preview_image and variant_images contains featured_media.preview_image.src
+              assign is_variant_featured = true
+            endif
+          endif
+        -%}
         <li
           id="Slide-{{ section.id }}-{{ featured_media.id }}{{ id_append }}"
-          class="product__media-item grid__item slider__slide is-active{% if single_media_visible %} product__media-item--single{% endif %}{% if featured_media.media_type != 'image' %} product__media-item--full{% endif %}{% if section.settings.hide_variants and variant_images contains featured_media.src %} product__media-item--variant{% endif %}"
+          class="product__media-item grid__item slider__slide is-active{% if single_media_visible %} product__media-item--single{% endif %}{% if featured_media.media_type != 'image' %} product__media-item--full{% endif %}{% if is_variant_featured %} product__media-item--variant{% endif %}"
           data-media-id="{{ section.id }}-{{ featured_media.id }}"
         >
           {%- assign media_position = 1 -%}
@@ -89,39 +115,133 @@
             lazy_load: false
           %}
         </li>
+        {%- endif -%}
       {%- endif -%}
+
+      {%- comment -%} Additional images from variant metafield that are not in product.media {%- endcomment -%}
+      {%- liquid
+        assign vi_raw = product.selected_or_first_available_variant.metafields.custom.variant_images
+        assign vi_extra = vi_raw.value | default: vi_raw
+      -%}
+      {%- if has_variant_images and vi_extra -%}
+        {%- for m in vi_extra -%}
+          {%- liquid
+            assign m_id = m.id | default: ''
+            assign is_media_object = false
+            if m_id != ''
+              assign is_media_object = true
+            endif
+            assign in_product_media = false
+            if is_media_object
+              for pm in product.media
+                if pm.id == m.id
+                  assign in_product_media = true
+                  break
+                endif
+              endfor
+            endif
+            assign data_key = ''
+            if is_media_object
+              assign data_key = m.id
+            else
+              assign data_key = forloop.index0 | prepend: 'viu-'
+            endif
+          -%}
+          {%- unless in_product_media -%}
+            <li
+              id="Slide-{{ section.id }}-vi-{{ data_key }}{{ id_append }}"
+              class="product__media-item grid__item slider__slide{% if single_media_visible %} product__media-item--single{% endif %}"
+              data-media-id="{{ section.id }}-{{ data_key }}"
+            >
+              {%- liquid
+                assign computed_ratio = 1.0
+                if m.aspect_ratio
+                  assign computed_ratio = m.aspect_ratio
+                elsif m.width and m.height and m.height != 0
+                  assign computed_ratio = m.width | divided_by: m.height
+                endif
+              -%}
+              <div class="product-media-container media-type-image media-fit-cover global-media-settings gradient constrain-height" style="--ratio: {{ computed_ratio }}; --preview-ratio: {{ computed_ratio }};">
+                <div class="product__media media media--transparent">
+                  {%- if is_media_object -%}
+                    {{ m | image_url: width: 1946 | image_tag:
+                      loading: 'lazy',
+                      widths: '400, 620, 690, 810, 980, 1240, 1380, 1620, 1960',
+                      alt: m.alt | default: product.title
+                    }}
+                  {%- else -%}
+                    {%- liquid
+                      assign src = m | replace: '\\/', '/'
+                    -%}
+                    <img src="{{ src }}" alt="{{ product.title | escape }}" loading="lazy" width="1946" height="1200" sizes="(min-width: 2000px) 1045px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" />
+                  {%- endif -%}
+                </div>
+              </div>
+            </li>
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endif -%}
+
       {%- for media in product.media -%}
         {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+          {%- liquid
+            capture media_index
+              if media.media_type == 'model'
+                increment model_index
+              elsif media.media_type == 'video' or media.media_type == 'external_video'
+                increment video_index
+              elsif media.media_type == 'image'
+                increment image_index
+              endif
+            endcapture
+            assign media_index = media_index | plus: 1
+          -%}
+          {%- liquid
+            assign allow_media = false
+            if has_variant_images == false
+              assign allow_media = true
+            elsif variant_images contains media.id
+              assign allow_media = true
+            elsif media.preview_image and variant_images contains media.preview_image.src
+              assign allow_media = true
+            elsif media.src and variant_images contains media.src
+              assign allow_media = true
+            endif
+          -%}
+          {%- if allow_media -%}
+          {%- liquid
+            assign is_variant_media = false
+            if section.settings.hide_variants
+              if variant_images contains media.src or variant_images contains media.id or media.preview_image and variant_images contains media.preview_image.src
+                assign is_variant_media = true
+              endif
+            endif
+          -%}
           <li
-            id="Slide-{{ section.id }}-{{ media.id }}{{ id_append }}"
-            class="product__media-item grid__item slider__slide{% if single_media_visible %} product__media-item--single{% endif %}{% if product.selected_or_first_available_variant.featured_media == null and forloop.index == 1 %} is-active{% endif %}{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if section.settings.hide_variants and variant_images contains media.src %} product__media-item--variant{% endif %}"
+            id="Slide-{{ section.id }}-{{ forloop.index }}{{ id_append }}"
+            class="product__media-item grid__item slider__slide{% if single_media_visible %} product__media-item--single{% endif %}{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if is_variant_media %} product__media-item--variant{% endif %}"
             data-media-id="{{ section.id }}-{{ media.id }}"
           >
-            {%- liquid
-              assign media_position = media_position | default: 0 | plus: 1
-              assign lazy_load = false
-              if media_position > 1
-                assign lazy_load = true
-              endif
-            -%}
             {% render 'product-thumbnail',
-                media: media,
-                media_count: media_count,
-                position: media_position,
-                desktop_layout: section.settings.gallery_layout,
-                mobile_layout: section.settings.mobile_thumbnails,
-                loop: section.settings.enable_video_looping,
-                modal_id: section.id,
-                xr_button: true,
-                media_width: media_width,
-                media_fit: section.settings.media_fit,
-                constrain_to_viewport: section.settings.constrain_to_viewport,
-                lazy_load: lazy_load
-              %}
+              media: media,
+              media_count: media_count,
+              position: media_index,
+              desktop_layout: section.settings.gallery_layout,
+              mobile_layout: section.settings.mobile_thumbnails,
+              loop: section.settings.enable_video_looping,
+              modal_id: section.id,
+              xr_button: true,
+              media_width: media_width,
+              media_fit: section.settings.media_fit,
+              constrain_to_viewport: section.settings.constrain_to_viewport,
+              lazy_load: true
+            %}
           </li>
+          {%- endif -%}
         {%- endunless -%}
       {%- endfor -%}
     </ul>
+    
     {%- unless is_duplicate -%}
       <div class="slider-buttons no-js-hidden quick-add-hidden{% if hide_mobile_slider %} small-hide{% endif %}">
         <button
@@ -205,9 +325,18 @@
             endcapture
             assign media_index = media_index | plus: 1
           -%}
+          {%- if allow_featured -%}
+          {%- liquid
+            assign is_variant_featured_thumb = false
+            if section.settings.hide_variants
+              if variant_images contains featured_media.src or variant_images contains featured_media.id or featured_media.preview_image and variant_images contains featured_media.preview_image.src
+                assign is_variant_featured_thumb = true
+              endif
+            endif
+          -%}
           <li
             id="Slide-Thumbnails-{{ section.id }}-0{{ id_append }}"
-            class="thumbnail-list__item slider__slide{% if section.settings.hide_variants and variant_images contains featured_media.src %} thumbnail-list_item--variant{% endif %}"
+            class="thumbnail-list__item slider__slide{% if is_variant_featured_thumb %} thumbnail-list_item--variant{% endif %}"
             data-target="{{ section.id }}-{{ featured_media.id }}"
             data-media-position="{{ media_index }}"
           >
@@ -230,6 +359,7 @@
               }}
             </button>
           </li>
+          {%- endif -%}
         {%- endif -%}
         {%- for media in product.media -%}
           {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
@@ -245,9 +375,18 @@
               endcapture
               assign media_index = media_index | plus: 1
             -%}
+            {%- if allow_media -%}
+            {%- liquid
+              assign is_variant_media_thumb = false
+              if section.settings.hide_variants
+                if variant_images contains media.src or variant_images contains media.id or media.preview_image and variant_images contains media.preview_image.src
+                  assign is_variant_media_thumb = true
+                endif
+              endif
+            -%}
             <li
               id="Slide-Thumbnails-{{ section.id }}-{{ forloop.index }}{{ id_append }}"
-              class="thumbnail-list__item slider__slide{% if section.settings.hide_variants and variant_images contains media.src %} thumbnail-list_item--variant{% endif %}"
+              class="thumbnail-list__item slider__slide{% if is_variant_media_thumb %} thumbnail-list_item--variant{% endif %}"
               data-target="{{ section.id }}-{{ media.id }}"
               data-media-position="{{ media_index }}"
             >
@@ -284,8 +423,68 @@
                 }}
               </button>
             </li>
+            {%- endif -%}
           {%- endunless -%}
         {%- endfor -%}
+        {%- comment -%} Thumbnails for extra variant metafield images {%- endcomment -%}
+        {%- if has_variant_images and vi_extra -%}
+          {%- for m in vi_extra -%}
+            {%- liquid
+              assign m_id = m.id | default: ''
+              assign is_media_object = false
+              if m_id != ''
+                assign is_media_object = true
+              endif
+              assign in_product_media = false
+              if is_media_object
+                for pm in product.media
+                  if pm.id == m.id
+                    assign in_product_media = true
+                    break
+                  endif
+                endfor
+              endif
+              assign data_key = ''
+              if is_media_object
+                assign data_key = m.id
+              else
+                assign data_key = forloop.index0 | prepend: 'viu-'
+              endif
+            -%}
+            {%- unless in_product_media -%}
+              <li
+                id="Slide-Thumbnails-{{ section.id }}-vi-{{ data_key }}{{ id_append }}"
+                class="thumbnail-list__item slider__slide"
+                data-target="{{ section.id }}-{{ data_key }}"
+                data-media-position="999"
+              >
+                {%- capture thumbnail_id -%}
+                  Thumbnail-{{ section.id }}-vi-{{ data_key }}{{ id_append }}
+                {%- endcapture -%}
+                <button
+                  class="thumbnail global-media-settings global-media-settings--no-shadow"
+                  aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
+                  aria-controls="GalleryViewer-{{ section.id }}{{ id_append }}"
+                  aria-describedby="{{ thumbnail_id }}"
+                >
+                  {%- if is_media_object -%}
+                    {{ m | image_url: width: 416 | image_tag:
+                      loading: 'lazy',
+                      widths: '54, 74, 104, 162, 208, 324, 416',
+                      id: thumbnail_id,
+                      alt: m.alt | default: product.title
+                    }}
+                  {%- else -%}
+                    {%- liquid
+                      assign src = m | replace: '\\/', '/'
+                    -%}
+                    <img src="{{ src }}" alt="{{ product.title | escape }}" loading="lazy" width="208" height="208" />
+                  {%- endif -%}
+                </button>
+              </li>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
       </ul>
       <button
         type="button"
