@@ -25,7 +25,7 @@
     >
       {%- for option in product.options_with_values -%}
         {% comment %} For paver products, don't display the 'material' option {% endcomment %}
-        {%- liquid
+        {% comment %} {%- liquid
           assign is_paver_product = false
           
           # Check by collection handle
@@ -56,15 +56,15 @@
               endif
             endfor
           endunless
-        -%}
+        -%} {% endcomment %}
         
-        {%- unless is_paver_product and option.name == 'Material' -%}
+        {% comment %} {%- unless is_paver_product and option.name == 'Material' -%} {% endcomment %}
           <fieldset class="js product-form__input">
             <legend class="form__label">{{ option.name }}: </legend>
             <span class="form__label hide h4">{{ option.name }}: </span>
             {% render 'product-variant-options', product: product, option: option, block: block %}
           </fieldset>
-        {%- endunless -%}
+        {% comment %} {%- endunless -%} {% endcomment %}
       {%- endfor -%}
       <script type="application/json">
         {{ product.variants | json }}
@@ -83,7 +83,7 @@
     >
       {%- for option in product.options_with_values -%}
         {% comment %} For paver products, don't display the 'material' option {% endcomment %}
-        {%- liquid
+        {% comment %} {%- liquid
           assign is_paver_product = false
           
           # Check by collection handle
@@ -114,9 +114,9 @@
               endif
             endfor
           endunless
-        -%}
+        -%} {% endcomment %}
         
-        {%- unless is_paver_product and option.name == 'Material' -%}
+        {% comment %} {%- unless is_paver_product and option.name == 'Material' -%} {% endcomment %}
           <div class="product-form__input product-form__input--dropdown">
             <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
               {{ option.name }}
@@ -133,7 +133,7 @@
               {% render 'icon-caret' %}
             </div>
           </div>
-        {%- endunless -%}
+        {% comment %} {%- endunless -%} {% endcomment %}
       {%- endfor -%}
 
       <script type="application/json">
