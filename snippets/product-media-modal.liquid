@@ -96,24 +96,46 @@
       {%- if has_variant_images and vi_extra -%}
         {%- for m in vi_extra -%}
           {%- liquid
+            assign m_id = m.id | default: ''
+            assign is_media_object = false
+            if m_id != ''
+              assign is_media_object = true
+            endif
             assign in_product_media = false
-            for pm in product.media
-              if pm.id == m.id
-                assign in_product_media = true
-                break
-              endif
-            endfor
+            if is_media_object
+              for pm in product.media
+                if pm.id == m.id
+                  assign in_product_media = true
+                  break
+                endif
+              endfor
+            endif
+            assign data_key = ''
+            if is_media_object
+              assign data_key = m.id
+            else
+              assign data_key = forloop.index0 | prepend: 'viu-'
+            endif
           -%}
           {%- unless in_product_media -%}
-            <div class="product-media-modal__content-item" data-media-id="{{ section.id }}-{{ m.id }}">
-              <div class="product__media media media--transparent">
-                {{ m | image_url: width: 1946 | image_tag:
-                  loading: 'lazy',
-                  widths: '400, 620, 690, 810, 980, 1240, 1380, 1620, 1960',
-                  alt: m.alt | default: product.title
-                }}
-              </div>
-            </div>
+            {%- if is_media_object -%}
+              <img
+                class="global-media-settings global-media-settings--no-shadow product__media-item--variant"
+                srcset="{{ m | image_url: width: 550 }} 550w, {{ m | image_url: width: 1100 }} 1100w, {{ m | image_url: width: 1445 }} 1445w, {{ m | image_url: width: 1680 }} 1680w, {{ m | image_url: width: 2048 }} 2048w"
+                sizes="(min-width: 750px) calc(100vw - 22rem), 1100px"
+                src="{{ m | image_url: width: 1445 }}"
+                alt="{{ m.alt | default: product.title }}"
+                loading="lazy"
+                width="1100"
+                height="{{ m.height | default: 1100 }}"
+                data-media-id="{{ data_key }}"
+              />
+            {%- else -%}
+              {%- liquid
+                assign src = m | replace: '\\/', '/'
+              -%}
+              <img class="global-media-settings global-media-settings--no-shadow product__media-item--variant" src="{{ src }}" alt="{{ product.title | escape }}" loading="lazy" width="1100" height="1100" data-media-id="{{ data_key }}" />
+            {%- endif -%}
           {%- endunless -%}
         {%- endfor -%}
       {%- endif -%}

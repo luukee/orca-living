@@ -1324,10 +1324,22 @@ class VariantSelects extends HTMLElement {
       `#ProductModal-${this.dataset.section} .product-media-modal__content`
     )
     if (!modalContent) return
-    const newMediaModal = modalContent.querySelector(
-      `[data-media-id="${this.currentVariant.featured_media.id}"]`
+    /*
+     Handle inconsistent data-media-id formats in the modal HTML. 
+     Some modal items use a section-prefixed ID (section-id-media-id) while others use just the media ID.
+    */
+    const prefixedId = `${this.dataset.section}-${this.currentVariant.featured_media.id}`
+    let newMediaModal = modalContent.querySelector(
+      `[data-media-id="${prefixedId}"]`
     )
-    modalContent.prepend(newMediaModal)
+    if (!newMediaModal) {
+      newMediaModal = modalContent.querySelector(
+        `[data-media-id="${this.currentVariant.featured_media.id}"]`
+      )
+    }
+    if (newMediaModal) {
+      modalContent.prepend(newMediaModal)
+    }
   }
 
   updateURL() {

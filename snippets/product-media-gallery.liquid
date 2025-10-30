@@ -162,20 +162,29 @@
                 endif
               -%}
               <div class="product-media-container media-type-image media-fit-cover global-media-settings gradient constrain-height" style="--ratio: {{ computed_ratio }}; --preview-ratio: {{ computed_ratio }};">
-                <div class="product__media media media--transparent">
-                  {%- if is_media_object -%}
-                    {{ m | image_url: width: 1946 | image_tag:
-                      loading: 'lazy',
-                      widths: '400, 620, 690, 810, 980, 1240, 1380, 1620, 1960',
-                      alt: m.alt | default: product.title
-                    }}
-                  {%- else -%}
-                    {%- liquid
-                      assign src = m | replace: '\\/', '/'
-                    -%}
-                    <img src="{{ src }}" alt="{{ product.title | escape }}" loading="lazy" width="1946" height="1200" sizes="(min-width: 2000px) 1045px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" />
-                  {%- endif -%}
-                </div>
+                <modal-opener class="product__modal-opener product__modal-opener--image no-js-hidden" data-modal="#ProductModal-{{ section.id }}">
+                  <span class="product__media-icon motion-reduce quick-add-hidden product__media-icon--lightbox" aria-hidden="true">{% render 'icon-plus' %}</span>
+                  <div class="loading-overlay__spinner hidden">
+                    <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="4" cx="33" cy="33" r="30"></circle></svg>
+                  </div>
+                  <div class="product__media media media--transparent">
+                    {%- if is_media_object -%}
+                      {{ m | image_url: width: 1946 | image_tag:
+                        loading: 'lazy',
+                        widths: '400, 620, 690, 810, 980, 1240, 1380, 1620, 1960',
+                        alt: m.alt | default: product.title
+                      }}
+                    {%- else -%}
+                      {%- liquid
+                        assign src = m | replace: '\\/', '/'
+                      -%}
+                      <img src="{{ src }}" alt="{{ product.title | escape }}" loading="lazy" width="1946" height="1200" sizes="(min-width: 2000px) 1045px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" />
+                    {%- endif -%}
+                  </div>
+                  <button class="product__media-toggle quick-add-hidden product__media-zoom-lightbox" type="button" aria-haspopup="dialog" data-media-id="{{ data_key }}">
+                    <span class="visually-hidden">{{ 'products.product.media.open_media' | t: index: forloop.index }}</span>
+                  </button>
+                </modal-opener>
               </div>
             </li>
           {%- endunless -%}

@@ -452,9 +452,9 @@ a.product__text {
     display: none;
   }
 
-  .product-media-modal__content > .product__media-item--variant.product__media-item--variant {
+  /* .product-media-modal__content > .product__media-item--variant.product__media-item--variant {
     display: none;
-  }
+  } */
 
   .product-media-modal__content > .product__media-item--variant:first-child {
     display: block;
