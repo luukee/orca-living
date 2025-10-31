@@ -16,45 +16,40 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-  {% if section.settings.card_max_height != blank %}
-    {% liquid
-      # Extract the numeric value from the height setting (e.g., "70vh" -> 70)
-      assign desktop_height = section.settings.card_max_height | remove: 'vh' | remove: 'px' | remove: '%'
-      assign tablet_height = desktop_height | minus: 20 | append: 'vh'
-    %}
-    .card--extend-height.card--media {
-        justify-content: flex-end;
-      }
-    /* Desktop */
-    @media screen and (min-width: 1025px) {
+  .card--extend-height.card--media {
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+  .collage__item {
+    height: auto;
+  }
+  /* card height desktop */
+  @media screen and (min-width: 1025px) {
+    .collage__item {
+      max-height: {{ section.settings.card_max_height_desktop }}vh;
+    }
+  }
+  /* card height tablet */
+  @media screen and (min-width: 750px) and (max-width: 1024px) {
+    .collage__item {
+      max-height: {{ section.settings.card_max_height_desktop }}vh;
+    }
+  }
+  /* card height mobile */
+  @supports (height: 100svh) {
+    @media screen and (max-width: 749px) {
       .collage__item {
-        height: {{ section.settings.card_max_height }};
-      }
-      .card.card--media {
-        overflow: hidden;
+        max-height: {{ section.settings.card_max_height_mobile }}svh;
       }
     }
-    
-    /* iPad / Tablet (768px - 1024px) */
-    @media screen and (min-width: 768px) and (max-width: 1024px) {
+  }
+  @supports not (height: 100svh) {
+    @media screen and (max-width: 749px) {
       .collage__item {
-        height: {{ tablet_height }};
-      }
-      .card.card--media {
-        overflow: hidden;
+        max-height: {{ section.settings.card_max_height_mobile }}vh;
       }
     }
-    
-    /* Mobile */
-    @media screen and (max-width: 767px) {
-      .collage__item {
-        height: {{ tablet_height }};
-      }
-      .card.card--media {
-        overflow: hidden;
-      }
-    }
-  {% endif %}
+  }
 
   {% if section.settings.card_title_text != blank %}
     .card__content .card__title {
@@ -362,11 +357,18 @@
       "label": "t:sections.collage.settings.card_styles.label"
     },
     {
-      "type": "text",
-      "id": "card_max_height",
-      "label": "Card max height",
-      "default": "90vh",
-      "info": "0-100vh.Set to 0 to disable"
+      "type": "number",
+      "id": "card_max_height_desktop",
+      "label": "Card max height (desktop)",
+      "default": 90,
+      "info": "0-100"
+    },
+    {
+      "type": "number",
+      "id": "card_max_height_mobile",
+      "label": "Card max height (mobile)",
+      "default": 70,
+      "info": "0-100"
     },
     {
       "type": "select",
