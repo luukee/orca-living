@@ -83,24 +83,45 @@
         role='list'
         aria-label='{{ 'general.slider.name' | t }}'
       >
-        {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
-          <li
-            id='Slide-{{ section.id }}-{{ forloop.index }}'
-            class='grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}'
-          >
-            {% render 'card-product',
-              card_product: product,
-              media_aspect_ratio: section.settings.image_ratio,
-              show_secondary_image: section.settings.show_secondary_image,
-              show_vendor: section.settings.show_vendor,
-              show_rating: section.settings.show_rating,
-              show_quick_add: section.settings.enable_quick_add,
-              section_id: section.id,
-              show_product_title: section.settings.show_product_title,
-              card_show_inner_content: section.settings.card_show_inner_content
-              card_text_color: section.settings.card_text_color
-            %}
-          </li>
+        {%- assign displayed_count = 0 -%}
+        {%- for product in section.settings.collection.products -%}
+          {%- liquid
+            # Check if product should be excluded
+            assign should_exclude = false
+            if section.settings.excluded_products != blank
+              for excluded_product in section.settings.excluded_products
+                if product.id == excluded_product.id
+                  assign should_exclude = true
+                  break
+                endif
+              endfor
+            endif
+          -%}
+          
+          {%- unless should_exclude -%}
+            {%- if displayed_count >= products_to_display -%}
+              {%- break -%}
+            {%- endif -%}
+            
+            <li
+              id='Slide-{{ section.id }}-{{ displayed_count | plus: 1 }}'
+              class='grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}'
+            >
+              {% render 'card-product',
+                card_product: product,
+                media_aspect_ratio: section.settings.image_ratio,
+                show_secondary_image: section.settings.show_secondary_image,
+                show_vendor: section.settings.show_vendor,
+                show_rating: section.settings.show_rating,
+                show_quick_add: section.settings.enable_quick_add,
+                section_id: section.id,
+                show_product_title: section.settings.show_product_title,
+                card_show_inner_content: section.settings.card_show_inner_content
+                card_text_color: section.settings.card_text_color
+              %}
+            </li>
+            {%- assign displayed_count = displayed_count | plus: 1 -%}
+          {%- endunless -%}
         {%- else -%}
           {%- for i in (1..4) -%}
             <li class='grid__item'>
@@ -256,6 +277,12 @@
       "type": "collection",
       "id": "collection",
       "label": "t:sections.featured-collection.settings.collection.label"
+    },
+    {
+      "type": "product_list",
+      "id": "excluded_products",
+      "label": "Excluded products",
+      "info": "Select products to exclude from this featured collection"
     },
     {
       "type": "range",
