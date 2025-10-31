@@ -22,6 +22,9 @@
       assign desktop_height = section.settings.card_max_height | remove: 'vh' | remove: 'px' | remove: '%'
       assign tablet_height = desktop_height | minus: 20 | append: 'vh'
     %}
+    .card--extend-height.card--media {
+        justify-content: flex-end;
+      }
     /* Desktop */
     @media screen and (min-width: 1025px) {
       .collage__item {
@@ -29,9 +32,6 @@
       }
       .card.card--media {
         overflow: hidden;
-      }
-      .card--extend-height.card--media {
-        justify-content: flex-end;
       }
     }
     

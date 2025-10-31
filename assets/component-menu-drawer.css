@@ -241,4 +241,10 @@ details[open].menu-opening > .menu-drawer__submenu {
 .list-menu--grandchild {
 	margin-bottom: 3.5rem;
 }
+@media screen and (max-width: 749px) {
+  .menu-item__name-menu-title .list-menu__item {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
 /*# sourceMappingURL=component-menu-drawer.css.map */

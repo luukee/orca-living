@@ -26,6 +26,13 @@
       background: {{ section.settings.view_all_button_color }};
     }
   {% endif %}
+  {% if section.settings.mobile_slider_item_width != blank %}
+    @media screen and (max-width: 749px) {
+      .section-{{ section.id }}  .grid__item {
+        width: calc({{ section.settings.mobile_slider_item_width }}% - var(--grid-mobile-horizontal-spacing) - 3rem) !important;
+      }
+    }
+  {% endif %}
 {%- endstyle -%}
 <!-- Products to show: {{section.settings.products_to_show}}, All products count: {{section.settings.collection.all_products_count}}, Enable desktop slider: {{section.settings.enable_desktop_slider}} -->
 {%- liquid
@@ -484,6 +491,13 @@
           "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label"
         }
       ]
+    },
+    {
+      
+      "type": "number",
+      "id": "mobile_slider_item_width",
+      "label": "Mobile slider item width",
+      "info": "Width of the mobile slider item as a percentage of the container width"
     },
     {
       "type": "checkbox",
