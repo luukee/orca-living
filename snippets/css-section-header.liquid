@@ -3,6 +3,7 @@
 	/* mobile only */
   :root {
     --header-grid-areas: 'heading navigation';
+    --header-grid-areas-mobile: 'heading search navigation';
 		--columns--header: 1fr auto auto;
     --header-grid-columns: var(--columns--header);
   }
@@ -14,21 +15,6 @@
 			--header-grid-columns: 1fr auto auto auto;
 		}
 	}
-	/* desktop only */
-  @media screen and (min-width: 990px) {
-    {%- if section.settings.menu_type_desktop != "drawer" -%}
-      :root {
-        --header-grid-areas: 'heading navigation search cart';
-				--columns--header: auto auto min-content min-content;
-        --header-grid-columns: var(--columns--header);
-      }
-    {%- else -%}
-      :root {
-        --header-grid-areas: 'heading navigation';
-        --header-grid-columns: var(--columns--header);
-      }
-    {%- endif -%}
-  }
 
 header-drawer {
 	grid-area: navigation;
@@ -39,18 +25,18 @@ header-drawer {
     grid-area: cart;
   }
 }
-/* Hide search icon on mobile */
-@media screen and (max-width: 749px) {
-  .header__search {
-    display: none;
-  }
-}
+
 .header__inner {
   display: grid;
   grid-template-areas: var(--header-grid-areas);
   grid-template-columns: var(--columns--header);
   align-items: center;
   column-gap: var(--column-gap);
+}
+@media screen and (max-width: 749px) {
+  .header__inner {
+    grid-template-areas: var(--header-grid-areas-mobile);
+  }
 }
 .header__heading {
 	grid-area: heading;
