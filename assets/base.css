@@ -3555,15 +3555,15 @@ details-disclosure > details {
 .feed--view-type > *.current {
   text-decoration: underline;
 }
-@media only screen and (max-width: 749px) {
+/* @media only screen and (max-width: 749px) {
   .feed--view-type {
     display: none;
   }
-}
+} */
 .feed-view {
   margin-top: 0;
 }
-@media only screen and (min-width: 750px) {
+/* @media only screen and (min-width: 750px) { */
   .feed-view.list {
     display: block;
     -moz-column-gap: 0;
@@ -3608,10 +3608,10 @@ details-disclosure > details {
   .feed-view.list .card .card__information .price * {
     letter-spacing: 0;
     line-height: calc(1 + 0.3 / max (1, var(--font-heading-scale)));
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 400;
   }
-}
+/* } */
 .product-grid-container .card__inner .card__content {
   display: none;
 }
