@@ -62,7 +62,7 @@
             "video_modal": "",
             "video_hosted_mobile": "",
             "video_ratio_mobile": "56",
-            "custom_css": "== .btn {letter-spacing:normal;}",
+            "custom_css": "== .btn {letter-spacing:normal;}\n/small/ {== .center-content {top: 70%;}",
             "border_top": false,
             "border_bottom": false,
             "background_color": "",
@@ -132,6 +132,7 @@
         "enable_quick_add": false,
         "card_text_color": "#000000",
         "columns_mobile": "2",
+        "mobile_slider_item_width": 57,
         "swipe_on_mobile": true,
         "padding_top": 0,
         "padding_bottom": 0,
@@ -139,7 +140,7 @@
         "border_bottom": false,
         "background_color": "",
         "spacing_top": "",
-        "spacing_bottom": "3rem"
+        "spacing_bottom": ""
       }
     },
     "collage_yJcAjd": {
