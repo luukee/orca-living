@@ -20,7 +20,7 @@
       <{{heading_element}} class="h4">{{section.settings.title}}</{{heading_element}}>
     {% endif %}
 
-    <!-- Mobile Navigation Drawer -->
+    {% comment %} <!-- Mobile Navigation Drawer --> {% endcomment %}
     {% comment %} <div class="navigation-mobile">
       <navigation-drawer>
         <details id="Details-navigation-drawer-container" class="navigation-drawer-container">
@@ -353,7 +353,6 @@
                             {%- for option in product.options -%}
                               {%- if option == 'Material' -%}
                                 {%- assign has_variant_materials = true -%}
-                                <!-- Has variant materials==> {{ has_variant_materials }} -->
                                 {%- assign option_index = forloop.index0 -%}
                                 {%- assign material = variant.options[option_index] | strip -%}
                                 {%- if material != blank -%}
