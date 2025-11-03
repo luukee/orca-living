@@ -693,6 +693,22 @@ a.product__text {
   margin: auto;
 }
 
+/* Mobile: Constrain modal images to viewport width */
+@media screen and (max-width: 749px) {
+  .product-media-modal__content > * {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .product-media-modal__content img,
+  .product-media-modal__content .global-media-settings {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
 .product-media-modal__content .media {
   background: none;
 }
