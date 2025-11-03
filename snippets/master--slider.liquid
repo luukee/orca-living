@@ -18,28 +18,42 @@
     assign use_dots              = s.use_dots
     
     assign section_custom_css     = s.custom_css
-    assign class                = 'section--' | append: s_id
-    assign css_class            = '.' | append: class
+    assign class                  = 'section--' | append: s_id
+    assign css_class              = '.' | append: class
 
-    assign dsk_height              = s.image_height | default: hght_fallback
-    if dsk_height contains '%'
-        assign dsk_height          = dsk_height | replace: '%','vw'
-        assign dsk_img_height       = 'padding-top:' | append: dsk_height | append: ';height: 0;min-height: 0;'
+    assign desktop_height       = s.image_height | default: hght_fallback
+
+    if desktop_height contains '%'
+        assign desktop_height          = desktop_height | replace: '%','vw'
+        assign desktop_img_height      = 'padding-top:' | append: desktop_height | append: ';height: 0;min-height: 0;'
     else
-        assign dsk_img_height       = 'min-height:' | append: dsk_height | append: ';'
+        assign desktop_img_height      = 'min-height:' | append: desktop_height | append: 'vh;'
     endif
 
-    assign mob_height              = s.image_height_mob | default: dsk_height
-    if mob_height contains '%'
-        assign mob_height          = mob_height | replace: '%','vw'
-        assign mob_img_height       = 'padding-top:' | append: mob_height | append: ';height: 0;min-height: 0;'
+    assign mobile_height              = s.image_height_mob | default: desktop_height
+    if mobile_height contains '%'
+        assign mobile_height          = mobile_height | replace: '%','vw'
+        assign mobile_img_height       = 'padding-top:' | append: mobile_height | append: ';height: 0;min-height: 0;'
     else
-        assign mob_img_height       = 'min-height:' | append: mob_height | append: ';'
+        assign mobile_img_height       = 'min-height:' | append: mobile_height | append: 'vh;'
     endif
 
     assign modal                = ''
-
     assign full_width           = s.full_width
+    
+    assign txt_wdth          = s.width
+    assign section_text_align         = s.text_align
+
+    # assign txt_algn         = s.text_align
+    assign vert             = s.vert_align
+    assign hor              = s.hor_align
+    if section_text_align == 'left'
+        assign alignment    = 'left: ' | append: hor | append: '%; transform: translate(-' | append: hor | append: '%,-' | append: vert | append: '%); top: ' | append: vert | append: '%;'
+    elsif section_text_align == 'center'
+        assign alignment    = 'left: 50%; transform: translate(-50%,-' | append: vert | append: '%); top: ' | append: vert | append: '%;'
+    elsif section_text_align == 'right'
+        assign alignment    = 'left: initial; right:'  | append: hor | append: '%; transform: translate(' | append: hor | append: '%,-' | append: vert | append: '%); top:' | append: vert | append: '%;'
+    endif
 %}
 {% for block in section.blocks %}
 
@@ -135,19 +149,7 @@
             assign op_mob        = op_mob | times: 0.01
             assign bg_color_mob   = bg_color_mob | color_modify: 'alpha', op_mob
         endif
-
-        assign txt_algn          = b.align_text
-        assign txt_wdth          = b.width
-        assign cont_algn         = b.align_hor
-
-        assign vert             = b.vert_align
-        assign hor              = b.hor_align
-        if cont_algn != 'right'
-            assign alignment    = 'left: ' | append: hor | append: '%; transform: translate(-' | append: hor | append: '%,-' | append: vert | append: '%); top: ' | append: vert | append: '%;'
-        elsif cont_algn == 'right'
-            assign alignment    = 'left: initial; right:'  | append: hor | append: '%; transform: translate(' | append: hor | append: '%,-' | append: vert | append: '%); top:' | append: vert | append: '%;'
-        endif
-
+        
         assign pos_type          = 'object-position: '
         if use_bg_img
             assign pos_type      = 'background-position: '
@@ -164,8 +166,6 @@
         # endif 
 
     %}
-
-    
 
     {% capture block_css %}
         /* Slide Defaults */
@@ -195,9 +195,9 @@
         {% endif %}
 
         /* Content Position */
-        {{slide_class}} .center-content {
+        {{slide_class}} .slide-text-content {
             position: absolute;
-            text-align: {{txt_algn}};
+            text-align: {{section_text_align}};
             max-width: {{txt_wdth}};
             margin: 0 auto;
             width:95%;
@@ -206,7 +206,7 @@
             font-family: var(--font-heading-family);
         }
         {% if full_width %}
-            .full-width .center-content {
+            .full-width .slide-text-content {
                 width: 100%;
                 padding-left: calc(var(--grid-gutter) * 0.5);
                 padding-right: calc(var(--grid-gutter) * 0.5);
@@ -215,11 +215,14 @@
         {{slide_class}} .but-div {
             display: flex;
             gap: 2em;
+            flex-direction: row;
+            width: unset;
+            justify-content: {% if s.text_align == 'right' %}flex-end;{% elsif s.text_align == 'center' %}center;{% else %}flex-start;{% endif %};
         }
 
         {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
 
-            {{slide_class}} .center-content {
+            {{slide_class}} .slide-text-content {
                 width: 100%;
                 {% if mob_relative == true %}
                     position: relative;
@@ -231,15 +234,12 @@
                     padding: 2em 0;
                     margin: 0 auto;
                 {% else %}
-                    top: 50%;
-                    left: 0;
-                    transform: translate(0, -50%);
-                    padding-left: calc(var(--grid-gutter) * 0.5);
+                    {{alignment}}
 
                 {% endif %}
             }
 
-            // .slick-dotted {{slide_class}} .center-content {
+            // .slick-dotted {{slide_class}} .slide-text-content {
             //     max-width: calc(100% - 120px);
             // }
             {% if mob_relative == true %}
@@ -298,11 +298,11 @@
         {{slide_class}} .btn {
             <!-- font-size: 17px; -->
         }
-        {{slide_class}} .center-content .rte > * {
+        {{slide_class}} .slide-text-content .rte > * {
             margin: 0;
         }
-        {{slide_class}} .center-content .rte > *:not(:last-child),
-        {{slide_class}} .center-content > *:not(:last-child) {
+        {{slide_class}} .slide-text-content .rte > *:not(:last-child),
+        {{slide_class}} .slide-text-content > *:not(:last-child) {
             margin-bottom: var(--base-gutter--half);
         }
         == .btn-container {
@@ -359,7 +359,7 @@
             font-size: 2rem;
             background-color: transparent;
             padding: 0;
-            justify-content: flex-start;
+            justify-content: {% if s.text_align == 'right' %}flex-end;{% elsif s.text_align == 'center' %}center;{% else %}flex-start;{% endif %};
             flex-grow: 0;
             min-width: unset;
             min-height: 1.5em
@@ -385,6 +385,7 @@
         {% if btn_style contains 'custom' and b.btn_custom_inline != false %}
             .but-div {
                 display: inline-flex;
+                flex-direction: row;
                 gap: 2em;
             }
             {{slide_class}} .btn {
@@ -421,8 +422,8 @@
                 // {{slide_class}} .btn {
                 //     font-size: 15px;
                 // }
-                {{slide_class}} .center-content .rte > *:not(:last-child),
-                {{slide_class}} .center-content > *:not(:last-child) {
+                {{slide_class}} .slide-text-content .rte > *:not(:last-child),
+                {{slide_class}} .slide-text-content > *:not(:last-child) {
                     margin-bottom: var(--base-gutter--quarter);
                 }
             }
@@ -445,18 +446,18 @@
         /* Slide Height */
         {% if use_bg_img == true %}
             {{slide_class}} {
-                {{dsk_img_height}}
+                {{desktop_img_height}}
                 {{position}}
             }
            
 
-            {% if mob_height != 0 %}
+            {% if mobile_height != 0 %}
                     {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
                         {{slide_class}}  {
-                            {{mob_img_height}}
+                            {{mobile_img_height}}
                         }
                     }
-                {% unless mob_height contains 'vw' %}
+                {% unless mobile_height contains 'vw' %}
                 {% endunless %}
             {% endif %}
             {% if mob_relative == true %}
@@ -464,7 +465,7 @@
                     {{slide_class}}  {
                         height: auto;
                         min-height: 100%;
-                        {% if mob_height contains 'vw' %}
+                        {% if mobile_height contains 'vw' %}
                         padding-top: 0;
                         {% endif %}
                     }
@@ -577,14 +578,9 @@
       {% capture slides %}
         {{slides}}
         <div class=" slide-image {% if v_type != blank %}{{v_type}}{% endif %} {{slide_id}}" title="{{ ttl | strip_html | strip | strip_newlines | escape  }}" data-index="{{forloop.index}}" {{ block.shopify_attributes }}>
-
             <div class="overlay {% if mob_relative == true %}{% if mob_ov_sooner %}medium-down{% else %}small{% endif %}--hide{% endif %}"></div>
-
             {{video}}
-
             {{img}}
-
-
             {% if use_btn == false and btn_url != blank %}
                 <a class="overlay-link" href="{{btn_url}}">
                     <span class="visually-hidden">{{ttl}}</span>
@@ -598,7 +594,7 @@
                     sub_ttl != blank or
                     txt != blank 
                 %}
-                    <div class="center-content {{ cont_algn }}">
+                    <div class="slide-text-content">
                         {% render 'snippet--image', 
                             img: icn_img, 
                             useBG: false,
@@ -674,13 +670,13 @@
           margin: 0;
       }
       {% if use_bg_img == true %}
-      {% unless dsk_height contains 'vw' %}
+      {% unless desktop_height contains 'vw' %}
       == {
-          {{dsk_img_height}}
+          {{desktop_img_height}}
       }
       {% endunless %}
-      {% if mob_height != 0 %}
-      {% unless mob_height contains 'vw' %}
+      {% if mobile_height != 0 %}
+      {% unless mobile_height contains 'vw' %}
       /small/ {
           == {
               {{mob_img_height}}

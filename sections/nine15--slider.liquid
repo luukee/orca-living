@@ -74,42 +74,6 @@
     },
     {
       "type": "header",
-      "content": "Section Styling"
-    },
-    {
-      "type": "checkbox",
-      "id": "border_top",
-      "label": "Add top border",
-      "default": false
-    },
-    {
-      "type": "checkbox", 
-      "id": "border_bottom",
-      "label": "Add bottom border",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color override",
-      "info": "Override the section's background color"
-    },
-    {
-      "type": "text",
-      "id": "spacing_top",
-      "label": "Top spacing",
-      "info": "CSS value (e.g., '2rem', '40px')",
-      "placeholder": "2rem"
-    },
-    {
-      "type": "text", 
-      "id": "spacing_bottom",
-      "label": "Bottom spacing",
-      "info": "CSS value (e.g., '2rem', '40px')",
-      "placeholder": "2rem"
-    },
-    {
-      "type": "header",
       "content": "Width Rules"
     },
     {
@@ -162,6 +126,56 @@
       "label": "Slider Height on Mobile",
       "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
       "default": "clamp(500px,54%,100vh)"
+    },
+    {
+      "type": "header",
+      "content": "Content Alignment"
+    },
+    {
+      "type": "range",
+      "id": "vert_align",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Vertical Align (optional)",
+      "default": 50,
+      "info": "50 is centered"
+    },
+    {
+      "type": "range",
+      "id": "hor_align",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Horizontal Align (optional)",
+      "default": 10,
+      "info": "50 is centered"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "width",
+      "label": "Content Width",
+      "default": "450px"
     },
     {
       "type": "header",
@@ -243,6 +257,42 @@
         }
       ],
       "default": "5000"
+    },
+    {
+      "type": "header",
+      "content": "Section Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Add top border",
+      "default": false
+    },
+    {
+      "type": "checkbox", 
+      "id": "border_bottom",
+      "label": "Add bottom border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color override",
+      "info": "Override the section's background color"
+    },
+    {
+      "type": "text",
+      "id": "spacing_top",
+      "label": "Top spacing",
+      "info": "CSS value (e.g., '2rem', '40px')",
+      "placeholder": "2rem"
+    },
+    {
+      "type": "text", 
+      "id": "spacing_bottom",
+      "label": "Bottom spacing",
+      "info": "CSS value (e.g., '2rem', '40px')",
+      "placeholder": "2rem"
     },
     {
       "type": "header",
@@ -428,26 +478,6 @@
         {
           "type": "header",
           "content": "Title Settings"
-        },
-        {
-          "type": "select",
-          "id": "align_text",
-          "label": "Text Alignment",
-          "options": [
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "right",
-              "label": "Right"
-            }
-          ],
-          "default": "left"
         },
         {
           "type": "liquid",
@@ -674,56 +704,6 @@
           "id": "stars",
           "label": "Stars",
           "info": "Type a number 1 - 5 to show stars"
-        },
-        {
-          "type": "header",
-          "content": "Alignment Settings"
-        },
-        {
-          "type": "select",
-          "id": "align_hor",
-          "label": "Horizontal Content Alignment",
-          "options": [
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "right",
-              "label": "Right"
-            }
-          ],
-          "default": "left"
-        },
-        {
-          "type": "range",
-          "id": "vert_align",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "label": "Vertical Align (optional)",
-          "default": 50,
-          "info": "50 is centered"
-        },
-        {
-          "type": "range",
-          "id": "hor_align",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "label": "Horizontal Align (optional)",
-          "default": 10,
-          "info": "50 is centered"
-        },
-        {
-          "type": "text",
-          "id": "width",
-          "label": "Content Width",
-          "default": "450px"
         },
         {
           "type": "header",
