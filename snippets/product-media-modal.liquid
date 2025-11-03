@@ -39,85 +39,33 @@
         endif
       -%}
 
-      {%- liquid
-        if product.selected_or_first_available_variant.featured_media != null
-          assign media = product.selected_or_first_available_variant.featured_media
-          assign allow_featureed = false
-          if has_variant_images == false
-            assign allow_featureed = true
-          elsif variant_images contains media.id
-            assign allow_featureed = true
-          elsif media.preview_image and variant_images contains media.preview_image.src
-            assign allow_featureed = true
-          elsif media.src and variant_images contains media.src
-            assign allow_featureed = true
-          endif
-          if allow_featureed
-          render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: section.settings.hide_variants
-          endif
-        endif
-      -%}
-
-      {%- for media in product.media -%}
+      {%- comment -%} If variant has variant_images, render ONLY those (variant featured image is already included in variant_images array) {%- endcomment -%}
+      {%- if has_variant_images -%}
         {%- liquid
-          assign allow = false
-          if has_variant_images == false
-            assign allow = true
-          elsif variant_images contains media.id
-            assign allow = true
-          elsif media.preview_image and variant_images contains media.preview_image.src
-            assign allow = true
-          elsif media.src and variant_images contains media.src
-            assign allow = true
-          endif
+          assign vi_raw = product.selected_or_first_available_variant.metafields.custom.variant_images
+          assign vi_list = vi_raw.value | default: vi_raw
+          assign featured_media = product.selected_or_first_available_variant.featured_media
         -%}
-        {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
-          {%- if allow -%}
+        {%- comment -%} Render variant featured image first {%- endcomment -%}
+        {%- if featured_media != null -%}
+          {%- render 'product-media', media: featured_media, loop: section.settings.enable_video_looping, variant_image: section.settings.hide_variants -%}
+        {%- endif -%}
+        {%- comment -%} Render all variant_images from metafield (in admin order) {%- endcomment -%}
+        {%- if vi_list -%}
+          {%- for m in vi_list -%}
             {%- liquid
-              assign variant_image = false
-              if section.settings.hide_variants
-                if variant_images contains media.src
-                  assign variant_image = true
-                elsif variant_images contains media.id
-                  assign variant_image = true
-                endif
+              assign m_id = m.id | default: ''
+              assign is_media_object = false
+              if m_id != ''
+                assign is_media_object = true
+              endif
+              assign data_key = ''
+              if is_media_object
+                assign data_key = m.id
+              else
+                assign data_key = forloop.index0 | prepend: 'viu-'
               endif
             -%}
-            {%- render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: variant_image -%}
-          {%- endif -%}
-        {%- endunless -%}
-      {%- endfor -%}
-
-      {%- comment -%} Extra variant metafield images not in product.media {%- endcomment -%}
-      {%- liquid
-        assign vi_raw = product.selected_or_first_available_variant.metafields.custom.variant_images
-        assign vi_extra = vi_raw.value | default: vi_raw
-      -%}
-      {%- if has_variant_images and vi_extra -%}
-        {%- for m in vi_extra -%}
-          {%- liquid
-            assign m_id = m.id | default: ''
-            assign is_media_object = false
-            if m_id != ''
-              assign is_media_object = true
-            endif
-            assign in_product_media = false
-            if is_media_object
-              for pm in product.media
-                if pm.id == m.id
-                  assign in_product_media = true
-                  break
-                endif
-              endfor
-            endif
-            assign data_key = ''
-            if is_media_object
-              assign data_key = m.id
-            else
-              assign data_key = forloop.index0 | prepend: 'viu-'
-            endif
-          -%}
-          {%- unless in_product_media -%}
             {%- if is_media_object -%}
               <img
                 class="global-media-settings global-media-settings--no-shadow product__media-item--variant"
@@ -134,8 +82,27 @@
               {%- liquid
                 assign src = m | replace: '\\/', '/'
               -%}
-              <img class="global-media-settings global-media-settings--no-shadow product__media-item--variant" src="{{ src }}" alt="{{ product.title | escape }}" loading="lazy" width="1100" height="1100" data-media-id="{{ data_key }}" />
+              <img 
+                class="global-media-settings global-media-settings--no-shadow product__media-item--variant" 
+                src="{{ src }}" 
+                alt="{{ product.title | escape }}" 
+                loading="lazy" 
+                width="1100" 
+                height="1100" 
+                data-media-id="{{ data_key }}" 
+              />
             {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- comment -%} No variant_images: render default product.media (featured + rest) {%- endcomment -%}
+        {%- if product.selected_or_first_available_variant.featured_media != null -%}
+          {%- assign featured_media = product.selected_or_first_available_variant.featured_media -%}
+          {%- render 'product-media', media: featured_media, loop: section.settings.enable_video_looping, variant_image: section.settings.hide_variants -%}
+        {%- endif -%}
+        {%- for media in product.media -%}
+          {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+            {%- render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: false -%}
           {%- endunless -%}
         {%- endfor -%}
       {%- endif -%}
