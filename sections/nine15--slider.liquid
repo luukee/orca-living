@@ -95,37 +95,18 @@
       "info": "Unchecking this will make all images and videos inline instead of background."
     },
     {
-      "type": "checkbox",
-      "id": "mob_rel",
-      "label": "Separate content from background on mobile",
-      "default": false,
-      "info": "Check this if your text content is getting cutoff on mobile. It will place the content below the image/video."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mobile_overlay_sooner",
-      "label": "Show Mobile overlay at Tablet size.",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "hide_menus",
-      "label": "Hide menus",
-      "default": false
-    },
-    {
-      "type": "text",
+      "type": "number",
       "id": "image_height",
       "label": "Slider Height",
-      "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
-      "default": "clamp(500px,54%,100vh)"
+      "info": "1-100",
+      "default": 80
     },
     {
-      "type": "text",
+      "type": "number",
       "id": "image_height_mob",
       "label": "Slider Height on Mobile",
-      "info": "Can be set as: px, em, vh, vw, vmin, %, etc...",
-      "default": "clamp(500px,54%,100vh)"
+      "info": "1-100",
+      "default": 80
     },
     {
       "type": "header",
@@ -261,6 +242,25 @@
     {
       "type": "header",
       "content": "Section Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "mob_rel",
+      "label": "Separate content from background on mobile",
+      "default": false,
+      "info": "Check this if your text content is getting cutoff on mobile. It will place the content below the image/video."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile_overlay_sooner",
+      "label": "Show Mobile overlay at Tablet size.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_menus",
+      "label": "Hide menus",
+      "default": false
     },
     {
       "type": "checkbox",
