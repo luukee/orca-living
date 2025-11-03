@@ -170,18 +170,9 @@
               endfor
             endif
             
-            # Debug collection info
-            # if link.title == 'Pavers'
-            #   echo ' | collection.title=' | append: collection.title | append: ' collection.id=' | append: collection.id | append: ' path_collection=' | append: collection_handle
-            # endif 
             capture collection_url 
               render 'snippet--url-query', queryString: 'collection'
             endcapture
-            
-            # Debug output - remove after fixing
-            # if link.title == 'Pavers'
-            #   echo 'DEBUG: link_handle=' | append: link_handle | append: ' collection_handle=' | append: collection_handle | append: ' collection_url=' | append: collection_url | append: ' link.current=' | append: link.current | append: ' link.url=' | append: link.url
-            # endif
             
             if collection_url != ''
               if link.url contains collection_url
