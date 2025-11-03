@@ -24,8 +24,9 @@
           id="k_id_email_footer"
           placeholder="Email address"
         >
-        <button type="submit">
-          {% render 'icon-caret' %}
+        <button type="submit" aria-label="Subscribe to newsletter">
+          <span class="visually-hidden">Subscribe to newsletter</span>
+          {% render 'icon-caret', aria_hidden: true %}
         </button>
       </div>
     </div>

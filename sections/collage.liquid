@@ -78,9 +78,11 @@
 
 <div class='color-{{ section.settings.color_scheme }} gradient isolate'>
   <div class='page-width{% if section.settings.heading == blank %} no-heading{% endif %} section-{{ section.id }}-padding'>
-    <h2 class='collage-wrapper-title inline-richtext {{ section.settings.heading_size }}'>
-      {{ section.settings.heading }}
-    </h2>
+    {% if section.settings.heading != blank %}
+      <h2 class='collage-wrapper-title inline-richtext {{ section.settings.heading_size }}'>
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
     <div class='collage{% if section.settings.mobile_layout == 'collage' %} collage--mobile{% endif %}{% if section.settings.desktop_layout == 'equal' %} collage--equal{% endif %}'>
       {%- for block in section.blocks -%}
         {% assign card_heading = card_titles[forloop.index0] | strip %}
