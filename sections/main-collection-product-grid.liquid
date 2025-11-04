@@ -84,28 +84,108 @@
 
 
 <!-- main-collection-product-grid -->
-{% comment %} Calculate active filters for display {% endcomment %}
+{% comment %} Calculate active filters for breadcrumb-style display {% endcomment %}
 {%- assign active_filters = '' -%}
-{%- for f in collection.filters -%}
-  {%- assign filter_values = '' -%}
-  {%- for v in f.values -%}
-    {%- if v.active -%}
-      {%- if filter_values == '' -%}
-        {%- assign filter_values = v.label -%}
-      {%- else -%}
-        {%- assign filter_values = filter_values | append: ' and ' | append: v.label -%}
-      {%- endif -%}
+{%- assign has_active_filter = false -%}
+
+{%- comment -%} Check for tags first (e.g., /collections/plumbing/_accessories) {%- endcomment -%}
+{%- if current_tags.first -%}
+  {%- assign tag_name_raw = current_tags.first | remove: '_' | replace: '-', ' ' -%}
+  {%- assign tag_name_parts = tag_name_raw | split: ' ' -%}
+  {%- assign tag_name = '' -%}
+  {%- for word in tag_name_parts -%}
+    {%- assign capitalized_word = word | capitalize -%}
+    {%- if tag_name == '' -%}
+      {%- assign tag_name = capitalized_word -%}
+    {%- else -%}
+      {%- assign tag_name = tag_name | append: ' ' | append: capitalized_word -%}
     {%- endif -%}
   {%- endfor -%}
-  {%- if filter_values != '' -%}
-    {%- assign filter_name = f.label | default: f.param_name | split: '.' | last | capitalize | replace: '_', ' ' -%}
-    {%- if active_filters == '' -%}
-      {%- assign active_filters = filter_name | append: ': ' | append: filter_values -%}
-    {%- else -%}
-      {%- assign active_filters = active_filters | append: ' • ' | append: filter_name | append: ': ' | append: filter_values -%}
+  {%- assign active_filters = collection.title | append: '/' | append: tag_name -%}
+  {%- assign has_active_filter = true -%}
+{%- else -%}
+  {%- comment -%} Check for active filters (e.g., ?filter.v.option.material=Copper) {%- endcomment -%}
+  {%- for f in collection.filters -%}
+    {%- for v in f.values -%}
+      {%- if v.active -%}
+        {%- assign filter_name_raw = f.label | default: f.param_name | split: '.' | last | replace: '_', ' ' -%}
+        {%- assign filter_name_parts = filter_name_raw | split: ' ' -%}
+        {%- assign filter_name = '' -%}
+        {%- for word in filter_name_parts -%}
+          {%- assign capitalized_word = word | capitalize -%}
+          {%- if filter_name == '' -%}
+            {%- assign filter_name = capitalized_word -%}
+          {%- else -%}
+            {%- assign filter_name = filter_name | append: ' ' | append: capitalized_word -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign filter_value_raw = v.label | url_decode -%}
+        {%- assign filter_value_parts = filter_value_raw | split: ' ' -%}
+        {%- assign filter_value = '' -%}
+        {%- for word in filter_value_parts -%}
+          {%- assign capitalized_word = word | capitalize -%}
+          {%- if filter_value == '' -%}
+            {%- assign filter_value = capitalized_word -%}
+          {%- else -%}
+            {%- assign filter_value = filter_value | append: ' ' | append: capitalized_word -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign active_filters = collection.title | append: '/' | append: filter_name | append: '/' | append: filter_value -%}
+        {%- assign has_active_filter = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if has_active_filter -%}
+      {%- break -%}
     {%- endif -%}
-  {%- endif -%}
-{%- endfor -%}
+  {%- endfor -%}
+  
+  {%- comment -%} Fallback: Check URL query string if filters aren't marked as active {%- endcomment -%}
+  {%- unless has_active_filter -%}
+    {%- if request.query_string contains 'filter.' -%}
+      {%- assign query_parts = request.query_string | split: '&' -%}
+      {%- for part in query_parts -%}
+        {%- if part contains 'filter.' -%}
+          {%- assign filter_param = part | split: '=' -%}
+          {%- if filter_param.size == 2 -%}
+            {%- comment -%} Extract filter name from last part after last dot (e.g., 'material' from 'filter.v.option.material') {%- endcomment -%}
+            {%- assign filter_key_str = filter_param[0] -%}
+            {%- assign filter_key_parts = filter_key_str | split: '.' -%}
+            {%- assign filter_name_raw = '' -%}
+            {%- for key_part in filter_key_parts -%}
+              {%- assign filter_name_raw = key_part -%}
+            {%- endfor -%}
+            {%- assign filter_name_raw = filter_name_raw | replace: '_', ' ' -%}
+            {%- assign filter_name_parts = filter_name_raw | split: ' ' -%}
+            {%- assign filter_name = '' -%}
+            {%- for word in filter_name_parts -%}
+              {%- assign capitalized_word = word | capitalize -%}
+              {%- if filter_name == '' -%}
+                {%- assign filter_name = capitalized_word -%}
+              {%- else -%}
+                {%- assign filter_name = filter_name | append: ' ' | append: capitalized_word -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- assign filter_value_raw = filter_param[1] | url_decode | replace: '+', ' ' -%}
+            {%- assign filter_value_parts = filter_value_raw | split: ' ' -%}
+            {%- assign filter_value = '' -%}
+            {%- for word in filter_value_parts -%}
+              {%- assign capitalized_word = word | capitalize -%}
+              {%- if filter_value == '' -%}
+                {%- assign filter_value = capitalized_word -%}
+              {%- else -%}
+                {%- assign filter_value = filter_value | append: ' ' | append: capitalized_word -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- assign active_filters = collection.title | append: '/' | append: filter_name | append: '/' | append: filter_value -%}
+            {%- assign has_active_filter = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endunless -%}
+{%- endif -%}
 
 <div class='section-{{ section.id }}-padding section--main-collection-product-grid'>
   <div class='collection{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% else %} {% endif %}'>
