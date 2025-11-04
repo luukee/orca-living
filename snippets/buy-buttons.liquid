@@ -390,7 +390,7 @@
       .modal {
         display: none;
         position: fixed;
-        z-index: 1000;
+        z-index: 9999;
         left: 0;
         top: 0;
         width: 100%;
@@ -481,6 +481,12 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('product-inquiry-modal')
+        
+        // Move modal to body level to escape stacking context issues
+        if (modal && modal.parentNode !== document.body) {
+          document.body.appendChild(modal)
+        }
+        
         const btn = document.querySelector('.product-form__submit')
         const span = document.getElementsByClassName('close-modal')[0]
         const body = document.body
@@ -506,51 +512,60 @@
           window.scrollTo(0, scrollPosition)
         }
 
-        btn.addEventListener('click', function (e) {
-          e.preventDefault()
-          modal.style.display = 'block'
-          disableScroll()
-        })
+        // Only set up event listeners if modal and required elements exist
+        if (modal && btn) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault()
+            modal.style.display = 'block'
+            disableScroll()
+          })
+        }
 
-        span.addEventListener('click', function () {
-          modal.style.display = 'none'
-          enableScroll()
-        })
-
-        window.addEventListener('click', function (e) {
-          if (e.target == modal) {
+        if (modal && span) {
+          span.addEventListener('click', function () {
             modal.style.display = 'none'
             enableScroll()
-          }
-        })
+          })
+        }
+
+        if (modal) {
+          window.addEventListener('click', function (e) {
+            if (e.target == modal) {
+              modal.style.display = 'none'
+              enableScroll()
+            }
+          })
+        }
 
         // Listen for form submission success to close modal
-        const form = document.querySelector('#custom_product_form')
-        if (form) {
-          const formMessage = form.querySelector('.form__message')
-          
-          if (formMessage) {
-            const observer = new MutationObserver(function (mutations) {
-              mutations.forEach(function (mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                  if (formMessage.style.display === 'block') {
-                    // Close modal after 3 seconds on success
-                    setTimeout(() => {
-                      modal.style.display = 'none'
-                      enableScroll()
-                      // Reset form and show fields again
-                      form.reset()
-                      form.querySelector('.contact__fields').style.display = 'block'
-                      formMessage.style.display = 'none'
-                    }, 3000)
+        if (modal) {
+          const form = document.querySelector('#custom_product_form')
+          if (form) {
+            const formMessage = form.querySelector('.form__message')
+            
+            if (formMessage) {
+              const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                  if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    if (formMessage.style.display === 'block') {
+                      // Close modal after 3 seconds on success
+                      setTimeout(() => {
+                        modal.style.display = 'none'
+                        enableScroll()
+                        // Reset form and show fields again
+                        form.reset()
+                        form.querySelector('.contact__fields').style.display = 'block'
+                        formMessage.style.display = 'none'
+                      }, 3000)
+                    }
                   }
-                }
+                })
               })
-            })
 
-            observer.observe(formMessage, {
-              attributes: true
-            })
+              observer.observe(formMessage, {
+                attributes: true
+              })
+            }
           }
         }
       })
