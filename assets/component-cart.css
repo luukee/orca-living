@@ -58,7 +58,7 @@ cart-items {
   pointer-events: none;
 }
 .cart__footer {
-  padding: 4rem 0 0;
+  padding: 4rem 0;
 }
 .cart__footer-wrapper:last-child .cart__footer {
   padding-bottom: 5rem;

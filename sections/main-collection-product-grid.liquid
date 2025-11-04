@@ -385,7 +385,8 @@
                           single_variant_quick_add: single_variant_quick_add,
                           section_id: section.id,
                           enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
-                          quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                          quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text,
+                          enable_order_samples_button: section.settings.enable_order_samples_button
                           %}
                       </li>
                     {% endif %}
@@ -460,7 +461,8 @@
                                 single_variant_quick_add: single_variant_quick_add,
                                 section_id: section.id
                                 enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
-                                quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                                quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text,
+                                enable_order_samples_button: section.settings.enable_order_samples_button
                               %}
                             </li>
                           {% endunless %}
@@ -488,7 +490,8 @@
                         single_variant_quick_add: single_variant_quick_add,
                         section_id: section.id
                         enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
-                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text,
+                        enable_order_samples_button: section.settings.enable_order_samples_button
                       %}
                     </li>
                     
@@ -531,7 +534,8 @@
                         single_variant_quick_add: single_variant_quick_add,
                         section_id: section.id,
                         enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
-                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                        quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text,
+                        enable_order_samples_button: section.settings.enable_order_samples_button
                       %}
                     </li>
                   {%- endif -%}
@@ -749,7 +753,8 @@
                               single_variant_quick_add: single_variant_quick_add,
                               section_id: section.id
                               enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
-                              quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                              quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text,
+                              enable_order_samples_button: section.settings.enable_order_samples_button
                             %}
                           </li>
                           {% assign index = index | plus: 1 %}
@@ -921,7 +926,8 @@
                           single_variant_quick_add: single_variant_quick_add,
                           section_id: section.id,
                           enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
-                          quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text
+                          quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text,
+                          enable_order_samples_button: section.settings.enable_order_samples_button
                         %}
                       </li>
                     {% endif %}
@@ -1041,6 +1047,12 @@
       "id": "enable_quick_add",
       "default": false,
       "label": "t:sections.main-collection-product-grid.settings.enable_quick_buy.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_order_samples_button",
+      "default": false,
+      "label": "Enable Order Samples Button"
     },
     {
       "type": "checkbox",
