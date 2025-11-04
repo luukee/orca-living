@@ -635,7 +635,7 @@
                           </div>
                         {%- endif -%}
                         {%- if mega_menu_content.cta_text != blank and mega_menu_content.cta_url != blank -%}
-                          <a href="{{ mega_menu_content.cta_url }}" class="mega-menu__cta-link">
+                          <a href="{{ mega_menu_content.cta_url_destination }}" class="mega-menu__cta-link">
                             {{ mega_menu_content.cta_text | escape }}
                           </a>
                         {%- else -%}
