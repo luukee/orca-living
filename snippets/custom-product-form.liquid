@@ -460,7 +460,7 @@
     const form = this
     const submitButton = form.querySelector('button[type="submit"]')
     const formFields = form.querySelector('.contact__fields')
-    const formMessage = form.querySelector('.form__message')
+    let formMessage = form.querySelector('.form__message')
 
     try {
       submitButton.disabled = true
@@ -542,17 +542,56 @@
       
       // Optional delay to ensure Klaviyo gets its time
       await new Promise((resolve) => setTimeout(resolve, 300))
-    } catch (error) {
-      console.error('Klaviyo submission error:', error)
+      
+      // Log successful submission for debugging
+      console.log('✅ Product inquiry form submitted successfully to Klaviyo:', {
+        email: email,
+        product: '{{ product.title }}',
+        timestamp: new Date().toISOString()
+      })
+      
+      // Show success message - create or update formMessage element
+      if (!formMessage) {
+        const messageDiv = document.createElement('div')
+        messageDiv.className = 'form__message'
+        messageDiv.setAttribute('tabindex', '-1')
+        messageDiv.setAttribute('autofocus', '')
+        form.insertBefore(messageDiv, formFields)
+        formMessage = messageDiv
+      }
+      
       formMessage.innerHTML = `
-            <div class='form__message' tabindex='-1' autofocus>
-                <h2>{% render 'icon-error' %} There was a problem submitting your inquiry</h2>
-                <p>Please try again later.</p>
-            </div>
-        `
+        <h2 class="form-status form-status-list" tabindex="-1" autofocus>
+          {% render 'icon-success' %}
+          {{ modal_form_success_message | default: 'Thank you! Your inquiry has been submitted. We will contact you soon.' }}
+        </h2>
+      `
       formMessage.style.display = 'block'
+      formFields.style.display = 'none'
+      
+    } catch (error) {
+      console.error('❌ Klaviyo submission error:', error)
+      
+      // Create formMessage if it doesn't exist
+      if (!formMessage) {
+        const messageDiv = document.createElement('div')
+        messageDiv.className = 'form__message'
+        messageDiv.setAttribute('tabindex', '-1')
+        messageDiv.setAttribute('autofocus', '')
+        form.insertBefore(messageDiv, formFields)
+        formMessage = messageDiv
+      }
+      
+      formMessage.innerHTML = `
+        <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+          {% render 'icon-error' %}
+          There was a problem submitting your inquiry. Please try again later.
+        </h2>
+      `
+      formMessage.style.display = 'block'
+      if (formFields) formFields.style.display = 'block'
     } finally {
-      submitButton.disabled = false
+      if (submitButton) submitButton.disabled = false
     }
   })
   
