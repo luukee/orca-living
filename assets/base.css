@@ -243,6 +243,11 @@
   --color-button: var(--color-foreground);
   --color-button-text: var(--color-background);
 }
+.button::after {
+  content: '';
+  border-bottom: 1px solid #fff;
+}
+
 .button--secondary {
   --color-button: var(--color-base-outline-button-labels);
   --color-button-text: var(--color-base-outline-button-labels);

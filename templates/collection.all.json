@@ -1,0 +1,484 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "29db9ca7-acdf-4494-97cc-e78c6a58cae8": {
+      "type": "nine15--slider",
+      "blocks": {
+        "2cb5d8cf-8d84-4d48-8b5c-50510b49ee96": {
+          "type": "slider",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/ORCA_Home_page.png",
+            "align_bg": "center",
+            "bg_color": "#000000",
+            "opacity": 12,
+            "image_mob": "shopify://shop_images/ORCA_home_page_mobile.png",
+            "align_bg_mob": "center",
+            "bg_color_mob": "#000000",
+            "opacity_mob": 10,
+            "title": "NATURAL MATERIALS</br>FOR THE GARDEN",
+            "make_h1": true,
+            "font_size_title": 30,
+            "title_color": "#ffffff",
+            "subtitle": "",
+            "font_size_subtitle": 20,
+            "subtitle_color": "#000000",
+            "text": "",
+            "font_size_text": 16,
+            "text_color": "#ffffff",
+            "btn_txt": "",
+            "btn_url": "",
+            "btn_style": "primary Button--custom",
+            "btn_txt2": "Shop Outdoor Pavers",
+            "btn_url2": "shopify://collections/pavers",
+            "btn_style2": "primary Button--custom underlined-link",
+            "btn_custom_inline": false,
+            "btn_size_text": 15,
+            "color_button_text": "#ffffff",
+            "color_button": "",
+            "color_button_border": "#ffffff",
+            "color_button_text_hover": "#ffffff",
+            "color_button_hover": "",
+            "color_button_border_hover": "",
+            "stars": "",
+            "video_autoplay": false,
+            "video_ratio": "56",
+            "video_url": "",
+            "video_hosted": "",
+            "btn_txt_modal": "Watch Video",
+            "video_modal": "",
+            "video_hosted_mobile": "",
+            "video_ratio_mobile": "56",
+            "custom_css": "== .btn {letter-spacing:normal;}",
+            "border_top": false,
+            "border_bottom": false,
+            "background_color": "",
+            "spacing_top": "",
+            "spacing_bottom": "",
+            "metafield_image": "",
+            "metafield_image_alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "2cb5d8cf-8d84-4d48-8b5c-50510b49ee96"
+      ],
+      "settings": {
+        "leaf": false,
+        "full_width": true,
+        "set_height": true,
+        "mob_rel": false,
+        "show_mobile_overlay_sooner": false,
+        "hide_menus": false,
+        "image_height": 80,
+        "image_height_mob": 80,
+        "vert_align": 75,
+        "hor_align": 0,
+        "text_align": "left",
+        "width": "450px",
+        "show_nav": false,
+        "nav_hover": false,
+        "nav_color": "#ffffff",
+        "auto_slide": false,
+        "use_arrows": false,
+        "use_dots": false,
+        "arrow_background_color": "#ffffff",
+        "pause": "5000",
+        "border_top": false,
+        "border_bottom": false,
+        "background_color": "",
+        "spacing_top": "",
+        "spacing_bottom": "3rem",
+        "custom_css": ""
+      }
+    },
+    "featured_collection_AFBrmA": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "title": "Functional elements for the garden",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "shop-hardware",
+        "excluded_products": [
+          "brass-outdoor-hose-tap"
+        ],
+        "products_to_show": 10,
+        "columns_desktop": 3,
+        "full_width": true,
+        "show_product_title": true,
+        "card_show_inner_content": false,
+        "show_view_all": true,
+        "view_all_text": "Shop Hardware",
+        "view_all_url": "",
+        "view_all_style": "link",
+        "view_all_button_position": "left",
+        "view_all_button_color": "#000000",
+        "enable_desktop_slider": true,
+        "desktop_slider_arrow_position": "middle",
+        "color_scheme": "background-1",
+        "image_ratio": "portrait",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": false,
+        "card_text_color": "#000000",
+        "columns_mobile": "2",
+        "mobile_slider_item_width": 57,
+        "swipe_on_mobile": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "border_top": false,
+        "border_bottom": false,
+        "background_color": "",
+        "spacing_top": "",
+        "spacing_bottom": ""
+      }
+    },
+    "collage_yJcAjd": {
+      "type": "collage",
+      "blocks": {
+        "collection_6x6GWm": {
+          "type": "collection",
+          "settings": {
+            "collection": "lighting",
+            "collection_card_title_text": "Outdoor Lighting",
+            "collection_card_link_text": "Shop Now",
+            "collection_card_link_url": "",
+            "collection_card_show_caption_description": false
+          }
+        },
+        "product_fVXY8j": {
+          "type": "product",
+          "settings": {
+            "product": "sundial-bistro-set",
+            "second_image": false,
+            "product_card_title_text": "Sundial Bistro Set",
+            "product_card_link_text": "Shop Now",
+            "product_card_link_url": "shopify://products/sundial-bistro-set",
+            "product_card_show_caption_description": false
+          }
+        }
+      },
+      "block_order": [
+        "collection_6x6GWm",
+        "product_fVXY8j"
+      ],
+      "custom_css": [
+        ".full-unstyled-link {font-size: 15px;}",
+        ".page-width {padding-right: 0; padding-left: 0;}",
+        ".card__title {margin-bottom: calc(var(--base-gutter--half) - 5px);}"
+      ],
+      "name": "t:sections.collage.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "desktop_layout": "equal",
+        "mobile_layout": "column",
+        "card_styles": "product-card-wrapper",
+        "card_max_height_desktop": 90,
+        "card_max_height_mobile": 59,
+        "color_scheme": "background-1",
+        "card_show_outer_content": false,
+        "card_text_color": "#ffffff",
+        "card_inner_padding": "2rem 2rem 6rem 2rem",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "nine15_slider_4bUwJK": {
+      "type": "nine15--slider",
+      "blocks": {
+        "slider_97pUVj": {
+          "type": "slider",
+          "name": "Landscape Designs",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/JC_250807_ORCA_DSCF0707_HR.png",
+            "align_bg": "center",
+            "bg_color": "#000000",
+            "opacity": 10,
+            "image_mob": "shopify://shop_images/JC_250807_ORCA_DSCF0691_HR.png",
+            "align_bg_mob": "left center",
+            "bg_color_mob": "#000000",
+            "opacity_mob": 10,
+            "title": "LANDSCAPE DESIGNS",
+            "make_h1": true,
+            "font_size_title": 30,
+            "title_color": "#ffffff",
+            "subtitle": "",
+            "font_size_subtitle": 20,
+            "subtitle_color": "#000000",
+            "text": "",
+            "font_size_text": 16,
+            "text_color": "#ffffff",
+            "btn_txt": "",
+            "btn_url": "",
+            "btn_style": "primary Button--custom underlined-link",
+            "btn_txt2": "View Projects",
+            "btn_url2": "shopify://blogs/field-notes",
+            "btn_style2": "primary Button--custom underlined-link",
+            "btn_custom_inline": false,
+            "btn_size_text": 15,
+            "color_button_text": "#ffffff",
+            "color_button": "",
+            "color_button_border": "#ffffff",
+            "color_button_text_hover": "#ffffff",
+            "color_button_hover": "",
+            "color_button_border_hover": "rgba(0,0,0,0)",
+            "stars": "",
+            "video_autoplay": true,
+            "video_ratio": "56",
+            "video_url": "",
+            "video_hosted": "",
+            "btn_txt_modal": "Watch Video",
+            "video_modal": "",
+            "video_hosted_mobile": "",
+            "video_ratio_mobile": "56",
+            "custom_css": "== .btn {letter-spacing:normal;}",
+            "border_top": false,
+            "border_bottom": false,
+            "background_color": "",
+            "spacing_top": "",
+            "spacing_bottom": "",
+            "metafield_image": "",
+            "metafield_image_alt": ""
+          }
+        },
+        "slider_Qn4JDF": {
+          "type": "slider",
+          "name": "Slide Two",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/JC_ORCA_DSCF4980_HR_1.png",
+            "align_bg": "center",
+            "bg_color": "#000000",
+            "opacity": 10,
+            "align_bg_mob": "center",
+            "bg_color_mob": "#000000",
+            "opacity_mob": 10,
+            "title": "LANDSCAPE DESIGNS",
+            "make_h1": true,
+            "font_size_title": 30,
+            "title_color": "#ffffff",
+            "subtitle": "",
+            "font_size_subtitle": 20,
+            "subtitle_color": "#000000",
+            "text": "",
+            "font_size_text": 16,
+            "text_color": "#ffffff",
+            "btn_txt": "",
+            "btn_url": "",
+            "btn_style": "primary Button--custom underlined-link",
+            "btn_txt2": "View Projects",
+            "btn_url2": "shopify://blogs/landscapes",
+            "btn_style2": "primary Button--custom underlined-link",
+            "btn_custom_inline": false,
+            "btn_size_text": 15,
+            "color_button_text": "#ffffff",
+            "color_button": "",
+            "color_button_border": "#ffffff",
+            "color_button_text_hover": "#ffffff",
+            "color_button_hover": "",
+            "color_button_border_hover": "",
+            "stars": "",
+            "video_autoplay": true,
+            "video_ratio": "56",
+            "video_url": "",
+            "video_hosted": "",
+            "btn_txt_modal": "Watch Video",
+            "video_modal": "",
+            "video_hosted_mobile": "",
+            "video_ratio_mobile": "56",
+            "custom_css": "== .btn {letter-spacing:normal;}",
+            "border_top": false,
+            "border_bottom": false,
+            "background_color": "",
+            "spacing_top": "",
+            "spacing_bottom": "",
+            "metafield_image": "",
+            "metafield_image_alt": ""
+          }
+        },
+        "slider_kpffEU": {
+          "type": "slider",
+          "name": "Slide Three",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/ORCA_Long_Beach_Hero_Image.png",
+            "align_bg": "center",
+            "bg_color": "#000000",
+            "opacity": 10,
+            "align_bg_mob": "center",
+            "bg_color_mob": "#000000",
+            "opacity_mob": 10,
+            "title": "LANDSCAPE DESIGNS",
+            "make_h1": true,
+            "font_size_title": 30,
+            "title_color": "#ffffff",
+            "subtitle": "",
+            "font_size_subtitle": 20,
+            "subtitle_color": "#000000",
+            "text": "",
+            "font_size_text": 16,
+            "text_color": "#ffffff",
+            "btn_txt": "",
+            "btn_url": "",
+            "btn_style": "primary Button--custom underlined-link",
+            "btn_txt2": "View Projects",
+            "btn_url2": "shopify://blogs/landscapes",
+            "btn_style2": "primary Button--custom underlined-link",
+            "btn_custom_inline": false,
+            "btn_size_text": 15,
+            "color_button_text": "#ffffff",
+            "color_button": "",
+            "color_button_border": "#ffffff",
+            "color_button_text_hover": "#ffffff",
+            "color_button_hover": "",
+            "color_button_border_hover": "",
+            "stars": "",
+            "video_autoplay": true,
+            "video_ratio": "56",
+            "video_url": "",
+            "video_hosted": "",
+            "btn_txt_modal": "Watch Video",
+            "video_modal": "",
+            "video_hosted_mobile": "",
+            "video_ratio_mobile": "56",
+            "custom_css": "== .btn {letter-spacing:normal;}",
+            "border_top": false,
+            "border_bottom": false,
+            "background_color": "",
+            "spacing_top": "",
+            "spacing_bottom": "",
+            "metafield_image": "",
+            "metafield_image_alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "slider_97pUVj",
+        "slider_Qn4JDF",
+        "slider_kpffEU"
+      ],
+      "name": "Slider - NINE15",
+      "settings": {
+        "leaf": false,
+        "full_width": true,
+        "set_height": true,
+        "mob_rel": false,
+        "show_mobile_overlay_sooner": false,
+        "hide_menus": false,
+        "image_height": 90,
+        "image_height_mob": 80,
+        "vert_align": 75,
+        "hor_align": 0,
+        "text_align": "left",
+        "width": "450px",
+        "show_nav": true,
+        "nav_hover": false,
+        "nav_color": "#ffffff",
+        "auto_slide": true,
+        "use_arrows": true,
+        "use_dots": false,
+        "arrow_background_color": "rgb(255 255 255 / 25%)",
+        "pause": "7000",
+        "border_top": false,
+        "border_bottom": false,
+        "background_color": "",
+        "spacing_top": "",
+        "spacing_bottom": "",
+        "custom_css": ""
+      }
+    },
+    "multicolumn_e9Ai44": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_8e9BUN": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Mitch_IG_Post.png",
+            "title": "Unearthing Clay",
+            "text": "",
+            "link_label": "Listen",
+            "link": "https://open.spotify.com/episode/1mHd2GLi6EsQsUQ5e5wx32?si=e385866d1f1a4816"
+          }
+        },
+        "column_whe6JX": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/JC_250508_SONOKO_DSCF0500_HR.jpg",
+            "title": "Plants + People: Sonoko",
+            "text": "",
+            "link_label": "Read",
+            "link": "shopify://blogs/field-notes/sonoko-sakai"
+          }
+        },
+        "column_feyFjM": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ORCA_20252428square.jpg",
+            "title": "Material Study: Rock",
+            "text": "",
+            "link_label": "Read",
+            "link": "shopify://blogs/field-notes/material-study-rock"
+          }
+        },
+        "column_fhYqEP": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/JC_ORCA_Factory_01_08831_WEB_1.png",
+            "title": "Why Clay Paving",
+            "text": "",
+            "link_label": "Read",
+            "link": "shopify://blogs/field-notes/orca-clay-pavers"
+          }
+        }
+      },
+      "block_order": [
+        "column_8e9BUN",
+        "column_whe6JX",
+        "column_feyFjM",
+        "column_fhYqEP"
+      ],
+      "custom_css": [
+        ".multicolumn-card__info {padding-left: 0;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "On field notes",
+        "heading_size": "h2",
+        "image_width": "full",
+        "image_ratio": "portrait",
+        "columns_desktop": 4,
+        "column_alignment": "left",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "background-1",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 0,
+        "column_spacing": "small"
+      }
+    }
+  },
+  "order": [
+    "29db9ca7-acdf-4494-97cc-e78c6a58cae8",
+    "featured_collection_AFBrmA",
+    "collage_yJcAjd",
+    "nine15_slider_4bUwJK",
+    "multicolumn_e9Ai44"
+  ]
+}

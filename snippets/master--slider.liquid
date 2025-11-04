@@ -2,26 +2,26 @@
 
 {% liquid 
 
-    assign s                    = section.settings
+    assign s                        = section.settings
 
-    assign s_id                 = section.id
+    assign s_id                     = section.id
 
-    assign hght_fallback        = '500px'
-    assign site_max_width         = 1400 | append: 'px'
+    assign hght_fallback            = '500px'
+    assign site_max_width           = 1400 | append: 'px'
 
-    assign mob_relative          = s.mob_rel
-    assign use_bg_img             = s.set_height
-    assign mob_ov_sooner          = s.show_mobile_overlay_sooner
+    assign mobile_content_relative  = s.mob_rel
+    assign use_background_images    = s.set_height
+    assign mobile_overlay_at_tablet = s.show_mobile_overlay_sooner
 
-    assign auto_slide            = s.auto_slide
-    assign use_arrows            = s.use_arrows
-    assign use_dots              = s.use_dots
+    assign auto_slide               = s.auto_slide
+    assign use_arrows               = s.use_arrows
+    assign use_dots                 = s.use_dots
     
-    assign section_custom_css     = s.custom_css
-    assign class                  = 'section--' | append: s_id
-    assign css_class              = '.' | append: class
+    assign section_custom_css       = s.custom_css
+    assign class                    = 'section--' | append: s_id
+    assign css_class                = '.' | append: class
 
-    assign desktop_height       = s.image_height | default: hght_fallback
+    assign desktop_height           = s.image_height | default: hght_fallback
 
     if desktop_height contains '%'
         assign desktop_height          = desktop_height | replace: '%','vw'
@@ -63,40 +63,43 @@
 
         assign use_slide         = b.show_image
 
-        assign block_custom_css   = b.custom_css
+        assign block_custom_css  = b.custom_css
         assign slide_id          = 'image--' | append: block.id
-        assign slide_class         = '.' | append: slide_id
+        assign slide_class       = '.' | append: slide_id
 
         assign top_stars         = b.stars | plus: 0 
 
-        assign ttl              = b.title
-        assign makeh1           = b.make_h1
+        assign ttl               = b.title
+        assign makeh1            = b.make_h1
         assign ttl_clr           = b.title_color
         assign ttl_sze           = b.font_size_title
 
         assign sub_ttl           = b.subtitle
-        assign sub_ttl_clr        = b.subtitle_color
-        assign sub_ttl_sze        = b.font_size_subtitle
+        assign sub_ttl_clr       = b.subtitle_color
+        assign sub_ttl_sze       = b.font_size_subtitle
 
-        assign txt              = b.text
+        assign txt               = b.text
         assign txt_clr           = b.text_color
         assign txt_sze           = b.font_size_text
-        assign btn_txt_sze        = b.btn_size_text
-        assign btn_url          = b.btn_url
-        assign btn_txt          = b.btn_txt
-        assign btn_url2         = b.btn_url2
-        assign btn_txt2         = b.btn_txt2
-        assign use_btn          = false
-        assign use_btn2         = false
-        assign btn_style         = b.btn_style
-        assign btn_style2        = b.btn_style2
+        assign btn_txt_sze       = b.btn_size_text
+        # Buttons
+        assign btn1_use          = false
+        assign btn2_use          = false
+        # Button 1
+        assign btn1_url          = b.btn1_url
+        assign btn1_txt          = b.btn1_txt
+        assign btn1_style        = b.btn1_style
+        # Button 2
+        assign btn2_url          = b.btn2_url
+        assign btn2_txt          = b.btn2_txt
+        assign btn2_style        = b.btn2_style
 
 
-        if btn_url != blank and btn_txt != blank
-            assign use_btn      = true
+        if btn1_url != blank and btn1_txt != blank
+            assign btn1_use      = true
         endif
-        if btn_url2 != blank and btn_txt2 != blank
-            assign use_btn2      = true
+        if btn2_url != blank and btn2_txt != blank
+            assign btn2_use      = true
         endif
 
         assign img_main          = b.image
@@ -108,17 +111,17 @@
           assign img_main        = b.metafield_image
           assign use_cf          = true
           if b.metafield_image_alt != blank 
-          assign img_main_alt        = b.metafield_image_alt
+            assign img_main_alt = b.metafield_image_alt
           endif  
         endif 
 
         assign vid_embd          = b.video_url
         assign vid_host          = b.video_hosted
         assign hosted_thumb      = b.video_hosted_thumbnail
-        assign vid_host_mob       = b.video_hosted_mobile
-        assign hosted_thumb_mob   = b.video_hosted_thumbnail_mobile
+        assign vid_host_mob      = b.video_hosted_mobile
+        assign hosted_thumb_mob  = b.video_hosted_thumbnail_mobile
         assign vid_ratio         = blank
-        assign vid_ratio_mob      = blank
+        assign vid_ratio_mob     = blank
         assign video_autoplay    = b.video_autoplay
 
         if b.video_ratio != blank 
@@ -151,7 +154,7 @@
         endif
         
         assign pos_type          = 'object-position: '
-        if use_bg_img
+        if use_background_images
             assign pos_type      = 'background-position: '
         endif 
 
@@ -161,323 +164,47 @@
             assign mob_position  = pos_type | append: b.align_bg_mob | append: ';'
         endif
 
-        # if img_main == blank 
-        #   assign use_slide       = false
-        # endif 
-
     %}
 
     {% capture block_css %}
-        /* Slide Defaults */
-        {{slide_class}} {
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            vertical-align: bottom;
-        }
-        /* Overlay */
-        {{slide_class}} .overlay {
-            background: {{bg_color}};
-            display: block;
-            position: absolute;
-            top:0;
-            left:0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-        {% if op_mob != '0' %}
-            {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
-                {{slide_class}} .overlay {
-                    background: {{bg_color_mob}};
-                }
-            }
-        {% endif %}
-
-        /* Content Position */
-        {{slide_class}} .slide-text-content {
-            position: absolute;
-            text-align: {{section_text_align}};
-            max-width: {{txt_wdth}};
-            margin: 0 auto;
-            width:95%;
-            z-index: 2;
-            {{alignment}}
-            font-family: var(--font-heading-family);
-        }
-        {% if full_width %}
-            .full-width .slide-text-content {
-                width: 100%;
-                padding-left: calc(var(--grid-gutter) * 0.5);
-                padding-right: calc(var(--grid-gutter) * 0.5);
-            }
-        {% endif %}
-        {{slide_class}} .but-div {
-            display: flex;
-            gap: 2em;
-            flex-direction: row;
-            width: unset;
-            justify-content: {% if s.text_align == 'right' %}flex-end;{% elsif s.text_align == 'center' %}center;{% else %}flex-start;{% endif %};
-        }
-
-        {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
-
-            {{slide_class}} .slide-text-content {
-                width: 100%;
-                {% if mob_relative == true %}
-                    position: relative;
-                    top: initial;
-                    left: initial;
-                    right: initial;
-                    bottom: initial;
-                    transform: none;
-                    padding: 2em 0;
-                    margin: 0 auto;
-                {% else %}
-                    {{alignment}}
-
-                {% endif %}
-            }
-
-            // .slick-dotted {{slide_class}} .slide-text-content {
-            //     max-width: calc(100% - 120px);
-            // }
-            {% if mob_relative == true %}
-            {{slide_class}} .page-width {
-                position: relative;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                transform: none;
-                margin: 0 auto;
-            }
-            {% endif %}
-        }
-
-        /* Text Sizing */
-
-        {{slide_class}} .icon-star {
-          display: inline-block;
-          width: 15px;
-          height: 15px;
-          margin-right: 2px;
-          color: var(--color--candlelight-yellow);
-        }
-        {{slide_class}} .h2,
-        {{slide_class}} h2 {
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: {{ttl_sze}}px;
-            font-weight: 500;
-            color: {{ttl_clr}};
-            font-family: var(--font-heading-family);
-        }
-        {{slide_class}} h3 {
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: {{sub_ttl_sze}}px;
-            font-weight: 500;
-            color: {{sub_ttl_clr}};
-            line-height: 1.1;
-            /*font-family: var(--font-body-family);*/
-            font-family: var(--font-heading-family);
-            font-style: italic;
-        }
-        {{slide_class}} .rte {
-            margin-top: 0;
-            margin-bottom: 0;
-            /*font-family: var(--font-heading-family);*/
-            
-        }
-        {{slide_class}} .rte,
-        {{slide_class}} .rte * {
-            font-size: {{txt_sze}}px;
-            color: {{txt_clr}};
-        }
-        {{slide_class}} .btn {
-            <!-- font-size: 17px; -->
-        }
-        {{slide_class}} .slide-text-content .rte > * {
-            margin: 0;
-        }
-        {{slide_class}} .slide-text-content .rte > *:not(:last-child),
-        {{slide_class}} .slide-text-content > *:not(:last-child) {
-            margin-bottom: var(--base-gutter--half);
-        }
-        == .btn-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            width: calc(100% + var(--base-gutter));
-            margin-bottom: calc(var(--base-gutter) * -1) !important;
-            margin-left: calc(var(--base-gutter) * -1) !important;
-        }
-
-        == .btn-container .button {
-            margin-bottom:  var(--base-gutter);
-            margin-left:  var(--base-gutter);
-        }
-        == .btn-container .button:not(:only-child) {
-            flex: 1 1;
-            min-width: 150px;
-            max-width: 300px;
-        }
-
-        {% if btn_style contains 'custom' %}
-            {{slide_class}} .btn {
-                background: {{b.color_button|default:'rgba(0,0,0,0)'}} ;
-                border-color: {{b.color_button_border|default:'rgba(0,0,0,0)'}} ;
-                color: {{b.color_button_text|default:'rgba(0,0,0,0)'}} ;
-                font-size: {{btn_txt_sze}}px;
-            }
-            {{slide_class}} .btn:hover {
-                background: {{b.color_button_hover|default:'rgba(0,0,0,0)'}} ;
-                border-color: {{b.color_button_border_hover|default:'rgba(0,0,0,0)'}} ;
-                color: {{b.color_button_text_hover|default:'rgba(0,0,0,0)'}} ;
-            }
-            {{slide_class}} .underlined-link::after {
-                background: {{b.color_button_border|default:'rgba(0,0,0,0)'}} ;
-            }
-            @media only screen and (min-width: 750px) {
-                .rich-text:not(.rich-text--full-width) .rich-text__wrapper {
-                    width: calc(100% - 21rem / var(--font-body-scale));
-                }
-            }
-            .template--index #MainContent>*:not(#shopify-section-template--15281807065206__custom_liquid_jzJyUM):nth-child(2) {
-                bottom: 45vh !important;
-            }
-            .rich-text__buttons {
-            gap: 2em;
-            }
-            .rich-text__heading,
-            .button {
-            color: #fff;
-            }
-            .button {
-            font-size: 2rem;
-            background-color: transparent;
-            padding: 0;
-            justify-content: {% if s.text_align == 'right' %}flex-end;{% elsif s.text_align == 'center' %}center;{% else %}flex-start;{% endif %};
-            flex-grow: 0;
-            min-width: unset;
-            min-height: 1.5em
-            }
-            .button::before,
-            .button::after {
-            box-shadow: none;
-            }
-            {% comment %}
-            .button::after {
-            content: "";
-            border-bottom: 1px solid #fff !important;
-            }
-            {% endcomment %}
-            .button:not([disabled]):hover::after {
-            box-shadow: none;
-            border-bottom-width: 2px !important;
-            }
-            #shopify-section-template--15267871654006__custom_liquid_jzJyUM {
-                top: 60vh;
-            }
-        {% endif %}
-        {% if btn_style contains 'custom' and b.btn_custom_inline != false %}
-            .but-div {
-                display: inline-flex;
-                flex-direction: row;
-                gap: 2em;
-            }
-            {{slide_class}} .btn {
-                background-color: transparent;
-                padding: 0;
-                min-width: unset;
-                min-height: 1.5em;
-                border-left: none;
-                border-right: none;
-                border-top: none;
-                border-bottom: none;
-            }
-            {{slide_class}} .btn:after {
-                border-bottom: 1px solid {{b.color_button_border|default:'rgba(0,0,0,0)'}} ;
-                box-shadow: none;
-            }
-            {{slide_class}} .btn:hover:after {
-                border-bottom: 2px solid {{b.color_button_border|default:'rgba(0,0,0,0)'}} ;
-                box-shadow: none;
-            }
-        {% endif %}
-        {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
-                // {{slide_class}} .h2,
-                // {{slide_class}} h2 {
-                //     font-size: 32px;
-                // }
-                // {{slide_class}} h3 {
-                //     font-size: 20px;
-                // }
-                // {{slide_class}} .rte,
-                // {{slide_class}} .rte * {
-                //     font-size: 16px;
-                // }
-                // {{slide_class}} .btn {
-                //     font-size: 15px;
-                // }
-                {{slide_class}} .slide-text-content .rte > *:not(:last-child),
-                {{slide_class}} .slide-text-content > *:not(:last-child) {
-                    margin-bottom: var(--base-gutter--quarter);
-                }
-            }
-
-        /* Image Position */
-        {{slide_class}} .bg_image,
-        {{slide_class}} img {
-            {{position}}
-        }
-        {% if img_mob != blank %}
-            {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
-                {{slide_class}} .bg_image,
-                {{slide_class}} img {
-                    {{mob_position}}
-                }
-            }
-        {% endif %}
-
-
-        /* Slide Height */
-        {% if use_bg_img == true %}
-            {{slide_class}} {
-                {{desktop_img_height}}
-                {{position}}
-            }
-           
-
-            {% if mobile_height != 0 %}
-                    {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
-                        {{slide_class}}  {
-                            {{mobile_img_height}}
-                        }
-                    }
-                {% unless mobile_height contains 'vw' %}
-                {% endunless %}
-            {% endif %}
-            {% if mob_relative == true %}
-                {% if mob_ov_sooner %}/medium-down/{% else %}/small/{% endif %} {
-                    {{slide_class}}  {
-                        height: auto;
-                        min-height: 100%;
-                        {% if mobile_height contains 'vw' %}
-                        padding-top: 0;
-                        {% endif %}
-                    }
-                    {{slide_class}} .h2,
-                    {{slide_class}} h2,
-                    {{slide_class}} h3,
-                    {{slide_class}} .rte * {
-                        color: {{ settings.color_primary_body_text }};
-                    }
-                }
-            {% endif %}
-        {% endif %}
+        {% render 'snippet--master--slider-block-css',
+            slide_class: slide_class,
+            bg_color: bg_color,
+            op_mob: op_mob,
+            bg_color_mob: bg_color_mob,
+            mobile_overlay_at_tablet: mobile_overlay_at_tablet,
+            section_text_align: section_text_align,
+            txt_wdth: txt_wdth,
+            alignment: alignment,
+            full_width: full_width,
+            text_align: s.text_align,
+            mobile_content_relative: mobile_content_relative,
+            ttl_sze: ttl_sze,
+            ttl_clr: ttl_clr,
+            title_font_mono: b.title_font_mono,
+            sub_ttl_sze: sub_ttl_sze,
+            sub_ttl_clr: sub_ttl_clr,
+            subtitle_font_mono: b.subtitle_font_mono,
+            txt_sze: txt_sze,
+            txt_clr: txt_clr,
+            btn_txt_sze: btn_txt_sze,
+            btn1_style: btn1_style,
+            color_button: b.color_button,
+            color_button_border: b.color_button_border,
+            color_button_text: b.color_button_text,
+            color_button_hover: b.color_button_hover,
+            color_button_border_hover: b.color_button_border_hover,
+            color_button_text_hover: b.color_button_text_hover,
+            btn_custom_inline: b.btn_custom_inline,
+            img_mob: img_mob,
+            position: position,
+            mob_position: mob_position,
+            use_background_images: use_background_images,
+            desktop_img_height: desktop_img_height,
+            mobile_img_height: mobile_img_height,
+            mobile_height: mobile_height,
+            settings_color_primary_body_text: settings.color_primary_body_text
+        %}
     {% endcapture %}
 
     {% liquid
@@ -498,7 +225,7 @@
             hostedThumb: hosted_thumb,
             vidClass: sectionClass, 
             normalMobile: norm_mob,
-            useBG: use_bg_img,
+            useBG: use_background_images,
             videoRatio: vid_ratio,
             hideMobile: 'small--hide',
             autoPlay: video_autoplay
@@ -511,7 +238,7 @@
                 hostedThumb: hosted_thumb_mob,
                 vidClass: sectionClass, 
                 normalMobile: norm_mob,
-                useBG: use_bg_img,
+                useBG: use_background_images,
                 videoRatio: vid_ratio_mob,
                 hideMobile: 'medium-up--hide',
                 autoPlay: video_autoplay
@@ -521,23 +248,23 @@
 
 
     {% capture img %}
-        {% capture img_cls %}{% if img_mob != blank or mob_relative == true %}{% if mob_ov_sooner %}medium-down{% else %}small{% endif %}--hide{% endif %}{% endcapture %}
-        {% capture mob_img_cls %}{% if mob_ov_sooner %}large-up{% else %}medium-up{% endif %}--hide{% endcapture %}
+        {% capture img_cls %}{% if img_mob != blank or mobile_content_relative == true %}{% if mobile_overlay_at_tablet %}medium-down{% else %}small{% endif %}--hide{% endif %}{% endcapture %}
+        {% capture mob_img_cls %}{% if mobile_overlay_at_tablet %}large-up{% else %}medium-up{% endif %}--hide{% endcapture %}
         {% render 'snippet--image', 
             img: img_main,
             alt: img_main_alt, 
             class: img_cls,
             cf: use_cf,
-            useBG: use_bg_img 
+            useBG: use_background_images 
         %}
-        {% if img_mob != blank and mob_relative == false %}
+        {% if img_mob != blank and mobile_content_relative == false %}
             {% render 'snippet--image', 
                 img: img_mob, 
                 class: mob_img_cls,
-                useBG: use_bg_img 
+                useBG: use_background_images 
             %}
         {% endif %}
-        {% if mob_relative == true %}
+        {% if mobile_content_relative == true %}
             {% assign rel_img_mob = img_main %}
             {% if img_mob != blank %}
                 {% assign rel_img_mob = img_mob %}
@@ -578,18 +305,18 @@
       {% capture slides %}
         {{slides}}
         <div class=" slide-image {% if v_type != blank %}{{v_type}}{% endif %} {{slide_id}}" title="{{ ttl | strip_html | strip | strip_newlines | escape  }}" data-index="{{forloop.index}}" {{ block.shopify_attributes }}>
-            <div class="overlay {% if mob_relative == true %}{% if mob_ov_sooner %}medium-down{% else %}small{% endif %}--hide{% endif %}"></div>
+            <div class="overlay {% if mobile_content_relative == true %}{% if mobile_overlay_at_tablet %}medium-down{% else %}small{% endif %}--hide{% endif %}"></div>
             {{video}}
             {{img}}
-            {% if use_btn == false and btn_url != blank %}
-                <a class="overlay-link" href="{{btn_url}}">
+            {% if btn1_use == false and btn1_url != blank %}
+                <a class="overlay-link" href="{{btn1_url}}">
                     <span class="visually-hidden">{{ttl}}</span>
                 </a>
             {% endif %}
 
             <div class="page-width {% if full_width == true %}full-width{% endif %}">
                 {% if 
-                    use_btn == true or 
+                    btn1_use == true or 
                     ttl != blank or 
                     sub_ttl != blank or
                     txt != blank 
@@ -625,11 +352,11 @@
                         {% endif %}
                         
                         <div class="but-div card__link-underline-wrapper">
-                        {% if use_btn == true %}
-                            <a class="button--{{btn_style}} underlined-link white" href="{{ btn_url }}">{{ btn_txt }}</a>
+                        {% if btn1_use == true %}
+                            <a class="btn button button--{{ btn1_style }} underlined-link white" href="{{ btn1_url }}">{{ btn1_txt }}</a>
                         {% endif %}
-                        {% if use_btn2 == true %}
-                            <a class="btn button button--{{btn_style2}}" href="{{ btn_url2 }}">{{ btn_txt2 }}</a>
+                        {% if btn2_use == true %}
+                            <a class="btn button button--{{btn2_style}}" href="{{ btn2_url }}">{{ btn2_txt }}</a>
                         {% endif %}
                         </div>
                         
@@ -669,7 +396,7 @@
           z-index: 1;
           margin: 0;
       }
-      {% if use_bg_img == true %}
+      {% if use_background_images == true %}
       {% unless desktop_height contains 'vw' %}
       == {
           {{desktop_img_height}}
@@ -686,7 +413,7 @@
       {% endunless %}
       
       {% endif %}
-      {% if mob_relative == true %}
+      {% if mobile_content_relative == true %}
       /small/ {
           == {
               height: auto;
@@ -856,7 +583,7 @@
               transform: translate(0,15%);
           }
       }
-      {% if mob_relative == true %}
+      {% if mobile_content_relative == true %}
           /small/ {
               == .slick-list, 
               == .slick-track {
@@ -954,7 +681,7 @@
       assign additional_classes = additional_classes | append: ' ' | append: class
     endif
     
-    if mob_relative == true
+    if mobile_content_relative == true
       assign additional_classes = additional_classes | append: ' mobile-relative'
     endif
   %}
@@ -992,7 +719,7 @@
                   arrows: {{use_arrows}},
                   prevArrow: `<button type="button" class="slick-arrow slick-prev" aria-label="Previous slide">${caretSvg}</button>`,
                   nextArrow: `<button type="button" class="slick-arrow slick-next" aria-label="Next slide">${caretSvg}</button>`,
-                  {% if use_bg_img == false %}
+                  {% if use_background_images == false %}
                   apaptiveHeight: true,
                   {% endif %}
                   dots: {{use_dots}},

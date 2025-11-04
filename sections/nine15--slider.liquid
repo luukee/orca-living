@@ -14,15 +14,12 @@
       background: transparent;
     }
     .header__icon--menu .icon,
+    .section-header .header__cart
     .section-header .header__cart__mobile,
-    .section-header .header__inline-menu {
+    .section-header .header__inline-menu,
+    .section-header .header__search,
+    .section-header .navigation-secondary {
       display: none !important;
-    }
-    .section-header .header__cart {
-      display: none;
-    }
-    .section-header .header__inline-menu {
-      display: none;
     }
     {% if section.settings.show_nav != true %}
       .shopify-section-group-header-group {
@@ -50,7 +47,7 @@
       }
       /* cart */
       .section-header .header__cart {
-        display: none;
+        display: none !important;
       }
       /* desktop menu */
       .section-header .header__inline-menu {
@@ -166,6 +163,14 @@
       "type": "checkbox",
       "id": "show_nav",
       "label": "Show Navigation",
+      "info": "If you hide the menus, the navigation will be shown by default.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_menus",
+      "label": "Hide menus",
+      "info": "If you hide the menus, the navigation will be shown by default.",
       "default": true
     },
     {
@@ -254,12 +259,6 @@
       "type": "checkbox",
       "id": "show_mobile_overlay_sooner",
       "label": "Show Mobile overlay at Tablet size.",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "hide_menus",
-      "label": "Hide menus",
       "default": false
     },
     {
@@ -506,6 +505,12 @@
           "default": "#000000"
         },
         {
+          "type": "checkbox",
+          "id": "title_font_mono",
+          "label": "Title Font Mono",
+          "default": true
+        },
+        {
           "type": "header",
           "content": "Subtitle Settings"
         },
@@ -529,6 +534,12 @@
           "id": "subtitle_color",
           "label": "Subtitle Color",
           "default": "#000000"
+        },
+        {
+          "type": "checkbox",
+          "id": "subtitle_font_mono",
+          "label": "Subtitle Font Mono",
+          "default": true
         },
         {
           "type": "header",
@@ -561,19 +572,19 @@
         },
         {
           "type": "liquid",
-          "id": "btn_txt",
+          "id": "btn1_txt",
           "label": "Button Text",
           "default": "Shop Now"
         },
         {
           "type": "url",
-          "id": "btn_url",
+          "id": "btn1_url",
           "label": "Button Url",
           "info": "If url is added but Button Text is blank then the whole slide becomes a link."
         },
         {
           "type": "select",
-          "id": "btn_style",
+          "id": "btn1_style",
           "label": "Button Type",
           "options": [
             {
@@ -601,20 +612,20 @@
         },
         {
           "type": "text",
-          "id": "btn_txt2",
+          "id": "btn2_txt",
           "label": "Button Text",
           "default": "Shop Now"
         },
 
         {
           "type": "url",
-          "id": "btn_url2",
+          "id": "btn2_url",
           "label": "Button Url",
           "info": "If url is added but Button Text is blank then the whole slide becomes a link."
         },
         {
           "type": "select",
-          "id": "btn_style2",
+          "id": "btn2_style",
           "label": "Button Type",
           "options": [
             {
