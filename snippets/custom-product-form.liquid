@@ -543,13 +543,6 @@
       // Optional delay to ensure Klaviyo gets its time
       await new Promise((resolve) => setTimeout(resolve, 300))
       
-      // Log successful submission for debugging
-      console.log('✅ Product inquiry form submitted successfully to Klaviyo:', {
-        email: email,
-        product: '{{ product.title }}',
-        timestamp: new Date().toISOString()
-      })
-      
       // Show success message - create or update formMessage element
       if (!formMessage) {
         const messageDiv = document.createElement('div')
