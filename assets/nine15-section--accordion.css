@@ -191,7 +191,13 @@
   transform: translate(-50%, -50%) rotate(0deg);
   width: var(--size--plus-minus) !important;
   height: var(--size--plus-minus) !important;
-  transition: all 1s ease-out;
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+.acc-container .acc-btn .img svg.plus {
+  transition: opacity 1s ease-out, transform 1s ease-out, visibility 0s linear 1s;
+}
+.acc-container .acc-btn .img svg.minus {
+  transition: opacity 1s ease-out, transform 1s ease-out, visibility 0s;
 }
 .acc-container .acc-btn .img svg.icon-arrow-right {
   --size--arrow: 80%;
@@ -215,9 +221,11 @@
 }
 .acc-container .acc-btn .img .plus {
   opacity: 1;
+  visibility: visible;
 }
 .acc-container .acc-btn .img .minus {
   opacity: 0;
+  visibility: hidden;
 }
 .acc-container .acc-btn .img.selected svg.arrow {
   transform: translate(-50%, -50%) scale(1, -1);
@@ -231,10 +239,12 @@
 .acc-container .acc-btn .img.selected .plus {
   transform: translate(-50%, -50%) rotate(360deg);
   opacity: 0;
+  visibility: hidden;
 }
 .acc-container .acc-btn .img.selected .minus {
   transform: translate(-50%, -50%) rotate(360deg);
   opacity: 1;
+  visibility: visible;
 }
 @media only screen and (max-width: 749px) {
   .acc-container .acc-btn {
