@@ -2243,7 +2243,7 @@ product-info .loading-overlay:not(.hidden) ~ *,
   letter-spacing: 0.1rem;
 }
 .section-header.shopify-section-group-header-group {
-  z-index: 1;
+  z-index: 3;
 }
 .shopify-section-header-sticky {
   position: sticky;

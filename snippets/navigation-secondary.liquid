@@ -298,7 +298,72 @@
                           {%- if unique_tags != blank -%}
                             <h3 class="mega-menu__column-title">Category</h3>
                             <ul class="mega-menu__column-list">
-                              {%- assign tags_list = unique_tags | split: ',' | sort -%}
+                              {%- assign tags_list = unique_tags | split: ',' -%}
+                              
+                              {%- comment -%} Manual sorting via metaobject {%- endcomment -%}
+                              {%- if mega_menu_content.category_order != blank -%}
+                                {%- assign manual_order = mega_menu_content.category_order | split: ',' -%}
+                                {%- assign sorted_tags = '' -%}
+                                {%- assign matched_tags = '' -%}
+                                
+                                {%- comment -%} First, add categories in the order specified in metaobject {%- endcomment -%}
+                                {%- for ordered_tag in manual_order -%}
+                                  {%- assign ordered_tag_normalized = ordered_tag | strip | downcase | replace: '_', '' | replace: '-', ' ' -%}
+                                  {%- comment -%} Handle "In Stock" special case - it maps to "Quick ship" tag {%- endcomment -%}
+                                  {%- if ordered_tag_normalized == 'in stock' -%}
+                                    {%- assign ordered_tag_normalized = 'quick ship' -%}
+                                  {%- endif -%}
+                                  
+                                  {%- assign found_match = false -%}
+                                  {%- for tag in tags_list -%}
+                                    {%- comment -%} Check if this tag has already been matched {%- endcomment -%}
+                                    {%- unless matched_tags contains tag -%}
+                                      {%- assign tag_normalized = tag | strip | downcase | replace: '_', '' | replace: '-', ' ' -%}
+                                      {%- if tag_normalized == ordered_tag_normalized -%}
+                                        {%- assign found_match = true -%}
+                                        {%- if sorted_tags == blank -%}
+                                          {%- assign sorted_tags = tag -%}
+                                        {%- else -%}
+                                          {%- assign sorted_tags = sorted_tags | append: ',' | append: tag -%}
+                                        {%- endif -%}
+                                        {%- if matched_tags == blank -%}
+                                          {%- assign matched_tags = tag -%}
+                                        {%- else -%}
+                                          {%- assign matched_tags = matched_tags | append: ',' | append: tag -%}
+                                        {%- endif -%}
+                                        {%- break -%}
+                                      {%- endif -%}
+                                    {%- endunless -%}
+                                  {%- endfor -%}
+                                {%- endfor -%}
+                                
+                                {%- comment -%} Then, add any remaining categories not in the manual order (alphabetically) {%- endcomment -%}
+                                {%- assign remaining_tags = '' -%}
+                                {%- for tag in tags_list -%}
+                                  {%- unless matched_tags contains tag -%}
+                                    {%- if remaining_tags == blank -%}
+                                      {%- assign remaining_tags = tag -%}
+                                    {%- else -%}
+                                      {%- assign remaining_tags = remaining_tags | append: ',' | append: tag -%}
+                                    {%- endif -%}
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                                {%- if remaining_tags != blank -%}
+                                  {%- assign remaining_tags_sorted = remaining_tags | split: ',' | sort -%}
+                                  {%- for tag in remaining_tags_sorted -%}
+                                    {%- if sorted_tags == blank -%}
+                                      {%- assign sorted_tags = tag -%}
+                                    {%- else -%}
+                                      {%- assign sorted_tags = sorted_tags | append: ',' | append: tag -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                {%- endif -%}
+                                {%- assign tags_list = sorted_tags | split: ',' -%}
+                              {%- else -%}
+                                {%- comment -%} Fallback to alphabetical if no manual order is set {%- endcomment -%}
+                                {%- assign tags_list = tags_list | sort -%}
+                              {%- endif -%}
+                              
                               {%- for tag in tags_list -%}
                                 <li class="mega-menu__column-item">
                                   {%- comment -%} Create URL-friendly handle for collection filtering {%- endcomment -%}
