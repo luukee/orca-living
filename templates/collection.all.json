@@ -116,7 +116,7 @@
           "brass-outdoor-hose-tap"
         ],
         "products_to_show": 10,
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "full_width": true,
         "show_product_title": true,
         "card_show_inner_content": false,
