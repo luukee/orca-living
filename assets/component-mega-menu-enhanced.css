@@ -42,10 +42,6 @@
   max-height: calc(100vh - var(--header-bottom-position-desktop, 20rem) - 4rem);
 }
 
-.header-wrapper--border-bottom .mega-menu__content {
-  border-top: 0;
-}
-
 .js .mega-menu__content {
   opacity: 0;
   transform: translateY(-1.5rem);
@@ -84,9 +80,8 @@
   transform: translateY(-1.5rem);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   z-index: 1000;
-  /* background: white;
-  border: 2px solid #ddd; */
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  /* background: white;*/
+  border-top: 1px solid #000;
   padding: 2rem;
 }
 
@@ -94,6 +89,7 @@
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
+  box-shadow: 0px 20px 20px -30px rgb(0 0 0 / 0.2);
 }
 
 /* Ensure the mega menu is positioned correctly */
@@ -107,7 +103,6 @@
   right: 0;
   top: 100%;
   z-index: 1000;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
 
 /* Enhanced Layout for Rich Content */

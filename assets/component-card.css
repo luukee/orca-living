@@ -246,6 +246,7 @@
   padding: 0;
 }
 .card--standard > .card__content .card__information {
+  position: relative;
   padding-left: 0;
   padding-right: 0;
 }
@@ -359,5 +360,9 @@
 }
 .card--title-above-image .card__content {
   padding: 0 0 var(--base-gutter--quarter);
+}
+
+.quick-add--samples {
+  margin: 1rem 0;
 }
 /*# sourceMappingURL=component-card.css.map */

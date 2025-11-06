@@ -2475,6 +2475,9 @@
     width: 100%;
     max-width: 100%;
   }
+  .article-template__image-gallery .cell__item {
+    padding-left: 0;
+  }
 }
 @media only screen and (max-width: 749px) {
   .grid--peek.slider--mobile {
