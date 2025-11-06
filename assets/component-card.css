@@ -365,4 +365,7 @@
 .quick-add--samples {
   margin: 1rem 0;
 }
+.quick-add--samples .button {
+  color: #F0F0E8;
+}
 /*# sourceMappingURL=component-card.css.map */

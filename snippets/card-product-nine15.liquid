@@ -500,15 +500,15 @@ endif
                     disabled
                   {% endif %}
                 >
-                  <span>
-                    <span>
+                  {% comment %} <span>
+                    <span> {% endcomment %}
                       {%- if quick_add_variant.available == false -%}
                         {{ 'products.product.sold_out' | t }}
                       {%- else -%}
                         Order Sample
                       {%- endif -%}
-                    </span>
-                  </span>
+                    {% comment %} </span>
+                  </span> {% endcomment %}
 
                   <div class="loading-overlay__spinner hidden">
                     <svg
