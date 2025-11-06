@@ -36,7 +36,7 @@
         "show_badge": false,
         "show_rating": false,
         "enable_quick_add": false,
-        "enable_order_samples_button": false,
+        "enable_order_samples_button": true,
         "enable_quick_ship_card_badge": true,
         "quick_ship_card_badge_text": "In Stock",
         "enable_filtering": true,
