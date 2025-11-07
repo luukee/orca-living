@@ -144,7 +144,6 @@ endif
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
-    
     # Card Classes
     assign card_classes = 'card card--' | append: settings.card_style
     if mainImage
@@ -469,63 +468,6 @@ endif
           </div>
         {%- endif -%}
         
-        {% comment %} SAMPLES BUTTON {% endcomment %}
-        {% if enable_order_samples_button and card_product.title contains 'Sample' %}
-          {% assign product_form_id = 'single-variant-quick-add-' | append: section_id | append: quick_add_variant.id %}
-          <div class="quick-add no-js-hidden quick-add--samples">
-            <product-form>
-              {% assign prod = card_product %}
-              {% if is_variant %}
-                {% assign prod = prod.product %}
-              {% endif %}
-              {%- form 'product',
-                prod,
-                id: product_form_id,
-                class: 'form',
-                novalidate: 'novalidate',
-                data-type: 'add-to-cart-form'
-              -%}
-                <input
-                  type="hidden"
-                  name="id"
-                  value="{{ single_variant_quick_add.id }}"
-                  disabled
-                >
-                <button
-                  id="SampleOrderButton-{{ section_id }}"
-                  name="add"
-                  data-value="{{ quick_add_variant.id }}"
-                  class="product-form__submit button button--full-width"
-                  {% if quick_add_variant.available == false %}
-                    disabled
-                  {% endif %}
-                >
-                  {% comment %} <span>
-                    <span> {% endcomment %}
-                      {%- if quick_add_variant.available == false -%}
-                        {{ 'products.product.sold_out' | t }}
-                      {%- else -%}
-                        Order Sample
-                      {%- endif -%}
-                    {% comment %} </span>
-                  </span> {% endcomment %}
-
-                  <div class="loading-overlay__spinner hidden">
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      class="spinner"
-                      viewBox="0 0 66 66"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                    </svg>
-                  </div>
-                </button>
-              {%- endform -%}
-            </product-form>
-          </div>
-        {%- endif -%} 
       
         
         {% comment %} View full details button {% endcomment %}
@@ -565,6 +507,63 @@ endif
 
       </div>
     </div>
+    {% comment %} SAMPLES BUTTON {% endcomment %}
+    {% if enable_order_samples_button and card_product.title contains 'Sample' %}
+      {% assign product_form_id = 'single-variant-quick-add-' | append: section_id | append: quick_add_variant.id %}
+      <div class="quick-add no-js-hidden quick-add--samples">
+        <product-form>
+          {% assign prod = card_product %}
+          {% if is_variant %}
+            {% assign prod = prod.product %}
+          {% endif %}
+          {%- form 'product',
+            prod,
+            id: product_form_id,
+            class: 'form',
+            novalidate: 'novalidate',
+            data-type: 'add-to-cart-form'
+          -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ single_variant_quick_add.id }}"
+              disabled
+            >
+            <button
+              id="SampleOrderButton-{{ section_id }}"
+              name="add"
+              data-value="{{ quick_add_variant.id }}"
+              class="product-form__submit button button--full-width button--height-minimum"
+              {% if quick_add_variant.available == false %}
+                disabled
+              {% endif %}
+            >
+              {% comment %} <span>
+                <span> {% endcomment %}
+                  {%- if quick_add_variant.available == false -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- else -%}
+                    Order Sample
+                  {%- endif -%}
+                {% comment %} </span>
+              </span> {% endcomment %}
+
+              <div class="loading-overlay__spinner hidden">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  class="spinner"
+                  viewBox="0 0 66 66"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+              </div>
+            </button>
+          {%- endform -%}
+        </product-form>
+      </div>
+    {%- endif -%} 
   </div>
 {%- else -%}
   <div class="product-card-wrapper card-wrapper underline-links-hover">

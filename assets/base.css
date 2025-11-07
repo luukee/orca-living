@@ -251,8 +251,12 @@
 .button--secondary {
   --color-button: var(--color-base-outline-button-labels);
   --color-button-text: var(--color-base-outline-button-labels);
-  --color-button: var(--color-background);
-  --alpha-button-background: 1;
+  --color-base-accent-1: var(--color-base-outline-button-labels);
+  --alpha-button-background: 0;
+  --buttons-border-width: 1px;
+  --buttons-border-opacity: 1;
+  border: 1px solid rgb(var(--color-base-outline-button-labels));
+  background-color: transparent;
 }
 .color-background-2 .button--secondary,
 .color-accent-1 .button--secondary,
@@ -1361,6 +1365,9 @@ button.shopify-payment-button__button--unbranded {
   min-width: calc(12rem + var(--buttons-border-width) * 2);
   min-height: calc(4.5rem + var(--buttons-border-width) * 2);
 }
+.button--height-minimum {
+  min-height: calc(2.5rem + var(--buttons-border-width) * 2);
+}
 .shopify-payment-button__button--branded {
   z-index: auto;
 }
@@ -1419,7 +1426,7 @@ button.shopify-payment-button__button--unbranded {
   border-radius: var(--buttons-radius);
   box-shadow:
     0 0 0 calc(var(--buttons-border-width) + var(--border-offset))
-      rgba(var(--color-button-text), var(--border-opacity)),
+      rgba(var(--color-base-accent-1), var(--border-opacity)),
     0 0 0 var(--buttons-border-width)
       rgba(var(--color-button), var(--alpha-button-background));
   transition: box-shadow var(--duration-short) ease;
@@ -1437,6 +1444,20 @@ button.shopify-payment-button__button--unbranded {
 }
 .button--secondary:after {
   --border-opacity: var(--buttons-border-opacity);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 1px solid rgb(var(--color-base-outline-button-labels));
+  box-shadow: none;
+}
+.button.product-form__submit:not([disabled]):hover::after {
+  border-color: rgb(var(--color-base-outline-button-labels));
+}
+.button--secondary {
+  --color-button: var(--color-base-outline-button-labels);
+  --color-button-text: var(--color-base-outline-button-labels);
+  --alpha-button-background: 0;
 }
 .button:focus-visible,
 .button:focus,
@@ -2869,9 +2890,9 @@ details-disclosure > details {
   transition: box-shadow 0.2s ease;
   pointer-events: none; /* Ensures hover works on main button */
 }
-.product-grid--samples .product-form__submit:hover::after {
+/* .product-grid--samples .product-form__submit:hover::after {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
+} */
 
 /* .product-grid--samples .card__content {
   justify-items:stretch;

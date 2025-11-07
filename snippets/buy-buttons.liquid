@@ -297,14 +297,6 @@
       {%- assign current_variant = product.selected_or_first_available_variant -%}
       {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
       
-      {%- comment -%} DEBUG: Let's see what we're working with {%- endcomment -%}
-      <!-- DEBUG: Current variant ID: {{ current_variant.id }} -->
-      <!-- DEBUG: Current variant title: {{ current_variant.title }} -->
-      <!-- DEBUG: Pick up availabilities size: {{ pick_up_availabilities.size }} -->
-      {%- for availability in pick_up_availabilities -%}
-        <!-- DEBUG: Location: {{ availability.location.name }}, Available: {{ availability.available }}, Pick up enabled: {{ availability.pick_up_enabled }} -->
-      {%- endfor -%}
-      
       {%- comment -%} Check if there are any pickup locations with actual available stock {%- endcomment -%}
       {%- assign has_available_pickup = false -%}
       {%- for availability in pick_up_availabilities -%}
@@ -314,10 +306,8 @@
         {%- endif -%}
       {%- endfor -%}
       
-      <!-- DEBUG: Has available pickup: {{ has_available_pickup }} -->
     
       {%- if current_variant and current_variant.store_availabilities and pick_up_availabilities.size > 0 and has_available_pickup -%}
-        <!-- DEBUG: Rendering pickup availability component -->
         <pickup-availability
           class='product__pickup-availabilities no-js-hidden quick-add-hidden'
           available
@@ -332,12 +322,6 @@
         </pickup-availability>
     
         <script src='{{ 'pickup-availability.js' | asset_url }}' defer='defer'></script>
-      {%- else -%}
-        <!-- DEBUG: NOT rendering pickup availability component -->
-        <!-- DEBUG: current_variant: {{ current_variant }} -->
-        <!-- DEBUG: store_availabilities: {{ current_variant.store_availabilities }} -->
-        <!-- DEBUG: pick_up_availabilities.size: {{ pick_up_availabilities.size }} -->
-        <!-- DEBUG: has_available_pickup: {{ has_available_pickup }} -->
       {%- endif -%}
       
       <!-- Add pickup availability data for all variants -->

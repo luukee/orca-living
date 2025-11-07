@@ -123,7 +123,7 @@
   padding-bottom: 0;
 }
 .background-none .multicolumn-card__image-wrapper + .multicolumn-card__info {
-  padding-top: 2.5rem;
+  padding-top: 0.5rem;
 }
 .background-none .slider .multicolumn-card__info {
   padding-left: 0.5rem;

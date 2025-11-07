@@ -13,6 +13,10 @@
   position: relative;
   text-decoration: none;
 }
+.card-wrapper.product-card-wrapper {
+  display: flex;
+  flex-direction: column;
+}
 .card {
   text-decoration: none;
   text-align: var(--text-alignment);
@@ -273,6 +277,7 @@
 .card--extend-height.card--standard.card--text,
 .card--extend-height.card--media {
   display: flex;
+  flex-direction: column;
 }
 .card--extend-height.card--standard.card--text .card__inner,
 .card--extend-height.card--media .card__inner {
@@ -371,6 +376,7 @@
 
 .quick-add--samples {
   margin: 1rem 0;
+  position: relative;
 }
 .quick-add--samples .button {
   color: #F0F0E8;
