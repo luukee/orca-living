@@ -10,6 +10,7 @@
   - card_link_text: {String} Text for card link (optional)
   - card_title_text: {String} Text for card heading (optional)
   - card_show_caption_description: {Boolean} Show caption description. Default: false (optional)
+  - card_inner_alignment_vertical: {String} Vertical alignment of card inner text. Default: "top" (optional)
   Usage:
   {% render 'card-collection' %}
 {% endcomment %}
@@ -26,6 +27,7 @@
   endif
   assign card_color_scheme = settings.card_color_scheme
   assign card_style = settings.card_style
+  render 'dump' with card_style
   if wrapper_class == null or wrapper_class == 'none'
     assign card_color_scheme = settings.collection_card_color_scheme
     assign card_style = settings.collection_card_style
@@ -39,50 +41,80 @@
   if card_title_text == blank
     assign card_title_text = card_collection.title
   endif
+  # card classes
+  assign card_classes = ''
+  if card_collection.featured_image
+    assign card_classes = card_classes | append: ' card--media'
+  else
+    assign card_classes = card_classes | append: ' card--text'
+  endif
+  if card_style == 'card'
+    assign card_classes = card_classes | append: ' color-'
+    assign card_classes = card_classes | append: card_color_scheme
+  endif
+  if extend_height
+    assign card_classes = card_classes | append: ' card--extend-height'
+  endif
+  if card_collection.featured_image == nil and card_style == 'card'
+    assign card_classes = card_classes | append: ' ratio'
+  endif
+  
+  # card inner classes
+  assign card_inner_classes = 'card__inner'
+  if card_style == 'standard'
+    assign card_inner_classes = card_inner_classes | append: ' color-'
+    assign card_inner_classes = card_inner_classes | append: card_color_scheme
+    assign card_inner_classes = card_inner_classes | append: ' gradient'
+  endif
+  if card_collection.featured_image or card_style == 'standard'
+    assign card_inner_classes = card_inner_classes | append: ' ratio'
+  endif
+  if card_inner_alignment_vertical == 'center'
+    assign card_inner_classes = card_inner_classes | append: ' card__flex-items-center'
+  elsif card_inner_alignment_vertical == 'bottom'
+    assign card_inner_classes = card_inner_classes | append: ' card__flex-items-end'
+  endif
 -%}
 
 <div class="card-wrapper animate-arrow {% if wrapper_class and wrapper_class != 'none' %}{{ wrapper_class }}{% else %}collection-card-wrapper{% endif %} underline-links-hover">
   <div
-    class="
-      card
-      card--{{ card_style }}
-      {% if card_collection.featured_image %} card--media{% else %} card--text{% endif %}
-      {% if card_style == 'card' %} color-{{ card_color_scheme }} gradient{% endif %}
-      {% if extend_height %} card--extend-height{% endif %}
-      {% if card_collection.featured_image == nil and card_style == 'card' %} ratio{% endif %}
-    "
-    style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
-  >
-    <div
-      class="card__inner {% if card_style == 'standard' %}color-{{ card_color_scheme }} gradient{% endif %}{% if card_collection.featured_image or card_style == 'standard' %} ratio{% endif %}"
-      style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
-    >
+    class="card card--{{ card_style }} {{ card_classes }}" 
+    style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;">
+    <div class="{{ card_inner_classes }}">
       {%- if card_collection.featured_image -%}
         <div class="card__media">
           <div class="media media--transparent media--hover-effect">
-            <img
-              srcset="
-                {%- if card_collection.featured_image.width >= 165 -%}{{ card_collection.featured_image | image_url: width: 165 }} 165w,{%- endif -%}
-                {%- if card_collection.featured_image.width >= 330 -%}{{ card_collection.featured_image | image_url: width: 330 }} 330w,{%- endif -%}
-                {%- if card_collection.featured_image.width >= 535 -%}{{ card_collection.featured_image | image_url: width: 535 }} 535w,{%- endif -%}
-                {%- if card_collection.featured_image.width >= 750 -%}{{ card_collection.featured_image | image_url: width: 750 }} 750w,{%- endif -%}
-                {%- if card_collection.featured_image.width >= 1000 -%}{{ card_collection.featured_image | image_url: width: 1000 }} 1000w,{%- endif -%}
-                {%- if card_collection.featured_image.width >= 1500 -%}{{ card_collection.featured_image | image_url: width: 1500 }} 1500w,{%- endif -%}
-                {%- if card_collection.featured_image.width >= 3000 -%}{{ card_collection.featured_image | image_url: width: 3000 }} 3000w,{%- endif -%}
-                {{ card_collection.featured_image | image_url }} {{ card_collection.featured_image.width }}w
-              "
-              src="{{ card_collection.featured_image | image_url: width: 1500 }}"
-              sizes="
-                (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: columns }}px,
-                (min-width: 750px) {% if columns > 1 %}calc((100vw - 10rem) / 2){% else %}calc(100vw - 10rem){% endif %},
-                calc(100vw - 3rem)
-              "
-              alt=""
-              height="{{ card_collection.featured_image.height }}"
-              width="{{ card_collection.featured_image.width }}"
-              loading="lazy"
-              class="motion-reduce"
+            <a 
+            href="{{ card_collection.url }}" 
+            class="card-link-overlay full-unstyled-link" 
+            aria-label="{{ card_collection.title | escape }}" 
+            id="CardLink-{{ section_id }}-{{ card_collection.id }}" 
+            aria-labelledby="CardLink-{{ section_id }}-{{ card_collection.id }} Badge-{{ section_id }}-{{ card_collection.id }}"
             >
+              <img
+                srcset="
+                  {%- if card_collection.featured_image.width >= 165 -%}{{ card_collection.featured_image | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if card_collection.featured_image.width >= 330 -%}{{ card_collection.featured_image | image_url: width: 330 }} 330w,{%- endif -%}
+                  {%- if card_collection.featured_image.width >= 535 -%}{{ card_collection.featured_image | image_url: width: 535 }} 535w,{%- endif -%}
+                  {%- if card_collection.featured_image.width >= 750 -%}{{ card_collection.featured_image | image_url: width: 750 }} 750w,{%- endif -%}
+                  {%- if card_collection.featured_image.width >= 1000 -%}{{ card_collection.featured_image | image_url: width: 1000 }} 1000w,{%- endif -%}
+                  {%- if card_collection.featured_image.width >= 1500 -%}{{ card_collection.featured_image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                  {%- if card_collection.featured_image.width >= 3000 -%}{{ card_collection.featured_image | image_url: width: 3000 }} 3000w,{%- endif -%}
+                  {{ card_collection.featured_image | image_url }} {{ card_collection.featured_image.width }}w
+                "
+                src="{{ card_collection.featured_image | image_url: width: 1500 }}"
+                sizes="
+                  (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: columns }}px,
+                  (min-width: 750px) {% if columns > 1 %}calc((100vw - 10rem) / 2){% else %}calc(100vw - 10rem){% endif %},
+                  calc(100vw - 3rem)
+                "
+                alt=""
+                height="{{ card_collection.featured_image.height }}"
+                width="{{ card_collection.featured_image.width }}"
+                loading="lazy"
+                class="motion-reduce"
+              >
+            </a>
           </div>
         </div>
       {%- endif -%}

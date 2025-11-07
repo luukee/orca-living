@@ -1,3 +1,12 @@
+/* Utility classes for cards */
+.card__flex-items-end {
+  align-items: flex-end;
+}
+
+.card__flex-items-center {
+  align-items: center;
+}
+
 .card-wrapper {
   color: inherit;
   height: 100%;
@@ -246,7 +255,6 @@
   padding: 0;
 }
 .card--standard > .card__content .card__information {
-  position: relative;
   padding-left: 0;
   padding-right: 0;
 }
@@ -265,7 +273,6 @@
 .card--extend-height.card--standard.card--text,
 .card--extend-height.card--media {
   display: flex;
-  flex-direction: column;
 }
 .card--extend-height.card--standard.card--text .card__inner,
 .card--extend-height.card--media .card__inner {

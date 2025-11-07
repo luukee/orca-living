@@ -123,7 +123,8 @@
                 card_link_url: block.settings.product_card_link_url,
                 card_title_text: block.settings.product_card_title_text,
                 card_show_caption_description: block.settings.product_card_show_caption_description,
-                card_show_outer_content: section.settings.card_show_outer_content
+                card_show_outer_content: section.settings.card_show_outer_content,
+                card_inner_alignment_vertical: section.settings.card_inner_alignment_vertical
               %}
             {%- when 'collection' -%}
               {% render 'card-collection',
@@ -136,7 +137,8 @@
                 card_link_text: block.settings.collection_card_link_text,
                 card_link_url: block.settings.collection_card_link_url,
                 card_show_caption_description: block.settings.collection_card_show_caption_description,
-                card_show_outer_content: section.settings.card_show_outer_content
+                card_show_outer_content: section.settings.card_show_outer_content,
+                card_inner_alignment_vertical: section.settings.card_inner_alignment_vertical
               %}
             {%- when 'video' -%}
               <div class='collage-card {% if section.settings.card_styles == 'none' %}global-media-settings{% else %}{{ section.settings.card_styles }} color-{{ settings.card_color_scheme }}{% endif %}'>
@@ -404,6 +406,26 @@
     {
       "type": "header",
       "content": "Card text"
+    },
+    {
+      "type": "select",
+      "id": "card_inner_alignment_vertical",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "top",
+      "label": "Card inner text vertical alignment"
     },
     {
       "type": "checkbox",
