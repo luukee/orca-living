@@ -33,6 +33,7 @@
       "block_order": [
         "heading_bCdVNg"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
         "desktop_content_position": "left",
@@ -48,6 +49,7 @@
     "main": {
       "type": "main-register",
       "settings": {
+        "page_title": "Trade Application",
         "use_padding": false,
         "padding_top": 0,
         "padding_bottom": 16
