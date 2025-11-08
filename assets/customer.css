@@ -3,8 +3,9 @@ section.section--register {
 }
 .customer.register {
   max-width: 100%;
+  padding-top: 1rem;
 }
-.customer:not(.account):not(.order) {
+.customer:not(.account):not(.order):not(.register) {
   margin: 0 auto;
   text-align: center;
 }

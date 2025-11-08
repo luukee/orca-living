@@ -35,7 +35,7 @@
   text-underline-offset: 0.3rem;
 }
 .section--side-navigation .list-menu__item:hover,
-.section--navigation .list-menu__item:not([aria-expanded]):hover {
+.section--navigation .list-menu__item:not(.menu-item--active):hover {
   text-decoration: underline;
 }
 .section--side-navigation .list-menu__item h1,

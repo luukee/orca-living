@@ -16,6 +16,13 @@
   {%- endstyle -%}
 {% endif %}
 <div class="customer register section-{{ section.id }}-padding">
+  <h1>
+    {% if section.settings.page_title != blank %}
+      {{ section.settings.page_title }}
+    {% else %}
+      {{ 'customer.register.title' | t }}
+    {% endif %}
+  </h1>
   <svg style="display: none">
     <symbol id="icon-error" viewBox="0 0 13 13">
       <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
@@ -211,11 +218,17 @@
 {
   "name": "t:sections.main-register.name",
   "tag": "section",
-  "class": "section section--register",
+  "class": "section section--register page-width",
   "settings": [
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "text",
+      "id": "page_title",
+      "label": "Page title",
+      "default": "Trade Application"
     },
     {
       "type": "checkbox",

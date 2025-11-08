@@ -249,10 +249,12 @@
               <header-menu>
                 {% comment %} Keep this open for Pavers: {% if link.title == 'Pavers' %}open{% endif %} {% endcomment %}
                 <details id="Details-SecondaryMenu-{{ forloop.index }}" class="mega-menu">
-                  <summary class="list-menu__item link link--text focus-inset{% if is_current %} menu-item--active{% endif %}"{% if is_current %} aria-current="page"{% endif %}>
-                    {% comment %} {% if is_current and template.name == 'collection' %}<h1>{% endif %} {% endcomment %}
+                  <summary 
+                  id="SecondaryMenuSummary-{{ forloop.index }}"
+                  class="list-menu__item link link--text focus-inset{% if is_current %} menu-item--active{% endif %}"
+                  data-url="{{ link_url }}"
+                  aria-expanded="false"{% if is_current %} aria-current="page"{% endif %}>
                     {{ link.title | escape }}
-                    {% comment %} {% if is_current and template.name == 'collection' %}</h1>{% endif %} {% endcomment %}
                   </summary>
                   <div id="SecondaryMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
                     <div class="mega-menu__rich-content">
@@ -699,7 +701,7 @@
                                  loading="lazy">
                           </div>
                         {%- endif -%}
-                        {%- if mega_menu_content.cta_text != blank and mega_menu_content.cta_url != blank -%}
+                        {%- if mega_menu_content.cta_text != blank and mega_menu_content.cta_url_destination != blank -%}
                           <a href="{{ mega_menu_content.cta_url_destination }}" class="mega-menu__cta-link">
                             {{ mega_menu_content.cta_text | escape }}
                           </a>

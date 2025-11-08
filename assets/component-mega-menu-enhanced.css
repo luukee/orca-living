@@ -155,6 +155,10 @@
   font-weight: 500;
 }
 
+.mega-menu__cta-link {
+  font-weight: 600;
+}
+
 .mega-menu__column-link:hover,
 .mega-menu__cta-link:hover {
   color: #000;
