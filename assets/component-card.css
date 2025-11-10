@@ -282,6 +282,7 @@
 .card--extend-height.card--standard.card--text .card__inner,
 .card--extend-height.card--media .card__inner {
   flex-grow: 1;
+  max-height: 100%;
 }
 .card .icon-wrap {
   margin-left: 0.8rem;
