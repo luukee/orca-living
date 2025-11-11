@@ -735,7 +735,10 @@
                               assign prod_title = prod_title | append: ' in ' | append: option_variant
                             endif
                           %}
-                          <li class='grid__item grid__item-COLLECTION-by-variant' {% if p.metafields.custom.group != blank %}data-group='{{p.metafields.custom.group}}'{% endif %}>
+                          <li class='grid__item grid__item-COLLECTION-by-variant' 
+                          data-size='{{ p.option1 | escape }}'
+                          data-use-case='{{ p.metafields.custom.use_case | default: product.metafields.custom.use_case | escape }}'
+                          {% if p.metafields.custom.group != blank %}data-group='{{ p.metafields.custom.group }}'{% endif %}>
                             <!-- card-product-nine15 -->
                             {% render 'card-product-nine15',
                               product_title: prod_title,
@@ -947,6 +950,31 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const activeUseCase = params.get('filter.p.m.custom.use_case')?.toLowerCase() || '';
+    
+    if (!activeUseCase) return;
+
+    const disallowedByUseCase = {
+      'driveways': ['tile'],
+      'permeable sand set': ['tile'],
+    };
+
+    const disallowedSizes = disallowedByUseCase[activeUseCase];
+    if (!disallowedSizes) return;
+
+    const cards = document.querySelectorAll('#product_grid .grid__item');
+    cards.forEach((card) => {
+      const cardSize = card.getAttribute('data-size')?.toLowerCase() || '';
+      if (disallowedSizes.includes(cardSize)) {
+        card.style.display = 'none';
+      }
+    });
+  });
+</script>
 
 {% schema %}
 {
