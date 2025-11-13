@@ -106,7 +106,7 @@
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "title": "Functional elements for the garden",
+        "title": "Functional outdoor hardware",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
@@ -191,6 +191,7 @@
         "card_max_height_desktop": 90,
         "card_max_height_mobile": 59,
         "color_scheme": "background-1",
+        "card_inner_alignment_vertical": "top",
         "card_show_outer_content": false,
         "card_text_color": "#f0f0e8",
         "card_inner_padding": "2rem 2rem 6rem 2rem",
