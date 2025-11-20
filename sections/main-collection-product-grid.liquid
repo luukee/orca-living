@@ -368,7 +368,7 @@
                       {% assign displayed_variants = displayed_variants | append: ' ' | append: variant.id %}
                       <li class='grid__item grid__item-PRODUCT-by-quick-ship'>
                         {% comment %} use card-product-nine15 instead of card-product for the product title {% endcomment %}
-                         <!-- card-product-nine15 -->
+                         <!-- PRODUCT by quick-ship card-product-nine15 -->
                         {% render 'card-product-nine15',
                           product_title: collection_product.title,
                           card_product: variant,
@@ -444,7 +444,7 @@
                               {% assign variant_title = variant_title | append: ' - ' | append: option_variant %}
                             {% endif %}
                             <li class='grid__item grid__item-PRODUCT-by-variant{% if product_expanded %} product-expanded{% endif %}'>
-                              <!-- card-product-nine15 -->
+                              <!-- PRODUCT by variant card-product-nine15 -->
                               {% render 'card-product-nine15',
                                 product_title: variant_title,
                                 card_product: p,
@@ -473,7 +473,7 @@
                   {% endfor %}
                   {% unless product_expanded %}
                     <li class="grid__item grid__item-PRODUCT-general-product {%- if product_expanded -%}product-expanded{%- endif -%}">
-                      <!-- card-product-nine15 -->
+                      <!-- PRODUCT general product card-product-nine15 -->
                       {% render 'card-product-nine15', 
                         card_product: collection_product,
                         is_samples: is_samples,
@@ -517,7 +517,7 @@
                   {%- if variant.metafields.custom.quick_ship == 'True' and quick_ship_tag -%}
                     {% assign displayed_variants = true %}
                     <li class='grid__item grid__item-COLLECTION-quick-ship'>
-                      <!-- card-product-nine15 -->
+                      <!-- COLLECTION quick-ship card-product-nine15 -->
                       {% render 'card-product-nine15',
                         product_title: product.title,
                         card_product: variant,
@@ -716,7 +716,10 @@
                             assign displayed_variants = displayed_variants | append: ' ' | append: p.id
                             # Set the product title to the product's title
                             assign prod_title = product.title
-                          
+                            if collection.title == 'Pavers'
+                              # if the collection title is 'Pavers', remove the 'Paver' from the product title
+                              assign prod_title = prod_title | replace: 'Paver ', '' | replace: 'Paver', '' | strip
+                            endif
                             # If the split option is 'Size' and the variant has an option2, 
                             # set the product title to the product's title plus ' in ' plus the variant's option2
                             if split_option == 'Size' and p.option2 != blank
@@ -739,7 +742,7 @@
                           data-size='{{ p.option1 | escape }}'
                           data-use-case='{{ p.metafields.custom.use_case | default: product.metafields.custom.use_case | escape }}'
                           {% if p.metafields.custom.group != blank %}data-group='{{ p.metafields.custom.group }}'{% endif %}>
-                            <!-- card-product-nine15 -->
+                            <!-- COLLECTION by variant card-product-nine15 -->
                             {% render 'card-product-nine15',
                               product_title: prod_title,
                               card_product: p,
