@@ -326,6 +326,12 @@
               {%- endif -%}
             {%- endif -%}
           {%- endif -%}
+          
+          {%- comment -%} Detect if we're filtering by Tiles (Size = Tile) {%- endcomment -%}
+          {%- assign filter_by_tiles = false -%}
+          {%- if request.path contains '/_Tiles' or current_product_tag == '_Tiles' -%}
+            {%- assign filter_by_tiles = true -%}
+          {%- endif -%}
 
           {% if is_product_page %}
             {%- for collection_product in current_collection.products -%}
@@ -711,6 +717,32 @@
                                 continue
                               endunless
                             endif
+                            
+                            ## Tiles filter - Filter by Size = "Tile"
+                            # If we're on the Tiles page, only show variants where Size = "Tile"
+                            if filter_by_tiles
+                              assign variant_size = ''
+                              assign size_match = false
+                              
+                              # Find the Size option position
+                              for option in product.options
+                                if option == 'Size'
+                                  assign option_index = forloop.index0
+                                  assign variant_size = p.options[option_index] | strip
+                                  # Check if variant size is "Tile" (case-insensitive)
+                                  assign variant_size_lower = variant_size | downcase
+                                  if variant_size_lower == 'tile'
+                                    assign size_match = true
+                                  endif
+                                  break
+                                endif
+                              endfor
+                              
+                              # Skip this variant if it's not a Tile size
+                              unless size_match
+                                continue
+                              endunless
+                            endif
                           
                             # Add the variant ID to the displayed_variants array
                             assign displayed_variants = displayed_variants | append: ' ' | append: p.id
@@ -908,6 +940,39 @@
                         endfor
                         
                         unless has_matching_use_case
+                          assign should_display_product = false
+                        endunless
+                      endif
+                      
+                      # Check Tiles filter (Size = "Tile")
+                      if filter_by_tiles and should_display_product
+                        assign has_tile_variant = false
+                        # Check if any variant has Size = "Tile"
+                        for variant in product.variants
+                          assign variant_size = ''
+                          assign size_match = false
+                          
+                          # Find the Size option position
+                          for option in product.options
+                            if option == 'Size'
+                              assign option_index = forloop.index0
+                              assign variant_size = variant.options[option_index] | strip
+                              # Check if variant size is "Tile" (case-insensitive)
+                              assign variant_size_lower = variant_size | downcase
+                              if variant_size_lower == 'tile'
+                                assign size_match = true
+                                assign has_tile_variant = true
+                              endif
+                              break
+                            endif
+                          endfor
+                          
+                          if has_tile_variant
+                            break
+                          endif
+                        endfor
+                        
+                        unless has_tile_variant
                           assign should_display_product = false
                         endunless
                       endif
