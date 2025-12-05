@@ -386,6 +386,11 @@
                                   <a href="{{ link.url }}/{{ category_handle }}" class="mega-menu__column-link">{{ display_text }}</a>
                                 </li>
                               {%- endfor -%}
+                              
+                              {%- comment -%} Add "Shop All" link at the bottom of the Category list {%- endcomment -%}
+                              <li class="mega-menu__column-item">
+                                <a href="{{ link.url }}" class="mega-menu__column-link">Shop All</a>
+                              </li>
                             </ul>
                           {%- endif -%}
                         </div>
