@@ -19,6 +19,27 @@
 {% endcomment %}
 {% assign value_props = collection.metafields.custom.collection_value_props.value %}
 
+{% comment %}
+  Check if we're on a tag/subcategory page for collections specified in settings
+  Hide section on tag pages, only show on base collection URL
+{% endcomment %}
+{% assign is_tag_page = false %}
+{% assign hide_on_subcategories = section.settings.hide_on_subcategories_collections | strip %}
+{% if hide_on_subcategories != blank %}
+  {% assign collections_to_hide = hide_on_subcategories | split: ',' %}
+  {% for collection_handle in collections_to_hide %}
+    {% assign collection_handle_trimmed = collection_handle | strip %}
+    {% if collection.handle == collection_handle_trimmed %}
+      {% assign collection_path = '/collections/' | append: collection_handle_trimmed | append: '/_' %}
+      {% if request.path contains collection_path %}
+        {% assign is_tag_page = true %}
+        {% break %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% unless is_tag_page %}
 <div
   class='page-width'
   {% if value_props == blank %}
@@ -146,6 +167,7 @@
     }
   </style>
 {% endif %}
+{% endunless %}
 
 {% schema %}
 {
@@ -175,6 +197,17 @@
         }
       ],
       "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Visibility"
+    },
+    {
+      "type": "text",
+      "id": "hide_on_subcategories_collections",
+      "label": "Hide on subcategories for collections",
+      "info": "Enter collection handles (comma-separated) where value props should be hidden on tag/subcategory pages. Example: accessories, furniture. Value props will still show on base collection URLs.",
+      "placeholder": "accessories, furniture"
     }
   ],
   "presets": [
