@@ -51,7 +51,8 @@
     "main_collection_value_props_VCwm7G": {
       "type": "main-collection-value-props",
       "settings": {
-        "columns_desktop": "3"
+        "columns_desktop": "3",
+        "hide_on_subcategories_collections": "accessories"
       }
     },
     "main_collection_discover_more_products_RwRXNp": {
