@@ -207,11 +207,10 @@
           "name": "Slide One",
           "settings": {
             "show_image": true,
-            "image": "shopify://shop_images/JC_250807_ORCA_DSCF0707_HR.png",
+            "image": "shopify://shop_images/ORCA_LandscapeDesign_SantaMonicaGarden_Dining.png",
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 10,
-            "image_mob": "shopify://shop_images/JC_250807_ORCA_DSCF0691_HR.png",
             "align_bg_mob": "left center",
             "bg_color_mob": "#000000",
             "opacity_mob": 10,
@@ -265,7 +264,7 @@
           "name": "Slide Two",
           "settings": {
             "show_image": true,
-            "image": "shopify://shop_images/JC_ORCA_DSCF4980_HR_1.png",
+            "image": "shopify://shop_images/ORCA_LandscapeDesign_FrymanGarden_Hillside_6.png",
             "align_bg": "center",
             "bg_color": "#000000",
             "opacity": 10,
