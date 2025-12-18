@@ -11,6 +11,20 @@
 {% endcomment %}
 <!-- product-variant-picker.liquid -->
 <!-- product_form_id: {{product_form_id}} -->
+{%- liquid
+# assign is_paver_product = false
+
+# Check by collection handle
+# if product.collections.size > 0
+#   for product_collection in product.collections
+#     if product_collection.handle == 'pavers'
+#       assign is_paver_product = true
+#       break
+#     endif
+#   endfor
+# endif
+-%}
+
 {%- unless product.has_only_default_variant -%}
   {%- if block.settings.picker_type == 'button' -%}
     <variant-radios
