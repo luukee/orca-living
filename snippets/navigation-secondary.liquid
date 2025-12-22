@@ -191,11 +191,6 @@
             if collection_handle == 'quick-ship' and link_handle == 'pavers'
               assign is_current        = true
             endif
-            
-            # Temporary test - remove after debugging
-            if link.title == 'Pavers' and collection_handle == 'pavers'
-              assign is_current = true
-            endif
 
             assign link_url            = link.url
             if is_current and template.name != 'article'
@@ -216,11 +211,11 @@
 
             assign child_link_size      = link.links | size
             
-            assign path = request.path
-            assign show_nav_child_links = false
-            if path contains 'pavers' or path contains 'quick-ship'
-              assign show_nav_child_links = true
-            endif
+            # assign path = request.path
+            # assign show_nav_child_links = false
+            # if path contains 'pavers' or path contains 'quick-ship'
+            #   assign show_nav_child_links = true
+            # endif
             
           %}
           <li>
@@ -378,9 +373,9 @@
                                   {%- assign display_text = tag | strip | replace: '_', '' | replace: '-', ' ' -%} 
                                   
                                   {%- comment -%} Special case: rename "_Quick ship" to "In Stock" {%- endcomment -%}
-                                  {%- if display_text == 'Quick ship' or display_text == 'quick ship' -%}
+                                  {% comment %} {%- if display_text == 'Quick ship' or display_text == 'quick ship' -%}
                                     {%- assign display_text = 'In Stock' -%}
-                                  {%- endif -%}
+                                  {%- endif -%} {% endcomment %}
                                   
                                   {%- comment -%} Create clickable link with formatted display text {%- endcomment -%}
                                   <a href="{{ link.url }}/{{ category_handle }}" class="mega-menu__column-link">{{ display_text }}</a>
