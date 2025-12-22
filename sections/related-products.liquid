@@ -17,11 +17,37 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient no-js-hidden">
-  <product-recommendations
-    class="related-products page-width section-{{ section.id }}-padding isolate"
-    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}"
-  >
-    {% if recommendations.performed and recommendations.products_count > 0 %}
+  {%- comment -%}
+    Check for manually selected related products via metafield first.
+    If product.metafields.custom.related_products exists, use those products.
+    Otherwise, fall back to Shopify's automatic recommendations.
+  {%- endcomment -%}
+  {%- liquid
+    assign manual_products = blank
+    assign has_manual_products = false
+    
+    # Check for custom related products metafield
+    if product.metafields.custom.related_products != blank
+      assign manual_products = product.metafields.custom.related_products.value
+      if manual_products.size > 0
+        assign has_manual_products = true
+      endif
+    endif
+    
+    # Also check for Shopify Discovery metafield as fallback
+    unless has_manual_products
+      if product.metafields["shopify--discovery--product_recommendation"]["related_products"] != blank
+        assign manual_products = product.metafields["shopify--discovery--product_recommendation"]["related_products"].value
+        if manual_products.size > 0
+          assign has_manual_products = true
+        endif
+      endif
+    endunless
+  -%}
+
+  {%- if has_manual_products -%}
+    {%- comment -%} Display manually selected products {%- endcomment -%}
+    <div class="related-products page-width section-{{ section.id }}-padding isolate">
       <h2 class="related-products__heading {{ section.settings.heading_size }}">
         {{ section.settings.heading }}
       </h2>
@@ -29,10 +55,10 @@
         class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
         role="list"
       >
-        {% for recommendation in recommendations.products %}
+        {%- for related_product in manual_products limit: section.settings.products_to_show -%}
           <li class="grid__item">
             {% render 'card-product',
-              card_product: recommendation,
+              card_product: related_product,
               media_aspect_ratio: section.settings.image_ratio,
               show_secondary_image: section.settings.show_secondary_image,
               show_vendor: section.settings.show_vendor,
@@ -41,10 +67,40 @@
               card_show_inner_content: section.settings.card_show_inner_content
             %}
           </li>
-        {% endfor %}
+        {%- endfor -%}
       </ul>
-    {% endif %}
-  </product-recommendations>
+    </div>
+  {%- else -%}
+    {%- comment -%} Fall back to automatic recommendations {%- endcomment -%}
+    <product-recommendations
+      class="related-products page-width section-{{ section.id }}-padding isolate"
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}"
+    >
+      {% if recommendations.performed and recommendations.products_count > 0 %}
+        <h2 class="related-products__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+        <ul
+          class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+          role="list"
+        >
+          {% for recommendation in recommendations.products %}
+            <li class="grid__item">
+              {% render 'card-product',
+                card_product: recommendation,
+                media_aspect_ratio: section.settings.image_ratio,
+                show_secondary_image: section.settings.show_secondary_image,
+                show_vendor: section.settings.show_vendor,
+                show_rating: section.settings.show_rating,
+                hide_overlay_link: false,
+                card_show_inner_content: section.settings.card_show_inner_content
+              %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </product-recommendations>
+  {%- endif -%}
 </div>
 
 {% schema %}
