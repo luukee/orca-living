@@ -573,7 +573,11 @@
                             ## Filter by tag page
                             # If we're on a tag-filtered page (on_filter_by_tag_page is true), 
                             # we skip any variant that doesn't contain the filtered tag in its title
+                            # or has already been displayed
                             if on_filter_by_tag_page
+                              if displayed_variants contains p.id
+                                continue
+                              endif
                               unless p.title contains filter_by_this_tag
                                 continue
                               endunless
