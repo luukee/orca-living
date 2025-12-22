@@ -221,7 +221,7 @@
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "card_show_inner_content": true,
+        "card_show_inner_content": false,
         "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 28
