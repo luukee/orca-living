@@ -192,9 +192,7 @@
         "09c49608-3846-4f9f-9a8a-68d415bf1e4f",
         "0fcbd653-2d74-498a-bc58-b25c07a3fb92"
       ],
-      "custom_css": [
-        ".price-item--regular {display: none;}"
-      ],
+      "custom_css": [],
       "settings": {
         "enable_sticky_info": true,
         "product_section_border_bottom": true,
