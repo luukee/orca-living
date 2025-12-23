@@ -15,50 +15,164 @@
     }
   }
 {%- endstyle -%}
-
+<!-- Related Products -->
 <div class="color-{{ section.settings.color_scheme }} gradient no-js-hidden">
   {%- comment -%}
-    Check for manually selected related products via metafield first.
-    If product.metafields.custom.related_products exists, use those products.
-    Otherwise, fall back to Shopify's automatic recommendations.
+    Check for manually selected related products/variants via metafield first.
+    Priority order:
+    1. Variant-level related_product_variants (list of variants for this specific variant)
+    2. Variant-level related_products (list of products for this specific variant)
+    3. Product-level related_product_variants (list of variants for the product)
+    4. Product-level related_products (list of products for the product)
+    5. Shopify Discovery metafield
+    6. Automatic recommendations
   {%- endcomment -%}
   {%- liquid
-    assign manual_products = blank
-    assign has_manual_products = false
+    assign manual_items = blank
+    assign has_manual_items = false
+    # Start with the selected variant (works for initial page load)
+    assign current_variant = product.selected_or_first_available_variant
     
-    # Check for custom related products metafield
-    if product.metafields.custom.related_products != blank
-      assign manual_products = product.metafields.custom.related_products.value
-      if manual_products.size > 0
-        assign has_manual_products = true
-      endif
+    # IMPORTANT: Check if this is a recommendations API call (no variant parameter)
+    # The recommendations API is used for automatic recommendations when a variant has no MSV
+    # In this case, we should skip variant-specific logic and use automatic recommendations only
+    assign is_recommendations_api = false
+    if request.path contains '/recommendations/products'
+      # This is the recommendations API endpoint - it's for automatic recommendations
+      # Don't check for variant-specific MSV, just use automatic recommendations
+      assign is_recommendations_api = true
     endif
     
-    # Also check for Shopify Discovery metafield as fallback
-    unless has_manual_products
+    # Check if variant parameter is in the request (from product page fetch via JavaScript)
+    # Only check for variant parameter if this is NOT the recommendations API
+    assign variant_param = blank
+    unless is_recommendations_api
+      assign variant_param = request.params.variant
+      if variant_param == blank
+        assign variant_param = request.query_parameters.variant
+      endif
+      # Also check the query string directly - this is the most reliable way for API calls
+      if variant_param == blank and request.query_string != blank
+        assign query_parts = request.query_string | split: '&'
+        for part in query_parts
+          if part contains 'variant='
+            assign variant_param = part | split: '=' | last
+            break
+          endif
+        endfor
+      endif
+      # Also try parsing from request.url if available
+      if variant_param == blank and request.url != blank
+        if request.url contains 'variant='
+          assign url_parts = request.url | split: 'variant='
+          if url_parts.size > 1
+            assign variant_with_rest = url_parts[1]
+            assign variant_param = variant_with_rest | split: '&' | first
+          endif
+        endif
+      endif
+      # If variant parameter exists, use it instead (for dynamic updates)
+      if variant_param != blank
+        # Convert to number for comparison (variant IDs are numbers)
+        assign variant_param_num = variant_param | plus: 0
+        # Find the variant by ID from the parameter
+        for variant in product.variants
+          assign variant_id_num = variant.id | plus: 0
+          if variant_id_num == variant_param_num
+            assign current_variant = variant
+            break
+          endif
+        endfor
+      endif
+    endunless
+    assign items_are_variants = false
+    
+    # IMPORTANT: Skip MSV checking if this is the recommendations API
+    # The recommendations API should only return automatic recommendations
+    unless is_recommendations_api
+      # 1. Check for variant-level related_product_variants (list of variants)
+      if current_variant.metafields.custom.related_product_variants != blank
+      assign manual_items = current_variant.metafields.custom.related_product_variants.value
+        if manual_items.size > 0
+          assign has_manual_items = true
+          assign items_are_variants = true
+        endif
+    endif
+    
+    # 2. Check for variant-level related_products (list of products)
+    unless has_manual_items
+      if current_variant.metafields.custom.related_products != blank
+        assign manual_items = current_variant.metafields.custom.related_products.value
+        if manual_items.size > 0
+          assign has_manual_items = true
+          assign items_are_variants = false
+        endif
+      endif
+    endunless
+    
+    # 3. Check for product-level related_product_variants (list of variants)
+    unless has_manual_items
+      if product.metafields.custom.related_product_variants != blank
+        assign manual_items = product.metafields.custom.related_product_variants.value
+        if manual_items.size > 0
+          assign has_manual_items = true
+          assign items_are_variants = true
+        endif
+      endif
+    endunless
+    
+      # 4. Check for product-level related_products (list of products)
+      unless has_manual_items
+        if product.metafields.custom.related_products != blank
+        assign manual_items = product.metafields.custom.related_products.value
+        if manual_items.size > 0
+          assign has_manual_items = true
+          assign items_are_variants = false
+        endif
+      endif
+    endunless
+    endunless
+    
+    # 5. Check for Shopify Discovery metafield as fallback
+    unless has_manual_items
       if product.metafields["shopify--discovery--product_recommendation"]["related_products"] != blank
-        assign manual_products = product.metafields["shopify--discovery--product_recommendation"]["related_products"].value
-        if manual_products.size > 0
-          assign has_manual_products = true
+        assign manual_items = product.metafields["shopify--discovery--product_recommendation"]["related_products"].value
+        if manual_items.size > 0
+          assign has_manual_items = true
+          assign items_are_variants = false
         endif
       endif
     endunless
   -%}
+  
 
-  {%- if has_manual_products -%}
-    {%- comment -%} Display manually selected products {%- endcomment -%}
-    <div class="related-products page-width section-{{ section.id }}-padding isolate">
-      <h2 class="related-products__heading {{ section.settings.heading_size }}">
-        {{ section.settings.heading }}
-      </h2>
-      <ul
-        class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-        role="list"
-      >
-        {%- for related_product in manual_products limit: section.settings.products_to_show -%}
+  {%- comment -%} Always use product-recommendations web component so it can update dynamically {%- endcomment -%}
+  {%- assign variant_param = '' -%}
+  {%- if product.selected_or_first_available_variant.id -%}
+    {%- assign variant_param = '&variant=' | append: product.selected_or_first_available_variant.id -%}
+  {%- endif -%}
+  <product-recommendations
+    class="related-products page-width section-{{ section.id }}-padding isolate"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ product.id }}"
+    data-limit="{{ section.settings.products_to_show }}"
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}{{ variant_param }}"
+  >
+  {%- if has_manual_items -%}
+    {%- comment -%} Display manually selected products or variants {%- endcomment -%}
+    <h2 class="related-products__heading {{ section.settings.heading_size }}">
+      {{ section.settings.heading }}
+    </h2>
+    <ul
+      class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+      role="list"
+    >
+      {%- if items_are_variants -%}
+        {%- comment -%} Display variants - card-product snippet can handle variants directly {%- endcomment -%}
+        {%- for related_item in manual_items limit: section.settings.products_to_show -%}
           <li class="grid__item">
             {% render 'card-product',
-              card_product: related_product,
+              card_product: related_item,
               media_aspect_ratio: section.settings.image_ratio,
               show_secondary_image: section.settings.show_secondary_image,
               show_vendor: section.settings.show_vendor,
@@ -68,39 +182,56 @@
             %}
           </li>
         {%- endfor -%}
-      </ul>
-    </div>
+      {%- else -%}
+        {%- comment -%} Display products {%- endcomment -%}
+        {%- for related_item in manual_items limit: section.settings.products_to_show -%}
+          <li class="grid__item">
+            {% render 'card-product',
+              card_product: related_item,
+              media_aspect_ratio: section.settings.image_ratio,
+              show_secondary_image: section.settings.show_secondary_image,
+              show_vendor: section.settings.show_vendor,
+              show_rating: section.settings.show_rating,
+              hide_overlay_link: false,
+              card_show_inner_content: section.settings.card_show_inner_content
+            %}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
   {%- else -%}
     {%- comment -%} Fall back to automatic recommendations {%- endcomment -%}
-    <product-recommendations
-      class="related-products page-width section-{{ section.id }}-padding isolate"
-      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}"
-    >
-      {% if recommendations.performed and recommendations.products_count > 0 %}
-        <h2 class="related-products__heading {{ section.settings.heading_size }}">
-          {{ section.settings.heading }}
-        </h2>
-        <ul
-          class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-          role="list"
-        >
-          {% for recommendation in recommendations.products %}
-            <li class="grid__item">
-              {% render 'card-product',
-                card_product: recommendation,
-                media_aspect_ratio: section.settings.image_ratio,
-                show_secondary_image: section.settings.show_secondary_image,
-                show_vendor: section.settings.show_vendor,
-                show_rating: section.settings.show_rating,
-                hide_overlay_link: false,
-                card_show_inner_content: section.settings.card_show_inner_content
-              %}
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    </product-recommendations>
+    {%- comment -%} Show initial content if recommendations are already available {%- endcomment -%}
+    {% if recommendations.performed and recommendations.products_count > 0 %}
+      <h2 class="related-products__heading {{ section.settings.heading_size }}">
+        {{ section.settings.heading }}
+      </h2>
+      <ul
+        class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+        role="list"
+      >
+        {% for recommendation in recommendations.products %}
+          <li class="grid__item">
+            {% render 'card-product',
+              card_product: recommendation,
+              media_aspect_ratio: section.settings.image_ratio,
+              show_secondary_image: section.settings.show_secondary_image,
+              show_vendor: section.settings.show_vendor,
+              show_rating: section.settings.show_rating,
+              hide_overlay_link: false,
+              card_show_inner_content: section.settings.card_show_inner_content
+            %}
+          </li>
+        {% endfor %}
+      </ul>
+    {%- else -%}
+      {%- comment -%} Show placeholder/loading state - the web component will load recommendations via JavaScript {%- endcomment -%}
+      <div class="related-products__loading" style="min-height: 200px;">
+        {%- comment -%} The product-recommendations web component will populate this via JavaScript {%- endcomment -%}
+      </div>
+    {%- endif -%}
   {%- endif -%}
+  </product-recommendations>
 </div>
 
 {% schema %}

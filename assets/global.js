@@ -1822,43 +1822,274 @@ customElements.define('variant-radios', VariantRadios)
 class ProductRecommendations extends HTMLElement {
   constructor() {
     super()
+    this.variantChangeUnsubscriber = undefined
+    this.hasLoaded = false
+    this.isUpdating = false
   }
 
   connectedCallback() {
+    // Only listen for variant changes if this is the related-products section (not complementary-products)
+    if (this.classList.contains('related-products') && !this.classList.contains('complementary-products')) {
+      this.variantChangeUnsubscriber = subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
+        // Only update if variant changed for the same product
+        if (event.data.variant && this.dataset.productId) {
+          // Prevent initial load from interfering
+          this.hasLoaded = true
+          this.updateRecommendations(event.data.variant.id)
+        }
+      })
+    }
+
     const handleIntersection = (entries, observer) => {
       if (!entries[0].isIntersecting) return
       observer.unobserve(this)
-
-      fetch(this.dataset.url)
-        .then((response) => response.text())
-        .then((text) => {
-          const html = document.createElement('div')
-          html.innerHTML = text
-          const recommendations = html.querySelector('product-recommendations')
-
-          if (recommendations && recommendations.innerHTML.trim().length) {
-            this.innerHTML = recommendations.innerHTML
-          }
-
-          if (
-            !this.querySelector('slideshow-component') &&
-            this.classList.contains('complementary-products')
-          ) {
-            this.remove()
-          }
-
-          if (html.querySelector('.grid__item')) {
-            this.classList.add('product-recommendations--loaded')
-          }
-        })
-        .catch((e) => {
-          console.error(e)
-        })
+      // Only load if we're not currently updating and content isn't already present
+      // If content is already rendered server-side (has grid items), skip the initial load
+      if (!this.isUpdating && !this.querySelector('.grid__item')) {
+        this.loadRecommendations()
+      } else if (this.querySelector('.grid__item')) {
+        // Content is already present, mark as loaded
+        this.hasLoaded = true
+        this.classList.add('product-recommendations--loaded')
+      }
     }
 
     new IntersectionObserver(handleIntersection.bind(this), {
       rootMargin: '0px 0px 400px 0px'
     }).observe(this)
+  }
+
+  disconnectedCallback() {
+    if (this.variantChangeUnsubscriber) {
+      this.variantChangeUnsubscriber()
+    }
+  }
+
+  loadRecommendations(force = false) {
+    // Allow force parameter to bypass hasLoaded and isUpdating checks
+    // This is used when explicitly calling from updateRecommendations()
+    if (!force && (this.hasLoaded || this.isUpdating)) return
+    
+    this.hasLoaded = true
+
+    fetch(this.dataset.url)
+      .then((response) => response.text())
+      .then((text) => {
+        // Process the response - we may be updating from a variant change
+        // so we should process it even if isUpdating is true (it will be set to false after)
+        this.processRecommendationsResponse(text)
+        // If we were updating, mark as complete
+        if (this.isUpdating) {
+          this.isUpdating = false
+        }
+      })
+      .catch((e) => {
+        console.error(e)
+        // If we were updating, mark as complete even on error
+        if (this.isUpdating) {
+          this.isUpdating = false
+        }
+      })
+  }
+
+  updateRecommendations(variantId) {
+    // Instead of using the recommendations API (which doesn't expose query params to Liquid),
+    // fetch the product page with the variant parameter and extract the related-products section
+    // This is similar to how renderProductInfo() works in VariantSelects
+    const productUrl = window.location.pathname
+    const sectionId = this.dataset.sectionId
+    
+    // IMMEDIATELY clear all content FIRST to prevent old content from showing
+    // Do this before any async operations to ensure clean state
+    while (this.firstChild) {
+      this.removeChild(this.firstChild)
+    }
+    this.classList.remove('product-recommendations--loaded')
+    
+    // Mark as updating to prevent IntersectionObserver and other loads from interfering
+    this.isUpdating = true
+    this.hasLoaded = true // Prevent initial load from running
+    
+    // Fetch the product page with the variant parameter and section_id
+    // This will render the section with the correct variant context
+    fetch(`${productUrl}?variant=${variantId}&section_id=${sectionId}`)
+      .then((response) => response.text())
+      .then((text) => {
+        const html = new DOMParser().parseFromString(text, 'text/html')
+        // Find the related-products section in the response
+        // Section ID format is like "shopify-section-template--18436317347958__related-products"
+        const section = html.getElementById(`shopify-section-${sectionId}`)
+        if (section) {
+          const recommendations = section.querySelector('product-recommendations')
+          if (recommendations && recommendations.innerHTML.trim().length) {
+            // Check the fetched response, not the current DOM
+            const fetchedHasContent = recommendations.querySelector('.grid__item') !== null
+            const fetchedHasLoadingState = recommendations.querySelector('.related-products__loading') !== null
+            
+            // Always clear current content first to prevent old content from persisting
+            // Remove all children to ensure complete cleanup
+            while (this.firstChild) {
+              this.removeChild(this.firstChild)
+            }
+            this.classList.remove('product-recommendations--loaded')
+            
+            // If we have actual content (manual items or automatic recommendations), use it
+            if (fetchedHasContent) {
+              this.innerHTML = recommendations.innerHTML
+              this.classList.add('product-recommendations--loaded')
+              this.isUpdating = false
+            } 
+            // If we only have a loading state, it means we need to fetch automatic recommendations
+            else if (fetchedHasLoadingState) {
+              // For automatic recommendations, we need to fetch the section with NO variant parameter
+              // This ensures we get product-based automatic recommendations, not variant-specific content
+              const baseUrl = this.dataset.url.split('&variant=')[0].split('?')[0]
+              const params = new URLSearchParams(this.dataset.url.split('?')[1] || '')
+              // Remove variant parameter if it exists - automatic recommendations are product-based
+              params.delete('variant')
+              const recommendationsUrl = `${baseUrl}?${params.toString()}`
+              
+              // Set loading placeholder (already cleared above)
+              this.innerHTML = recommendations.innerHTML
+              this.hasLoaded = false // Reset to allow loadRecommendations to run
+              
+              // IMPORTANT: Fetch the recommendations API with a cache-busting parameter
+              // to ensure we get fresh automatic recommendations, not cached MSV content
+              const cacheBuster = `&_t=${Date.now()}`
+              const freshRecommendationsUrl = `${recommendationsUrl}${cacheBuster}`
+              
+              // Fetch recommendations directly here instead of using loadRecommendations
+              // to ensure we have full control and can update the URL
+              this.dataset.url = recommendationsUrl
+              
+              // Double-check that content is cleared before fetching
+              if (this.querySelector('.grid__item')) {
+                while (this.firstChild) {
+                  this.removeChild(this.firstChild)
+                }
+              }
+              
+              fetch(freshRecommendationsUrl, {
+                cache: 'no-store',
+                headers: {
+                  'Cache-Control': 'no-cache'
+                }
+              })
+                .then((response) => response.text())
+                .then((text) => {
+                  // Clear again before processing to be absolutely sure
+                  while (this.firstChild) {
+                    this.removeChild(this.firstChild)
+                  }
+                  
+                  // Verify content is cleared
+                  const beforeProcess = this.querySelectorAll('.grid__item').length
+                  if (beforeProcess > 0) {
+                    // Force clear again
+                    this.innerHTML = ''
+                  }
+                  
+                  this.processRecommendationsResponse(text)
+                  this.isUpdating = false
+                })
+                .catch((e) => {
+                  console.error(e)
+                  this.isUpdating = false
+                })
+              return // Don't set isUpdating to false yet, let the fetch handle it
+            }
+            // Otherwise, use whatever content we have
+            else {
+              this.innerHTML = recommendations.innerHTML
+              this.isUpdating = false
+            }
+          } else {
+            // Fallback: try to get content directly from section
+            const content = section.querySelector('.related-products')
+            if (content && content.innerHTML.trim().length) {
+              this.innerHTML = ''
+              this.innerHTML = content.innerHTML
+              if (this.querySelector('.grid__item')) {
+                this.classList.add('product-recommendations--loaded')
+              }
+            }
+            this.isUpdating = false
+          }
+        } else {
+          this.isUpdating = false
+        }
+      })
+      .catch((e) => {
+        console.error(e)
+        this.isUpdating = false
+      })
+  }
+
+  processRecommendationsResponse(text) {
+    const html = document.createElement('div')
+    html.innerHTML = text
+    
+    // The API returns the full section HTML, so we need to find the product-recommendations element
+    // It might be directly in the response or inside a section wrapper
+    let recommendations = html.querySelector('product-recommendations')
+    
+    // If not found directly, try finding it inside a section
+    if (!recommendations) {
+      const section = html.querySelector('section')
+      if (section) {
+        recommendations = section.querySelector('product-recommendations')
+      }
+    }
+    
+    // If we found recommendations with content, update the innerHTML
+    if (recommendations && recommendations.innerHTML.trim().length) {
+      // Always clear first to prevent old content from persisting
+      while (this.firstChild) {
+        this.removeChild(this.firstChild)
+      }
+      // Extract just the inner content (heading, list, etc.) without the wrapper
+      // Replace content synchronously to prevent flashing
+      this.innerHTML = recommendations.innerHTML
+      if (this.querySelector('.grid__item')) {
+        this.classList.add('product-recommendations--loaded')
+      }
+    } else {
+      // Fallback: if there are grid items in the response, try to extract the content
+      const section = html.querySelector('section')
+      if (section) {
+        // Look for the related-products content inside the section
+        const relatedProducts = section.querySelector('.related-products')
+        if (relatedProducts && relatedProducts.innerHTML.trim().length) {
+          // Extract content from inside product-recommendations if it exists
+          const innerRecs = relatedProducts.querySelector('product-recommendations')
+          if (innerRecs && innerRecs.innerHTML.trim().length) {
+            this.innerHTML = innerRecs.innerHTML
+            if (this.querySelector('.grid__item')) {
+              this.classList.add('product-recommendations--loaded')
+            }
+          } else {
+            // Use the related-products content directly (but skip the product-recommendations wrapper)
+            const content = relatedProducts.cloneNode(true)
+            const wrapper = content.querySelector('product-recommendations')
+            if (wrapper) {
+              this.innerHTML = wrapper.innerHTML
+            } else {
+              this.innerHTML = relatedProducts.innerHTML
+            }
+            if (this.querySelector('.grid__item')) {
+              this.classList.add('product-recommendations--loaded')
+            }
+          }
+        }
+      }
+    }
+
+    if (
+      !this.querySelector('slideshow-component') &&
+      this.classList.contains('complementary-products')
+    ) {
+      this.remove()
+    }
   }
 }
 
