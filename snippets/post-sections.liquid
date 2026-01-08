@@ -40,11 +40,57 @@
         </div>
       </section>
     {% elsif section.text_section_body %}
-      {% comment %}This is a text_section{% endcomment %}
+      {% comment %}This is a text_section. Rich text metafield.{% endcomment %}
       <section class='post-sections post-sections--text'>
         <div class='rte'>
           {% if section.text_section_body %}
             {{ section.text_section_body | metafield_tag }}
+          {% endif %}
+          {% if section.podcast_embed_code %}
+            {% assign embed_code = section.podcast_embed_code.value | default: section.podcast_embed_code %}
+          
+            {% if embed_code contains 'src="' %}
+              {% comment %} Extract src from pasted iframe embed code {% endcomment %}
+              {% assign after_src = embed_code | split: 'src="' | last %}
+              {% assign src = after_src | split: '"' | first %}
+          
+              {% comment %} Provider detection + basic safety whitelist {% endcomment %}
+              {% assign provider = '' %}
+              {% assign iframe_height = 152 %}
+          
+              {% if src contains 'open.spotify.com/embed' %}
+                {% assign provider = 'spotify' %}
+                {% assign iframe_height = 152 %}
+          
+                {% comment %} Spotify show embeds are often taller {% endcomment %}
+                {% if src contains '/show/' %}
+                  {% assign iframe_height = 232 %}
+                {% endif %}
+              {% elsif src contains 'embed.podcasts.apple.com' %}
+                {% assign provider = 'apple' %}
+                {% assign iframe_height = 175 %}
+              {% endif %}
+          
+              {% if provider != '' %}
+                <div class="podcast-embed podcast-embed--{{ provider }}">
+                  <iframe
+                    src="{{ src }}"
+                    width="100%"
+                    height="{{ iframe_height }}"
+                    frameborder="0"
+                    allowfullscreen
+                    {% comment %} Allow list tuned for both Spotify + Apple Podcasts {% endcomment %}
+                    allow="autoplay *; clipboard-write; encrypted-media *; fullscreen *; picture-in-picture"
+                    loading="lazy"
+                    title="Podcast"
+                    {% comment %} Apple Podcasts uses sandbox on their snippet, include it only when needed {% endcomment %}
+                    {% if provider == 'apple' %}
+                      sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+                    {% endif %}
+                  ></iframe>
+                </div>
+              {% endif %}
+            {% endif %}
           {% endif %}
         </div>
       </section>
