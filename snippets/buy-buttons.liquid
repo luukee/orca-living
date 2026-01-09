@@ -25,23 +25,27 @@
     {% endif %}
   >
     {%- if product != blank -%}
+      {%- comment -%}
+        Initialize feature flags and product state variables.
+        These determine which UI elements and behaviors are enabled.
+      {%- endcomment -%}
       {%- liquid
+        # Gift card recipient feature: Only active if enabled in settings and product is a gift card
         assign gift_card_recipient_feature_active = false
         if block.settings.show_gift_card_recipient and product.gift_card?
           assign gift_card_recipient_feature_active = true
         endif
 
+        # Dynamic checkout buttons (Shop Pay, Apple Pay, etc.): Enabled if setting is on and gift card recipient is not active
         assign show_dynamic_checkout = false
         if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
           assign show_dynamic_checkout = true
         endif
 
+        # Sample variant detection: If current variant is a sample, use product max price for display
+        # This ensures sample variants show the full product price range instead of just the sample price
         assign product_is_sample = false
         assign product_price_max = ''
-        ## if is sample variant
-        ## get the product max price and
-        ## set this price as the add to cart button's price
-        ## see 'price-item price-item--regular' class element below
         if product.selected_or_first_available_variant.option1 contains 'Sample'
           assign product_is_sample = true
           assign product_price_max = product.price_max | money
@@ -89,18 +93,40 @@
           {% endcomment %}
 
           <div class='product-form__buttons'>
-            {% comment %} Nine15 - UPDATE THIS IN GLOBAL.JS FILE IN THE toggleOutOfStockForm function if you decide to change something here {% endcomment %}
+            {%- comment -%}
+              Inventory availability check logic.
+              Determines if variant should be marked as sold out based on:
+              1. Whether inventory is managed by Shopify
+              2. Whether inventory policy allows overselling
+              3. Whether minimum quantity rule exceeds available inventory
+              
+              NOTE: If you modify this logic, also update the toggleOutOfStockForm function in global.js
+            {%- endcomment -%}
             {%- liquid
+              # Check if we should validate against inventory
+              # Skip inventory check if not managed by Shopify or if policy allows overselling
               assign check_against_inventory = true
               if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
                 assign check_against_inventory = false
               endif
+              
+              # Check if minimum quantity rule makes variant unavailable
+              # If minimum required quantity exceeds available inventory, mark as sold out
+              assign quantity_rule_soldout = false
               if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity and check_against_inventory
                 assign quantity_rule_soldout = true
               endif
             -%}
+            {%- comment -%}
+              Button rendering logic with three modes:
+              1. Modal form mode: Opens a product inquiry modal (button or link)
+              2. External link mode: Links to external product page
+              3. Standard mode: Standard add to cart button
+            {%- endcomment -%}
             {% if buy_buttons_modal_form %}
-              {% comment %} This button is used to open the #buy_buttons_modal_form modal form {% endcomment %}
+              {%- comment -%}
+                Modal form button: Can be either a link (if destination provided) or button (opens modal)
+              {%- endcomment -%}
               {% if modal_form_button_destination %}
                 <a href="{{ modal_form_button_destination }}" class='product-form__url button button--full-width button--primary'>
                   {{ modal_form_button_text }}
@@ -115,6 +141,9 @@
                 </button>
               {% endif %}
             {% elsif external %}
+              {%- comment -%}
+                External product link: Opens external product page in new tab
+              {%- endcomment -%}
               <a
                 href='{{ external_link }}'
                 class='product-form__submit button button--full-width button--primary'
@@ -122,6 +151,9 @@
                 >Shop</a
               >
             {% else %}
+              {%- comment -%}
+                Standard add to cart button: Submits product form to add item to cart
+              {%- endcomment -%}
               <button
                 id='ProductSubmitButton-{{ section_id }}'
                 type='submit'
@@ -140,17 +172,24 @@
                     {%- endif -%}
                   </span>
 
-                  {% comment %}
-                  {% endcomment %}
                   <span> - </span>
+                  {%- comment -%}
+                    Price calculation and display logic:
+                    1. Get variant price (defaults to 1999 if missing)
+                    2. Format as money (with or without currency code based on settings)
+                    3. Apply 10% trade discount if customer has 'trade' tag
+                  {%- endcomment -%}
                   {% liquid
                     assign target = product.selected_or_first_available_variant
                     assign price = target.price | default: 1999
                     assign money_price = price | money
+                    
+                    # Include currency code if enabled in theme settings
                     if settings.currency_code_enabled
                       assign money_price = price | money_with_currency
                     endif
 
+                    # Apply trade discount: 10% off for customers with 'trade' tag
                     if customer and customer.tags contains 'trade'
                       assign price = price | times: 0.9
                       assign money_price = price | money
@@ -251,6 +290,10 @@
               {{ form | payment_button }}
             {%- endif -%}
 
+            {%- comment -%}
+              Quick ship indicator: Displays quick ship text if variant has quick_ship metafield set to 'True'
+              The custom element uses data attributes to dynamically show/hide based on selected variant
+            {%- endcomment -%}
             {% liquid
               assign quick_ship = false
               assign current_variant = product.selected_or_first_available_variant
@@ -269,9 +312,10 @@
           </div>
         {%- endform -%}
       </product-form>
-      <!--
-      waitlist? {{ product.metafields.custom.waitlist_opt_out }}
-      -->
+      {%- comment -%}
+        Waitlist functionality: Render native sold-out component unless product has opted out
+        The waitlist allows customers to be notified when out-of-stock items become available
+      {%- endcomment -%}
       {% unless product.metafields.custom.waitlist_opt_out %}
         {% render 'native-sold-out', product: product %}
       {% endunless %}
@@ -291,13 +335,20 @@
       {% render 'native-sold-out', product: product %}
     {%- endif -%}
 
+    {%- comment -%}
+      Pickup availability section: Displays store pickup options for the current variant
+      Only renders if show_pickup_availability parameter is true and variant has pickup locations with stock
+    {%- endcomment -%}
     {%- if show_pickup_availability -%}
       {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
     
       {%- assign current_variant = product.selected_or_first_available_variant -%}
       {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
       
-      {%- comment -%} Check if there are any pickup locations with actual available stock {%- endcomment -%}
+      {%- comment -%}
+        Check if any pickup locations have available stock
+        Only show pickup availability if at least one location has stock
+      {%- endcomment -%}
       {%- assign has_available_pickup = false -%}
       {%- for availability in pick_up_availabilities -%}
         {%- if availability.available -%}
@@ -346,12 +397,12 @@
     {%- endif -%}
   </div>
 
-  {% comment %} Render the buy buttons modal form if the buy_buttons_modal_form is true {% endcomment %}
-  {% comment %} custom-product-form.liquid is rendered in the modal {% endcomment %}
+  {%- comment -%}
+    Product inquiry modal: Renders a modal form for product inquiries when buy_buttons_modal_form is true
+    The modal contains the custom-product-form.liquid snippet and handles form submission,
+    success messages, and modal open/close functionality.
+  {%- endcomment -%}
   {% if buy_buttons_modal_form %}
-    {% comment %}
-      Modal structure with proper styling
-    {% endcomment %}
     <div id='product-inquiry-modal' class='modal' style='display: none;'>
       <div class='modal-content'>
         <div class='modal-header'>
@@ -462,6 +513,14 @@
       }
     </style>
 
+    {%- comment -%}
+      Modal JavaScript functionality:
+      - Moves modal to body level to avoid stacking context issues
+      - Handles modal open/close events (button click, close button, backdrop click)
+      - Manages body scroll lock when modal is open
+      - Monitors form submission success and auto-closes modal after 3 seconds
+      - Resets form state after successful submission
+    {%- endcomment -%}
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('product-inquiry-modal')
@@ -478,7 +537,10 @@
         // Store the original body styles to restore later
         let scrollPosition
 
-        // Function to disable background scrolling
+        /**
+         * Disables background scrolling when modal is open
+         * Preserves current scroll position and prevents body from scrolling
+         */
         function disableScroll() {
           scrollPosition = window.pageYOffset
           body.style.overflow = 'hidden'
@@ -487,7 +549,10 @@
           body.style.width = '100%'
         }
 
-        // Function to enable background scrolling
+        /**
+         * Re-enables background scrolling when modal is closed
+         * Restores body to original scroll position
+         */
         function enableScroll() {
           body.style.overflow = ''
           body.style.position = ''
@@ -496,7 +561,7 @@
           window.scrollTo(0, scrollPosition)
         }
 
-        // Only set up event listeners if modal and required elements exist
+        // Open modal when submit button is clicked
         if (modal && btn) {
           btn.addEventListener('click', function (e) {
             e.preventDefault()
@@ -505,6 +570,7 @@
           })
         }
 
+        // Close modal when close button (×) is clicked
         if (modal && span) {
           span.addEventListener('click', function () {
             modal.style.display = 'none'
@@ -512,6 +578,7 @@
           })
         }
 
+        // Close modal when clicking outside modal content (backdrop)
         if (modal) {
           window.addEventListener('click', function (e) {
             if (e.target == modal) {
@@ -521,13 +588,18 @@
           })
         }
 
-        // Listen for form submission success to close modal
+        /**
+         * Form submission success handler: Monitors form message visibility
+         * When form submission succeeds, automatically closes modal after 3 seconds
+         * and resets form to allow another submission
+         */
         if (modal) {
           const form = document.querySelector('#custom_product_form')
           if (form) {
             const formMessage = form.querySelector('.form__message')
             
             if (formMessage) {
+              // Use MutationObserver to watch for form message display changes
               const observer = new MutationObserver(function (mutations) {
                 mutations.forEach(function (mutation) {
                   if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
