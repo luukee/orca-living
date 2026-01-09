@@ -85,6 +85,7 @@ if (!customElements.get('product-form')) {
        * @param {Event} evt - The event that triggered the request
        * @param {FormData} formData - The form data to be sent
        * @param {Object} config - The fetch configuration object
+       * @param {String} variantId - Optional variant ID for sample button case
        * 
        * Flow:
        * 1. Sends request to cart/add endpoint
@@ -93,14 +94,17 @@ if (!customElements.get('product-form')) {
        * 4. Shows error messages if needed
        * 5. Updates cart icon with new quantity
        */
-      sendRequest(evt,formData,config) {
+      sendRequest(evt,formData,config,variantId = null) {
+        // Get variant ID from formData or parameter
+        const productVariantId = variantId || formData.get('id');
+        
         fetch(`${routes.cart_add_url}`, config)
           .then((response) => response.json())
           .then((response) => {
             if (response.status) {
               publish(PUB_SUB_EVENTS.cartError, {
                 source: 'product-form',
-                productVariantId: formData.get('id'),
+                productVariantId: productVariantId,
                 errors: response.description,
                 message: response.message,
               });
@@ -111,7 +115,8 @@ if (!customElements.get('product-form')) {
               if (!soldOutMessage) return;
               this.submitButtons.forEach((btn) => {
                 btn.setAttribute('aria-disabled', true);
-                btn.querySelector('span').classList.add('hidden');
+                const span = btn.querySelector('span');
+                if (span) span.classList.add('hidden');
               });
               soldOutMessage.classList.remove('hidden');
               this.error = true;
@@ -124,17 +129,23 @@ if (!customElements.get('product-form')) {
             if (!this.error)
               publish(PUB_SUB_EVENTS.cartUpdate, {
                 source: 'product-form',
-                productVariantId: formData.get('id'),
+                productVariantId: productVariantId,
               });
             this.error = false;
             const quickAddModal = this.closest('quick-add-modal');
 
-            if(response.items){
+            if(response.items && response.items.length > 0){
               response.items[0].sections = response.sections
               response = response.items[0]
               
               if (evt.target == this.sampleButton) {
-                evt.target.querySelector('span > span').textContent = 'Added to Cart'
+                // Update button text if span structure exists, otherwise update button textContent
+                const spanNested = evt.target.querySelector('span > span');
+                if (spanNested) {
+                  spanNested.textContent = 'Added to Cart';
+                } else {
+                  evt.target.textContent = 'Added to Cart';
+                }
                 evt.target.setAttribute('disabled',true)
               }
             }
@@ -184,7 +195,8 @@ if (!customElements.get('product-form')) {
        */
       onSampleSubmitHandler(evt) {
         evt.preventDefault();
-        if (evt.target.getAttribute('data-value') == null) return;
+        const variantId = evt.target.getAttribute('data-value');
+        if (variantId == null) return;
         if (evt.target.getAttribute('aria-disabled') === 'true') return;
 
         const config = fetchConfig('javascript');
@@ -194,15 +206,15 @@ if (!customElements.get('product-form')) {
         this.setToLoading();
 
         const formData = new FormData();
-        const body = {items:[{ id: evt.target.getAttribute('data-value'),quantity:1 }]}
+        const body = {items:[{ id: variantId, quantity:1 }]}
         if (this.cart) {
           body.sections = this.cart.getSectionsToRender().map((section) => section.id)
           body.sections_url = window.location.pathname
           this.cart.setActiveElement(document.activeElement);
         }
-        formData.append('items', [{ id: evt.target.getAttribute('data-value'),quantity:1 }]);
+        // Note: formData.append line removed as it's not used with JSON body
         config.body = JSON.stringify(body);
-        this.sendRequest(evt,formData,config)
+        this.sendRequest(evt,formData,config,variantId)
       }
 
       /**
