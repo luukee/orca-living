@@ -165,9 +165,9 @@
           "settings": {
             "product": "sundial-bistro-set",
             "second_image": false,
-            "product_card_title_text": "Sundial Bistro Set",
+            "product_card_title_text": "Gate Hardware",
             "product_card_link_text": "Shop Now",
-            "product_card_link_url": "shopify://products/sundial-bistro-set",
+            "product_card_link_url": "shopify://products/gate-latch",
             "product_card_show_caption_description": false
           }
         }
