@@ -1,6 +1,507 @@
+{% doc %}
+  @prompt
+    Filters, should be inline, text only filters
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-inline-filters-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding }}px;
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-inline-filters__container-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .ai-inline-filters__label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-inline-filters__group-{{ ai_gen_id }} {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .ai-inline-filters__filter-{{ ai_gen_id }} {
+    background: none;
+    border: 1px solid {{ block.settings.border_color }};
+    padding: 8px 16px;
+    border-radius: {{ block.settings.filter_border_radius }}px;
+    cursor: pointer;
+    font-size: {{ block.settings.filter_size }}px;
+    color: {{ block.settings.text_color }};
+    transition: all 0.2s ease;
+  }
+
+  .ai-inline-filters__filter-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.hover_background }};
+    border-color: {{ block.settings.accent_color }};
+  }
+
+  .ai-inline-filters__filter-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.active_text_color }};
+    border-color: {{ block.settings.accent_color }};
+  }
+
+  .ai-inline-filters__divider-{{ ai_gen_id }} {
+    width: 1px;
+    height: 24px;
+    background-color: {{ block.settings.border_color }};
+  }
+
+  .ai-inline-filters__clear-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: {{ block.settings.filter_size }}px;
+    color: {{ block.settings.accent_color }};
+    text-decoration: underline;
+  }
+
+  .ai-inline-filters__clear-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-inline-filters__clear-{{ ai_gen_id }}[hidden] {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-inline-filters__container-{{ ai_gen_id }} {
+      gap: 8px;
+    }
+
+    .ai-inline-filters__filter-{{ ai_gen_id }} {
+      padding: 6px 12px;
+      font-size: {{ block.settings.filter_size | times: 0.9 }}px;
+    }
+
+    .ai-inline-filters__label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_size | times: 0.9 }}px;
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<inline-filters-{{ ai_gen_id }}
+  class="ai-inline-filters-{{ ai_gen_id }}"
+  style="width: {{ block.settings.desktop_width_percent }}%;"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-inline-filters__container-{{ ai_gen_id }}">
+    {% if block.settings.show_label %}
+      <span class="ai-inline-filters__label-{{ ai_gen_id }}">{{ block.settings.label_text }}</span>
+    {% endif %}
+
+    {% if block.settings.show_availability %}
+      <div class="ai-inline-filters__group-{{ ai_gen_id }}">
+        <button
+          class="ai-inline-filters__filter-{{ ai_gen_id }}"
+          data-filter="availability"
+          data-value="in-stock"
+        >
+          In stock
+        </button>
+        <button
+          class="ai-inline-filters__filter-{{ ai_gen_id }}"
+          data-filter="availability"
+          data-value="out-of-stock"
+        >
+          Out of stock
+        </button>
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_availability and block.settings.show_product_type %}
+      <div class="ai-inline-filters__divider-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    {% if block.settings.show_product_type %}
+      <div class="ai-inline-filters__group-{{ ai_gen_id }}">
+        {% assign product_types = block.settings.product_types | split: ',' %}
+        {% for type in product_types %}
+          {% assign type_trimmed = type | strip %}
+          {% if type_trimmed != blank %}
+            <button
+              class="ai-inline-filters__filter-{{ ai_gen_id }}"
+              data-filter="product-type"
+              data-value="{{ type_trimmed }}"
+            >
+              {{ type_trimmed }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_vendor %}
+      {% if block.settings.show_product_type or block.settings.show_availability %}
+        <div class="ai-inline-filters__divider-{{ ai_gen_id }}"></div>
+      {% endif %}
+      <div class="ai-inline-filters__group-{{ ai_gen_id }}">
+        {% assign vendors = block.settings.vendors | split: ',' %}
+        {% for vendor in vendors %}
+          {% assign vendor_trimmed = vendor | strip %}
+          {% if vendor_trimmed != blank %}
+            <button
+              class="ai-inline-filters__filter-{{ ai_gen_id }}"
+              data-filter="vendor"
+              data-value="{{ vendor_trimmed }}"
+            >
+              {{ vendor_trimmed }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_sort %}
+      {% if block.settings.show_vendor or block.settings.show_product_type or block.settings.show_availability %}
+        <div class="ai-inline-filters__divider-{{ ai_gen_id }}"></div>
+      {% endif %}
+      <div class="ai-inline-filters__group-{{ ai_gen_id }}">
+        <button
+          class="ai-inline-filters__filter-{{ ai_gen_id }}"
+          data-filter="sort"
+          data-value="price-asc"
+        >
+          Price: Low to High
+        </button>
+        <button
+          class="ai-inline-filters__filter-{{ ai_gen_id }}"
+          data-filter="sort"
+          data-value="price-desc"
+        >
+          Price: High to Low
+        </button>
+        <button
+          class="ai-inline-filters__filter-{{ ai_gen_id }}"
+          data-filter="sort"
+          data-value="title-asc"
+        >
+          A-Z
+        </button>
+        <button
+          class="ai-inline-filters__filter-{{ ai_gen_id }}"
+          data-filter="sort"
+          data-value="title-desc"
+        >
+          Z-A
+        </button>
+      </div>
+    {% endif %}
+
+    <button
+      class="ai-inline-filters__clear-{{ ai_gen_id }}"
+      data-clear-filters
+      hidden
+    >
+      Clear all
+    </button>
+  </div>
+</inline-filters-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class InlineFilters{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.activeFilters = new Map();
+      }
+
+      connectedCallback() {
+        this.filterButtons = this.querySelectorAll('[data-filter]');
+        this.clearButton = this.querySelector('[data-clear-filters]');
+
+        this.setupEventListeners();
+        this.loadFiltersFromURL();
+      }
+
+      setupEventListeners() {
+        this.filterButtons.forEach(button => {
+          button.addEventListener('click', (e) => {
+            const filterType = e.currentTarget.dataset.filter;
+            const filterValue = e.currentTarget.dataset.value;
+
+            if (filterType === 'sort') {
+              this.filterButtons.forEach(btn => {
+                if (btn.dataset.filter === 'sort') {
+                  btn.classList.remove('active');
+                }
+              });
+              e.currentTarget.classList.add('active');
+              this.activeFilters.set(filterType, [filterValue]);
+            } else {
+              e.currentTarget.classList.toggle('active');
+
+              if (!this.activeFilters.has(filterType)) {
+                this.activeFilters.set(filterType, []);
+              }
+
+              const values = this.activeFilters.get(filterType);
+              const index = values.indexOf(filterValue);
+
+              if (index > -1) {
+                values.splice(index, 1);
+                if (values.length === 0) {
+                  this.activeFilters.delete(filterType);
+                }
+              } else {
+                values.push(filterValue);
+              }
+            }
+
+            this.updateClearButton();
+            this.applyFilters();
+          });
+        });
+
+        this.clearButton.addEventListener('click', () => {
+          this.clearAllFilters();
+        });
+      }
+
+      updateClearButton() {
+        if (this.activeFilters.size > 0) {
+          this.clearButton.hidden = false;
+        } else {
+          this.clearButton.hidden = true;
+        }
+      }
+
+      clearAllFilters() {
+        this.filterButtons.forEach(button => {
+          button.classList.remove('active');
+        });
+
+        this.activeFilters.clear();
+        this.updateClearButton();
+        this.applyFilters();
+      }
+
+      applyFilters() {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams();
+
+        this.activeFilters.forEach((values, filterType) => {
+          params.set(filterType, values.join(','));
+        });
+
+        url.search = params.toString();
+        window.location.href = url.toString();
+      }
+
+      loadFiltersFromURL() {
+        const params = new URLSearchParams(window.location.search);
+
+        params.forEach((value, key) => {
+          const values = value.split(',');
+
+          values.forEach(val => {
+            const button = Array.from(this.filterButtons).find(
+              btn => btn.dataset.filter === key && btn.dataset.value === val
+            );
+
+            if (button) {
+              button.classList.add('active');
+
+              if (!this.activeFilters.has(key)) {
+                this.activeFilters.set(key, []);
+              }
+              this.activeFilters.get(key).push(val);
+            }
+          });
+        });
+
+        this.updateClearButton();
+      }
+    }
+
+    customElements.define('inline-filters-{{ ai_gen_id }}', InlineFilters{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Inline filters",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_label",
+      "label": "Show label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label text",
+      "default": "Filter:"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Label size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "filter_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Filter text size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Container border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "filter_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Filter border radius",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Filter options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_availability",
+      "label": "Show availability",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_type",
+      "label": "Show product type",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "product_types",
+      "label": "Product types",
+      "info": "Separate each type with a comma",
+      "default": "Pavers, Tiles, Stones"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "vendors",
+      "label": "Vendors",
+      "info": "Separate each vendor with a comma"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show sort options",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f0f0e8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Active background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "active_text_color",
+      "label": "Active text",
+      "default": "#f0f0e8"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "hover_background",
+      "label": "Hover background",
+      "default": "#e8e8e0"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inline filters"
+    }
+  ]
+}
 {% endschema %}
