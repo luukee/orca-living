@@ -10,7 +10,6 @@ section.section--register {
 }
 .customer:not(.account):not(.order):not(.register) {
   margin: 0 auto;
-  text-align: center;
 }
 .customer > h1,
 .customer__title {
