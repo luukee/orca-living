@@ -47,7 +47,8 @@ section.section--register {
   }
   .main--login .shopify-section,
   .main--addresses .shopify-section,
-  .main--account .shopify-section {
+  .main--account .shopify-section,
+  .page--edit-account .cf-form-section {
     max-width: 750px;
     margin: 0 auto;
   }
