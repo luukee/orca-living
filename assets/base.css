@@ -3292,10 +3292,6 @@ details-disclosure > details {
 
 /* Tablet and desktop layout */
 @media (min-width: 750px) {
-  .main--login .shopify-section {
-      max-width: 750px;
-      margin: 0 auto;
-  }
   .template-container,
   .main--register {
     display: grid;

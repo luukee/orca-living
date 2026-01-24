@@ -1,4 +1,9 @@
-.page--login .content-for-layout .shopify-section {
+.page--login .content-for-layout .shopify-section,
+.page--addresses .content-for-layout .shopify-section {
+  padding: 0 1rem 0 1rem;
+}
+.main--account,
+.main--addresses {
   padding: 0 1rem 0 1rem;
 }
 section.section--register {
@@ -8,7 +13,7 @@ section.section--register {
   max-width: 100%;
   padding-top: 1rem;
 }
-.customer:not(.account):not(.order):not(.register) {
+.customer:not(.account):not(.order):not(.register):not(.addresses) {
   margin: 0 auto;
   padding: 0 1rem 0 1rem;
 }
@@ -39,7 +44,14 @@ section.section--register {
   .customer h2.form__message {
     font-size: calc(var(--font-heading-scale) * 2.2rem);
   }
+  .main--login .shopify-section,
+  .main--addresses .shopify-section,
+  .main--account .shopify-section {
+    max-width: 750px;
+    margin: 0 auto;
+  }
 }
+
 .customer .field {
   margin: 2rem 0 0 0;
   padding: 0;
