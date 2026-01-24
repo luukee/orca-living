@@ -12,6 +12,12 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Prevent scroll when toggling login/recover via hash – no scroll-margin */
+  .customer.login #recover,
+  .customer.login #login {
+    scroll-margin-top: 0;
+  }
 {%- endstyle -%}
 
 <div class="customer login section-{{ section.id }}-padding">
@@ -192,3 +198,28 @@
   ]
 }
 {% endschema %}
+
+<script>
+  /**
+   * Prevents default scroll behavior when clicking "Forgot your password" or "Cancel" links.
+   * Updates the URL hash without scrolling, allowing CSS :target to toggle form visibility.
+   */
+  (function() {
+    // Find the login container to attach event delegation
+    var container = document.querySelector('.customer.login');
+    if (!container) return;
+    
+    // Use event delegation to handle clicks on recover/login anchor links
+    container.addEventListener('click', function(e) {
+      // Check if the clicked element or its parent is a recover/login link
+      var link = e.target.closest('a[href="#recover"], a[href="#login"]');
+      if (!link) return;
+      
+      // Prevent default anchor behavior (which would scroll to the target)
+      e.preventDefault();
+      
+      // Update URL hash without triggering scroll, allowing CSS :target to work
+      history.replaceState(null, null, link.getAttribute('href'));
+    });
+  })();
+</script>
