@@ -1,5 +1,6 @@
 .page--login .content-for-layout .shopify-section,
-.page--addresses .content-for-layout .shopify-section {
+.page--addresses .content-for-layout .shopify-section,
+.page--edit-account .content-for-layout {
   padding: 0 1rem 0 1rem;
 }
 .main--account,
