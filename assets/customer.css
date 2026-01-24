@@ -1,3 +1,6 @@
+.page--login .content-for-layout .shopify-section {
+  padding: 0 1rem 0 1rem;
+}
 section.section--register {
   grid-column: 2 / span 1;
 }
