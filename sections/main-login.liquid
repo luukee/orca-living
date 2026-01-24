@@ -31,6 +31,30 @@
     display: none;
   }
 
+  /* Override customer.css to keep recover form in DOM (not display:none) 
+     so hCaptcha can initialize. We'll hide it visually instead. */
+  .customer.login #recover + div {
+    /* Keep container visible but hide content visually */
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .customer.login #recover:target + div,
+  .customer.login #recover[style*="display: block"] + div {
+    /* Show form when recover is targeted */
+    position: static;
+    left: auto;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   /* Left-align recover password section heading and subtext */
   .customer.login #recover {
     text-align: left;
@@ -305,7 +329,17 @@
         if (hash === '#recover') {
           if (recover) {
             recover.style.display = 'block';
-            if (recover.nextElementSibling) recover.nextElementSibling.style.display = 'block';
+            var recoverDiv = recover.nextElementSibling;
+            if (recoverDiv) {
+              // Show recover form using CSS classes/attributes
+              recoverDiv.style.position = 'static';
+              recoverDiv.style.left = 'auto';
+              recoverDiv.style.width = 'auto';
+              recoverDiv.style.height = 'auto';
+              recoverDiv.style.overflow = 'visible';
+              recoverDiv.style.opacity = '1';
+              recoverDiv.style.pointerEvents = 'auto';
+            }
           }
           if (login) {
             login.style.display = 'none';
@@ -318,7 +352,17 @@
           }
           if (recover) {
             recover.style.display = 'none';
-            if (recover.nextElementSibling) recover.nextElementSibling.style.display = 'none';
+            var recoverDiv = recover.nextElementSibling;
+            if (recoverDiv) {
+              // Hide recover form visually but keep in DOM for hCaptcha
+              recoverDiv.style.position = 'absolute';
+              recoverDiv.style.left = '-9999px';
+              recoverDiv.style.width = '1px';
+              recoverDiv.style.height = '1px';
+              recoverDiv.style.overflow = 'hidden';
+              recoverDiv.style.opacity = '0';
+              recoverDiv.style.pointerEvents = 'none';
+            }
           }
         }
         
@@ -392,5 +436,36 @@
     };
     
     log('Script loaded. Use enableLoginToggleDebug() for verbose logging.');
+  })();
+  
+  /**
+   * Ensure recover form is visible on page load so hCaptcha can initialize
+   * This prevents "Captcha failed" errors when submitting the form.
+   * The form is kept in DOM but visually hidden until needed.
+   */
+  (function() {
+    function initCaptcha() {
+      var recoverDiv = document.querySelector('.customer.login #recover + div');
+      if (!recoverDiv) return;
+      
+      // Make form visible (but off-screen) so hCaptcha can initialize
+      // This ensures the captcha widget loads even though form appears hidden
+      recoverDiv.style.position = 'absolute';
+      recoverDiv.style.left = '-9999px';
+      recoverDiv.style.width = '1px';
+      recoverDiv.style.height = '1px';
+      recoverDiv.style.overflow = 'hidden';
+      recoverDiv.style.opacity = '0';
+      recoverDiv.style.pointerEvents = 'none';
+      recoverDiv.style.display = 'block'; // Override customer.css display:none
+      
+      console.log('[Login Toggle] Recover form prepared for hCaptcha initialization');
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCaptcha);
+    } else {
+      initCaptcha();
+    }
   })();
 </script>
