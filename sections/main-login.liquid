@@ -199,17 +199,9 @@
     const recoverLink = document.getElementById('RecoverPasswordLink');
     if (recoverLink) {
       recoverLink.addEventListener('click', function(e) {
-        // Only prevent default if we're handling it ourselves
         if (window.location.hash !== '#recover') {
           e.preventDefault();
           window.location.hash = '#recover';
-          // Scroll to the recover section
-          const recoverElement = document.getElementById('recover');
-          if (recoverElement) {
-            setTimeout(function() {
-              recoverElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-          }
         }
       });
     }
