@@ -30,14 +30,22 @@
   .customer.login #login:target ~ #recover + div {
     display: none;
   }
+
+  /* Left-align recover password section heading and subtext */
+  .customer.login #recover {
+    text-align: left;
+  }
+  .customer.login #recover + div > p {
+    text-align: left;
+  }
 {%- endstyle -%}
 
 <div class="customer login section-{{ section.id }}-padding">
-  <h2 id="recover" tabindex="-1" style="text-align: left;">
+  <h2 id="recover" tabindex="-1">
     {{ 'customer.recover_password.title' | t }}
   </h2>
   <div>
-    <p style="text-align: left;">
+    <p>
       {{ 'customer.recover_password.subtext' | t }}
     </p>
 
