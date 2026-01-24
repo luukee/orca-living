@@ -132,7 +132,7 @@
           </label>
         </div>
 
-        <a href="#recover" id="RecoverPasswordLink">
+        <a href="#recover">
           {{ 'customer.login_page.forgot_password' | t }}
         </a>
       {%- endif -%}
@@ -192,18 +192,3 @@
   ]
 }
 {% endschema %}
-
-<script>
-  // Ensure the "Forgot your password" link works even if JavaScript errors prevent default behavior
-  document.addEventListener('DOMContentLoaded', function() {
-    const recoverLink = document.getElementById('RecoverPasswordLink');
-    if (recoverLink) {
-      recoverLink.addEventListener('click', function(e) {
-        if (window.location.hash !== '#recover') {
-          e.preventDefault();
-          window.location.hash = '#recover';
-        }
-      });
-    }
-  });
-</script>
