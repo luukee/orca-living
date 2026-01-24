@@ -223,43 +223,103 @@
   /**
    * Prevents default scroll behavior when clicking "Forgot your password" or "Cancel" links.
    * Updates the URL hash without scrolling, allowing CSS :target to toggle form visibility.
+   * 
+   * Debug mode: Set window.DEBUG_LOGIN_TOGGLE = true in console to enable logging
    */
   (function() {
+    var DEBUG = window.DEBUG_LOGIN_TOGGLE || false;
+    
+    function log() {
+      if (DEBUG) {
+        console.log('[Login Toggle]', Array.from(arguments).join(' '));
+      }
+    }
+    
     function initLoginToggle() {
       var container = document.querySelector('.customer.login');
-      if (!container) return;
+      if (!container) {
+        log('ERROR: Container .customer.login not found');
+        return;
+      }
       
-      // Use event delegation to handle clicks on recover/login anchor links
+      log('Initializing login toggle handler');
+      
+      // Use capture phase to run before other handlers (like anchorScrolls in global.js)
+      // This ensures our handler runs first and can stop propagation if needed
       container.addEventListener('click', function(e) {
         // Check if the clicked element or its parent is a recover/login link
         var link = e.target.closest('a[href="#recover"], a[href="#login"]');
         if (!link) return;
         
+        log('Link clicked:', link.getAttribute('href'));
+        
+        // Stop propagation to prevent other handlers (like anchorScrolls) from interfering
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        
         // Prevent default anchor behavior (which would scroll to the target)
         e.preventDefault();
         
         var hash = link.getAttribute('href');
+        var currentHash = window.location.hash;
+        
+        log('Current hash:', currentHash, 'Target hash:', hash);
+        
+        // If already on the target hash, don't do anything
+        if (currentHash === hash) {
+          log('Already on target hash, skipping');
+          return;
+        }
         
         // Save current scroll position
         var scrollY = window.scrollY;
+        log('Saved scroll position:', scrollY);
         
         // Update URL hash - this ensures :target pseudo-class updates correctly
         window.location.hash = hash;
         
+        // Verify hash was set
+        setTimeout(function() {
+          var newHash = window.location.hash;
+          log('Hash after update:', newHash);
+          
+          // Check if forms are visible
+          var recover = document.getElementById('recover');
+          var login = document.getElementById('login');
+          var recoverVisible = recover ? window.getComputedStyle(recover).display !== 'none' : false;
+          var loginVisible = login ? window.getComputedStyle(login).display !== 'none' : false;
+          log('Recover visible:', recoverVisible, 'Login visible:', loginVisible);
+          
+          if (newHash !== hash) {
+            console.warn('[Login Toggle] Hash mismatch! Expected:', hash, 'Got:', newHash);
+          }
+        }, 50);
+        
         // Immediately restore scroll position to prevent any scrolling
-        // Use requestAnimationFrame to ensure it happens after the browser processes the hash change
+        // Use multiple frames to ensure it sticks
         requestAnimationFrame(function() {
           window.scrollTo(0, scrollY);
+          requestAnimationFrame(function() {
+            window.scrollTo(0, scrollY);
+          });
         });
-      });
+      }, true); // Use capture phase (true) to run before other handlers
     }
     
     // Wait for DOM to be ready before initializing
     if (document.readyState === 'loading') {
+      log('Waiting for DOMContentLoaded');
       document.addEventListener('DOMContentLoaded', initLoginToggle);
     } else {
       // DOM is already ready
+      log('DOM already ready, initializing immediately');
       initLoginToggle();
     }
+    
+    // Expose debug function
+    window.enableLoginToggleDebug = function() {
+      window.DEBUG_LOGIN_TOGGLE = true;
+      console.log('[Login Toggle] Debug mode enabled. Reload page to see logs.');
+    };
   })();
 </script>
