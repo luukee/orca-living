@@ -230,28 +230,43 @@
     var DEBUG = window.DEBUG_LOGIN_TOGGLE || false;
     
     function log() {
+      var args = Array.from(arguments);
+      // Always log important events, use DEBUG for verbose logging
+      console.log('[Login Toggle]', args.join(' '));
+    }
+    
+    function debugLog() {
       if (DEBUG) {
-        console.log('[Login Toggle]', Array.from(arguments).join(' '));
+        console.log('[Login Toggle DEBUG]', Array.from(arguments).join(' '));
       }
     }
+    
+    // Log that script is loading
+    console.log('[Login Toggle] Script loading...');
     
     function initLoginToggle() {
       var container = document.querySelector('.customer.login');
       if (!container) {
-        log('ERROR: Container .customer.login not found');
+        console.error('[Login Toggle] ERROR: Container .customer.login not found');
         return;
       }
       
-      log('Initializing login toggle handler');
+      log('Handler initialized on container');
+      debugLog('Container found:', container);
       
       // Use capture phase to run before other handlers (like anchorScrolls in global.js)
       // This ensures our handler runs first and can stop propagation if needed
       container.addEventListener('click', function(e) {
+        debugLog('Click detected on:', e.target);
+        
         // Check if the clicked element or its parent is a recover/login link
         var link = e.target.closest('a[href="#recover"], a[href="#login"]');
-        if (!link) return;
+        if (!link) {
+          debugLog('Not a recover/login link, ignoring');
+          return;
+        }
         
-        log('Link clicked:', link.getAttribute('href'));
+        log('✓ Link clicked:', link.getAttribute('href'));
         
         // Stop propagation to prevent other handlers (like anchorScrolls) from interfering
         e.stopPropagation();
@@ -263,7 +278,7 @@
         var hash = link.getAttribute('href');
         var currentHash = window.location.hash;
         
-        log('Current hash:', currentHash, 'Target hash:', hash);
+        log('Current hash:', currentHash || '(empty)', '→ Target:', hash);
         
         // If already on the target hash, don't do anything
         if (currentHash === hash) {
@@ -271,45 +286,99 @@
           return;
         }
         
-        // Save current scroll position
-        var scrollY = window.scrollY;
+        // Save current scroll position BEFORE any hash changes
+        var scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
         log('Saved scroll position:', scrollY);
         
-        // Update URL hash - this ensures :target pseudo-class updates correctly
-        window.location.hash = hash;
+        // Get elements before making changes
+        var recover = document.getElementById('recover');
+        var login = document.getElementById('login');
         
-        // Verify hash was set
-        setTimeout(function() {
-          var newHash = window.location.hash;
-          log('Hash after update:', newHash);
-          
-          // Check if forms are visible
-          var recover = document.getElementById('recover');
-          var login = document.getElementById('login');
-          var recoverVisible = recover ? window.getComputedStyle(recover).display !== 'none' : false;
-          var loginVisible = login ? window.getComputedStyle(login).display !== 'none' : false;
-          log('Recover visible:', recoverVisible, 'Login visible:', loginVisible);
-          
-          if (newHash !== hash) {
-            console.warn('[Login Toggle] Hash mismatch! Expected:', hash, 'Got:', newHash);
+        // Use history.replaceState to update hash without triggering scroll
+        // This prevents the browser's automatic scroll-to-element behavior
+        var newUrl = window.location.pathname + window.location.search + hash;
+        history.replaceState(null, '', newUrl);
+        log('Hash updated via replaceState to:', hash);
+        
+        // Manually toggle visibility to ensure forms show/hide correctly
+        // This works around :target not always updating with replaceState
+        if (hash === '#recover') {
+          if (recover) {
+            recover.style.display = 'block';
+            if (recover.nextElementSibling) recover.nextElementSibling.style.display = 'block';
           }
-        }, 50);
+          if (login) {
+            login.style.display = 'none';
+            if (login.nextElementSibling) login.nextElementSibling.style.display = 'none';
+          }
+        } else if (hash === '#login') {
+          if (login) {
+            login.style.display = 'block';
+            if (login.nextElementSibling) login.nextElementSibling.style.display = 'block';
+          }
+          if (recover) {
+            recover.style.display = 'none';
+            if (recover.nextElementSibling) recover.nextElementSibling.style.display = 'none';
+          }
+        }
         
-        // Immediately restore scroll position to prevent any scrolling
-        // Use multiple frames to ensure it sticks
+        // Force a reflow to ensure CSS updates
+        if (recover) recover.offsetHeight; // Force reflow
+        if (login) login.offsetHeight; // Force reflow
+        
+        // Aggressively prevent scrolling - run immediately and multiple times
+        // This catches any scroll that might happen despite replaceState
+        window.scrollTo(0, scrollY);
+        setTimeout(function() {
+          window.scrollTo(0, scrollY);
+        }, 0);
         requestAnimationFrame(function() {
           window.scrollTo(0, scrollY);
           requestAnimationFrame(function() {
             window.scrollTo(0, scrollY);
           });
         });
+        
+        // Verify hash was set and check form visibility
+        setTimeout(function() {
+          var newHash = window.location.hash;
+          
+          // Check if forms are visible
+          var recoverVisible = recover ? window.getComputedStyle(recover).display !== 'none' : false;
+          var loginVisible = login ? window.getComputedStyle(login).display !== 'none' : false;
+          
+          log('Result - Hash:', newHash, '| Recover visible:', recoverVisible, '| Login visible:', loginVisible);
+          
+          if (newHash !== hash) {
+            console.warn('[Login Toggle] ⚠️ Hash mismatch! Expected:', hash, 'Got:', newHash);
+          }
+          
+          if (hash === '#recover' && !recoverVisible) {
+            console.warn('[Login Toggle] ⚠️ Recover form should be visible but is not!');
+          }
+          if (hash === '#login' && !loginVisible) {
+            console.warn('[Login Toggle] ⚠️ Login form should be visible but is not!');
+          }
+          
+          // Final scroll position check
+          var finalScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+          if (Math.abs(finalScroll - scrollY) > 1) {
+            console.warn('[Login Toggle] ⚠️ Scroll position changed! Was:', scrollY, 'Now:', finalScroll);
+            window.scrollTo(0, scrollY);
+          }
+        }, 50);
       }, true); // Use capture phase (true) to run before other handlers
+      
+      log('Event listener attached (capture phase)');
     }
     
     // Wait for DOM to be ready before initializing
     if (document.readyState === 'loading') {
-      log('Waiting for DOMContentLoaded');
-      document.addEventListener('DOMContentLoaded', initLoginToggle);
+      log('Waiting for DOMContentLoaded...');
+      document.addEventListener('DOMContentLoaded', function() {
+        log('DOMContentLoaded fired, initializing...');
+        initLoginToggle();
+      });
     } else {
       // DOM is already ready
       log('DOM already ready, initializing immediately');
@@ -319,7 +388,9 @@
     // Expose debug function
     window.enableLoginToggleDebug = function() {
       window.DEBUG_LOGIN_TOGGLE = true;
-      console.log('[Login Toggle] Debug mode enabled. Reload page to see logs.');
+      console.log('[Login Toggle] ✅ Debug mode enabled. Reload page to see verbose logs.');
     };
+    
+    log('Script loaded. Use enableLoginToggleDebug() for verbose logging.');
   })();
 </script>
