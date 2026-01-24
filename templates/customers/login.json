@@ -11,12 +11,11 @@
   "sections": {
     "1c6f66c9-dd5e-4f82-8c46-8a0ec72431d9": {
       "type": "custom-liquid",
-      "disabled": true,
       "settings": {
-        "custom_liquid": "<h1 class=\"account-login page-title\">\n  Trade login\n</h1>",
+        "custom_liquid": "<h1 class=\"account-login page-title\">\n  Trade Login\n</h1>",
         "color_scheme": "background-1",
         "padding_top": 40,
-        "padding_bottom": 52
+        "padding_bottom": 20
       }
     },
     "rich_text_UNn7N6": {
@@ -33,6 +32,7 @@
       "block_order": [
         "heading_qaiqQH"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
         "desktop_content_position": "left",
@@ -48,7 +48,7 @@
     "main": {
       "type": "main-login",
       "settings": {
-        "padding_top": 28,
+        "padding_top": 0,
         "padding_bottom": 16
       }
     }
