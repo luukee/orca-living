@@ -18,6 +18,18 @@
   .customer.login #login {
     scroll-margin-top: 0;
   }
+
+  /* Ensure login form shows when #login is targeted */
+  .customer.login #login:target {
+    display: block;
+  }
+  .customer.login #login:target + div {
+    display: block;
+  }
+  .customer.login #login:target ~ #recover,
+  .customer.login #login:target ~ #recover + div {
+    display: none;
+  }
 {%- endstyle -%}
 
 <div class="customer login section-{{ section.id }}-padding">
