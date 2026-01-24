@@ -217,21 +217,41 @@
    * Updates the URL hash without scrolling, allowing CSS :target to toggle form visibility.
    */
   (function() {
-    // Find the login container to attach event delegation
-    var container = document.querySelector('.customer.login');
-    if (!container) return;
+    function initLoginToggle() {
+      var container = document.querySelector('.customer.login');
+      if (!container) return;
+      
+      // Use event delegation to handle clicks on recover/login anchor links
+      container.addEventListener('click', function(e) {
+        // Check if the clicked element or its parent is a recover/login link
+        var link = e.target.closest('a[href="#recover"], a[href="#login"]');
+        if (!link) return;
+        
+        // Prevent default anchor behavior (which would scroll to the target)
+        e.preventDefault();
+        
+        var hash = link.getAttribute('href');
+        
+        // Save current scroll position
+        var scrollY = window.scrollY;
+        
+        // Update URL hash - this ensures :target pseudo-class updates correctly
+        window.location.hash = hash;
+        
+        // Immediately restore scroll position to prevent any scrolling
+        // Use requestAnimationFrame to ensure it happens after the browser processes the hash change
+        requestAnimationFrame(function() {
+          window.scrollTo(0, scrollY);
+        });
+      });
+    }
     
-    // Use event delegation to handle clicks on recover/login anchor links
-    container.addEventListener('click', function(e) {
-      // Check if the clicked element or its parent is a recover/login link
-      var link = e.target.closest('a[href="#recover"], a[href="#login"]');
-      if (!link) return;
-      
-      // Prevent default anchor behavior (which would scroll to the target)
-      e.preventDefault();
-      
-      // Update URL hash without triggering scroll, allowing CSS :target to work
-      history.replaceState(null, null, link.getAttribute('href'));
-    });
+    // Wait for DOM to be ready before initializing
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLoginToggle);
+    } else {
+      // DOM is already ready
+      initLoginToggle();
+    }
   })();
 </script>
