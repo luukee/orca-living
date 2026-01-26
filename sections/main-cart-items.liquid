@@ -128,12 +128,54 @@
                     -%}
                       <dl>
                         {%- if item.product.has_only_default_variant == false -%}
+                          {%- comment -%} Check if product is a paver or tile (excluding samples) {%- endcomment -%}
+                          {% liquid
+                            assign is_paver_or_tile = false
+                            assign is_sample = false
+                            
+                            # Check if this is a sample
+                            if item.variant.title contains 'Sample'
+                              assign is_sample = true
+                            else
+                              for option in item.options_with_values
+                                if option.value == 'Sample'
+                                  assign is_sample = true
+                                  break
+                                endif
+                              endfor
+                            endif
+                            
+                            # Check if product is a paver or tile (only if not a sample)
+                            unless is_sample
+                              if item.product.type == 'Paver'
+                                assign is_paver_or_tile = true
+                              else
+                                for size_option in item.options_with_values
+                                  if size_option.name == 'Size'
+                                    if size_option.value == 'Paver' or size_option.value == 'Tile'
+                                      assign is_paver_or_tile = true
+                                      break
+                                    endif
+                                  endif
+                                endfor
+                              endif
+                            endunless
+                          %}
                           {%- for option in item.options_with_values -%}
                             <div class="product-option">
                               <dt>{{ option.name }}:</dt>
                               <dd>{{ option.value }}</dd>
                             </div>
                           {%- endfor -%}
+                          {%- comment -%} Add overage suggestion for paver and tile products only (excluding samples) {%- endcomment -%}
+                          {%- if is_paver_or_tile -%}
+                            {%- assign overage_suggestion = item.product.metafields.custom.cart_paver_tile_overage -%}
+                            {%- if overage_suggestion != blank -%}
+                              <div class="product-option product-option_overage-suggestion" style="font-style: italic; margin-top: 4px;">
+                                <dd><em>{{ overage_suggestion }}</em></dd>
+                              </div>
+                            {%- endif -%}
+                          {%- endif -%}
                         {%- endif -%}
                         {% comment %} Custom metafield cart notes {% endcomment %}
                         {% if section.settings.product_note_enable %}
@@ -141,22 +183,30 @@
                             # Assign metafield values
                             assign product_cart_note_meta = item.product.metafields.custom.cart_product_note
                             assign product_sample_cart_note_meta = item.product.metafields.custom.cart_sample_product_note
+                            
+                            # Check if any option is 'Sample'
+                            assign has_sample_option = false
+                            for option in item.options_with_values
+                              if option.value == 'Sample'
+                                assign has_sample_option = true
+                                break
+                              endif
+                            endfor
                           %}
-                        
-                          {%- for option in item.options_with_values -%}
-                            <div class="product-option">
-                              {% if option.value == 'Sample' %}
-                                <dd style="font-style:italic">
-                                  {{ product_sample_cart_note_meta }}
-                                </dd>
-                              {% else %}
-                                <dd style="font-style:italic">
-                                  {{ product_cart_note_meta }}
-                                </dd>
-                              {% endif %}
+                          {% comment %} If product is a sample, show the sample cart note metafield {% endcomment %}
+                          {%- if has_sample_option and product_sample_cart_note_meta != blank -%}
+                            <div class="product-option product-option_sample-note">
+                              <dd style="font-style:italic">
+                                {{ product_sample_cart_note_meta }}
+                              </dd>
                             </div>
-                            {% break %}
-                          {%- endfor -%}
+                          {%- elsif has_sample_option == false and product_cart_note_meta != blank -%}
+                            <div class="product-option product-option_sample-note">
+                              <dd style="font-style:italic">
+                                {{ product_cart_note_meta }}
+                              </dd>
+                            </div>
+                          {%- endif -%}
                         {% endif %}
                         {%- for property in item.properties -%}
                           {%- assign property_first_char = property.first | slice: 0 -%}
