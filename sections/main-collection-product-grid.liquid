@@ -361,12 +361,13 @@
             %}
 
             {%- comment -%}
-            NEW: capture active material and use_case from Shopify filters
-            Supports variant option (filter.v.option.material) and variant metafield (filter.v.m.custom.use_case)
-            Try collection.filters first, then fallback to URL parameters for when filtering is disabled
+            Capture active material, use_case, and color from Shopify filters
+            Supports variant options (filter.v.option.material, filter.v.option.color) and metafields
+            Try collection.filters first, then fallback to URL query string
             {%- endcomment -%}
             {%- assign active_material = '' -%}
             {%- assign active_use_case = '' -%}
+            {%- assign active_color = '' -%}
             
             {%- comment -%} Try to get filters from collection.filters first {%- endcomment -%}
             {%- for f in collection.filters -%}
@@ -377,8 +378,13 @@
                     {%- assign active_material = v.label | downcase | strip -%}
                   {%- endif -%}
                 {%- endfor -%}
+              {%- elsif pname contains 'filter.v.option.color' -%}
+                {%- for v in f.values -%}
+                  {%- if v.active -%}
+                    {%- assign active_color = v.label | downcase | strip -%}
+                  {%- endif -%}
+                {%- endfor -%}
               {%- elsif pname contains 'filter.v.m.custom.use_case' or pname contains 'filter.p.m.custom.use_case' -%}
-                {%- comment -%} Handle both variant and product use_case metafields {%- endcomment -%}
                 {%- for v in f.values -%}
                   {%- if v.active -%}
                     {%- assign active_use_case = v.label | downcase | strip -%}
@@ -387,17 +393,27 @@
               {%- endif -%}
             {%- endfor -%}
             
-            {%- comment -%} Since filters aren't marked as active, manually parse from URL {%- endcomment -%}
-            {%- assign full_url = request.path -%}
-            {%- if request.page_type == 'collection' -%}
-              {%- assign full_url = collection.url | split: '?' | last -%}
-              {%- if full_url contains 'filter.p.m.custom.use_case=' -%}
-                {%- assign url_parts = full_url | split: 'filter.p.m.custom.use_case=' -%}
-                {%- if url_parts.size > 1 -%}
-                  {%- assign use_case_and_rest = url_parts[1] | split: '&' -%}
-                  {%- assign active_use_case = use_case_and_rest[0] | url_decode | downcase | strip -%}
+            {%- comment -%} Fallback: parse filters from URL query string when not marked active {%- endcomment -%}
+            {%- if request.query_string contains 'filter.' -%}
+              {%- assign query_parts = request.query_string | split: '&' -%}
+              {%- for part in query_parts -%}
+                {%- if part contains 'filter.v.option.color=' -%}
+                  {%- assign kv = part | split: '=' -%}
+                  {%- if kv.size == 2 and active_color == '' -%}
+                    {%- assign active_color = kv[1] | url_decode | downcase | strip -%}
+                  {%- endif -%}
+                {%- elsif part contains 'filter.v.option.material=' and active_material == '' -%}
+                  {%- assign kv = part | split: '=' -%}
+                  {%- if kv.size == 2 -%}
+                    {%- assign active_material = kv[1] | url_decode | downcase | strip -%}
+                  {%- endif -%}
+                {%- elsif part contains 'filter.p.m.custom.use_case=' and active_use_case == '' -%}
+                  {%- assign kv = part | split: '=' -%}
+                  {%- if kv.size == 2 -%}
+                    {%- assign active_use_case = kv[1] | url_decode | downcase | strip -%}
+                  {%- endif -%}
                 {%- endif -%}
-              {%- endif -%}
+              {%- endfor -%}
             {%- endif -%}
             
             {%- comment -%} Detect if we're filtering by Tiles (Size = Tile) {%- endcomment -%}
@@ -795,6 +811,25 @@
                                 endunless
                               endif
                               
+                              ## Color filter - only show variants matching selected color
+                              if active_color != ''
+                                assign variant_color = ''
+                                assign color_match = false
+                                for option in product.options
+                                  if option == 'Color'
+                                    assign option_index = forloop.index0
+                                    assign variant_color = p.options[option_index] | downcase | strip
+                                    if variant_color == active_color
+                                      assign color_match = true
+                                    endif
+                                    break
+                                  endif
+                                endfor
+                                unless color_match
+                                  continue
+                                endunless
+                              endif
+                              
                               ## Tiles filter - Filter by Size = "Tile"
                               # If we're on the Tiles page, only show variants where Size = "Tile"
                               if filter_by_tiles
@@ -847,9 +882,40 @@
                                 assign prod_title = prod_title | append: ' in ' | append: option_variant
                               endif
                             %}
+                            {%- comment -%} Get material and color for data attributes {%- endcomment -%}
+                            {%- liquid
+                              assign variant_material_value = ''
+                              assign variant_color_value = ''
+                              for option in product.options
+                                if option == 'Material'
+                                  assign opt_idx = forloop.index0
+                                  assign variant_material_value = p.options[opt_idx]
+                                elsif option == 'Color'
+                                  assign opt_idx = forloop.index0
+                                  assign variant_color_value = p.options[opt_idx]
+                                endif
+                              endfor
+                              unless variant_material_value != ''
+                                if p.metafields.custom.material != blank
+                                  if p.metafields.custom.material.value.first
+                                    assign variant_material_value = p.metafields.custom.material.value.first
+                                  else
+                                    assign variant_material_value = p.metafields.custom.material.value
+                                  endif
+                                elsif product.metafields.custom.material != blank
+                                  if product.metafields.custom.material.value.first
+                                    assign variant_material_value = product.metafields.custom.material.value.first
+                                  else
+                                    assign variant_material_value = product.metafields.custom.material.value
+                                  endif
+                                endif
+                              endunless
+                            -%}
                             <li class='grid__item grid__item-COLLECTION-by-variant' 
                             data-size='{{ p.option1 | escape }}'
                             data-use-case='{{ p.metafields.custom.use_case | default: product.metafields.custom.use_case | escape }}'
+                            {% if variant_material_value != blank %}data-material='{{ variant_material_value | downcase | escape }}'{% endif %}
+                            {% if variant_color_value != blank %}data-color='{{ variant_color_value | downcase | escape }}'{% endif %}
                             {% if p.metafields.custom.group != blank %}data-group='{{ p.metafields.custom.group }}'{% endif %}>
                               <!-- COLLECTION by variant card-product-nine15 -->
                               {% render 'card-product-nine15',
@@ -1021,6 +1087,30 @@
                           endunless
                         endif
                         
+                        # Check Color filter
+                        if active_color != '' and should_display_product
+                          assign has_matching_color = false
+                          for variant in product.variants
+                            for option in product.options
+                              if option == 'Color'
+                                assign option_index = forloop.index0
+                                assign variant_color_val = variant.options[option_index] | downcase | strip
+                                if variant_color_val == active_color
+                                  assign has_matching_color = true
+                                  break
+                                endif
+                                break
+                              endif
+                            endfor
+                            if has_matching_color
+                              break
+                            endif
+                          endfor
+                          unless has_matching_color
+                            assign should_display_product = false
+                          endunless
+                        endif
+                        
                         # Check Tiles filter (Size = "Tile")
                         if filter_by_tiles and should_display_product
                           assign has_tile_variant = false
@@ -1098,27 +1188,137 @@
 </div>
 
 <script>
+  /**
+   * Update filter counts to reflect displayed variants instead of products
+   * Since we display products by variant, the product count is misleading
+   */
+  function updateFilterCountsToVariants() {
+    // Get all displayed grid items (these are variants)
+    const displayedItems = Array.from(document.querySelectorAll('#product_grid .grid__item:not([style*="display: none"])'));
+    const variantCount = displayedItems.length;
+    
+    if (variantCount === 0) return;
+    
+    // Count variants per filter value using data attributes
+    const colorCounts = {};
+    displayedItems.forEach((item) => {
+      const color = (item.getAttribute('data-color') || '').toLowerCase().trim();
+      if (color) {
+        colorCounts[color] = (colorCounts[color] || 0) + 1;
+      }
+    });
+    
+    // Update Color filter counts - update ALL color filter options, not just active ones
+    const colorFilterInputs = document.querySelectorAll('#FacetFiltersForm input[type="checkbox"][name*="filter.v.option.color"], #FacetFiltersFormMobile input[type="checkbox"][name*="filter.v.option.color"]');
+    
+    colorFilterInputs.forEach((input) => {
+      const checkbox = input.closest('.facet-checkbox');
+      const labelSpan = checkbox?.querySelector('span[aria-hidden="true"]');
+      if (!labelSpan) return;
+      
+      const text = labelSpan.textContent || '';
+      const match = text.match(/^(.+?)\s*\((\d+)\)$/);
+      if (match) {
+        const filterValue = match[1].trim();
+        const filterValueLower = filterValue.toLowerCase();
+        
+        // Count variants matching this color from displayed items
+        const matchingCount = colorCounts[filterValueLower] || 0;
+        
+        // Update the count:
+        // - If we have matching variants in the current view, show that count
+        // - If this filter is active, show the total displayed count (all should match)
+        // - Otherwise, keep the original count if no matches found (may be on different page)
+        if (input.checked) {
+          // Active filter: show total displayed count (all should be this color)
+          labelSpan.textContent = `${filterValue} (${variantCount})`;
+        } else if (matchingCount > 0) {
+          // Not active but we have matches in current view: show the count
+          labelSpan.textContent = `${filterValue} (${matchingCount})`;
+        }
+        // Otherwise keep original count (may be on different page or not loaded yet)
+      }
+    });
+    
+    // For other active filters (Material, Use case, etc.), show total displayed variant count
+    const otherActiveFilterInputs = document.querySelectorAll('#FacetFiltersForm input[type="checkbox"]:checked:not([name*="filter.v.option.color"]), #FacetFiltersFormMobile input[type="checkbox"]:checked:not([name*="filter.v.option.color"])');
+    
+    otherActiveFilterInputs.forEach((input) => {
+      const checkbox = input.closest('.facet-checkbox');
+      const labelSpan = checkbox?.querySelector('span[aria-hidden="true"]');
+      if (!labelSpan) return;
+      
+      const text = labelSpan.textContent || '';
+      const match = text.match(/^(.+?)\s*\((\d+)\)$/);
+      if (match) {
+        const filterName = match[1].trim();
+        // Update active filter to show actual displayed variant count
+        labelSpan.textContent = `${filterName} (${variantCount})`;
+      }
+    });
+    
+    // Update the product count display at the top to show "variants" instead of "products"
+    const productCountElements = document.querySelectorAll('#ProductCount, #ProductCountDesktop');
+    productCountElements.forEach((el) => {
+      if (el && el.textContent) {
+        const text = el.textContent;
+        // Match patterns like "3 of 9 products" or "9 products"
+        const updatedText = text.replace(/(\d+)\s+(of\s+\d+\s+)?products?/gi, (match) => {
+          // If it's "X of Y products", show "X of Y variants"
+          if (match.includes('of')) {
+            return match.replace(/products?/i, 'variants');
+          }
+          // If it's just "X products", show "X variants"
+          return match.replace(/products?/i, 'variants');
+        });
+        if (updatedText !== text) {
+          el.textContent = updatedText;
+        }
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
     const activeUseCase = params.get('filter.p.m.custom.use_case')?.toLowerCase() || '';
     
-    if (!activeUseCase) return;
+    if (activeUseCase) {
+      const disallowedByUseCase = {
+        'driveways': ['tile'],
+        'permeable sand set': ['tile'],
+      };
 
-    const disallowedByUseCase = {
-      'driveways': ['tile'],
-      'permeable sand set': ['tile'],
-    };
-
-    const disallowedSizes = disallowedByUseCase[activeUseCase];
-    if (!disallowedSizes) return;
-
-    const cards = document.querySelectorAll('#product_grid .grid__item');
-    cards.forEach((card) => {
-      const cardSize = card.getAttribute('data-size')?.toLowerCase() || '';
-      if (disallowedSizes.includes(cardSize)) {
-        card.style.display = 'none';
+      const disallowedSizes = disallowedByUseCase[activeUseCase];
+      if (disallowedSizes) {
+        const cards = document.querySelectorAll('#product_grid .grid__item');
+        cards.forEach((card) => {
+          const cardSize = card.getAttribute('data-size')?.toLowerCase() || '';
+          if (disallowedSizes.includes(cardSize)) {
+            card.style.display = 'none';
+          }
+        });
       }
+    }
+    
+    // Update filter counts after initial load
+    updateFilterCountsToVariants();
+    
+    // Update filter counts after AJAX filter updates
+    // Listen for when facets.js updates the product grid
+    const observer = new MutationObserver(() => {
+      updateFilterCountsToVariants();
     });
+    
+    const productGrid = document.getElementById('product_grid');
+    if (productGrid) {
+      observer.observe(productGrid, { childList: true, subtree: true });
+    }
+    
+    // Also update when the grid container is updated (AJAX filter updates)
+    const gridContainer = document.getElementById('ProductGridContainer');
+    if (gridContainer) {
+      observer.observe(gridContainer, { childList: true, subtree: true });
+    }
   });
 </script>
 
