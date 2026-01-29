@@ -14,19 +14,18 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement_eEtHLx": {
+        "announcement_c6gPV8": {
           "type": "announcement",
           "settings": {
             "text": "Member of the trade? Join now",
+            "text_color": "#000000",
             "text_alignment": "center",
             "color_scheme": "accent-2",
             "link": "/account/register"
           }
         }
       },
-      "block_order": [
-        "announcement_eEtHLx"
-      ],
+      "block_order": ["announcement_c6gPV8"],
       "settings": {}
     },
     "header": {
@@ -53,8 +52,5 @@
       }
     }
   },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+  "order": ["announcement-bar", "header"]
 }
