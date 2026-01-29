@@ -13,7 +13,20 @@
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "disabled": true,
+      "blocks": {
+        "announcement_eEtHLx": {
+          "type": "announcement",
+          "settings": {
+            "text": "Member of the trade? Join now",
+            "text_alignment": "center",
+            "color_scheme": "accent-2",
+            "link": "/account/register"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_eEtHLx"
+      ],
       "settings": {}
     },
     "header": {
