@@ -22,7 +22,7 @@
       "settings": {
         "logo_position": "top-left",
         "menu": "2023-05-29-main-menu",
-        "menu_mobile": "main-menu-mobile-dev",
+        "menu_mobile": "main-menu-secondary-live",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "always",
         "show_line_separator": true,
