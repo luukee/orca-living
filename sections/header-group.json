@@ -30,7 +30,7 @@
         "show_header_account_icon": false,
         "show_header_search_icon": true,
         "show_secondary_navigation": true,
-        "secondary_menu_handle": "main-menu-secondary-dev",
+        "secondary_menu_handle": "main-menu-secondary-live",
         "secondary_menu_type_desktop": "mega",
         "sticky_secondary_navigation": "always",
         "mobile_logo_position": "center",
