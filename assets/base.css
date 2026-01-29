@@ -2261,7 +2261,7 @@ product-info .loading-overlay:not(.hidden) ~ *,
 .announcement-bar__message {
   padding: 1rem 0;
   margin: 0;
-  letter-spacing: 0.1rem;
+  letter-spacing: normal;
 }
 .section-header.shopify-section-group-header-group {
   z-index: 3;
