@@ -394,20 +394,20 @@ class QuantityInput extends HTMLElement {
     }
   }
 
+  /**
+   * Updates the Add to Cart button label to show total price (unit price × quantity).
+   * Uses the button's data-price (unit price in cents) and the quantity input value.
+   */
   updateAtcPrice() {
-    const value = parseInt(this.input.value)
-
-    if (this.atcButton) {
-      const atcButtonPrice = this.atcButton.querySelector(
-        '.price-item--regular'
-      )
-      var price = atcButtonPrice.getAttribute('data-price')
-      price = parseFloat(price) * value
-      price = (price / 100).toFixed(2)
-      atcButtonPrice.textContent = `$${price}`
-    }
-
-    //   console.log(value);
+    const value = parseInt(this.input.value, 10) || 0
+    if (!this.atcButton) return
+    const atcButtonPrice = this.atcButton.querySelector('.price-item--regular')
+    if (!atcButtonPrice) return
+    const unitCents = atcButtonPrice.getAttribute('data-price')
+    if (unitCents == null || unitCents === '') return
+    const totalCents = parseFloat(unitCents, 10) * value
+    const totalDollars = (totalCents / 100).toFixed(2)
+    atcButtonPrice.textContent = `$${totalDollars}`
   }
 
   onButtonClick(event) {
@@ -459,6 +459,8 @@ class QuantityInput extends HTMLElement {
         this.atcButton.setAttribute('disabled', 'disabled')
       }
     }
+    // Keep Add to Cart button label in sync with quantity (unit × qty) on load and after variant/quantity sync
+    this.updateAtcPrice()
   }
 }
 
