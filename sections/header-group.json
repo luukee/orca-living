@@ -21,13 +21,12 @@
             "text_color": "#000000",
             "text_alignment": "center",
             "color_scheme": "accent-2",
-            "link": "/account/register"
+            "link": "/account/register",
+            "hide_on_paths": "/blogs/landscapes"
           }
         }
       },
-      "block_order": [
-        "announcement_c6gPV8"
-      ],
+      "block_order": ["announcement_c6gPV8"],
       "settings": {}
     },
     "header": {
@@ -54,8 +53,5 @@
       }
     }
   },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+  "order": ["announcement-bar", "header"]
 }
