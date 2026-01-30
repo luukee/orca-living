@@ -1979,6 +1979,7 @@ variant-selects {
 .product fieldset.product-form__input input[type='radio']:disabled + label {
   color: rgba(var(--color-foreground), 0.5);
   text-decoration: line-through;
+  cursor: default;
 }
 
 /* Custom Button Styling */
