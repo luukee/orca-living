@@ -423,7 +423,7 @@ class QuantityInput extends HTMLElement {
     const max = Number.isNaN(parseInt(this.input.max))
       ? Number.MAX_VALUE
       : parseInt(this.input.max)
-      
+
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']")
       buttonMinus.classList.toggle('disabled', value <= min)
@@ -1234,7 +1234,7 @@ class VariantSelects extends HTMLElement {
       }
     }
   }
-  
+
   updateFormVisibility() {
     if (
       !this.currentVariant ||
@@ -1305,18 +1305,19 @@ class VariantSelects extends HTMLElement {
         .includes(false)
     })
   }
-  
+
   updateMedia() {
     if (!this.currentVariant) return
     if (!this.currentVariant.featured_media) return
-    
+
     const mediaGalleries = document.querySelectorAll(
       `[id^="MediaGallery-${this.dataset.section}"]`
     )
     mediaGalleries.forEach((mediaGallery) =>
       mediaGallery.setActiveMedia(
         `${this.dataset.section}-${this.currentVariant.featured_media.id}`,
-        true
+        true,
+        { skipScrollIntoView: true }
       )
     )
 
@@ -1428,7 +1429,7 @@ class VariantSelects extends HTMLElement {
           'data-variant-id',
           this.currentVariant.id
         )
-        
+
         // Update the content to show pickup availability for this variant
         this.updatePickupAvailabilityContent(this.currentVariant, locationName)
       } else {
@@ -1623,7 +1624,7 @@ class VariantSelects extends HTMLElement {
             sampleButton.disabled = sampleButtonUpdated.hasAttribute('disabled')
           }
         }
-        
+
         // Swap gallery, thumbnails, and modal content with server-rendered HTML for the selected variant
         const newGallery = html.getElementById(`Slider-Gallery-${sectionId}`)
         const destGallery = document.getElementById(
@@ -1658,7 +1659,7 @@ class VariantSelects extends HTMLElement {
         const quickShipTextSourceElement = html.querySelector(
           `[data-quick-ship-text="${sectionId}"]`
         )
-        
+
         if (quickShipTextElement && quickShipTextSourceElement) {
           const sourceState = quickShipTextSourceElement.getAttribute(
             'data-quick-ship-state'
@@ -1671,7 +1672,7 @@ class VariantSelects extends HTMLElement {
             sourceState
           )
         }
-        
+
         this.updateFormVisibility()
         // Refocus featured media after DOM swap
         this.updateMedia()
@@ -1793,16 +1794,16 @@ class VariantRadios extends VariantSelects {
         const checkedInput = Array.from(
           fieldset.querySelectorAll('input:not([disabled])')
         ).find((radio) => radio.checked)
-      if (!checkedInput) {
-        // If no input is checked, find the first enabled input and check it
+        if (!checkedInput) {
+          // If no input is checked, find the first enabled input and check it
           const firstEnabledInput = fieldset.querySelector(
             'input:not([disabled])'
           )
-        if (firstEnabledInput) {
+          if (firstEnabledInput) {
             firstEnabledInput.checked = true
             return firstEnabledInput.value
+          }
         }
-      }
         return checkedInput ? checkedInput.value : null
       })
       .filter(Boolean) // Remove any null values
@@ -1829,15 +1830,21 @@ class ProductRecommendations extends HTMLElement {
 
   connectedCallback() {
     // Only listen for variant changes if this is the related-products section (not complementary-products)
-    if (this.classList.contains('related-products') && !this.classList.contains('complementary-products')) {
-      this.variantChangeUnsubscriber = subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
-        // Only update if variant changed for the same product
-        if (event.data.variant && this.dataset.productId) {
-          // Prevent initial load from interfering
-          this.hasLoaded = true
-          this.updateRecommendations(event.data.variant.id)
+    if (
+      this.classList.contains('related-products') &&
+      !this.classList.contains('complementary-products')
+    ) {
+      this.variantChangeUnsubscriber = subscribe(
+        PUB_SUB_EVENTS.variantChange,
+        (event) => {
+          // Only update if variant changed for the same product
+          if (event.data.variant && this.dataset.productId) {
+            // Prevent initial load from interfering
+            this.hasLoaded = true
+            this.updateRecommendations(event.data.variant.id)
+          }
         }
-      })
+      )
     }
 
     const handleIntersection = (entries, observer) => {
@@ -1869,7 +1876,7 @@ class ProductRecommendations extends HTMLElement {
     // Allow force parameter to bypass hasLoaded and isUpdating checks
     // This is used when explicitly calling from updateRecommendations()
     if (!force && (this.hasLoaded || this.isUpdating)) return
-    
+
     this.hasLoaded = true
 
     fetch(this.dataset.url)
@@ -1898,18 +1905,18 @@ class ProductRecommendations extends HTMLElement {
     // This is similar to how renderProductInfo() works in VariantSelects
     const productUrl = window.location.pathname
     const sectionId = this.dataset.sectionId
-    
+
     // IMMEDIATELY clear all content FIRST to prevent old content from showing
     // Do this before any async operations to ensure clean state
     while (this.firstChild) {
       this.removeChild(this.firstChild)
     }
     this.classList.remove('product-recommendations--loaded')
-    
+
     // Mark as updating to prevent IntersectionObserver and other loads from interfering
     this.isUpdating = true
     this.hasLoaded = true // Prevent initial load from running
-    
+
     // Fetch the product page with the variant parameter and section_id
     // This will render the section with the correct variant context
     fetch(`${productUrl}?variant=${variantId}&section_id=${sectionId}`)
@@ -1920,55 +1927,64 @@ class ProductRecommendations extends HTMLElement {
         // Section ID format is like "shopify-section-template--18436317347958__related-products"
         const section = html.getElementById(`shopify-section-${sectionId}`)
         if (section) {
-          const recommendations = section.querySelector('product-recommendations')
+          const recommendations = section.querySelector(
+            'product-recommendations'
+          )
           if (recommendations && recommendations.innerHTML.trim().length) {
             // Check the fetched response, not the current DOM
-            const fetchedHasContent = recommendations.querySelector('.grid__item') !== null
-            const fetchedHasLoadingState = recommendations.querySelector('.related-products__loading') !== null
-            
+            const fetchedHasContent =
+              recommendations.querySelector('.grid__item') !== null
+            const fetchedHasLoadingState =
+              recommendations.querySelector('.related-products__loading') !==
+              null
+
             // Always clear current content first to prevent old content from persisting
             // Remove all children to ensure complete cleanup
             while (this.firstChild) {
               this.removeChild(this.firstChild)
             }
             this.classList.remove('product-recommendations--loaded')
-            
+
             // If we have actual content (manual items or automatic recommendations), use it
             if (fetchedHasContent) {
               this.innerHTML = recommendations.innerHTML
               this.classList.add('product-recommendations--loaded')
               this.isUpdating = false
-            } 
+            }
             // If we only have a loading state, it means we need to fetch automatic recommendations
             else if (fetchedHasLoadingState) {
               // For automatic recommendations, we need to fetch the section with NO variant parameter
               // This ensures we get product-based automatic recommendations, not variant-specific content
-              const baseUrl = this.dataset.url.split('&variant=')[0].split('?')[0]
-              const params = new URLSearchParams(this.dataset.url.split('?')[1] || '')
+              const baseUrl = this.dataset.url
+                .split('&variant=')[0]
+                .split('?')[0]
+              const params = new URLSearchParams(
+                this.dataset.url.split('?')[1] || ''
+              )
               // Remove variant parameter if it exists - automatic recommendations are product-based
               params.delete('variant')
               const recommendationsUrl = `${baseUrl}?${params.toString()}`
-              
+
               // Set loading placeholder (already cleared above)
               this.innerHTML = recommendations.innerHTML
               this.hasLoaded = false // Reset to allow loadRecommendations to run
-              
+
               // IMPORTANT: Fetch the recommendations API with a cache-busting parameter
               // to ensure we get fresh automatic recommendations, not cached MSV content
               const cacheBuster = `&_t=${Date.now()}`
               const freshRecommendationsUrl = `${recommendationsUrl}${cacheBuster}`
-              
+
               // Fetch recommendations directly here instead of using loadRecommendations
               // to ensure we have full control and can update the URL
               this.dataset.url = recommendationsUrl
-              
+
               // Double-check that content is cleared before fetching
               if (this.querySelector('.grid__item')) {
                 while (this.firstChild) {
                   this.removeChild(this.firstChild)
                 }
               }
-              
+
               fetch(freshRecommendationsUrl, {
                 cache: 'no-store',
                 headers: {
@@ -1981,14 +1997,15 @@ class ProductRecommendations extends HTMLElement {
                   while (this.firstChild) {
                     this.removeChild(this.firstChild)
                   }
-                  
+
                   // Verify content is cleared
-                  const beforeProcess = this.querySelectorAll('.grid__item').length
+                  const beforeProcess =
+                    this.querySelectorAll('.grid__item').length
                   if (beforeProcess > 0) {
                     // Force clear again
                     this.innerHTML = ''
                   }
-                  
+
                   this.processRecommendationsResponse(text)
                   this.isUpdating = false
                 })
@@ -2028,11 +2045,11 @@ class ProductRecommendations extends HTMLElement {
   processRecommendationsResponse(text) {
     const html = document.createElement('div')
     html.innerHTML = text
-    
+
     // The API returns the full section HTML, so we need to find the product-recommendations element
     // It might be directly in the response or inside a section wrapper
     let recommendations = html.querySelector('product-recommendations')
-    
+
     // If not found directly, try finding it inside a section
     if (!recommendations) {
       const section = html.querySelector('section')
@@ -2040,7 +2057,7 @@ class ProductRecommendations extends HTMLElement {
         recommendations = section.querySelector('product-recommendations')
       }
     }
-    
+
     // If we found recommendations with content, update the innerHTML
     if (recommendations && recommendations.innerHTML.trim().length) {
       // Always clear first to prevent old content from persisting
@@ -2061,7 +2078,9 @@ class ProductRecommendations extends HTMLElement {
         const relatedProducts = section.querySelector('.related-products')
         if (relatedProducts && relatedProducts.innerHTML.trim().length) {
           // Extract content from inside product-recommendations if it exists
-          const innerRecs = relatedProducts.querySelector('product-recommendations')
+          const innerRecs = relatedProducts.querySelector(
+            'product-recommendations'
+          )
           if (innerRecs && innerRecs.innerHTML.trim().length) {
             this.innerHTML = innerRecs.innerHTML
             if (this.querySelector('.grid__item')) {
@@ -2099,49 +2118,49 @@ if (!customElements.get('quick-ship-text')) {
   customElements.define(
     'quick-ship-text',
     class QuickShipText extends HTMLElement {
-    constructor() {
+      constructor() {
         super()
         this.variantChangeUnsubscriber = undefined
-    }
+      }
 
-    connectedCallback() {
-      // Set initial state based on current variant
+      connectedCallback() {
+        // Set initial state based on current variant
         this.updateVisibility(
           this.getAttribute('data-quick-ship-state') === 'true'
         )
 
-      // Subscribe to variant changes
+        // Subscribe to variant changes
         this.variantChangeUnsubscriber = subscribe(
           PUB_SUB_EVENTS.variantChange,
           (event) => {
             const sectionId = this.dataset.quickShipText
             if (event.data.sectionId !== sectionId) return
-        
-        // Get the quick ship state from the HTML response
+
+            // Get the quick ship state from the HTML response
             const html = event.data.html
             const quickShipElement = html.querySelector(
               `quick-ship-text[data-quick-ship-text="${sectionId}"]`
             )
             if (!quickShipElement) return
-        
-        // Check if the quick ship value is exactly "True"
+
+            // Check if the quick ship value is exactly "True"
             const hasQuickShip =
               quickShipElement.getAttribute('data-quick-ship-state') === 'true'
             this.updateVisibility(hasQuickShip)
           }
         )
-    }
+      }
 
-    updateVisibility(shouldShow) {
+      updateVisibility(shouldShow) {
         this.style.display = shouldShow ? 'block' : 'none'
         this.setAttribute('data-quick-ship-state', shouldShow.toString())
-    }
-
-    disconnectedCallback() {
-      if (this.variantChangeUnsubscriber) {
-          this.variantChangeUnsubscriber()
       }
-    }
+
+      disconnectedCallback() {
+        if (this.variantChangeUnsubscriber) {
+          this.variantChangeUnsubscriber()
+        }
+      }
     }
   )
 }
