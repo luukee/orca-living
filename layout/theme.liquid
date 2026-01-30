@@ -5,7 +5,19 @@
     {% render 'head--meta-tags' %}
     
     {% render 'head--scripts' %}
-    
+    {% comment %} Stub fetch for Shopify api/collect in local dev to avoid CORS console noise {% endcomment %}
+    <script>
+      (function() {
+        var h = window.location.hostname;
+        if (h !== '127.0.0.1' && h !== 'localhost') return;
+        var orig = window.fetch;
+        window.fetch = function(url, opts) {
+          var u = typeof url === 'string' ? url : (url && url.url);
+          if (u && u.indexOf('api/collect') !== -1) return Promise.resolve({ ok: true, status: 200 });
+          return orig.apply(this, arguments);
+        };
+      })();
+    </script>
     {{ content_for_header }}
     
     {% comment %}
