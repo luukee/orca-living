@@ -449,11 +449,33 @@
                             {% else %}
                               {% assign variant_title = variant_title | append: ' - ' | append: option_variant %}
                             {% endif %}
+                            {% liquid
+                              assign link_variant = nil
+                              assign use_product_url_without_variant = false
+                              assign hide_product_link = false
+                              if is_samples
+                                for v in collection_product.variants
+                                  unless v.title contains 'Sample'
+                                    if v.option2 == p.option2
+                                      assign link_variant = v
+                                      break
+                                    endif
+                                  endunless
+                                endfor
+                                if link_variant == nil
+                                  assign use_product_url_without_variant = true
+                                  assign hide_product_link = true
+                                endif
+                              endif
+                            %}
                             <li class='grid__item grid__item-PRODUCT-by-variant{% if product_expanded %} product-expanded{% endif %}'>
                               <!-- PRODUCT by variant card-product-nine15 -->
                               {% render 'card-product-nine15',
                                 product_title: variant_title,
                                 card_product: p,
+                                link_variant: link_variant,
+                                use_product_url_without_variant: use_product_url_without_variant,
+                                hide_product_link: hide_product_link,
                                 hide_overlay_link: is_samples,
                                 media_aspect_ratio: section.settings.image_ratio,
                                 title_above_image: section.settings.title_above_image,
@@ -774,6 +796,25 @@
                               assign prod_title = prod_title | append: ' in ' | append: option_variant
                             endif
                           %}
+                          {% liquid
+                            assign link_variant = nil
+                            assign use_product_url_without_variant = false
+                            assign hide_product_link = false
+                            if is_samples
+                              for v in product.variants
+                                unless v.title contains 'Sample'
+                                  if v.option2 == p.option2
+                                    assign link_variant = v
+                                    break
+                                  endif
+                                endunless
+                              endfor
+                              if link_variant == nil
+                                assign use_product_url_without_variant = true
+                                assign hide_product_link = true
+                              endif
+                            endif
+                          %}
                           <li class='grid__item grid__item-COLLECTION-by-variant' 
                           data-size='{{ p.option1 | escape }}'
                           data-use-case='{{ p.metafields.custom.use_case | default: product.metafields.custom.use_case | escape }}'
@@ -782,6 +823,9 @@
                             {% render 'card-product-nine15',
                               product_title: prod_title,
                               card_product: p,
+                              link_variant: link_variant,
+                              use_product_url_without_variant: use_product_url_without_variant,
+                              hide_product_link: hide_product_link,
                               hide_overlay_link: is_samples,
                               media_aspect_ratio: section.settings.image_ratio,
                               title_above_image: section.settings.title_above_image,
