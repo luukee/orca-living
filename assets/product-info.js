@@ -156,6 +156,7 @@ if (!customElements.get('product-info')) {
         const quantityFormUpdated = html.getElementById(
           `Quantity-Form-${sectionId}`
         )
+        if (!quantityFormUpdated) return
         const selectors = [
           '.quantity__input',
           '.quantity__rules',
