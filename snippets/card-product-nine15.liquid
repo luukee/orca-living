@@ -20,6 +20,9 @@
   - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
   - use_primary_collection_url: {Boolean} Use product's primary collection for URL instead of current collection (optional)
   - enable_order_samples_button: {Boolean} Show the order samples button. Default: false (optional)
+  - link_variant: {Object} Variant to use for the card link URL. Optional.
+  - use_product_url_without_variant: {Boolean} If true and card_product is a variant, use product base URL (no ?variant=) for image/title links so product page shows default variant. Used on samples grid. Optional.
+  - hide_product_link: {Boolean} If true, do not render a link on title (sample-only: no non-sample variant in same color). Optional.
 
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
@@ -28,24 +31,27 @@
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
 {% liquid
-if use_primary_collection_url
-# Find first collection that isn't 'all'
-assign primary_collection = nil
-for collection in card_product.collections
-  unless collection.handle == 'all'
-    assign primary_collection = collection
-    break
-  endunless
-endfor
-
-if primary_collection
-  assign product_url = card_product.url | within: primary_collection
-else
-  assign product_url = card_product.url
-endif
-else
-assign product_url = card_product.url | within: collection
-endif
+  # Samples grid: use link_variant (same-color non-sample) when set, else product URL without ?variant=; image/title links only (Order Sample button unchanged)
+  if link_variant != blank
+    assign product_url = link_variant.url | within: collection
+  elsif use_product_url_without_variant and card_product.product
+    assign product_url = card_product.product.url | within: collection
+  elsif use_primary_collection_url
+    assign primary_collection = nil
+    for collection in card_product.collections
+      unless collection.handle == 'all'
+        assign primary_collection = collection
+        break
+      endunless
+    endfor
+    if primary_collection
+      assign product_url = card_product.url | within: primary_collection
+    else
+      assign product_url = card_product.url
+    endif
+  else
+    assign product_url = card_product.url | within: collection
+  endif
 
   assign price_variant = card_product
   assign product_type = price_variant.type | handleize
@@ -277,9 +283,13 @@ endif
               id="title-{{ section_id }}-{{ card_product.id }}"
             {% endif %}
           >
-            <a href="{{ product_url }}" id="CardLink-{{ section_id }}-{{ card_product.id }}" class="full-unstyled-link" aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}">
-              {{ product_title | escape }}
-            </a>
+            {% if hide_product_link %}
+              <span class="full-unstyled-link" id="CardLink-{{ section_id }}-{{ card_product.id }}">{{ product_title | escape }}</span>
+            {% else %}
+              <a href="{{ product_url }}" id="CardLink-{{ section_id }}-{{ card_product.id }}" class="full-unstyled-link" aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}">
+                {{ product_title | escape }}
+              </a>
+            {% endif %}
             {% comment %} Hide overlay link & View full details button {% endcomment %}
             {% comment %}
               {% if hide_overlay_link == false %}
