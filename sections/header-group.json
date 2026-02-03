@@ -26,8 +26,12 @@
           }
         }
       },
-      "block_order": ["announcement_c6gPV8"],
-      "settings": {}
+      "block_order": [
+        "announcement_c6gPV8"
+      ],
+      "settings": {
+        "hide_on_paths": ""
+      }
     },
     "header": {
       "type": "header",
@@ -35,7 +39,7 @@
       "settings": {
         "logo_position": "top-left",
         "menu": "2023-05-29-main-menu",
-        "menu_mobile": "main-menu-secondary-live",
+        "menu_mobile": "main-menu-mobile-dev",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "always",
         "show_line_separator": true,
@@ -53,5 +57,8 @@
       }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }
