@@ -3177,11 +3177,22 @@ details-disclosure > details {
   }
 }
 /* klaviyo flyout newsletter form styles */
-/* Overlay: ensure full viewport width so the dimmed backdrop covers and is clickable everywhere. */
+@keyframes klaviyo-flyout-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.kl-private-reset-css-Xuajs1[role="dialog"],
 div[role="dialog"][aria-label="FLYOUT Form"] {
-  left: 0 !important;
-  width: 100vw !important;
   background-color: hsl(0deg 0% 0% / 27%);
+  animation: klaviyo-flyout-fade-in 0.3s ease forwards;
+  transition: opacity 0.3s ease;
+}
+div[role="dialog"][aria-label="FLYOUT Form"].klaviyo-flyout-fade-out {
+  opacity: 0;
 }
 [data-testid="klaviyo-form-UWGT7n"] {
   top: 0 !important;
@@ -3189,12 +3200,11 @@ div[role="dialog"][aria-label="FLYOUT Form"] {
   height: 100dvh !important;
   max-height: 100dvh !important;
   border-radius: 0 !important;
-  margin-left: calc((((100vw - 210px - 0px) / 12) * 9) + 192px + 0px);
+  margin-left: calc((((100vw - 20px - 0px) / 12) * 9) + 192px + 0px);
 }
 /* Optional: make the form scroll if content exceeds viewport */
 [data-testid="klaviyo-form-UWGT7n"] {
   overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
 }
 .simple-footer small > a:not(:hover) {
   text-decoration: none;

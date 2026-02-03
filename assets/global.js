@@ -2667,6 +2667,9 @@ function openMenuDrawer() {
   document.addEventListener(
     'click',
     (event) => {
+      // Skip synthetic clicks (e.g. our programmatic closeBtn.click()) so Klaviyo receives them.
+      if (!event.isTrusted) return
+
       const dialog = event.target.closest(DIALOG_SELECTOR)
       if (!dialog) return
 
@@ -2675,9 +2678,15 @@ function openMenuDrawer() {
       // Only ignore clicks inside the form itself (input, buttons, etc.).
       if (form && form.contains(event.target)) return
 
-      // Otherwise it's an overlay click (e.g. div.go249761392) → close.
+      // Otherwise it's an overlay click → fade out, then close.
       const closeBtn = dialog.querySelector(CLOSE_BUTTON_SELECTORS)
-      if (closeBtn) closeBtn.click()
+      if (!closeBtn) return
+
+      event.preventDefault()
+      event.stopPropagation()
+
+      dialog.classList.add('klaviyo-flyout-fade-out')
+      setTimeout(() => closeBtn.click(), 300)
     },
     true
   )
