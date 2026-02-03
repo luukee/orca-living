@@ -3177,7 +3177,10 @@ details-disclosure > details {
   }
 }
 /* klaviyo flyout newsletter form styles */
-.kl-private-reset-css-Xuajs1[role="dialog"] {
+/* Overlay: ensure full viewport width so the dimmed backdrop covers and is clickable everywhere. */
+div[role="dialog"][aria-label="FLYOUT Form"] {
+  left: 0 !important;
+  width: 100vw !important;
   background-color: hsl(0deg 0% 0% / 27%);
 }
 [data-testid="klaviyo-form-UWGT7n"] {
