@@ -2646,3 +2646,39 @@ function openMenuDrawer() {
     }
   }
 }
+
+// Close Klaviyo flyout when clicking the overlay (dimmed area).
+// The overlay click lands on div.go249761392 etc. which is INSIDE [data-testid="FLYOUT"],
+// so we must only exclude clicks inside the actual form element, not the whole panel.
+;(function setupKlaviyoOverlayClose() {
+  const DIALOG_SELECTOR = 'div[role="dialog"][aria-label="FLYOUT Form"]'
+
+  // Exclude clicks only on the form (white box with email input), not the whole FLYOUT panel.
+  const FORM_SELECTOR = 'form.klaviyo-form, form[data-testid^="klaviyo-form-"]'
+
+  const CLOSE_BUTTON_SELECTORS = [
+    'button.klaviyo-close-form[aria-label="Close dialog"]',
+    'button[aria-label="Close dialog"]',
+    'button[aria-label^="Close"]',
+    'button[title^="Close"]',
+    '[data-testid*="close"]'
+  ].join(',')
+
+  document.addEventListener(
+    'click',
+    (event) => {
+      const dialog = event.target.closest(DIALOG_SELECTOR)
+      if (!dialog) return
+
+      const form = dialog.querySelector(FORM_SELECTOR)
+
+      // Only ignore clicks inside the form itself (input, buttons, etc.).
+      if (form && form.contains(event.target)) return
+
+      // Otherwise it's an overlay click (e.g. div.go249761392) → close.
+      const closeBtn = dialog.querySelector(CLOSE_BUTTON_SELECTORS)
+      if (closeBtn) closeBtn.click()
+    },
+    true
+  )
+})()

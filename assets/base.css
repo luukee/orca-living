@@ -3176,6 +3176,23 @@ details-disclosure > details {
     margin-inline: unset;
   }
 }
+/* klaviyo flyout newsletter form styles */
+.kl-private-reset-css-Xuajs1[role="dialog"] {
+  background-color: hsl(0deg 0% 0% / 27%);
+}
+[data-testid="klaviyo-form-UWGT7n"] {
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  border-radius: 0 !important;
+  margin-left: calc((((100vw - 210px - 0px) / 12) * 9) + 192px + 0px);
+}
+/* Optional: make the form scroll if content exceeds viewport */
+[data-testid="klaviyo-form-UWGT7n"] {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
 .simple-footer small > a:not(:hover) {
   text-decoration: none;
 }
