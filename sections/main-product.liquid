@@ -412,6 +412,7 @@
                 buy_buttons_hide: block.settings.buy_buttons_hide, 
                 buy_buttons_modal_form: block.settings.buy_buttons_modal_form,
                 buy_buttons_paver_message: block.settings.buy_buttons_paver_message,
+                buy_buttons_paver_message_icon: block.settings.buy_buttons_paver_message_icon,
                 modal_form_button_text: button_text,
                 modal_form_button_destination: button_destination,
                 modal_form_title: modal_form_title,
@@ -882,6 +883,10 @@
           "default": false
         },
         {
+          "type": "header",
+          "content": "Paver Message"
+        },
+        {
           "type": "checkbox",
           "id": "buy_buttons_paver_message",
           "label": "Show Paver Message",
@@ -889,16 +894,23 @@
           "default": true
         },
         {
+          "type": "checkbox",
+          "id": "buy_buttons_paver_message_icon",
+          "label": "Show Paver Message Icon",
+          "info": "If true, the buy buttons will show an icon next to the message.",
+          "default": true
+        },
+        {
           "type": "inline_richtext",
           "id": "buy_buttons_paver_message_text",
           "label": "Paver Message Text",
-          "info": "This is the text that will be shown below the pickup availability message.",
+          "info": "This is the text that will be shown above the buy buttons.",
         },
         {
          "type": "inline_richtext",
          "id": "buy_buttons_paver_message_text_recycled",
          "label": "Paver Message (Recycled)",
-         "info": "Shown when product type is Paver and title contains 'Recycled'. Falls back to standard paver message if blank.",
+         "info": "Shown when product type is Paver and title contains 'Recycled'. Falls back to standard paver message if blank."
        }
       ]
     },
