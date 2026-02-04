@@ -340,12 +340,11 @@ class QuantityInput extends HTMLElement {
     super()
     this.input = this.querySelector('input')
     this.changeEvent = new Event('change', { bubbles: true })
-    // Use the add button in the same form so we only enable when quantity >= variant min
-    const form =
-      this.closest('form') || this.closest('.product-form')?.closest('form')
-    this.atcButton = form
-      ? form.querySelector('[name="add"]')
-      : document.querySelector('.product-form__submit')
+    this.atcButton = document.querySelector('.product-form__submit')
+
+    if (this.atcButton && parseInt(this.input.value) < 1) {
+      this.atcButton.setAttribute('disabled', 'true')
+    }
 
     this.input.addEventListener('change', this.onInputChange.bind(this))
     this.querySelectorAll('button').forEach((button) =>
@@ -418,46 +417,26 @@ class QuantityInput extends HTMLElement {
       this.input.dispatchEvent(this.changeEvent)
   }
 
-  /**
-   * Syncs minus/plus button state and Add to Cart: enabled only when
-   * quantity is at or above variant min and at or below max.
-   * Prefer data-min (set by Liquid/variant rules) so metafield minimums apply.
-   * If displayed value is below min, correct it so the input shows the right number.
-   */
   validateQtyRules() {
-    const min =
-      parseInt(this.input.dataset.min, 10) || parseInt(this.input.min, 10) || 1
-    const max = Number.isNaN(parseInt(this.input.max, 10))
+    const value = parseInt(this.input.value) || 0
+    const min = parseInt(this.input.min) ?? 1
+    const max = Number.isNaN(parseInt(this.input.max))
       ? Number.MAX_VALUE
-      : parseInt(this.input.max, 10)
-    let value = parseInt(this.input.value, 10) || 0
-    if (value < min) {
-      this.input.value = min
-      value = min
-    } else if (max !== Number.MAX_VALUE && value > max) {
-      this.input.value = max
-      value = max
-    }
+      : parseInt(this.input.max)
 
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']")
-      buttonMinus?.classList.toggle('disabled', value <= min)
+      buttonMinus.classList.toggle('disabled', value <= min)
     }
     if (this.input.max) {
       const buttonPlus = this.querySelector(".quantity__button[name='plus']")
-      buttonPlus?.classList.toggle('disabled', value >= max)
+      buttonPlus.classList.toggle('disabled', value >= max)
     }
 
-    const meetsMin = value >= min
-    const meetsMax = value <= max
-    const variantAvailable =
-      this.atcButton?.getAttribute('data-variant-available') !== 'false'
-    if (this.atcButton) {
-      if (variantAvailable && meetsMin && meetsMax) {
-        this.atcButton.removeAttribute('disabled')
-      } else {
-        this.atcButton.setAttribute('disabled', 'disabled')
-      }
+    if (value >= min && value <= max) {
+      this.atcButton?.removeAttribute('disabled')
+    } else {
+      this.atcButton?.setAttribute('disabled', 'true')
     }
     // Keep Add to Cart button label in sync with quantity (unit × qty) on load and after variant/quantity sync
     this.updateAtcPrice()
@@ -1218,18 +1197,6 @@ class SlideshowComponent extends SliderComponent {
 
 customElements.define('slideshow-component', SlideshowComponent)
 
-/**
- * Parses variant quantity rules JSON from data-variant-quantity-rules.
- * Returns { [variantId]: { min, max, step } } or null on parse error.
- */
-function parseVariantQuantityRules(jsonStr) {
-  try {
-    return JSON.parse(jsonStr) || null
-  } catch {
-    return null
-  }
-}
-
 class VariantSelects extends HTMLElement {
   constructor() {
     super()
@@ -1239,16 +1206,11 @@ class VariantSelects extends HTMLElement {
   onVariantChange() {
     this.updateOptions()
     this.updateMasterId()
-    this.syncAddButtonVariantAvailable()
     this.toggleAddButton(true, '', false)
     this.updatePickupAvailability()
     this.removeErrorMessage()
     this.updateVariantStatuses()
     this.updateQtyUnit()
-    // Re-run after other updates (e.g. variantChange / updateQuantityRules) so quantity doesn’t revert to 1 on 3rd+ click
-    setTimeout(() => {
-      if (this.currentVariant) this.updateQtyUnit()
-    }, 0)
 
     if (!this.currentVariant) {
       this.toggleAddButton(true, '', true)
@@ -1411,46 +1373,22 @@ class VariantSelects extends HTMLElement {
     })
   }
 
-  /**
-   * Syncs Add to Cart button data-variant-available so quantity validation
-   * can keep the button disabled when the variant is out of stock.
-   */
-  syncAddButtonVariantAvailable() {
-    const productForm = document.getElementById(
-      `product-form-${this.dataset.section}`
-    )
-    const addButton = productForm?.querySelector('[name="add"]')
-    if (!addButton) return
-    const available =
-      this.currentVariant && this.currentVariant.available !== false
-        ? 'true'
-        : 'false'
-    addButton.setAttribute('data-variant-available', available)
-  }
-
   updateVariantStatuses() {
-    const inputWrappers = [
-      ...this.querySelectorAll('.product-form__input')
-    ].filter((w) => w.querySelectorAll('input[type="radio"]').length > 0)
-    if (inputWrappers.length === 0) return
-    const firstChecked = inputWrappers[0].querySelector(':checked')
-    const firstOptionValue = firstChecked ? firstChecked.value : null
-    if (firstOptionValue == null) return
     const selectedOptionOneVariants = this.variantData.filter(
-      (variant) => variant.option1 === firstOptionValue
+      (variant) => this.querySelector(':checked').value === variant.option1
     )
+    const inputWrappers = [...this.querySelectorAll('.product-form__input')]
     inputWrappers.forEach((option, index) => {
       if (index === 0) return
       const optionInputs = [
         ...option.querySelectorAll('input[type="radio"], option')
       ]
-      if (optionInputs.length === 0) return
-      const prevChecked = inputWrappers[index - 1].querySelector(':checked')
-      const previousOptionSelected = prevChecked ? prevChecked.value : null
-      if (previousOptionSelected == null) return
+      const previousOptionSelected =
+        inputWrappers[index - 1].querySelector(':checked').value
       const availableOptionInputsValue = selectedOptionOneVariants
         .filter(
           (variant) =>
+            // For size options (index === 0), show all options regardless of availability
             (index === 0 || variant.available) &&
             variant[`option${index}`] === previousOptionSelected
         )
@@ -1553,68 +1491,41 @@ class VariantSelects extends HTMLElement {
     if (productForm) productForm.handleErrorMessage()
   }
 
-  /**
-   * Updates the quantity input to match the current variant's quantity rule
-   * (min, max, increment and value). Uses variant-quantity-rules from Liquid
-   * (variant metafield custom.minimum_quantity + theme fallbacks) when present;
-   * otherwise falls back to data-paver or variant.quantity_rule.
-   */
   updateQtyUnit() {
-    if (!this.currentVariant) return
     const section = this.closest('section')
-    const quantityForm =
-      section?.querySelector('[data-variant-quantity-rules]') ||
-      document.getElementById(`Quantity-Form-${this.dataset.section}`)
-    const qtyInput = quantityForm?.querySelector('.quantity__input')
-    if (!qtyInput) return
+    if (!section || !this.currentVariant) return
+    // const productInfo = section.querySelector('product-info');
 
-    const rulesJson = quantityForm.getAttribute('data-variant-quantity-rules')
-    const variantRules = rulesJson ? parseVariantQuantityRules(rulesJson) : null
-    const ruleForVariant = variantRules?.[String(this.currentVariant.id)]
+    // const varTitle = this.currentVariant.name;
+    // var qtyLabel = 'sqft';
+    // // console.log(varTitle);
+    // if (varTitle.includes('Paver')) {
+    //   if (varTitle.includes('Sample')) {
+    //     qtyLabel = 'piece';
+    //   }
+    //   if (varTitle.includes('Thin')) {
+    //     document.querySelector('.thin-note').style.display = 'inline-block';
+    //   } else {
+    //     document.querySelector('.thin-note').style.display = 'none';
+    //   }
+    //   var qtyLabels = productInfo.querySelectorAll('.qtyLabel');
+    //   qtyLabels.forEach(function (label, index) {
+    //     var checkQuantityInput = label.closest('quantity-input');
+    //     if (checkQuantityInput) {
+    //       label.style.display = 'none';
+    //       label.textContent = qtyLabel.replace('/', '');
+    //       if (qtyLabel == 'sqft') {
+    //         // console.log(qtyLabel);
+    //         label.style.display = 'inline-block';
+    //       }
+    //     } else {
+    //       label.textContent = '/' + qtyLabel;
+    //       label.style.display = 'inline-block';
+    //     }
+    //   });
+    // }
 
-    const rule = this.currentVariant.quantity_rule
-    let min, max, step
-
-    if (ruleForVariant) {
-      min = ruleForVariant.min
-      max = ruleForVariant.max ?? null
-      step = ruleForVariant.step ?? min
-    } else if (qtyInput.hasAttribute('data-paver')) {
-      min = step = qtyInput.hasAttribute('data-recycled') ? 180 : 80
-      max = 400
-    } else {
-      min = rule?.min ?? parseInt(qtyInput.dataset.min, 10) ?? 1
-      max =
-        rule?.max != null
-          ? rule.max
-          : qtyInput.dataset.max
-            ? parseInt(qtyInput.dataset.max, 10)
-            : null
-      step = rule?.increment ?? (parseInt(qtyInput.step, 10) || 1)
-    }
-
-    qtyInput.min = min
-    qtyInput.setAttribute('data-min', String(min))
-    if (max != null) {
-      qtyInput.max = max
-      qtyInput.setAttribute('data-max', String(max))
-    } else {
-      qtyInput.removeAttribute('max')
-      qtyInput.removeAttribute('data-max')
-    }
-    qtyInput.step = step
-
-    const currentVal = parseInt(qtyInput.value, 10) || min
-    const clamped = Math.max(
-      min,
-      max != null ? Math.min(max, currentVal) : currentVal
-    )
-    const rounded =
-      step > 1 ? Math.round(clamped / step) * step : Math.round(clamped)
-    const value = Math.max(min, max != null ? Math.min(max, rounded) : rounded)
-    qtyInput.value = value
-
-    publish(PUB_SUB_EVENTS.quantityUpdate, undefined)
+    section.querySelector('.quantity__input').value = 1
   }
 
   renderProductInfo() {
@@ -1630,17 +1541,10 @@ class VariantSelects extends HTMLElement {
           : this.dataset.section
       }`
     )
-      .then((response) => {
-        if (!response.ok) return null
-        return response.text()
-      })
+      .then((response) => response.text())
       .then((responseText) => {
         // prevent unnecessary ui changes from abandoned selections
         if (this.currentVariant.id !== requestedVariantId) return
-        if (responseText == null) {
-          publish(PUB_SUB_EVENTS.quantityUpdate, undefined)
-          return
-        }
 
         const html = new DOMParser().parseFromString(responseText, 'text/html')
         const destination = document.getElementById(
@@ -1702,8 +1606,6 @@ class VariantSelects extends HTMLElement {
           addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true,
           window.variantStrings.soldOut
         )
-        // Re-sync Add to Cart with quantity: disabled when quantity < variant min
-        publish(PUB_SUB_EVENTS.quantityUpdate, undefined)
 
         const sampleButtonUpdated = html.getElementById(
           `SampleOrderButton-${sectionId}`
@@ -1777,8 +1679,6 @@ class VariantSelects extends HTMLElement {
         // Refocus featured media after DOM swap
         this.updateMedia()
         this.updateVariantMetafields(html)
-        // Re-sync quantity input to variant min so it doesn’t revert to 1 after DOM updates
-        this.updateQtyUnit()
         publish(PUB_SUB_EVENTS.variantChange, {
           data: {
             sectionId,
@@ -1786,12 +1686,7 @@ class VariantSelects extends HTMLElement {
             variant: this.currentVariant
           }
         })
-        // Re-run after product-info handlers so quantity doesn’t revert to 1 on 3rd+ click
-        setTimeout(() => {
-          if (this.currentVariant) this.updateQtyUnit()
-        }, 100)
       })
-      .catch(() => {})
   }
 
   updateVariantMetafields(html) {
@@ -1805,7 +1700,6 @@ class VariantSelects extends HTMLElement {
           : this.dataset.section
       }`
     )
-    if (!source || !destination) return
     var sourcePalletQty = source.getAttribute('data-pallet-qty')
     var destinationPalletQty = destination.getAttribute('data-pallet-qty')
     sourcePalletQty = parseInt(sourcePalletQty)
@@ -1883,28 +1777,6 @@ class VariantRadios extends VariantSelects {
     this.addEventListener('change', this.onVariantChange)
   }
 
-  connectedCallback() {
-    super.connectedCallback?.()
-    // Apply variant options, availability, and quantity rules on load after DOM is ready
-    const runInitialSync = () => {
-      if (
-        this.updateOptions &&
-        this.updateMasterId &&
-        this.updateVariantStatuses &&
-        this.updateQtyUnit &&
-        this.getVariantData
-      ) {
-        this.updateOptions()
-        this.updateMasterId()
-        this.syncAddButtonVariantAvailable()
-        this.updateVariantStatuses()
-        if (this.currentVariant) this.updateQtyUnit()
-      }
-    }
-    requestAnimationFrame(() => runInitialSync())
-    setTimeout(runInitialSync, 150)
-  }
-
   setInputAvailability(listOfOptions, listOfAvailableOptions) {
     listOfOptions.forEach((input) => {
       if (listOfAvailableOptions.includes(input.getAttribute('value'))) {
@@ -1917,94 +1789,26 @@ class VariantRadios extends VariantSelects {
     })
   }
 
-  /**
-   * Override so radio availability uses the same getAvailableValuesForOption logic
-   * as updateOptions(), ensuring unavailable colors (and any option) are disabled
-   * when a prior option (e.g. Size) changes. Uses current DOM checked state.
-   */
-  updateVariantStatuses() {
-    const variantData = this.getVariantData()
-    const inputWrappers = [
-      ...this.querySelectorAll('.product-form__input')
-    ].filter((w) => w.querySelectorAll('input[type="radio"]').length > 0)
-    if (inputWrappers.length === 0) return
-
-    const selectedOptions = []
-    for (let i = 0; i < inputWrappers.length; i++) {
-      const wrapper = inputWrappers[i]
-      const optionInputs = [...wrapper.querySelectorAll('input[type="radio"]')]
-      if (optionInputs.length === 0) continue
-
-      const availableValues = this.getAvailableValuesForOption(
-        variantData,
-        i,
-        selectedOptions
-      )
-      this.setInputAvailability(optionInputs, availableValues)
-
-      const checked = optionInputs.find((r) => r.checked && !r.disabled)
-      const value = checked
-        ? checked.value
-        : (optionInputs.find((r) => !r.disabled)?.value ?? null)
-      if (value) selectedOptions.push(value)
-    }
-  }
-
-  /**
-   * Returns available option values for the given option index, given previously
-   * selected options. Used so we can set disabled state before reading value,
-   * allowing auto-select of first available when current selection is invalid
-   * (e.g. switching Size from Tile to Paver when Calcite isn't available for Paver).
-   */
-  getAvailableValuesForOption(variantData, optionIndex, selectedOptions) {
-    const filtered = variantData.filter((variant) => {
-      for (let j = 0; j < optionIndex; j++) {
-        if (variant[`option${j + 1}`] !== selectedOptions[j]) return false
-      }
-      return optionIndex === 0 || variant.available
-    })
-    return [...new Set(filtered.map((v) => v[`option${optionIndex + 1}`]))]
-  }
-
   updateOptions() {
-    const variantData = this.getVariantData()
-    const inputWrappers = [
-      ...this.querySelectorAll('.product-form__input')
-    ].filter((w) => w.querySelectorAll('input[type="radio"]').length > 0)
-    const options = []
-
-    for (let i = 0; i < inputWrappers.length; i++) {
-      const wrapper = inputWrappers[i]
-      const optionInputs = [...wrapper.querySelectorAll('input[type="radio"]')]
-      if (optionInputs.length === 0) continue
-
-      // Set availability for this option based on previously selected options,
-      // so when we read value below, disabled options are already marked and
-      // we can auto-select first available if current selection is invalid.
-      if (i > 0) {
-        const availableValues = this.getAvailableValuesForOption(
-          variantData,
-          i,
-          options
-        )
-        this.setInputAvailability(optionInputs, availableValues)
-      }
-
-      const checkedInput = optionInputs.find(
-        (radio) => radio.checked && !radio.disabled
-      )
-      let selectedValue = checkedInput ? checkedInput.value : null
-      if (!selectedValue) {
-        const firstEnabled = optionInputs.find((radio) => !radio.disabled)
-        if (firstEnabled) {
-          firstEnabled.checked = true
-          selectedValue = firstEnabled.value
+    const fieldsets = Array.from(this.querySelectorAll('fieldset'))
+    this.options = fieldsets
+      .map((fieldset) => {
+        const checkedInput = Array.from(
+          fieldset.querySelectorAll('input:not([disabled])')
+        ).find((radio) => radio.checked)
+        if (!checkedInput) {
+          // If no input is checked, find the first enabled input and check it
+          const firstEnabledInput = fieldset.querySelector(
+            'input:not([disabled])'
+          )
+          if (firstEnabledInput) {
+            firstEnabledInput.checked = true
+            return firstEnabledInput.value
+          }
         }
-      }
-      if (selectedValue) options.push(selectedValue)
-    }
-
-    this.options = options
+        return checkedInput ? checkedInput.value : null
+      })
+      .filter(Boolean) // Remove any null values
   }
 
   onVariantChange(event) {
