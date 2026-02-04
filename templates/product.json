@@ -96,7 +96,11 @@
             "show_dynamic_checkout": false,
             "quick_ship_text": "In Stock | Ships within 1-3 weeks",
             "buy_buttons_hide": false,
-            "buy_buttons_modal_form": false
+            "buy_buttons_modal_form": false,
+            "buy_buttons_paver_message": true,
+            "buy_buttons_paver_message_icon": true,
+            "buy_buttons_paver_message_text": "For any orders below 80sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" title=\"mailto:hello@orcaliving.com\">hello@orcaliving.com</a>.",
+            "buy_buttons_paver_message_text_recycled": "For any orders below 180sqft or above 400sqft, please contact <a href=\"mailto:hello@orcaliving.com\" target=\"_blank\" title=\"mailto:hello@orcaliving.com\">hello@orcaliving.com</a>."
           }
         },
         "9ed33847-58fb-4ff5-92b0-b3cf981c1f72": {
