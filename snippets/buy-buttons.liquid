@@ -24,6 +24,23 @@
       aria-hidden='true'
     {% endif %}
   >
+    {% comment %} Paver message {% endcomment %}
+    {% if block.settings.buy_buttons_paver_message and product.type == 'Paver' %}
+      {{ 'component-buy-buttons.css' | asset_url | stylesheet_tag }}
+      <div class="buy-buttons__paver-message">
+        {% if block.settings.buy_buttons_paver_message_icon %}
+          {% render 'icon-asterisk' %}
+        {% endif %}
+        <p class="caption-large" class="hidden" data-paver-qty-message>
+        {% if product.title contains 'Recycled' %}
+          {{ block.settings.buy_buttons_paver_message_text_recycled | default: block.settings.buy_buttons_paver_message_text }}
+        {% else %}
+          {{ block.settings.buy_buttons_paver_message_text }}
+        {% endif %}
+        </p>
+      </div>
+    {% endif %}
+    
     {%- if product != blank -%}
       {%- comment -%}
         Initialize feature flags and product state variables.
@@ -395,6 +412,7 @@
         };
       </script>
     {%- endif -%}
+    
   </div>
 
   {%- comment -%}

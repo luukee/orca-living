@@ -1,0 +1,15 @@
+.buy-buttons__paver-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+.buy-buttons__paver-message .caption-large {
+  margin: 0;
+}
+.buy-buttons__paver-message a {
+  color: rgb(var(--color-link));
+}
+.buy-buttons__paver-message svg {
+  flex-shrink: 0;
+  height: 1.8rem;
+}
