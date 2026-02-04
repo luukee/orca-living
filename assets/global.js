@@ -373,7 +373,7 @@ class QuantityInput extends HTMLElement {
   onInputChange(event) {
     this.validateQtyRules()
     this.updateAtcPrice()
-    this.toggleMessage()
+    // this.toggleMessage()
   }
 
   toggleMessage() {
