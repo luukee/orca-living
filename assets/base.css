@@ -3176,6 +3176,40 @@ details-disclosure > details {
     margin-inline: unset;
   }
 }
+/* klaviyo flyout newsletter form styles */
+@keyframes klaviyo-flyout-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media only screen and (min-width: 750px) {
+  .kl-private-reset-css-Xuajs1[role="dialog"],
+  div[role="dialog"][aria-label="FLYOUT Form"] {
+    left: 0 !important;
+    width: 100vw !important;
+    background-color: hsl(0deg 0% 0% / 27%);
+    animation: klaviyo-flyout-fade-in 0.3s ease forwards;
+    transition: opacity 0.3s ease;
+  }
+  div[role="dialog"][aria-label="FLYOUT Form"].klaviyo-flyout-fade-out {
+    opacity: 0;
+  }
+  [data-testid="klaviyo-form-UWGT7n"] {
+    top: 0 !important;
+    bottom: 0 !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    --flyout-width: 320px;
+    margin-left: calc(100vw - var(--flyout-width));
+  }
+}
+[data-testid="klaviyo-form-UWGT7n"] {
+  overflow-y: auto !important;
+}
 .simple-footer small > a:not(:hover) {
   text-decoration: none;
 }
