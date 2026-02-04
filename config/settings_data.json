@@ -173,6 +173,11 @@
           "edit_account_back_link_text": "Back to account",
           "enable_js_api": true
         }
+      },
+      "3800557507615187860": {
+        "type": "shopify://apps/singleton-discounts/blocks/app-block/b262fc7e-ff28-420f-b715-0cd4fe80976e",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
