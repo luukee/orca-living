@@ -3185,6 +3185,9 @@ details-disclosure > details {
     opacity: 1;
   }
 }
+[data-testid=klaviyo-form-UWGT7n] > div {
+  justify-content: flex-start !important;
+}
 div[role="dialog"][aria-label="FLYOUT Form"] input {
   border: none !important;
   border-bottom: 1px solid #000 !important;
