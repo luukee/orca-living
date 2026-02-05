@@ -1,0 +1,316 @@
+{% style %}
+#section-{{ section.id }} {
+    position: relative;
+    z-index: 1;
+    --color--line-1: transparent;
+    --color--line-2: #d8d8d8;
+    --color--line-2: black;
+    --size--arrow: 50%;
+    --size--plus-minus: 30%;
+    --padding--horiz: 0;
+    --padding--vert: .35em;
+}
+#section-{{ section.id }} {
+    padding-top: {{ section.settings.ptop }}px;
+    padding-bottom: {{ section.settings.pbottom }}px;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.borderline{
+    border-top:1px solid black;
+    border-bottom:1px solid black;
+}
+
+#section-{{ section.id }} .row{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: calc(var(--grid-gutter) * .5);
+}
+
+.column-one{
+    width:40%;
+}
+.column-two{
+    width:60%;
+    padding-right:10%;
+}
+#section-{{ section.id }} .section--title h1{
+    margin-top:0px;
+}
+
+#section-{{ section.id }} .padding-space-txts{
+    padding-left:8%;
+}
+#section-{{ section.id }} .landing-img{
+   max-height:600px;
+   width: auto;
+   object-fit: contain;
+}
+@media (max-width:989px){
+    #section-{{ section.id }} .landing-img{
+        width:100%;
+        height:auto;
+        max-height: inherit;
+    }
+}
+@media (max-width:740px){
+    #section-{{ section.id }} .row{
+        display:flex;
+        flex-direction: column;
+    }
+    #section-{{ section.id }} .mobile-reverse{
+        flex-direction: column-reverse;
+    }
+    
+    .column-one{
+        width:100%;
+    }
+    .column-two{
+        width:100%;
+        padding-right:0;
+    }
+    #section-{{ section.id }} .padding-space-txts{
+        padding-left:0%;
+    }
+    
+    #section-{{ section.id }} .text-landing{
+        padding-right:0px !important;
+    }
+}
+{% endstyle %}
+
+<div id="section-{{ section.id }}" class="cstm--landing-section {{class}} {% if section.settings.borderline %}borderline{% endif %}">
+    <div class="page-width">  
+        <div class="row {% if section.settings.mobile_rev %}mobile-reverse{% endif %}">
+            {% if section.settings.reflect %}
+                <div class="column-one text-center">
+                    <img class="landing-img" src="{{ section.settings.img | img_url:'master'}}" alt="{{ section.settings.img.alt | escape }}">
+                </div>
+                <div class="column-two padding-space-txts">
+                    {%- for block in section.blocks -%}
+                        {% case block.type %}
+                            {%- when 'heading' -%}
+                            <div class="section--title page--title ">
+                                <{{ block.settings.heading_size }} class="">{{ block.settings.heading }}</{{ block.settings.heading_size }}>
+                            </div>
+                            
+                            {%- when 'text' -%}
+                            <div class="rte text-landing" style="width:100%; max-width:{{ block.settings.extra }}px;">
+                                {{ block.settings.text }}
+                                <br>
+                            </div>
+
+                            {%- when 'link' -%}
+                            <div class="rte">
+                            <p>
+                                <a href="{{ block.settings.url }}" target="_blank" aria-label="Click and open a window and go to {{ block.settings.url_txt }}">
+                                    {{ block.settings.url_txt }}
+                                </a>
+                            </p>
+                            </div>
+                        {%- endcase -%}
+                    {% endfor %}  
+                </div>
+            {% else %}
+                <div class="column-one">
+                    {%- for block in section.blocks -%}
+                        {% case block.type %}
+                            {%- when 'heading' -%}
+                            <div class="section--title page--title ">
+                                <{{ block.settings.heading_size }} class="">{{ block.settings.heading }}</{{ block.settings.heading_size }}>
+                            </div>
+                            
+                            {%- when 'text' -%}
+                            <div class="rte text-landing" style="width:100%; max-width:{{ block.settings.extra }}px;">
+                                {{ block.settings.text }}
+                                <br>
+                            </div>
+
+                            {%- when 'link' -%}
+                            <div class="rte">
+                            <p>
+                                <a href="{{ block.settings.url }}" target="_blank" aria-label="Click and open a window and go to {{ block.settings.url_txt }}">
+                                    {{ block.settings.url_txt }}
+                                </a>
+                            </p>
+                            </div>
+                        {%- endcase -%}
+                    {% endfor %}    
+                </div>
+                <div class="column-two {% if section.settings.position == 'center' %}text-center{% elsif section.settings.position == 'right'%}text-right{% else %}text-left{% endif %}">
+                    <img class="landing-img" src="{{ section.settings.img | img_url:'master'}}" alt="{{ section.settings.img.alt | escape }}">
+                </div>
+            {% endif %}    
+        </div> {% comment %} End Row {% endcomment %}
+    </div>
+</div>    
+
+{% schema %}
+{
+  "name": "Text with Image Col",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "t:sections.image-with-text.settings.image.label"
+    },
+    {
+      "type":"checkbox",
+      "id":"borderline",
+      "label":"Add border line top and bottom",
+      "default":false
+    },
+    {
+      "type":"checkbox",
+      "id":"reflect",
+      "label":"Move image to left",
+      "default":false
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+      ],
+      "default": "center",
+      "label": "Image Position"
+    },
+    {
+      "type":"checkbox",
+      "id":"mobile_rev",
+      "label":"Movbile image after text",
+      "default":false
+    },
+    {
+        "type": "range",
+        "id": "ptop",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Section space Top",
+        "default": 40
+    },
+    {
+        "type": "range",
+        "id": "pbottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Section space Bottom",
+        "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.image-with-text.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Image with text",
+          "label": "t:sections.image-with-text.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h1",
+              "label": "h1"
+            },
+            {
+              "value": "h2",
+              "label": "h2"
+            },
+            {
+              "value": "h3",
+              "label": "h3"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.all.heading_size.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.image-with-text.blocks.text.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+          "label": "t:sections.image-with-text.blocks.text.settings.text.label"
+        },
+        {
+            "type": "range",
+            "id": "extra",
+            "min": 280,
+            "max": 600,
+            "step": 10,
+            "unit": "px",
+            "label": "Max Width",
+            "default": 500
+        },
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "url_txt",
+          "label": "t:sections.image-with-text.blocks.button.settings.button_label.label",
+          "info": "t:sections.image-with-text.blocks.button.settings.button_label.info"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:sections.image-with-text.blocks.button.settings.button_link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text with Image Col",
+      "category": "custom",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
