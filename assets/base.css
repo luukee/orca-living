@@ -3185,31 +3185,36 @@ details-disclosure > details {
     opacity: 1;
   }
 }
-@media only screen and (min-width: 750px) {
-  .kl-private-reset-css-Xuajs1[role="dialog"],
-  div[role="dialog"][aria-label="FLYOUT Form"] {
-    left: 0 !important;
-    width: 100vw !important;
-    background-color: hsl(0deg 0% 0% / 27%);
-    animation: klaviyo-flyout-fade-in 0.3s ease forwards;
-    transition: opacity 0.3s ease;
-  }
-  div[role="dialog"][aria-label="FLYOUT Form"].klaviyo-flyout-fade-out {
-    opacity: 0;
-  }
-  [data-testid="klaviyo-form-UWGT7n"] {
-    top: 0 !important;
-    bottom: 0 !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
-    border-radius: 0 !important;
-    --flyout-width: 320px;
-    margin-left: calc(100vw - var(--flyout-width));
-  }
+div[role="dialog"][aria-label="FLYOUT Form"] input {
+  border: none !important;
+  border-bottom: 1px solid #000 !important;
+  padding: 0 !important;
 }
+div[role="dialog"][aria-label="FLYOUT Form"] input:focus-visible {
+  border: none !important;
+  border-bottom: 1px solid #000 !important;
+  padding: 0 !important;
+  outline: none !important;
+}
+.kl-private-reset-css-Xuajs1[role="dialog"],
+div[role="dialog"][aria-label="FLYOUT Form"] {
+  right: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  background-color: hsl(0deg 0% 0% / 27%);
+  animation: klaviyo-flyout-fade-in 0.3s ease forwards;
+  transition: opacity 0.3s ease;
+}
+div[role="dialog"][aria-label="FLYOUT Form"].klaviyo-flyout-fade-out { opacity: 0; }
 [data-testid="klaviyo-form-UWGT7n"] {
-  overflow-y: auto !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  border-radius: 0 !important;
+  --flyout-width: 320px;
+  margin-left: calc(100vw - var(--flyout-width));
 }
+/* klaviyo flyout newsletter form styles END */
+
 .simple-footer small > a:not(:hover) {
   text-decoration: none;
 }
