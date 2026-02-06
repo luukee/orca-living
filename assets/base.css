@@ -3199,6 +3199,7 @@ div[role="dialog"][aria-label="FLYOUT Form"] input:focus-visible {
   padding: 0 !important;
   outline: none !important;
 }
+/*
 .kl-private-reset-css-Xuajs1[role="dialog"],
 div[role="dialog"][aria-label="FLYOUT Form"] {
   right: 0 !important;
@@ -3216,6 +3217,7 @@ div[role="dialog"][aria-label="FLYOUT Form"].klaviyo-flyout-fade-out { opacity: 
   --flyout-width: 320px;
   margin-left: calc(100vw - var(--flyout-width));
 }
+*/
 /* klaviyo flyout newsletter form styles END */
 
 .simple-footer small > a:not(:hover) {
