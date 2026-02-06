@@ -27,11 +27,11 @@
     assign money_price = price | money_with_currency
   endif
 
-  if customer and customer.tags contains 'trade' and show_sale == true
-    assign compare_at_price = price
-    assign price = price | times: 0.9
-    assign money_price = price | money
-  endif
+  # if customer and customer.tags contains 'trade' and show_sale == true
+  #   assign compare_at_price = price
+  #   assign price = price | times: 0.9
+  #   assign money_price = price | money
+  # endif
 
   comment
     if target == product and product.price_varies
