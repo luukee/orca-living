@@ -1,10 +1,157 @@
 {
   "sections": {
     "main": {
-      "type": "main-page"
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "custom_landingpage_rgPfxk": {
+      "type": "custom-landingpage",
+      "blocks": {
+        "heading_3tbnwy": {
+          "type": "heading",
+          "settings": {
+            "heading": "ORCA TRADE PROGRAM",
+            "heading_size": "h1"
+          }
+        },
+        "text_h8dB6G": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our Trade Program supports designers, architects, and builders with project guidance, first access to products, and preferred pricing. Available to approved trade professionals.</p>",
+            "extra": 440
+          }
+        },
+        "text_YWhkfn": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Services include:<br/>-Preferred pricing<br/>-Custom sizes and bulk discounts<br/>-First access to products<br/>-Trade events</p>",
+            "extra": 500
+          }
+        },
+        "link_iaY4pM": {
+          "type": "link",
+          "settings": {
+            "url_txt": "Begin Application",
+            "url": "#"
+          }
+        },
+        "link_FLkWmq": {
+          "type": "link",
+          "settings": {
+            "url_txt": "Log into Account",
+            "url": "#"
+          }
+        }
+      },
+      "block_order": [
+        "heading_3tbnwy",
+        "text_h8dB6G",
+        "text_YWhkfn",
+        "link_iaY4pM",
+        "link_FLkWmq"
+      ],
+      "name": "Text with Image Col",
+      "settings": {
+        "img": "shopify://shop_images/Header_image_1.jpg",
+        "borderline": false,
+        "reflect": false,
+        "position": "right",
+        "mobile_rev": false,
+        "ptop": 40,
+        "pbottom": 40
+      }
+    },
+    "custom_landingpage_XTc6W7": {
+      "type": "custom-landingpage",
+      "blocks": {
+        "heading_Gz3aW8": {
+          "type": "heading",
+          "settings": {
+            "heading": "Samples",
+            "heading_size": "h1"
+          }
+        },
+        "text_czPq8H": {
+          "type": "text",
+          "settings": {
+            "text": "<p>For trade professionals, we offer complimentary sample kits of our paver collections. If you're based in Los Angeles, we offer personalized sample drop-offs.</p>",
+            "extra": 440
+          }
+        },
+        "link_gT8zxM": {
+          "type": "link",
+          "settings": {
+            "url_txt": "Begin Application",
+            "url": "#"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Gz3aW8",
+        "text_czPq8H",
+        "link_gT8zxM"
+      ],
+      "name": "Text with Image Col",
+      "settings": {
+        "img": "shopify://shop_images/Samples_Image_1.jpg",
+        "borderline": true,
+        "reflect": true,
+        "position": "left",
+        "mobile_rev": true,
+        "ptop": 40,
+        "pbottom": 40
+      }
+    },
+    "custom_landingpage_pJ4pcG": {
+      "type": "custom-landingpage",
+      "blocks": {
+        "heading_TNePGD": {
+          "type": "heading",
+          "settings": {
+            "heading": "Get in touch",
+            "heading_size": "h1"
+          }
+        },
+        "text_qd7yhB": {
+          "type": "text",
+          "settings": {
+            "text": "<p>ORCA Showroom<br/>Highland Park, Los Angeles (appointment only)<br/><br/>Hours:<br/>Tuesday - Thursday<br/>10am - 4pm<br/><br/>Phone number: <br/>+1 310-220-0332<br/><br/>If you'd like to visit our showroom, please make an appointment <a href=\"https://calendly.com/orcadesign/showroom\" target=\"_blank\" title=\"https://calendly.com/orcadesign/showroom\">here</a></p>",
+            "extra": 370
+          }
+        },
+        "link_bTzPV7": {
+          "type": "link",
+          "settings": {
+            "url_txt": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_TNePGD",
+        "text_qd7yhB",
+        "link_bTzPV7"
+      ],
+      "name": "Text with Image Col",
+      "settings": {
+        "img": "shopify://shop_images/Get_in_touch_image_1.jpg",
+        "borderline": false,
+        "reflect": false,
+        "position": "center",
+        "mobile_rev": false,
+        "ptop": 40,
+        "pbottom": 0
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_landingpage_rgPfxk",
+    "custom_landingpage_XTc6W7",
+    "custom_landingpage_pJ4pcG"
   ]
 }
