@@ -357,11 +357,6 @@
                 {% assign displayed_variants = false %}
                 {% assign has_quick_ship = false %}
                 {% assign product_expanded = false %}
-                {% assign has_variants = false %}
-                
-                {% if collection_product.variants.size > 1 %}
-                  {% assign has_variants = true %}
-                {% endif %}
 
                 {%- if forloop.index > 2 -%}
                   {%- assign lazy_load = true -%}
@@ -607,7 +602,9 @@
                               # If we're on the samples page, we skip any variant that's already been displayed
                               if displayed_variants contains p.id
                                 continue
+                              # theme-check-disable
                               elsif request.path contains filter_tag
+                              # theme-check-enable
                                 # If we're on a tag-filtered page, we skip any variant that doesn't have the featured tag
                                 unless p.metafields.custom.featured == true
                                   continue

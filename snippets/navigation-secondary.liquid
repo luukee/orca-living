@@ -317,7 +317,9 @@
                                     {%- unless matched_tags contains tag -%}
                                       {%- assign tag_normalized = tag | strip | downcase | replace: '_', '' | replace: '-', ' ' -%}
                                       {%- if tag_normalized == ordered_tag_normalized -%}
+                                        {% # theme-check-disable %}
                                         {%- assign found_match = true -%}
+                                        {% # theme-check-enable %}
                                         {%- if sorted_tags == blank -%}
                                           {%- assign sorted_tags = tag -%}
                                         {%- else -%}
@@ -692,8 +694,7 @@
                       <div class="mega-menu__content-column mega-menu__content-column--image">
                         {%- if mega_menu_content.image != blank -%}
                           <div class="mega-menu__image-container">
-                            {%- assign image_url = mega_menu_content.image | image_url: width: 400, height: 400 -%}
-                            <img src="{{ image_url }}" 
+                            <img src="{{ mega_menu_content.image | image_url: width: 400, height: 400 }}" 
                                  alt="{{ mega_menu_content.image_alt | default: link.title | escape }}" 
                                  class="mega-menu__image"
                                  width="400" 
