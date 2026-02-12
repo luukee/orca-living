@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "main-page",
+      "type": "main-page-full-width",
       "custom_css": [
         "h1 {color: black; margin: 0 0 var(--base-gutter); font-size: 2.4rem;}",
         ".main-page {display: block; max-width: 750px;}"
@@ -21,7 +21,5 @@
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }
