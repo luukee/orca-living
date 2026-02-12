@@ -26,12 +26,8 @@
           }
         }
       },
-      "block_order": [
-        "announcement_c6gPV8"
-      ],
-      "settings": {
-        "hide_on_paths": ""
-      }
+      "block_order": ["announcement_c6gPV8"],
+      "settings": {}
     },
     "header": {
       "type": "header",
@@ -57,8 +53,5 @@
       }
     }
   },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+  "order": ["announcement-bar", "header"]
 }

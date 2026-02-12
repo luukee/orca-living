@@ -1,0 +1,20 @@
+{% comment %}
+  Formats a tag/filter label for display: strip, remove underscores,
+  replace hyphens with spaces, and title-case each word.
+  Accepts: input (string)
+  Output: formatted string (use with capture)
+{% endcomment %}
+{%- assign raw = input | default: '' | strip | replace: '_', '' | replace: '-', ' ' -%}
+{%- assign words = raw | split: ' ' -%}
+{%- assign out = '' -%}
+{%- for word in words -%}
+  {%- if word == '' -%}
+    {%- continue -%}
+  {%- endif -%}
+  {%- if out == '' -%}
+    {%- assign out = word | capitalize -%}
+  {%- else -%}
+    {%- assign out = out | append: ' ' | append: word | capitalize -%}
+  {%- endif -%}
+{%- endfor -%}
+{{- out -}}
