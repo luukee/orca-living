@@ -398,6 +398,7 @@ html.no-js .no-js-hidden {
 }
 .page-width--wide {
   max-width: 100%;
+  padding: 0 calc(var(--grid-gutter) * 0.5);
 }
 .page-width-desktop {
   padding: 0;
@@ -584,6 +585,10 @@ h1,
   .h1 {
     font-size: calc(var(--font-heading-scale) * 3rem);
   }
+}
+h1.h0 {
+  font-size: 2.4rem;
+  margin: 0 0 var(--base-gutter);
 }
 h2,
 .h2 {
