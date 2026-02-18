@@ -45,14 +45,14 @@
           "type": "link",
           "settings": {
             "url_txt": "Begin Application",
-            "url": "#"
+            "url": "https://www.orcaliving.com/account/register"
           }
         },
         "link_FLkWmq": {
           "type": "link",
           "settings": {
             "url_txt": "Log into Account",
-            "url": "#"
+            "url": "https://www.orcaliving.com/account/login?return_url=%2Faccount"
           }
         }
       },
