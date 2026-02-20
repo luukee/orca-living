@@ -204,12 +204,14 @@
                     # Include currency code if enabled in theme settings
                     if settings.currency_code_enabled
                       assign money_price = price | money_with_currency
+                    else 
+                      assign money_price = price | money_without_trailing_zeros
                     endif
 
                     # Apply trade discount: 10% off for customers with 'trade' tag
                     if customer and customer.tags contains 'trade'
                       assign price = price | times: 0.9
-                      assign money_price = price | money
+                      assign money_price = price | money_without_trailing_zeros
                     endif
                   %}
                   <span class='price-item price-item--regular' data-price='{{ price }}'>

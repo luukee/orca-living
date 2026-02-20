@@ -422,35 +422,30 @@
               {%- assign filter_by_tiles = true -%}
             {%- endif -%}
 
-            {% if is_product_page %}
-              {%- for collection_product in current_collection.products -%}
-                {% comment %}Only process products that share any material tags with current product{% endcomment %}
-                {% assign should_process = true %}
-                {% if should_filter_by_tag %}
-                  {% assign should_process = false %}
-                  {% assign product_material_tags = current_product_tag | split: ',' %}
-                  {% for tag in collection_product.tags %}
-                    {% for material_tag in product_material_tags %}
-                      {% if tag == material_tag %}
-                        {% assign should_process = true %}
-                        {% break %}
-                      {% endif %}
-                    {% endfor %}
-                    {% if should_process %}
+          {% if is_product_page %}
+            {%- for collection_product in current_collection.products -%}
+              {% comment %}Only process products that share any material tags with current product{% endcomment %}
+              {% assign should_process = true %}
+              {% if should_filter_by_tag %}
+                {% assign should_process = false %}
+                {% assign product_material_tags = current_product_tag | split: ',' %}
+                {% for tag in collection_product.tags %}
+                  {% for material_tag in product_material_tags %}
+                    {% if tag == material_tag %}
+                      {% assign should_process = true %}
                       {% break %}
                     {% endif %}
                   {% endfor %}
-                {% endif %}
-                
-                {% if should_process %}
-                  {% assign displayed_variants = false %}
-                  {% assign has_quick_ship = false %}
-                  {% assign product_expanded = false %}
-                  {% assign has_variants = false %}
-                  
-                  {% if collection_product.variants.size > 1 %}
-                    {% assign has_variants = true %}
+                  {% if should_process %}
+                    {% break %}
                   {% endif %}
+                {% endfor %}
+              {% endif %}
+              
+              {% if should_process %}
+                {% assign displayed_variants = false %}
+                {% assign has_quick_ship = false %}
+                {% assign product_expanded = false %}
 
                   {%- if forloop.index > 2 -%}
                     {%- assign lazy_load = true -%}
@@ -657,243 +652,226 @@
                         {% for option_variant in option_variants.values %}
                           {% assign filtered_prods = product.variants | where: option_pos, option_variant %}
 
-                          {% for p in filtered_prods %}
-                            {% liquid
-                              ## Filter by tag page
-                              # If we're on a tag-filtered page (on_filter_by_tag_page is true), 
-                              # we skip any variant that doesn't contain the filtered tag in its title
-                              # or has already been displayed
-                              if on_filter_by_tag_page
-                                if displayed_variants contains p.id
-                                  continue
-                                endif
-                                unless p.title contains filter_by_this_tag
-                                  continue
-                                endunless
-                              elsif is_samples
-                                # If we're on the samples page, we skip any variant that's already been displayed
-                                if displayed_variants contains p.id
-                                  continue
-                                elsif section.settings.filter_on_tag != blank and section.settings.filter_on_tag != ' ' and request.path contains section.settings.filter_on_tag
-                                  # If we're on a tag-filtered page, we skip any variant that doesn't have the featured tag
-                                  unless p.metafields.custom.featured == true
-                                    continue
-                                  endunless
-                                endif
-                                unless p.options contains 'Sample'
-                                  # If we're on the samples page, we skip any variant that doesn't have the 'Sample' option
-                                  continue
-                                endunless
-                              else
-                                # If we're on a regular collection page, we skip any variant that's already been displayed or has the 'Sample' option
-                                if displayed_variants contains p.id or p.options contains 'Sample'
-                                  continue
-                                endif
+                        {% for p in filtered_prods %}
+                          {% liquid
+                            ## Filter by tag page
+                            # If we're on a tag-filtered page (on_filter_by_tag_page is true), 
+                            # we skip any variant that doesn't contain the filtered tag in its title
+                            # or has already been displayed
+                            if on_filter_by_tag_page
+                              if displayed_variants contains p.id
+                                continue
                               endif
+                              unless p.title contains filter_by_this_tag
+                                continue
+                              endunless
+                            elsif is_samples
+                              # If we're on the samples page, we skip any variant that's already been displayed
+                              if displayed_variants contains p.id
+                                continue
+                              # theme-check-disable
+                              elsif request.path contains filter_tag
+                              # theme-check-enable
+                                # If we're on a tag-filtered page, we skip any variant that doesn't have the featured tag
+                                unless p.metafields.custom.featured == true
+                                  continue
+                                endunless
+                              endif
+                              unless p.options contains 'Sample'
+                                # If we're on the samples page, we skip any variant that doesn't have the 'Sample' option
+                                continue
+                              endunless
+                            else
+                              # If we're on a regular collection page, we skip any variant that's already been displayed or has the 'Sample' option
+                              if displayed_variants contains p.id or p.options contains 'Sample'
+                                continue
+                              endif
+                            endif
+                            
+                            ## Material filter - NEW
+                            # If we have an active material filter, only show variants with that material
+                            if active_material != ''
+                              assign variant_material = ''
+                              assign material_match = false
                               
-                              ## Material filter - NEW
-                              # If we have an active material filter, only show variants with that material
-                              if active_material != ''
-                                assign variant_material = ''
-                                assign material_match = false
-                                
-                                # First try to get material from variant options (for products with Material as option)
-                                for option in product.options
-                                  if option == 'Material'
-                                    assign option_index = forloop.index0
-                                    assign variant_material = p.options[option_index] | downcase | strip
+                              # First try to get material from variant options (for products with Material as option)
+                              for option in product.options
+                                if option == 'Material'
+                                  assign option_index = forloop.index0
+                                  assign variant_material = p.options[option_index] | downcase | strip
+                                  if variant_material == active_material
+                                    assign material_match = true
+                                  endif
+                                  break
+                                endif
+                              endfor
+                              # If no match found in options, try variant metafields (for products with Material as metafield)
+                              unless material_match
+                                if p.metafields.custom.material != blank
+                                  if p.metafields.custom.material.value.first
+                                    # It's a list of values
+                                    for material_item in p.metafields.custom.material.value
+                                      assign variant_material = material_item | downcase | strip
+                                      if variant_material == active_material
+                                        assign material_match = true
+                                        break
+                                      endif
+                                    endfor
+                                  else
+                                    # It's a single value
+                                    assign variant_material = p.metafields.custom.material.value | downcase | strip
                                     if variant_material == active_material
                                       assign material_match = true
                                     endif
-                                    break
                                   endif
-                                endfor
-                                # If no match found in options, try variant metafields (for products with Material as metafield)
-                                unless material_match
-                                  if p.metafields.custom.material != blank
-                                    if p.metafields.custom.material.value.first
-                                      # It's a list of values
-                                      for material_item in p.metafields.custom.material.value
-                                        assign variant_material = material_item | downcase | strip
-                                        if variant_material == active_material
-                                          assign material_match = true
-                                          break
-                                        endif
-                                      endfor
-                                    else
-                                      # It's a single value
-                                      assign variant_material = p.metafields.custom.material.value | downcase | strip
+                                endif
+                              endunless
+                              
+                              # If still no match, try product metafields as fallback
+                              unless material_match
+                                if product.metafields.custom.material != blank
+                                  if product.metafields.custom.material.value.first
+                                    # It's a list of values
+                                    for material_item in product.metafields.custom.material.value
+                                      assign variant_material = material_item | downcase | strip
                                       if variant_material == active_material
                                         assign material_match = true
+                                        break
                                       endif
+                                    endfor
+                                  else
+                                    # It's a single value
+                                    assign variant_material = product.metafields.custom.material.value | downcase | strip
+                                    if variant_material == active_material
+                                      assign material_match = true
                                     endif
                                   endif
-                                endunless
-                                
-                                # If still no match, try product metafields as fallback
-                                unless material_match
-                                  if product.metafields.custom.material != blank
-                                    if product.metafields.custom.material.value.first
-                                      # It's a list of values
-                                      for material_item in product.metafields.custom.material.value
-                                        assign variant_material = material_item | downcase | strip
-                                        if variant_material == active_material
-                                          assign material_match = true
-                                          break
-                                        endif
-                                      endfor
-                                    else
-                                      # It's a single value
-                                      assign variant_material = product.metafields.custom.material.value | downcase | strip
-                                      if variant_material == active_material
-                                        assign material_match = true
-                                      endif
+                                endif
+                              endunless
+                              
+                              # Skip this variant if no material match found
+                              unless material_match
+                                continue
+                              endunless
+                            endif
+                            
+                            ## Use case filter
+                            # If we have an active use_case filter, only show variants with that use_case
+                            if active_use_case != ''
+                              assign variant_use_case = ''
+                              assign use_case_match = false
+                              
+                              # Try variant metafield first
+                              if p.metafields.custom.use_case != blank
+                                if p.metafields.custom.use_case.value.first
+                                  # It's a list of values
+                                  for use_case_item in p.metafields.custom.use_case.value
+                                    assign variant_use_case = use_case_item | downcase | strip
+                                    # Check if the use_case contains the filter value (handles "Downlight • Steps" type values)
+                                    if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                      assign use_case_match = true
+                                      break
                                     endif
+                                  endfor
+                                else
+                                  # It's a single value - check if it contains the filter value
+                                  assign variant_use_case = p.metafields.custom.use_case.value | downcase | strip
+                                  if variant_use_case contains active_use_case or variant_use_case == active_use_case
+                                    assign use_case_match = true
                                   endif
-                                endunless
-                                
-                                # Skip this variant if no material match found
-                                unless material_match
-                                  continue
-                                endunless
+                                endif
                               endif
                               
-                              ## Use case filter
-                              # If we have an active use_case filter, only show variants with that use_case
-                              if active_use_case != ''
-                                assign variant_use_case = ''
-                                assign use_case_match = false
-                                
-                                # Try variant metafield first
-                                if p.metafields.custom.use_case != blank
-                                  if p.metafields.custom.use_case.value.first
-                                    # It's a list of values
-                                    for use_case_item in p.metafields.custom.use_case.value
+                              # If still no match, try product metafield as fallback
+                              unless use_case_match
+                                if product.metafields.custom.use_case != blank
+                                  if product.metafields.custom.use_case.value.first
+                                    for use_case_item in product.metafields.custom.use_case.value
                                       assign variant_use_case = use_case_item | downcase | strip
-                                      # Check if the use_case contains the filter value (handles "Downlight • Steps" type values)
                                       if variant_use_case contains active_use_case or variant_use_case == active_use_case
                                         assign use_case_match = true
                                         break
                                       endif
                                     endfor
                                   else
-                                    # It's a single value - check if it contains the filter value
-                                    assign variant_use_case = p.metafields.custom.use_case.value | downcase | strip
+                                    assign variant_use_case = product.metafields.custom.use_case.value | downcase | strip
                                     if variant_use_case contains active_use_case or variant_use_case == active_use_case
                                       assign use_case_match = true
                                     endif
                                   endif
                                 endif
-                                
-                                # If still no match, try product metafield as fallback
-                                unless use_case_match
-                                  if product.metafields.custom.use_case != blank
-                                    if product.metafields.custom.use_case.value.first
-                                      for use_case_item in product.metafields.custom.use_case.value
-                                        assign variant_use_case = use_case_item | downcase | strip
-                                        if variant_use_case contains active_use_case or variant_use_case == active_use_case
-                                          assign use_case_match = true
-                                          break
-                                        endif
-                                      endfor
-                                    else
-                                      assign variant_use_case = product.metafields.custom.use_case.value | downcase | strip
-                                      if variant_use_case contains active_use_case or variant_use_case == active_use_case
-                                        assign use_case_match = true
-                                      endif
-                                    endif
-                                  endif
-                                endunless
-                                
-                                # Skip this variant if no use_case match found
-                                unless use_case_match
-                                  continue
-                                endunless
-                              endif
+                              endunless
                               
-                              ## Color filter - only show variants matching selected color
-                              if active_color != ''
-                                assign variant_color = ''
-                                assign color_match = false
-                                for option in product.options
-                                  if option == 'Color'
-                                    assign option_index = forloop.index0
-                                    assign variant_color = p.options[option_index] | downcase | strip
-                                    if variant_color == active_color
-                                      assign color_match = true
-                                    endif
-                                    break
-                                  endif
-                                endfor
-                                unless color_match
-                                  continue
-                                endunless
-                              endif
-                              
-                              ## Tiles filter - Filter by Size = "Tile"
-                              # If we're on the Tiles page, only show variants where Size = "Tile"
-                              if filter_by_tiles
-                                assign variant_size = ''
-                                assign size_match = false
-                                
-                                # Find the Size option position
-                                for option in product.options
-                                  if option == 'Size'
-                                    assign option_index = forloop.index0
-                                    assign variant_size = p.options[option_index] | strip
-                                    # Check if variant size is "Tile" (case-insensitive)
-                                    assign variant_size_lower = variant_size | downcase
-                                    if variant_size_lower == 'tile'
-                                      assign size_match = true
-                                    endif
-                                    break
-                                  endif
-                                endfor
-                                
-                                # Skip this variant if it's not a Tile size
-                                unless size_match
-                                  continue
-                                endunless
-                              endif
+                              # Skip this variant if no use_case match found
+                              unless use_case_match
+                                continue
+                              endunless
+                            endif
                             
-                              # Add the variant ID to the displayed_variants array
-                              assign displayed_variants = displayed_variants | append: ' ' | append: p.id
-                              # Set the product title to the product's title
-                              assign prod_title = product.title
-                              if collection.title == 'Pavers'
-                                # if the collection title is 'Pavers', remove the 'Paver' from the product title
-                                assign prod_title = prod_title | replace: 'Paver ', '' | replace: 'Paver', '' | strip
-                              endif
-                              # If the split option is 'Size' and the variant has an option2, 
-                              # set the product title to the product's title plus ' in ' plus the variant's option2
-                              if split_option == 'Size' and p.option2 != blank
-                                # If the option position is 'option1', 
-                                # set the product title to the product's title plus ' in ' plus the variant's option2
-                                if option_pos == 'option1'
-                                  assign prod_title = prod_title | append: ' in ' | append: p.option2
-                                else
-                                  # If the option position is 'option2', 
-                                  # set the product title to the product's title plus ' in ' plus the variant's option1
-                                  assign prod_title = prod_title | append: ' in ' | append: p.option1
-                                endif
-                              else
-                                # If the split option is not 'Size', 
-                                # set the product title to the product's title plus ' in ' plus the split option
-                                assign prod_title = prod_title | append: ' in ' | append: option_variant
-                              endif
-                            %}
-                            {%- comment -%} Get material and color for data attributes {%- endcomment -%}
-                            {%- liquid
-                              assign variant_material_value = ''
-                              assign variant_color_value = ''
+                            ## Tiles filter - Filter by Size = "Tile"
+                            # If we're on the Tiles page, only show variants where Size = "Tile"
+                            if filter_by_tiles
+                              assign variant_size = ''
+                              assign size_match = false
+                              
+                              # Find the Size option position
                               for option in product.options
-                                if option == 'Material'
-                                  assign opt_idx = forloop.index0
-                                  assign variant_material_value = p.options[opt_idx]
-                                elsif option == 'Color'
-                                  assign opt_idx = forloop.index0
-                                  assign variant_color_value = p.options[opt_idx]
+                                if option == 'Size'
+                                  assign option_index = forloop.index0
+                                  assign variant_size = p.options[option_index] | strip
+                                  # Check if variant size is "Tile" (case-insensitive)
+                                  assign variant_size_lower = variant_size | downcase
+                                  if variant_size_lower == 'tile'
+                                    assign size_match = true
+                                  endif
+                                  break
                                 endif
+                              endfor
+                              
+                              # Skip this variant if it's not a Tile size
+                              unless size_match
+                                continue
+                              endunless
+                            endif
+                          
+                            # Add the variant ID to the displayed_variants array
+                            assign displayed_variants = displayed_variants | append: ' ' | append: p.id
+                            # Set the product title to the product's title
+                            assign prod_title = product.title
+                            if collection.title == 'Pavers'
+                              # if the collection title is 'Pavers', remove the 'Paver' from the product title
+                              assign prod_title = prod_title | replace: 'Paver ', '' | replace: 'Paver', '' | strip
+                            endif
+                            # If the split option is 'Size' and the variant has an option2, 
+                            # set the product title to the product's title plus ' in ' plus the variant's option2
+                            if split_option == 'Size' and p.option2 != blank
+                              # If the option position is 'option1', 
+                              # set the product title to the product's title plus ' in ' plus the variant's option2
+                              if option_pos == 'option1'
+                                assign prod_title = prod_title | append: ' in ' | append: p.option2
+                              else
+                                # If the option position is 'option2', 
+                                # set the product title to the product's title plus ' in ' plus the variant's option1
+                                assign prod_title = prod_title | append: ' in ' | append: p.option1
+                              endif
+                            else
+                              # If the split option is not 'Size', 
+                              # set the product title to the product's title plus ' in ' plus the split option
+                              assign prod_title = prod_title | append: ' in ' | append: option_variant
+                            endif
+                          %}
+                          {% liquid
+                            assign link_variant = nil
+                            assign use_product_url_without_variant = false
+                            assign hide_product_link = false
+                            if is_samples
+                              for v in product.variants
+                                unless v.title contains 'Sample'
+                                  if v.option2 == p.option2
+                                    assign link_variant = v
+                                    break
+                                  endif
+                                endunless
                               endfor
                               unless variant_material_value != ''
                                 if p.metafields.custom.material != blank
