@@ -80,7 +80,7 @@
         "heading_Gz3aW8": {
           "type": "heading",
           "settings": {
-            "heading": "Samples",
+            "heading": "SAMPLES",
             "heading_size": "h1"
           }
         },
@@ -115,13 +115,77 @@
         "pbottom": 40
       }
     },
+    "collapsible_content_faq_6kRr8X": {
+      "type": "collapsible-content-faq",
+      "blocks": {
+        "collapsible_row_76yKQt": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How long does approval take?",
+            "icon": "none",
+            "row_content": "<p>2 business days</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_CFmwQk": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is there a minimum order?",
+            "icon": "none",
+            "row_content": "<p>Our minimum is 80 sqft but we can support smaller projects, please contact us at <a href=\"mailto:trade@orcaliving.com\">trade@orcaliving.com</a> to discuss your project.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_WXgQcj": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you support large or hospitality projects?",
+            "icon": "none",
+            "row_content": "<p>Yes, we work with large projects for custom quotes.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_qaKeCc": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can your outdoor products be used indoors?",
+            "icon": "none",
+            "row_content": "<p>Yes, our materials can be used indoors. Additional info can be found on our FAQ page.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_76yKQt",
+        "collapsible_row_CFmwQk",
+        "collapsible_row_WXgQcj",
+        "collapsible_row_qaKeCc"
+      ],
+      "name": "Collapsible Content FAQ",
+      "settings": {
+        "caption": "",
+        "heading": "FAQ",
+        "heading_size": "h0",
+        "heading_alignment": "left",
+        "layout": "section",
+        "color_scheme": "background-1",
+        "container_color_scheme": "background-1",
+        "show_bottom_border": true,
+        "max_width_none": false,
+        "open_first_collapsible_row": true,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 72
+      }
+    },
     "custom_landingpage_pJ4pcG": {
       "type": "custom-landingpage",
       "blocks": {
         "heading_TNePGD": {
           "type": "heading",
           "settings": {
-            "heading": "Get in touch",
+            "heading": "GET IN TOUCH",
             "heading_size": "h1"
           }
         },
@@ -150,7 +214,7 @@
         "img": "shopify://shop_images/Get_in_touch_image_1.jpg",
         "borderline": false,
         "reflect": false,
-        "position": "center",
+        "position": "right",
         "mobile_rev": false,
         "ptop": 40,
         "pbottom": 0
@@ -161,6 +225,7 @@
     "main",
     "custom_landingpage_rgPfxk",
     "custom_landingpage_XTc6W7",
+    "collapsible_content_faq_6kRr8X",
     "custom_landingpage_pJ4pcG"
   ]
 }
