@@ -34,25 +34,29 @@
 }
 .column-two{
     width:60%;
-    padding-right:10%;
+    /* padding-right:; */
 }
 #section-{{ section.id }} .section--title h1{
     margin-top:0px;
+    font-family: 'MonumentGrotesk-mono';
+    font-size: 55px;
+    letter-spacing: 2px;
 }
 
 #section-{{ section.id }} .padding-space-txts{
     padding-left:8%;
 }
 #section-{{ section.id }} .landing-img{
-   max-height:600px;
-   width: auto;
-   object-fit: contain;
+   width: 500px;
+   height: 600px;
+   object-fit: cover;
 }
 @media (max-width:989px){
     #section-{{ section.id }} .landing-img{
-        width:100%;
-        height:auto;
-        max-height: inherit;
+        width: 100%;
+        height: auto;
+        max-height: 600px;
+        aspect-ratio: 1;
     }
 }
 @media (max-width:740px){
@@ -68,7 +72,7 @@
         width:100%;
     }
     .column-two{
-        width:100%;
+        width: 100%;
         padding-right:0;
     }
     #section-{{ section.id }} .padding-space-txts{
@@ -85,8 +89,8 @@
     <div class="page-width">  
         <div class="row {% if section.settings.mobile_rev %}mobile-reverse{% endif %}">
             {% if section.settings.reflect %}
-                <div class="column-one text-center">
-                    <img class="landing-img" src="{{ section.settings.img | img_url:'master'}}" alt="{{ section.settings.img.alt | escape }}">
+                <div class="column-one">
+                    <img class="landing-img" src="{{ section.settings.img | img_url:'master'}}" alt="{{ section.settings.img.alt | escape }}" width="400" height="600">
                 </div>
                 <div class="column-two padding-space-txts">
                     {%- for block in section.blocks -%}
@@ -140,7 +144,7 @@
                     {% endfor %}    
                 </div>
                 <div class="column-two {% if section.settings.position == 'center' %}text-center{% elsif section.settings.position == 'right'%}text-right{% else %}text-left{% endif %}">
-                    <img class="landing-img" src="{{ section.settings.img | img_url:'master'}}" alt="{{ section.settings.img.alt | escape }}">
+                    <img class="landing-img" src="{{ section.settings.img | img_url:'master'}}" alt="{{ section.settings.img.alt | escape }}" width="400" height="600">
                 </div>
             {% endif %}    
         </div> {% comment %} End Row {% endcomment %}

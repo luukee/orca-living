@@ -12,6 +12,25 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  #shopify-section-{{ section.id }}.section {
+    padding-bottom: 0;
+  }
+  h6, .h6 {
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+  }
+  .collapsible-content__heading {
+    font-family: 'MonumentGrotesk-mono';
+  }
+  {% if section.settings.show_bottom_border %}
+    #shopify-section-{{ section.id }} .collapsible-content-faq .collapsible-content__wrapper  {
+      border-bottom: 1px solid #000;
+    }
+  {% endif %}
+  {% if section.settings.max_width_none %}
+    .collapsible-content-wrapper-narrow {
+      max-width: unset;
+    }
+  {% endif %}
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -231,6 +250,18 @@
       "default": "background-2",
       "label": "t:sections.collapsible_content.settings.container_color_scheme.label",
       "info": "t:sections.collapsible_content.settings.container_color_scheme.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_border",
+      "default": true,
+      "label": "Show bottom border"
+    },
+    {
+      "type": "checkbox",
+      "id": "max_width_none",
+      "default": true,
+      "label": "Max width none"
     },
     {
       "type": "checkbox",
