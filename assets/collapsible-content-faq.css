@@ -1,0 +1,168 @@
+.accordion summary {
+  display: flex;
+  position: relative;
+  line-height: 1;
+  padding: var(--base-gutter--half) 0;
+}
+.accordion .summary__title {
+  display: flex;
+  flex: 1;
+}
+.accordion .summary__title + .icon-caret {
+  height: calc(var(--font-heading-scale) * 0.6rem);
+}
+.accordion + .accordion {
+  margin-top: 0;
+  border-top: none;
+}
+.accordion {
+  margin-top: 2.5rem;
+  margin-bottom: 0;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.accordion__title {
+  display: inline-block;
+  max-width: calc(100% - 6rem);
+  min-height: 1.6rem;
+  margin: 0;
+  word-break: break-word;
+}
+.accordion .icon-accordion {
+  align-self: center;
+  fill: rgb(var(--color-foreground));
+  height: calc(var(--font-heading-scale) * 2rem);
+  margin-right: calc(var(--font-heading-scale) * 1rem);
+  width: calc(var(--font-heading-scale) * 2rem);
+}
+.accordion details[open] > summary .icon-caret {
+  transform: rotate(180deg);
+}
+.accordion__content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms ease-in-out;
+  margin-bottom: 1.5rem;
+  word-break: break-word;
+  overflow-x: auto;
+  padding: 0;
+}
+.accordion__content img {
+  max-width: 100%;
+}
+.collapsible-content-faq details[open] .accordion__content {
+  grid-template-rows: 1fr;
+}
+.collapsible-content-faq details:not([open]) .accordion__content {
+  display: grid !important;
+}
+.collapsible-content-faq details[open] .accordion__content.is-opening {
+  grid-template-rows: 0fr;
+}
+/* Trigger close animation; open is removed in JS after transitionend */
+.collapsible-content-faq details[open] .accordion__content.is-closing {
+  grid-template-rows: 0fr;
+}
+.accordion__content-inner {
+  min-height: 0;
+  overflow: hidden;
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+.collapsible-content {
+  position: relative;
+  z-index: 0;
+}
+.collapsible-section-layout {
+  padding-bottom: 5rem;
+  padding-top: 5rem;
+}
+@media only screen and (min-width: 750px) {
+  .collapsible-section-layout {
+    padding-bottom: 7rem;
+    padding-top: 7rem;
+  }
+}
+.collapsible-content__media--small {
+  height: 19.4rem;
+}
+.collapsible-content__media--large {
+  height: 43.5rem;
+}
+@media only screen and (min-width: 750px) {
+  .collapsible-content__media--small {
+    height: 31.4rem;
+  }
+  .collapsible-content__media--large {
+    height: 69.5rem;
+  }
+}
+@media only screen and (min-width: 750px) {
+  .collapsible-content__grid--reverse {
+    flex-direction: row-reverse;
+  }
+}
+.collapsible-content-wrapper-narrow {
+  margin: 0 auto;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+  max-width: 73.4rem;
+}
+.collapsible-content__header {
+  word-break: break-word;
+}
+.collapsible-content__heading {
+  margin-bottom: 2rem;
+  margin-top: 0;
+}
+@media only screen and (min-width: 750px) {
+  .collapsible-content__heading {
+    margin-bottom: 3rem;
+  }
+}
+.collapsible-none-layout .accordion + .accordion {
+  border-top: 0;
+}
+.collapsible-row-layout .accordion:not(:first-child):not(.color-background-1) {
+  margin-top: 1rem;
+}
+.caption-with-letter-spacing + h2 {
+  margin-top: 1rem;
+}
+@media only screen and (min-width: 750px) {
+  .collapsible-content .accordion {
+    margin-top: 0;
+  }
+}
+.collapsible-row-layout .accordion {
+  border: var(--text-boxes-border-width) solid
+    rgba(var(--color-foreground), var(--text-boxes-border-opacity));
+  margin-bottom: 1.5rem;
+}
+.collapsible-row-layout .accordion summary,
+.collapsible-row-layout .accordion .accordion__content {
+  padding: 1.5rem;
+}
+.collapsible-row-layout .accordion .accordion__content {
+  padding-top: 0;
+}
+@supports not (inset: 10px) {
+  @media only screen and (min-width: 750px) {
+    .collapsible-content__grid:not(.collapsible-content__grid--reverse)
+      .grid__item:last-child,
+    .collapsible-content__grid--reverse .collapsible-content__grid-item {
+      padding-left: 5rem;
+      padding-right: 0;
+    }
+  }
+  @media only screen and (min-width: 990px) {
+    .collapsible-content__grid:not(.collapsible-content__grid--reverse)
+      .grid__item:last-child,
+    .collapsible-content__grid--reverse .collapsible-content__grid-item {
+      padding-left: 7rem;
+    }
+  }
+}
+/*# sourceMappingURL=collapsible-content.css.map */
