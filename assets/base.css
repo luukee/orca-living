@@ -33,6 +33,8 @@
   --grid-row1-col1: 1 / 1 / 1 / 4;
   --grid-row2-col2: 2 / 3 / 2 / 4;
   --grid-row2-colAll: 2 / 1 / 2 / 4;
+  --font-heading-family: 'MonumentGrotesk-mono';
+  --font-heading-size: 30px;
 }
 :root,
 :after,
@@ -46,6 +48,7 @@
       calc(var(--columns--middle) + var(--columns--gap));
     --columns--content: calc(50% - var(--columns--gap))
       calc(50% - var(--columns--gap)); 
+    --font-heading-size: 55px;
   }
 }
 @media only screen and (min-width: 990px) {
