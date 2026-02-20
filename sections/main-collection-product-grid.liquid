@@ -250,7 +250,7 @@
                 {%- endif -%}
               </span>
             </h2>
-            {%- render 'loading-spinner' -%}
+            {%- render 'loading-spinner.svg' | inline_asset_content -%}
           </div>
         </form>
       </facet-filters-form>
@@ -864,6 +864,8 @@
                             assign link_variant = nil
                             assign use_product_url_without_variant = false
                             assign hide_product_link = false
+                            assign variant_material_value = ''
+                            assign variant_color_value = ''
                             if is_samples
                               for v in product.variants
                                 unless v.title contains 'Sample'
@@ -873,6 +875,10 @@
                                   endif
                                 endunless
                               endfor
+                              if link_variant == nil
+                                assign use_product_url_without_variant = true
+                                assign hide_product_link = true
+                              endif
                               unless variant_material_value != ''
                                 if p.metafields.custom.material != blank
                                   if p.metafields.custom.material.value.first
@@ -888,13 +894,14 @@
                                   endif
                                 endif
                               endunless
+                            endif
                             -%}
                             <li class='grid__item grid__item-COLLECTION-by-variant' 
-                            data-size='{{ p.option1 | escape }}'
-                            data-use-case='{{ p.metafields.custom.use_case | default: product.metafields.custom.use_case | escape }}'
-                            {% if variant_material_value != blank %}data-material='{{ variant_material_value | downcase | escape }}'{% endif %}
-                            {% if variant_color_value != blank %}data-color='{{ variant_color_value | downcase | escape }}'{% endif %}
-                            {% if p.metafields.custom.group != blank %}data-group='{{ p.metafields.custom.group }}'{% endif %}>
+                              data-size='{{ p.option1 | escape }}'
+                              data-use-case='{{ p.metafields.custom.use_case | default: product.metafields.custom.use_case | escape }}'
+                              {% if variant_material_value != blank %}data-material='{{ variant_material_value | downcase | escape }}'{% endif %}
+                              {% if variant_color_value != blank %}data-color='{{ variant_color_value | downcase | escape }}'{% endif %}
+                              {% if p.metafields.custom.group != blank %}data-group='{{ p.metafields.custom.group }}'{% endif %}>
                               <!-- COLLECTION by variant card-product-nine15 -->
                               {% render 'card-product-nine15',
                                 product_title: prod_title,
@@ -913,7 +920,9 @@
                                 section_id: section.id
                                 enable_quick_ship_card_badge: section.settings.enable_quick_ship_card_badge,
                                 quick_ship_card_badge_text: section.settings.quick_ship_card_badge_text,
-                                enable_order_samples_button: section.settings.enable_order_samples_button
+                                enable_order_samples_button: section.settings.enable_order_samples_button,
+                                use_product_url_without_variant: use_product_url_without_variant,
+                                hide_product_link: hide_product_link
                               %}
                             </li>
                             {% assign index = index | plus: 1 %}
