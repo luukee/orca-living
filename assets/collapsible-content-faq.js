@@ -10,9 +10,11 @@
       return
     }
     content.classList.add('is-closing')
+    details.classList.add('is-closing')
     function finish() {
       content.removeEventListener('transitionend', finish)
       details.removeAttribute('open')
+      details.classList.remove('is-closing')
       var sum = details.querySelector('summary')
       if (sum) sum.setAttribute('aria-expanded', 'false')
       if (onDone) onDone()
@@ -21,7 +23,6 @@
       })
     }
     content.addEventListener('transitionend', finish)
-    // Fallback if transitionend doesn’t fire (e.g. disabled animations)
     setTimeout(finish, DURATION_MS + 50)
   }
 

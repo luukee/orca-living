@@ -1,8 +1,11 @@
+details {
+  padding: 1.5rem 0;
+}
 .accordion summary {
   display: flex;
+  justify-content: space-between;
   position: relative;
   line-height: 1;
-  padding: var(--base-gutter--half) 0;
 }
 .accordion .summary__title {
   display: flex;
@@ -20,6 +23,13 @@
   margin-bottom: 0;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
+}
+.accordion .img {
+  background: var(--color--line-1);
+  border-radius: 150px;
+  color: #000;
+  height: 30px;
+  width: 30px;
 }
 .accordion__title {
   display: inline-block;
@@ -42,7 +52,7 @@
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 300ms ease-in-out;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   word-break: break-word;
   overflow-x: auto;
   padding: 0;
@@ -53,9 +63,7 @@
 .collapsible-content-faq details[open] .accordion__content {
   grid-template-rows: 1fr;
 }
-.collapsible-content-faq details:not([open]) .accordion__content {
-  display: grid !important;
-}
+
 .collapsible-content-faq details[open] .accordion__content.is-opening {
   grid-template-rows: 0fr;
 }
@@ -67,7 +75,7 @@
   min-height: 0;
   overflow: hidden;
   p {
-    margin-top: 0;
+    margin-top: 1.5rem;
     margin-bottom: 0;
   }
 }
@@ -165,4 +173,66 @@
     }
   }
 }
-/*# sourceMappingURL=collapsible-content.css.map */
+/* Plus/minus icon twirl (emulate master accordion) */
+.collapsible-content-faq .accordion .img {
+  position: relative;
+  /* flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+.collapsible-content-faq .accordion .img svg.plus,
+.collapsible-content-faq .accordion .img svg.minus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.4s ease-out;
+}
+.collapsible-content-faq .accordion .img svg.plus {
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.4s ease-out,
+    visibility 0s linear 0.3s;
+}
+.collapsible-content-faq .accordion .img svg.minus {
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.4s ease-out,
+    visibility 0s;
+}
+.collapsible-content-faq .accordion .img svg.plus {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 1;
+  visibility: visible;
+}
+.collapsible-content-faq .accordion .img svg.minus {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 0;
+  visibility: hidden;
+}
+.collapsible-content-faq .accordion details[open] .img svg.plus {
+  transform: translate(-50%, -50%) rotate(-360deg);
+  opacity: 0;
+  visibility: hidden;
+}
+.collapsible-content-faq .accordion details[open] .img svg.minus {
+  transform: translate(-50%, -50%) rotate(-360deg);
+  opacity: 1;
+  visibility: visible;
+}
+/* Icon “closed” state when details is closing (so reverse spin runs in tandem with content) */
+.collapsible-content-faq .accordion details.is-closing .img svg.plus {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 1;
+  visibility: visible;
+}
+.collapsible-content-faq .accordion details.is-closing .img svg.minus {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 0;
+  /* visibility: hidden omitted so minus stays in layout during spin; default rule hides it after */
+}
