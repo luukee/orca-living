@@ -405,7 +405,8 @@ class QuantityInput extends HTMLElement {
     const unitCents = atcButtonPrice.getAttribute('data-price')
     if (unitCents == null || unitCents === '') return
     const totalCents = parseFloat(unitCents, 10) * value
-    const totalDollars = (totalCents / 100).toFixed(2)
+    const totalDollarsNum = totalCents / 100
+    const totalDollars = totalDollarsNum.toFixed(2).replace(/\.?0+$/, '')
     atcButtonPrice.textContent = `$${totalDollars}`
   }
 
