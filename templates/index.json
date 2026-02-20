@@ -99,7 +99,7 @@
         "background_color": "",
         "spacing_top": "",
         "spacing_bottom": "",
-        "custom_css": ""
+        "custom_css": "header-drawer {\ndisplay: none;\n}"
       }
     }
   },
