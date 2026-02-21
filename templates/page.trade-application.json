@@ -19,9 +19,30 @@
         "padding_top": 32,
         "padding_bottom": 32
       }
+    },
+    "17716270807978aa95": {
+      "type": "apps",
+      "blocks": {
+        "helium_customer_fields_app_block_xUJCWM": {
+          "type": "shopify://apps/helium-customer-fields/blocks/app-block/bab58598-3e6a-4377-aaaa-97189b15f131",
+          "settings": {
+            "form_id": "PytVkY",
+            "width": 740,
+            "vertical_spacing": 0,
+            "horizontal_spacing": 0
+          }
+        }
+      },
+      "block_order": [
+        "helium_customer_fields_app_block_xUJCWM"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "17716270807978aa95"
   ]
 }
