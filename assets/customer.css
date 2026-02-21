@@ -16,7 +16,7 @@ section.section--register {
 }
 .customer:not(.account):not(.order):not(.register):not(.addresses) {
   margin: 0 auto;
-  padding: 0 1rem 0 1rem;
+  padding: 0 1rem 0 0;
 }
 .customer > h1,
 .customer__title {
