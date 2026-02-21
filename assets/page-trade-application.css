@@ -1,5 +1,15 @@
+/* Keep 3-column grid (middle column width) but add a row so both sections stack in the middle. */
+.main--page-trade-application {
+  grid-template-areas: 'left banner banner' 'left middle right' 'left middle right';
+}
+.main--page-trade-application > *:nth-child(1) {
+  grid-area: banner;
+  grid-column: 2 / span 1;
+}
+.main--page-trade-application > *:nth-child(2) {
+  grid-area: middle;
+}
 /* Helium Customer Fields (.cf-field) + theme form styling – borders/shadows */
-
 .cf-field-container,
 .cf-field-container > .cf-field {
   border: none !important;

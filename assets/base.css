@@ -35,6 +35,7 @@
   --grid-row2-colAll: 2 / 1 / 2 / 4;
   --font-heading-family: 'MonumentGrotesk-mono';
   --font-heading-size: 30px;
+  --main-page-title-size: 2.4rem;
 }
 :root,
 :after,
@@ -454,7 +455,7 @@ html.no-js .no-js-hidden {
   /* Prevent section from taking up the full width */
   main.content-for-layout > .section.section--register {
     min-width: unset;
-    grid-column: 2 / span 1;
+    max-width: 500px;
   }
 }
 .element-margin-top {
@@ -1017,6 +1018,29 @@ summary::-webkit-details-marker {
 .no-js .focus-offset:focus:not(:focus-visible) {
   outline: 0;
   box-shadow: none;
+}
+.main-page-title {
+  font-size: var(--main-page-title-size);
+  margin-bottom: var(--base-gutter--quarter);
+}
+
+@media only screen and (min-width: 750px) {
+  .main-page-title {
+    margin-bottom: var(--base-gutter--half);
+  }
+}
+.main-page-title-container {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+@media only screen and (min-width: 750px) {
+  .main-page-title-container {
+    padding: 0;
+  }
+  .main-page-title-container {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
 }
 .title,
 .title-wrapper-with-link {
@@ -3343,7 +3367,7 @@ div[role="dialog"][aria-label="FLYOUT Form"].klaviyo-flyout-fade-out { opacity: 
 }
 
 /* Tablet and desktop layout */
-@media (min-width: 750px) {
+@media (min-width: 989px) {
   .template-container,
   .main--register {
     display: grid;
@@ -3375,7 +3399,8 @@ div[role="dialog"][aria-label="FLYOUT Form"].klaviyo-flyout-fade-out { opacity: 
   .template-container,
   .main--blog,
   .main--article,
-  .main--register {
+  .main--register,
+  .main--page-trade-application {
     display: grid;
     grid-template-areas: 'left banner banner' 'left middle right';
     grid-template-columns: 200px 1fr 1fr;

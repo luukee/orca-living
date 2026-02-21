@@ -23,13 +23,15 @@
 {% endif %}
 
 <div class="customer register section-{{ section.id }}-padding">
-  <h1>
-    {% if is_trade %}
-      {{ section.settings.page_title | default: 'Trade Application' }}
-    {% else %}
-      {{ 'customer.register.title' | t }}
-    {% endif %}
-  </h1>
+  <div class="main-page-title-container page-width page-width--narrow">
+    <h1 class="main-page-title">
+      {% if is_trade %}
+        {{ section.settings.page_title | default: 'Trade Application' }}
+      {% else %}
+        {{ 'customer.register.title' | t }}
+      {% endif %}
+    </h1>
+  </div>
   <svg style="display: none">
     <symbol id="icon-error" viewBox="0 0 13 13">
       <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
