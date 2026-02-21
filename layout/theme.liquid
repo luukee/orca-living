@@ -31,7 +31,16 @@
     </script>
 
     {% render 'head--styles' %}
-    
+
+    {% comment %} Load Trade Application page CSS {% endcomment %}
+    {% assign load_trade_app_css = false %}
+    {% if template.name == 'page' and template.suffix == 'trade_application' %}{% assign load_trade_app_css = true %}{% endif %}
+    {% if template.name == 'page' and template.suffix == 'trade-application' %}{% assign load_trade_app_css = true %}{% endif %}
+    {% if template.name == 'page' and page.handle == 'trade-application' %}{% assign load_trade_app_css = true %}{% endif %}
+    {% if load_trade_app_css %}
+      {{ 'page-trade-application.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+
     {% if template == 'cart' %}{% include "revy-bundle-script" %}{% endif %}
     <meta name="facebook-domain-verification" content="khesst6agk3o1xun0ehr7op78bh56m" /> 
     

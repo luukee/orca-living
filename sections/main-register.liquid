@@ -15,10 +15,17 @@
     }
   {%- endstyle -%}
 {% endif %}
+
+{% comment %} Show Trade Application only when ?trade=1 is in the URL {% endcomment %}
+{% assign is_trade = false %}
+{% if request.query_string contains 'trade=1' %}
+  {% assign is_trade = true %}
+{% endif %}
+
 <div class="customer register section-{{ section.id }}-padding">
   <h1>
-    {% if section.settings.page_title != blank %}
-      {{ section.settings.page_title }}
+    {% if is_trade %}
+      {{ section.settings.page_title | default: 'Trade Application' }}
     {% else %}
       {{ 'customer.register.title' | t }}
     {% endif %}
@@ -144,75 +151,76 @@
       {{ 'customer.register.submit' | t }}
     </button>
   {%- endform -%}
+  {% if is_trade %}
+    {% comment %} Hidden Klaviyo Form (for trade list) {% endcomment %}
+    <form
+      id="trade_klaviyo_form"
+      class="trade_klaviyo_form hidden"
+      action="//manage.kmail-lists.com/subscriptions/subscribe"
+      data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe"
+    >
+      <input type="hidden" name="g" value="Tfbv66" />
+      <input type="email" value="" name="email" />
+      <input type="text" value="" name="$first_name" />
+      <input type="text" value="" name="$last_name" />
+      <button type="submit">Subscribe</button>
+    </form>
 
-  {% comment %} Hidden Klaviyo Form (for trade list) {% endcomment %}
-  <form
-    id="trade_klaviyo_form"
-    class="trade_klaviyo_form hidden"
-    action="//manage.kmail-lists.com/subscriptions/subscribe"
-    data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe"
-  >
-    <input type="hidden" name="g" value="Tfbv66" />
-    <input type="email" value="" name="email" />
-    <input type="text" value="" name="$first_name" />
-    <input type="text" value="" name="$last_name" />
-    <button type="submit">Subscribe</button>
-  </form>
+    {% comment %} Hidden Klaviyo Form (for newsletter list) {% endcomment %}
+    <form
+      id="newsletter_klaviyo_form"
+      class="newsletter_klaviyo_form hidden"
+      action="//manage.kmail-lists.com/subscriptions/subscribe"
+      data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe"
+    >
+      <input type="hidden" name="g" value="X9NHqL" />
+      <input type="email" value="" name="email" />
+      <input type="text" value="" name="$first_name" />
+      <input type="text" value="" name="$last_name" />
+      <button type="submit">Subscribe</button>
+    </form>
 
-  {% comment %} Hidden Klaviyo Form (for newsletter list) {% endcomment %}
-  <form
-    id="newsletter_klaviyo_form"
-    class="newsletter_klaviyo_form hidden"
-    action="//manage.kmail-lists.com/subscriptions/subscribe"
-    data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe"
-  >
-    <input type="hidden" name="g" value="X9NHqL" />
-    <input type="email" value="" name="email" />
-    <input type="text" value="" name="$first_name" />
-    <input type="text" value="" name="$last_name" />
-    <button type="submit">Subscribe</button>
-  </form>
+    <script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
+    <script>
+      const tradeForm = document.querySelector('.trade_klaviyo_form')
+      const newsletterForm = document.querySelector('.newsletter_klaviyo_form')
 
-  <script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
-  <script>
-    const tradeForm = document.querySelector('.trade_klaviyo_form')
-    const newsletterForm = document.querySelector('.newsletter_klaviyo_form')
+      function setNameAndEmail(klaviyoForm,fname,lname,email) {
+        klaviyoForm.querySelector('[name="email"]').setAttribute('value',email)
+        klaviyoForm.querySelector('[name="$first_name"]').setAttribute('value',fname)
+        klaviyoForm.querySelector('[name="$last_name"]').setAttribute('value',lname)
+      }
 
-    function setNameAndEmail(klaviyoForm,fname,lname,email) {
-      klaviyoForm.querySelector('[name="email"]').setAttribute('value',email)
-      klaviyoForm.querySelector('[name="$first_name"]').setAttribute('value',fname)
-      klaviyoForm.querySelector('[name="$last_name"]').setAttribute('value',lname)
-    }
+      let newsletterSubscribe = false;
+      document.querySelector('#create_customer').addEventListener('submit',(e)=>{
+        const fname = document.querySelector('[data-cf-column-key="first_name"]').value
+        const lname = document.querySelector('[data-cf-column-key="last_name"]').value
+        const email = document.querySelector('[data-cf-column-key="email"]').value
+        
+        newsletterSubscribe = document.querySelector('[data-cf-column-key="subscribe_to_field_notes_n"]').checked
+        setNameAndEmail(tradeForm,fname,lname,email)
+        setNameAndEmail(newsletterForm,fname,lname,email)
 
-    let newsletterSubscribe = false;
-    document.querySelector('#create_customer').addEventListener('submit',(e)=>{
-      const fname = document.querySelector('[data-cf-column-key="first_name"]').value
-      const lname = document.querySelector('[data-cf-column-key="last_name"]').value
-      const email = document.querySelector('[data-cf-column-key="email"]').value
-      
-      newsletterSubscribe = document.querySelector('[data-cf-column-key="subscribe_to_field_notes_n"]').checked
-      setNameAndEmail(tradeForm,fname,lname,email)
-      setNameAndEmail(newsletterForm,fname,lname,email)
+        //Submit to NewsLetter
+        tradeForm.querySelector('button').click()
+      })
 
-      //Submit to NewsLetter
-      tradeForm.querySelector('button').click()
-    })
-
-    KlaviyoSubscribe.attachToForms([tradeForm,newsletterForm], {
-      hide_form_on_success: true,
-      custom_success_message: true,
-      error: function ($form) {
-        console.log('failure?');
-        console.log($form);
-      },
-      success: function ($form) {
-        if($form.attr('id')=="newsletter_klaviyo_form") return
-        if (newsletterSubscribe) {
-          newsletterForm.querySelector('button').click()
-        }
-      },
-    });
-  </script>
+      KlaviyoSubscribe.attachToForms([tradeForm,newsletterForm], {
+        hide_form_on_success: true,
+        custom_success_message: true,
+        error: function ($form) {
+          console.log('failure?');
+          console.log($form);
+        },
+        success: function ($form) {
+          if($form.attr('id')=="newsletter_klaviyo_form") return
+          if (newsletterSubscribe) {
+            newsletterForm.querySelector('button').click()
+          }
+        },
+      });
+    </script>
+  {% endif %}
 </div>
 {% schema %}
 {
@@ -227,7 +235,7 @@
     {
       "type": "text",
       "id": "page_title",
-      "label": "Page title",
+      "label": "Page title (only used when URL has ?trade=1)",
       "default": "Trade Application"
     },
     {

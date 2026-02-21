@@ -30,9 +30,7 @@
           }
         }
       },
-      "block_order": [
-        "heading_bCdVNg"
-      ],
+      "block_order": ["heading_bCdVNg"],
       "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
@@ -49,16 +47,12 @@
     "main": {
       "type": "main-register",
       "settings": {
-        "page_title": "Trade Application",
+        "page_title": "",
         "use_padding": false,
         "padding_top": 0,
         "padding_bottom": 16
       }
     }
   },
-  "order": [
-    "09a61d0d-4c4f-4b77-8a63-9aa79f471eb9",
-    "rich_text_4JqNBf",
-    "main"
-  ]
+  "order": ["09a61d0d-4c4f-4b77-8a63-9aa79f471eb9", "rich_text_4JqNBf", "main"]
 }
