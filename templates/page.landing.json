@@ -172,7 +172,7 @@
         "container_color_scheme": "background-1",
         "show_bottom_border": true,
         "max_width_none": true,
-        "open_first_collapsible_row": true,
+        "open_first_collapsible_row": false,
         "image_ratio": "adapt",
         "desktop_layout": "image_second",
         "padding_top": 36,
