@@ -37,7 +37,7 @@
         "text_YWhkfn": {
           "type": "text",
           "settings": {
-            "text": "<p>Services include:<br/>-Preferred pricing<br/>-Custom sizes and bulk discounts<br/>-First access to products<br/>-Trade events</p>",
+            "text": "<p>Services include:<br/>-Custom sizes and bulk discounts<br/>-First access to products<br/>-Trade events<br/>-Preferred pricing </p>",
             "extra": 500
           }
         },
