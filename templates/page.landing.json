@@ -150,7 +150,7 @@
           "settings": {
             "heading": "Can your outdoor products be used indoors?",
             "icon": "none",
-            "row_content": "<p>Yes, our materials can be used indoors. Additional info can be found on our FAQ page.</p>",
+            "row_content": "<p>Yes, our materials can be used indoors. Additional info can be found on our <a href=\"https://www.orcaliving.com/pages/faq\" target=\"_blank\" title=\"https://www.orcaliving.com/pages/faq\">FAQ page</a>.</p>",
             "page": ""
           }
         }
