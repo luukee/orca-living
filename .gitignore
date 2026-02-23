@@ -2,3 +2,4 @@ orca-living.code-workspace
 node_modules/*
 notToWeb/*
 .DS_Store
+.cursor/debug-*.log
