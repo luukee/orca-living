@@ -192,7 +192,7 @@
         "text_qd7yhB": {
           "type": "text",
           "settings": {
-            "text": "<p>ORCA Showroom<br/>Highland Park, Los Angeles (appointment only)<br/><br/>Hours:<br/>Tuesday - Thursday<br/>10am - 4pm<br/><br/>Phone number: <br/>+1 310-220-0332<br/><br/>If you'd like to visit our showroom, please make an appointment <a href=\"https://calendly.com/orcadesign/showroom\" target=\"_blank\" title=\"https://calendly.com/orcadesign/showroom\">here</a></p>",
+            "text": "<p>ORCA Showroom<br/>Highland Park, Los Angeles (by appointment)<br/><br/>Hours:<br/>Tuesday - Thursday<br/>10am - 4pm<br/><br/>Phone number: <br/>+1 310-220-0332<br/><br/>If you'd like to visit our showroom, please make an appointment <a href=\"https://calendly.com/orcadesign/showroom\" target=\"_blank\" title=\"https://calendly.com/orcadesign/showroom\">here</a></p>",
             "extra": 370
           }
         },
