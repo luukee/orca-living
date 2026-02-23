@@ -43,9 +43,11 @@
               {%- endif -%}
             {%- endif -%}
           </div>
-          <button type="button" class="announcement-bar__close" aria-label="{{ 'accessibility.close' | t }}">
-            {% render 'icon-close' %}
-          </button>
+          {%- if block.settings.show_close_button -%}
+            <button type="button" class="announcement-bar__close" aria-label="{{ 'accessibility.close' | t }}">
+              {% render 'icon-close' %}
+            </button>
+          {%- endif -%}
         </div>
       </div>
   {%- endcase -%}
@@ -68,7 +70,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: inherit;
+    color: #000;
     opacity: 0.8;
   }
   .announcement-bar__close:hover {
@@ -194,6 +196,12 @@
           "type": "url",
           "id": "link",
           "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_close_button",
+          "label": "Show close button",
+          "default": true
         },
         {
           "type": "textarea",
