@@ -45,7 +45,7 @@
           "type": "link",
           "settings": {
             "url_txt": "Begin Application",
-            "url": "https://www.orcaliving.com/account/register"
+            "url": "/account/register"
           }
         },
         "link_FLkWmq": {
