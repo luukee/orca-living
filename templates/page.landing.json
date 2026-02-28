@@ -52,7 +52,7 @@
           "type": "link",
           "settings": {
             "url_txt": "Log into Account",
-            "url": "https://www.orcaliving.com/account/login?return_url=%2Faccount"
+            "url": "/account/login?return_url=%2Faccount"
           }
         }
       },
@@ -95,7 +95,7 @@
           "type": "link",
           "settings": {
             "url_txt": "Begin Application",
-            "url": "https://www.orcaliving.com/account/register"
+            "url": "/account/register"
           }
         }
       },
