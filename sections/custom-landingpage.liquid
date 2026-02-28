@@ -146,7 +146,6 @@
                     <p>
                       <a
                         href='{{ block.settings.url }}'
-                        target='_blank'
                         aria-label='Click and open a window and go to {{ block.settings.url_txt }}'>
                         {{ block.settings.url_txt }}
                       </a>
@@ -177,7 +176,6 @@
                       <p>
                         <a
                           href='{{ block.settings.url }}'
-                          target='_blank'
                           aria-label='Click and open a window and go to {{ block.settings.url_txt }}'>
                           {{ block.settings.url_txt }}
                         </a>
@@ -202,12 +200,13 @@
 
     <script>
       (function () {
-        var selector = 'a[href="https://www.orcaliving.com/account/register"]';
-    
+        // Match register link whether theme outputs relative or absolute URL (block.settings.url varies by env)
+        var sectionId = 'section-{{ section.id }}';
+        var selector = '#' + sectionId + ' a[href*="account/register"]';
         function bind() {
           var link = document.querySelector(selector);
           if (!link) return;
-    
+
           link.addEventListener('click', function () {
             if (window.Shopify && Shopify.analytics && Shopify.analytics.publish) {
               Shopify.analytics.publish("begin_application_clicked", {
@@ -217,7 +216,7 @@
             }
           });
         }
-    
+
         if (document.readyState === "loading") {
           document.addEventListener("DOMContentLoaded", bind);
         } else {
