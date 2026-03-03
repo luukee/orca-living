@@ -415,31 +415,31 @@
         "column_8e9BUN": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/Mitch_IG_Post.png",
-            "title": "Unearthing Clay",
+            "image": "shopify://shop_images/Unearthing_-_Alex_Rooted.png",
+            "title": "Unearthing Podcast: Willow",
             "text": "",
             "link_label": "Listen",
-            "link": "https://open.spotify.com/episode/1mHd2GLi6EsQsUQ5e5wx32?si=e385866d1f1a4816"
+            "link": "shopify://blogs/unearthing/unearthing-willow-with-alex-rooted"
           }
         },
         "column_whe6JX": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/JC_250508_SONOKO_DSCF0500_HR.jpg",
-            "title": "Plants + People: Sonoko",
+            "image": "shopify://shop_images/ORCA_Serena_Mitnik-Miller_Paver_Patterns.png",
+            "title": "Paver Patterns by Serena Mitnik-Miller",
             "text": "",
             "link_label": "Read",
-            "link": "shopify://blogs/field-notes/sonoko-sakai"
+            "link": "shopify://blogs/field-notes/serena-mitnik-miller"
           }
         },
         "column_feyFjM": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/ORCA_20252428square.jpg",
-            "title": "Material Study: Rock",
+            "image": "shopify://shop_images/Unearthing_-_Adam_Baz.png",
+            "title": "Unearthing Podcast: Wildlife in the Garden",
             "text": "",
-            "link_label": "Read",
-            "link": "shopify://blogs/field-notes/material-study-rock"
+            "link_label": "Listen",
+            "link": "shopify://blogs/unearthing/unearthing-wildlife-in-the-garden-with-adam-baz"
           }
         },
         "column_fhYqEP": {

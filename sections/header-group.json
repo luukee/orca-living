@@ -21,7 +21,7 @@
             "text_color": "#000000",
             "text_alignment": "center",
             "color_scheme": "accent-2",
-            "link": "/account/register",
+            "link": "shopify://pages/trade",
             "hide_on_paths": "/blogs/landscapes"
           }
         }
