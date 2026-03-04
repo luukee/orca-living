@@ -35,6 +35,7 @@
   else
     assign allowed_params = ''
   endif
+  # Category (tag) filter: only show tags that start with underscore (e.g. _Brick Clay)
 -%}
 
 <div class="facets-container{% if filter_type == 'drawer' %} facets-container-drawer{% endif %}">
@@ -145,30 +146,34 @@
 
                 assign total_active_values = total_active_values | plus: filter.active_values.size
 
-                assign CategoriesLabel    = 'Categories'
-                assign filterPre          = '_'
-                assign showFilterGroup    = true 
-                assign filterLabel        = filter.label
+                assign categories_label    = 'Categories'
+                assign filter_pre          = '_'
+                assign show_filter_group    = true 
+                assign filter_label        = filter.label
                
-                if filterLabel == 'More filters'
-                  assign filterLabel      = CategoriesLabel
-                  assign showFilterGroup  = false 
+                if filter_label == 'More filters'
+                  assign filter_label      = categories_label
+                  assign show_filter_group  = false 
                 endif 
                
                 for value in filter.values
-                  assign valueLabel       = value.label
-                  assign valueLabelFirst  = valueLabel | slice: 0
-                  if filterLabel == CategoriesLabel
-                    if valueLabelFirst contains filterPre
-                      assign showFilterGroup  = false 
+                  assign value_label       = value.label
+                  assign value_label_first  = value_label | slice: 0
+                  if filter_label == categories_label
+                    if value_label_first contains filter_pre
+                      assign show_filter_group  = false 
                       break
                     endif 
                   endif 
                 endfor 
                 assign show_this_filter = true
+                assign is_tag_filter = false
                 if allowed_params != blank
                   assign show_this_filter = false
                   assign pname = filter.param_name | downcase
+                  if pname contains 'tag'
+                    assign is_tag_filter = true
+                  endif
                   assign allowed_list = allowed_params | split: ','
                   for part in allowed_list
                     assign segment = part | strip
@@ -179,13 +184,14 @@
                   endfor
                 endif
               %}
-              {% if showFilterGroup and show_this_filter %}
+              {% if show_filter_group and show_this_filter %}
                 {% case filter.type %}
                   {% when 'boolean', 'list' %}
                     <details
                       id="Details-{{ forloop.index }}-{{ section.id }}"
                       class="{% if filter_type == 'horizontal' %}disclosure-has-popup facets__disclosure{% else %} facets__disclosure-vertical{% endif %} js-filter"
                       data-index="{{ forloop.index }}"
+                      {% if is_tag_filter %}data-filter-type="tag"{% endif %}
                       {% if filter_type == 'vertical' and forloop.index == 1 %}
                         open
                       {% endif %}
@@ -224,25 +230,26 @@
                         {%- endif -%}
                         <fieldset class="facets-wrap parent-wrap {% if filter_type == 'vertical' %} facets-wrap-vertical{% endif %}">
                           
-                          <legend class="visually-hidden">{{ filterLabel | escape }}</legend>
+                          <legend class="visually-hidden">{{ filter_label | escape }}</legend>
                           <ul
                             class="{% if filter_type != 'vertical' %} facets__list{% endif %} list-unstyled no-js-hidden"
                             role="list"
                           >
                             {%- for value in filter.values -%}
                               {% liquid 
-                                assign valueLabel       = value.label
-                                assign valueLabelFirst  = valueLabel | slice: 0
-                                assign showFilter       = true 
-                                if filterLabel == CategoriesLabel
-                                  assign showFilter     = false
-                                  if valueLabelFirst contains filterPre
-                                    assign showFilter   = true
-                                  endif 
-                                endif 
-                                assign valueLabel       = valueLabel | replace: filterPre,''
+                                assign value_label       = value.label
+                                assign value_label_first  = value_label | slice: 0
+                                assign show_filter       = true 
+                                assign pname_down       = filter.param_name | downcase
+                                if pname_down contains 'tag'
+                                  assign show_filter     = false
+                                  if value_label_first contains '_'
+                                    assign show_filter   = true
+                                  endif
+                                endif
+                                assign value_label       = value_label | replace: filter_pre,''
                               %}
-                              {% if showFilter %}
+                              {% if show_filter %}
                                 <li class="list-menu__item facets__item{% if forloop.index > 10 and filter_type == 'vertical' %} show-more-item hidden{% endif %}">
                                   <label
                                     for="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}"
@@ -320,18 +327,19 @@
                           >
                             {%- for value in filter.values -%}
                               {% liquid 
-                                assign valueLabel       = value.label
-                                assign valueLabelFirst  = valueLabel | slice: 0
-                                assign showFilter       = true 
-                                if filterLabel == CategoriesLabel
-                                  assign showFilter     = false
-                                  if valueLabelFirst contains filterPre
-                                    assign showFilter   = true
-                                  endif 
-                                endif 
-                                assign valueLabel       = valueLabel | replace: filterPre,''
+                                assign value_label       = value.label
+                                assign value_label_first  = value_label | slice: 0
+                                assign show_filter       = true 
+                                assign pname_down       = filter.param_name | downcase
+                                if pname_down contains 'tag'
+                                  assign show_filter     = false
+                                  if value_label_first contains '_'
+                                    assign show_filter   = true
+                                  endif
+                                endif
+                                assign value_label       = value_label | replace: filter_pre,''
                               %}
-                              {% if showFilter %}
+                              {% if show_filter %}
                                 <li class="list-menu__item facets__item">
                                   <label
                                     for="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}-no-js"
@@ -755,24 +763,24 @@
 
                     assign total_active_values = total_active_values | plus: filter.active_values.size
 
-                    assign CategoriesLabel    = 'Categories'
-                    assign filterPre          = '_'
-                    assign showFilterGroup    = true 
-                    assign filterLabel        = filter.label
+                    assign categories_label    = 'Categories'
+                    assign filter_pre          = '_'
+                    assign show_filter_group    = true 
+                    assign filter_label        = filter.label
                    
-                    if filterLabel == 'More filters'
-                      assign filterLabel      = CategoriesLabel
-                      assign showFilterGroup  = false 
+                    if filter_label == 'More filters'
+                      assign filter_label      = categories_label
+                      assign show_filter_group  = false 
                     endif 
                    
                     for value in filter.values
-                      assign valueLabel       = value.label
-                      assign valueLabelFirst  = valueLabel | slice: 0
+                      assign value_label       = value.label
+                      assign value_label_first  = value_label | slice: 0
                       
                       
-                      if filterLabel == CategoriesLabel
-                        if valueLabelFirst contains filterPre
-                          assign showFilterGroup  = true 
+                      if filter_label == categories_label
+                        if value_label_first contains filter_pre
+                          assign show_filter_group  = true 
                           
                           comment 
                           break
@@ -783,24 +791,32 @@
                     endfor 
 
                   %}
-                  {% if showFilterGroup %}
+                  {% if show_filter_group %}
                     {% case filter.type %}
                       {% when 'boolean', 'list' %}
+                        {% liquid
+                          assign pname_mobile = filter.param_name | downcase
+                          assign is_tag_filter_mobile = false
+                          if pname_mobile contains 'tag'
+                            assign is_tag_filter_mobile = true
+                          endif
+                        %}
                         <details
                           id="Details-Mobile-{{ forloop.index }}-{{ section.id }}"
                           class="mobile-facets__details js-filter"
                           data-index="mobile-{{ forloop.index }}"
+                          {% if is_tag_filter_mobile %}data-filter-type="tag"{% endif %}
                         >
                           {% liquid 
-                            assign CategoriesLabel = 'Categories'
-                            assign filterLabel = filter.label
-                            if filterLabel == 'More filters'
-                              assign filterLabel = CategoriesLabel
+                            assign categories_label = 'Categories'
+                            assign filter_label = filter.label
+                            if filter_label == 'More filters'
+                              assign filter_label = categories_label
                             endif 
                           %}
                           <summary class="mobile-facets__summary focus-inset">
                             <div>
-                              <span>{{ filterLabel | escape }}</span>
+                              <span>{{ filter_label | escape }}</span>
                               <span class="mobile-facets__arrow no-js-hidden">{% render 'icon-arrow' %}</span>
                               <noscript>{% render 'icon-caret' %}</noscript>
                             </div>
@@ -816,24 +832,25 @@
                             >
                               {% render 'icon-arrow' %}
                               
-                              {{ filterLabel | escape }}
+                              {{ filter_label | escape }}
                             </button>
                             <ul class="mobile-facets__list list-unstyled" role="list">
                               {%- for value in filter.values -%}
                                 {% liquid 
-                                  assign valueLabel     = value.label
-                                  assign valueLabelFirst = valueLabel | slice: 0
-                                  assign showFilter     = true 
-                                  assign filterPre      = '_'
-                                  if filterLabel == CategoriesLabel
-                                    assign showFilter   = false
-                                    if valueLabelFirst contains filterPre
-                                      assign showFilter = true
-                                    endif 
-                                  endif 
-                                  assign valueLabel     = valueLabel | replace: filterPre,''
+                                  assign value_label     = value.label
+                                  assign value_label_first = value_label | slice: 0
+                                  assign show_filter     = true 
+                                  assign filter_pre      = '_'
+                                  assign pname_down     = filter.param_name | downcase
+                                  if pname_down contains 'tag'
+                                    assign show_filter   = false
+                                    if value_label_first contains '_'
+                                      assign show_filter = true
+                                    endif
+                                  endif
+                                  assign value_label     = value_label | replace: filter_pre,''
                                 %}
-                                {% if showFilter %}
+                                {% if show_filter %}
                                   <li class="mobile-facets__item list-menu__item">
                                     <label
                                       for="Filter-{{ filter.param_name | escape }}-mobile-{{ forloop.index }}"
@@ -877,9 +894,9 @@
                                         <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                                       </svg>
 
-                                      <span aria-hidden="true">{{ valueLabel | remove_first: '_' | capitalize | escape }} ({{ value.count }})</span>
+                                      <span aria-hidden="true">{{ value_label | remove_first: '_' | capitalize | escape }} ({{ value.count }})</span>
                                       <span class="visually-hidden">
-                                        {{- valueLabel | remove_first: '_' | capitalize | escape }} (
+                                        {{- value_label | remove_first: '_' | capitalize | escape }} (
                                         {%- if value.count == '1' -%}
                                           {{- 'products.facets.product_count_simple.one' | t: count: value.count -}}
                                         {%- else -%}

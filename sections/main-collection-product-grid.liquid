@@ -424,6 +424,19 @@
 
           {% if is_product_page %}
             {%- for collection_product in current_collection.products -%}
+              {% comment %} Category (tag) filter: collect product's underscore-prefixed tags for variant count in JS {% endcomment %}
+              {% liquid
+                assign product_category_tags = ''
+                for tag in collection_product.tags
+                  assign first_char = tag | slice: 0
+                  if first_char == '_'
+                    if product_category_tags != ''
+                      assign product_category_tags = product_category_tags | append: ' '
+                    endif
+                    assign product_category_tags = product_category_tags | append: tag
+                  endif
+                endfor
+              %}
               {% comment %}Only process products that share any material tags with current product{% endcomment %}
               {% assign should_process = true %}
               {% if should_filter_by_tag %}
@@ -533,7 +546,7 @@
                               {% else %}
                                 {% assign variant_title = variant_title | append: ' - ' | append: option_variant %}
                               {% endif %}
-                              <li class='grid__item grid__item-PRODUCT-by-variant{% if product_expanded %} product-expanded{% endif %}'>
+                              <li class='grid__item grid__item-PRODUCT-by-variant{% if product_expanded %} product-expanded{% endif %}'{% if product_category_tags != '' %} data-tags="{{ product_category_tags | escape }}"{% endif %}>
                                 <!-- PRODUCT by variant card-product-nine15 -->
                                 {% render 'card-product-nine15',
                                   product_title: variant_title,
@@ -562,7 +575,7 @@
                       {% endif %}
                     {% endfor %}
                     {% unless product_expanded %}
-                      <li class="grid__item grid__item-PRODUCT-general-product {%- if product_expanded -%}product-expanded{%- endif -%}">
+                      <li class="grid__item grid__item-PRODUCT-general-product {%- if product_expanded -%}product-expanded{%- endif -%}"{% if product_category_tags != '' %} data-tags="{{ product_category_tags | escape }}"{% endif %}>
                         <!-- PRODUCT general product card-product-nine15 -->
                         {% render 'card-product-nine15', 
                           card_product: collection_product,
@@ -598,6 +611,19 @@
             <!-- collection page -->
               {%- paginate current_collection.products by section.settings.products_per_page -%}
                 {%- for product in current_collection.products -%}
+                  {% comment %} Category (tag) filter: collect product's underscore-prefixed tags for variant count in JS {% endcomment %}
+                  {% liquid
+                    assign product_category_tags = ''
+                    for tag in product.tags
+                      assign first_char = tag | slice: 0
+                      if first_char == '_'
+                        if product_category_tags != ''
+                          assign product_category_tags = product_category_tags | append: ' '
+                        endif
+                        assign product_category_tags = product_category_tags | append: tag
+                      endif
+                    endfor
+                  %}
                   {% assign displayed_variants = false %}
                   {%- if forloop.index > 2 -%}
                     {%- assign lazy_load = true -%}
@@ -606,7 +632,7 @@
                   {%- for variant in product.variants -%}
                     {%- if variant.metafields.custom.quick_ship == 'True' and quick_ship_tag -%}
                       {% assign displayed_variants = true %}
-                      <li class='grid__item grid__item-COLLECTION-quick-ship'>
+                      <li class='grid__item grid__item-COLLECTION-quick-ship'{% if product_category_tags != '' %} data-tags="{{ product_category_tags | escape }}"{% endif %}>
                         <!-- COLLECTION quick-ship card-product-nine15 -->
                         {% render 'card-product-nine15',
                           product_title: product.title,
@@ -901,7 +927,8 @@
                               data-use-case='{{ p.metafields.custom.use_case | default: product.metafields.custom.use_case | escape }}'
                               {% if variant_material_value != blank %}data-material='{{ variant_material_value | downcase | escape }}'{% endif %}
                               {% if variant_color_value != blank %}data-color='{{ variant_color_value | downcase | escape }}'{% endif %}
-                              {% if p.metafields.custom.group != blank %}data-group='{{ p.metafields.custom.group }}'{% endif %}>
+                              {% if p.metafields.custom.group != blank %}data-group='{{ p.metafields.custom.group }}'{% endif %}
+                              {% if product_category_tags != '' %}data-tags="{{ product_category_tags | escape }}"{% endif %}>
                               <!-- COLLECTION by variant card-product-nine15 -->
                               {% render 'card-product-nine15',
                                 product_title: prod_title,
@@ -1132,7 +1159,7 @@
                         endif
                       %}
                       {% if should_display_product %}
-                        <li class='grid__item grid__item-COLLECTION-by-product'>
+                        <li class='grid__item grid__item-COLLECTION-by-product'{% if product_category_tags != '' %} data-tags="{{ product_category_tags | escape }}"{% endif %}>
                           <!-- card-product-nine15 -->
                           {% render 'card-product-nine15',
                             product_title: product.title,
@@ -1185,16 +1212,70 @@
     const variantCount = displayedItems.length;
     
     if (variantCount === 0) return;
-    
+
     // Count variants per filter value using data attributes
     const colorCounts = {};
+    /** Category (tag) filter: count displayed items per tag (data-tags is space-separated) */
+    const tagCounts = {};
+    /** Material and Use case: count by data-material / data-use-case for variant counts in filters */
+    const materialCounts = {};
+    const useCaseCounts = {};
     displayedItems.forEach((item) => {
       const color = (item.getAttribute('data-color') || '').toLowerCase().trim();
       if (color) {
         colorCounts[color] = (colorCounts[color] || 0) + 1;
       }
+      const material = (item.getAttribute('data-material') || '').toLowerCase().trim();
+      if (material) {
+        materialCounts[material] = (materialCounts[material] || 0) + 1;
+      }
+      const useCaseRaw = (item.getAttribute('data-use-case') || '').trim();
+      if (useCaseRaw) {
+        useCaseRaw.split(',').forEach((u) => {
+          const uNorm = u.toLowerCase().trim();
+          if (uNorm) useCaseCounts[uNorm] = (useCaseCounts[uNorm] || 0) + 1;
+        });
+      }
+      const tagsStr = (item.getAttribute('data-tags') || '').trim();
+      if (tagsStr) {
+        // Tags are underscore-prefixed; split on " _" so multi-word tags like "_Brick Clay" stay together
+        const parts = tagsStr.split(/\s+_(?=\S)/);
+        parts.forEach((seg, i) => {
+          const t = (i === 0 ? seg : '_' + seg).trim();
+          if (t) {
+            tagCounts[t] = (tagCounts[t] || 0) + 1;
+          }
+        });
+      }
     });
-    
+
+    // Update Category (tag) filter counts - show variant count per tag so expand-* products are accurate
+    const tagFilterContainers = document.querySelectorAll('[data-filter-type="tag"]');
+    const tagFilterInputs = tagFilterContainers.length
+      ? Array.from(tagFilterContainers).flatMap((el) => Array.from(el.querySelectorAll('input[type="checkbox"]')))
+      : document.querySelectorAll('#FacetFiltersForm input[type="checkbox"][name*="tag"], #FacetFiltersFormMobile input[type="checkbox"][name*="tag"]');
+
+    const normalizeTag = (s) => (s || '').toLowerCase().replace(/^_/, '').trim();
+    tagFilterInputs.forEach((input) => {
+      const checkbox = input.closest('.facet-checkbox');
+      const labelSpan = checkbox?.querySelector('span[aria-hidden="true"]');
+      if (!labelSpan) return;
+      const tagValue = (input.getAttribute('value') || '').trim();
+      let count = tagCounts[tagValue];
+      if (count == null && Object.keys(tagCounts).length > 0) {
+        const tagNorm = normalizeTag(tagValue);
+        const matchingKey = Object.keys(tagCounts).find((k) => normalizeTag(k) === tagNorm);
+        if (matchingKey != null) count = tagCounts[matchingKey];
+      }
+      if (count == null && input.checked) count = variantCount;
+      if (count != null) {
+        const text = labelSpan.textContent || '';
+        const match = text.match(/^(.+?)\s*\(\d+\)$/);
+        const labelPart = match ? match[1].trim() : text.replace(/\s*\(\d+\)\s*$/, '').trim() || text;
+        labelSpan.textContent = `${labelPart} (${count})`;
+      }
+    });
+
     // Update Color filter counts - update ALL color filter options, not just active ones
     const colorFilterInputs = document.querySelectorAll('#FacetFiltersForm input[type="checkbox"][name*="filter.v.option.color"], #FacetFiltersFormMobile input[type="checkbox"][name*="filter.v.option.color"]');
     
@@ -1226,8 +1307,46 @@
         // Otherwise keep original count (may be on different page or not loaded yet)
       }
     });
-    
-    // For other active filters (Material, Use case, etc.), show total displayed variant count
+
+    // Update Material filter counts - show variant count per material (e.g. Clay (57))
+    const materialFilterInputs = document.querySelectorAll('#FacetFiltersForm input[type="checkbox"][name*="filter.v.option.material"], #FacetFiltersFormMobile input[type="checkbox"][name*="filter.v.option.material"]');
+    materialFilterInputs.forEach((input) => {
+      const checkbox = input.closest('.facet-checkbox');
+      const labelSpan = checkbox?.querySelector('span[aria-hidden="true"]');
+      if (!labelSpan) return;
+      const text = labelSpan.textContent || '';
+      const match = text.match(/^(.+?)\s*\(\d+\)$/);
+      if (!match) return;
+      const filterValue = match[1].trim();
+      const filterValueLower = filterValue.toLowerCase();
+      const matchingCount = materialCounts[filterValueLower] || 0;
+      if (input.checked) {
+        labelSpan.textContent = `${filterValue} (${variantCount})`;
+      } else if (matchingCount > 0) {
+        labelSpan.textContent = `${filterValue} (${matchingCount})`;
+      }
+    });
+
+    // Update Use case filter counts - show variant count per use case
+    const useCaseFilterInputs = document.querySelectorAll('#FacetFiltersForm input[type="checkbox"][name*="use_case"], #FacetFiltersFormMobile input[type="checkbox"][name*="use_case"]');
+    useCaseFilterInputs.forEach((input) => {
+      const checkbox = input.closest('.facet-checkbox');
+      const labelSpan = checkbox?.querySelector('span[aria-hidden="true"]');
+      if (!labelSpan) return;
+      const text = labelSpan.textContent || '';
+      const match = text.match(/^(.+?)\s*\(\d+\)$/);
+      if (!match) return;
+      const filterValue = match[1].trim();
+      const filterValueLower = filterValue.toLowerCase();
+      const matchingCount = useCaseCounts[filterValueLower] || 0;
+      if (input.checked) {
+        labelSpan.textContent = `${filterValue} (${variantCount})`;
+      } else if (matchingCount > 0) {
+        labelSpan.textContent = `${filterValue} (${matchingCount})`;
+      }
+    });
+
+    // For other active filters (e.g. Product type), show total displayed variant count
     const otherActiveFilterInputs = document.querySelectorAll('#FacetFiltersForm input[type="checkbox"]:checked:not([name*="filter.v.option.color"]), #FacetFiltersFormMobile input[type="checkbox"]:checked:not([name*="filter.v.option.color"])');
     
     otherActiveFilterInputs.forEach((input) => {
@@ -1287,9 +1406,14 @@
       }
     }
     
-    // Update filter counts after initial load
-    updateFilterCountsToVariants();
-    
+    // Update filter counts after initial load (run after paint so #product_grid and data-tags are in DOM)
+    requestAnimationFrame(function() {
+      updateFilterCountsToVariants();
+    });
+    window.addEventListener('load', function() {
+      updateFilterCountsToVariants();
+    });
+
     // Update filter counts after AJAX filter updates
     // Listen for when facets.js updates the product grid
     const observer = new MutationObserver(() => {
