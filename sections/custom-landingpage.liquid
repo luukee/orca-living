@@ -146,7 +146,6 @@
                     <p>
                       <a
                         href='{{ block.settings.url }}'
-                        target='_blank'
                         aria-label='Click and open a window and go to {{ block.settings.url_txt }}'>
                         {{ block.settings.url_txt }}
                       </a>
@@ -177,7 +176,6 @@
                       <p>
                         <a
                           href='{{ block.settings.url }}'
-                          target='_blank'
                           aria-label='Click and open a window and go to {{ block.settings.url_txt }}'>
                           {{ block.settings.url_txt }}
                         </a>
@@ -200,6 +198,34 @@
       </div>
     </div>
 
+    <script>
+      (function () {
+        // Match register link whether theme outputs relative or absolute URL (block.settings.url varies by env)
+        var sectionId = 'section-{{ section.id }}';
+        var selector = '#' + sectionId + ' a[href*="account/register"]';
+        function bind() {
+          var link = document.querySelector(selector);
+          if (!link) return;
+
+          link.addEventListener('click', function () {
+            if (window.Shopify && Shopify.analytics && Shopify.analytics.publish) {
+              Shopify.analytics.publish("begin_application_clicked", {
+                href: link.getAttribute("href"),
+                label: (link.textContent || "").trim()
+              });
+            }
+          });
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bind);
+        } else {
+          bind();
+        }
+      })();
+    </script>
+    
+    
     {% schema %}
       {
         "name": "Text with Image Col",
