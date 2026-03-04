@@ -45,7 +45,7 @@
           "type": "link",
           "settings": {
             "url_txt": "Begin Application",
-            "url": "/account/register"
+            "url": "shopify://pages/trade-application"
           }
         },
         "link_FLkWmq": {
