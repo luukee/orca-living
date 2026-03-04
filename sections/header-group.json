@@ -22,6 +22,7 @@
             "text_alignment": "center",
             "color_scheme": "accent-2",
             "link": "shopify://pages/trade",
+            "show_close_button": true,
             "hide_on_paths": "/blogs/landscapes"
           }
         }
@@ -39,7 +40,7 @@
       "settings": {
         "logo_position": "top-left",
         "menu": "2023-05-29-main-menu",
-        "menu_mobile": "main-menu-mobile-dev",
+        "menu_mobile": "main-menu-mobile-live",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "always",
         "show_line_separator": true,
