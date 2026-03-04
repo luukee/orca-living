@@ -45,14 +45,14 @@
           "type": "link",
           "settings": {
             "url_txt": "Begin Application",
-            "url": "https://www.orcaliving.com/account/register"
+            "url": "/pages/trade-application"
           }
         },
         "link_FLkWmq": {
           "type": "link",
           "settings": {
             "url_txt": "Log into Account",
-            "url": "https://www.orcaliving.com/account/login?return_url=%2Faccount"
+            "url": "https://account.orcaliving.com/"
           }
         }
       },
@@ -95,7 +95,7 @@
           "type": "link",
           "settings": {
             "url_txt": "Begin Application",
-            "url": "#"
+            "url": "shopify://pages/trade-application"
           }
         }
       },
