@@ -12,10 +12,7 @@
     "main": {
       "type": "main-page-full-width",
       "disabled": true,
-      "custom_css": [
-        "h1 {color: black; margin: 0 0 var(--base-gutter); font-size: 2.4rem;}",
-        ".main-page {display: block; max-width: 750px;}"
-      ],
+      "custom_css": [],
       "settings": {
         "constrained_width": false,
         "padding_top": 32,
