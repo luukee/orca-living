@@ -21,11 +21,23 @@
   {%- assign show_bar = false -%}
 {%- endif -%}
 
+{%- comment -%} Count announcement blocks to decide single vs rotating. {%- endcomment -%}
+{%- assign announcement_block_count = 0 -%}
+{%- for b in section.blocks -%}
+  {%- if b.type == 'announcement' -%}
+    {%- assign announcement_block_count = announcement_block_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+
 {%- if show_bar -%}
+{%- if announcement_block_count >= 2 -%}
+  <div class="announcement-bar__rotating" data-rotation-delay-ms="{{ section.settings.rotation_interval_seconds | default: 3 | times: 1000 }}" data-section-id="{{ section.id }}">
+{%- endif -%}
+{%- assign announcement_index = 0 -%}
 {%- for block in section.blocks -%}
   {%- case block.type -%}
     {%- when 'announcement' -%}
-      <div class="announcement-bar color-{{ block.settings.color_scheme }} gradient" role="region" aria-label="{{ 'sections.header.announcement' | t }}" data-announcement-bar-id="{{ section.id }}-{{ block.id }}" {{ block.shopify_attributes }}>
+      <div class="announcement-bar color-{{ block.settings.color_scheme }} gradient" role="region" aria-label="{{ 'sections.header.announcement' | t }}" data-announcement-bar-id="{{ section.id }}-{{ block.id }}" data-announcement-index="{{ announcement_index }}" {{ block.shopify_attributes }}>
         <div class="page-width announcement-bar__inner">
           <div class="announcement-bar__message-wrap">
             {%- if block.settings.text != blank -%}
@@ -50,8 +62,12 @@
           {%- endif -%}
         </div>
       </div>
+      {%- assign announcement_index = announcement_index | plus: 1 -%}
   {%- endcase -%}
 {%- endfor -%}
+{%- if announcement_block_count >= 2 -%}
+  </div>
+{%- endif -%}
 {%- endif -%}
 
 {%- if show_bar -%}
@@ -84,22 +100,85 @@
   .announcement-bar.is-dismissed {
     display: none;
   }
+  /* Rotating mode: one bar visible at a time; transition only on content so background doesn't flash. */
+  .announcement-bar__rotating {
+    position: relative;
+  }
+  .announcement-bar__rotating .announcement-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
+  }
+  .announcement-bar__rotating .announcement-bar.is-active {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .announcement-bar__rotating .announcement-bar .announcement-bar__inner {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .announcement-bar__rotating .announcement-bar.is-active .announcement-bar__inner {
+    opacity: 1;
+  }
+  .announcement-bar__rotating.is-dismissed {
+    display: none;
+  }
 </style>
 <script>
   (function () {
     var prefix = 'announcement-bar-dismissed-';
+    var rotatingPrefix = 'announcement-bar-rotating-dismissed-';
+
+    /** Hide dismissed bars from localStorage and attach close/dismiss behaviour. */
     function init() {
+      var rotating = document.querySelector('.announcement-bar__rotating');
+      if (rotating) {
+        var sectionId = rotating.getAttribute('data-section-id');
+        if (sectionId && localStorage.getItem(rotatingPrefix + sectionId)) {
+          rotating.classList.add('is-dismissed');
+        } else {
+          var bars = rotating.querySelectorAll('.announcement-bar');
+          if (bars.length) {
+            bars[0].classList.add('is-active');
+            var delayMs = parseInt(rotating.getAttribute('data-rotation-delay-ms'), 10) || 3000;
+            var currentIndex = 0;
+            setInterval(function () {
+              bars[currentIndex].classList.remove('is-active');
+              currentIndex = (currentIndex + 1) % bars.length;
+              bars[currentIndex].classList.add('is-active');
+            }, delayMs);
+          }
+        }
+      }
+
+      /* Per-bar dismiss: only for bars NOT inside a rotating container. */
       document.querySelectorAll('.announcement-bar[data-announcement-bar-id]').forEach(function (bar) {
+        if (bar.closest('.announcement-bar__rotating')) return;
         var id = bar.getAttribute('data-announcement-bar-id');
         if (id && localStorage.getItem(prefix + id)) {
           bar.classList.add('is-dismissed');
         }
       });
+
       document.addEventListener('click', function (e) {
         var btn = e.target.closest('.announcement-bar__close');
         if (!btn) return;
         var bar = btn.closest('.announcement-bar');
         if (!bar) return;
+        var rotating = bar.closest('.announcement-bar__rotating');
+        if (rotating) {
+          var sectionId = rotating.getAttribute('data-section-id');
+          if (sectionId) {
+            try { localStorage.setItem(rotatingPrefix + sectionId, '1'); } catch (err) {}
+            rotating.classList.add('is-dismissed');
+          }
+          return;
+        }
         var id = bar.getAttribute('data-announcement-bar-id');
         if (id) {
           try { localStorage.setItem(prefix + id, '1'); } catch (err) {}
@@ -125,6 +204,17 @@
       "label": "Hide on paths",
       "info": "Comma-separated paths where the announcement bar is hidden (e.g. /blogs/landscapes). Matches exact path and any path below it.",
       "placeholder": "/blogs/landscapes"
+    },
+    {
+      "type": "range",
+      "id": "rotation_interval_seconds",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "unit": "sec",
+      "label": "Rotation interval",
+      "info": "When multiple announcements exist, time between switching to the next (single announcement unchanged)."
     }
   ],
   "blocks": [
