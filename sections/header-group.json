@@ -23,7 +23,7 @@
             "color_scheme": "accent-2",
             "link": "shopify://pages/planting-palette",
             "show_close_button": true,
-            "hide_on_paths": "/blogs/landscapes"
+            "hide_on_paths": "/blogs/landscapes, /pages/planting-palette"
           }
         }
       },
