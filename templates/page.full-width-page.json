@@ -14,7 +14,7 @@
       "disabled": true,
       "custom_css": [],
       "settings": {
-        "constrained_width": false,
+        "constrained_width": true,
         "padding_top": 32,
         "padding_bottom": 32
       }
