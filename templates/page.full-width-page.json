@@ -22,7 +22,7 @@
       "type": "custom-liquid",
       "name": "t:sections.custom-liquid.presets.name",
       "settings": {
-        "custom_liquid": "<style>\ninput[type=\"email\"] {\n    border: none !important;\n    border-bottom: 1px solid #000 !important;\n}\n</style>",
+        "custom_liquid": "<style>\n.klaviyo-form input[type=\"email\"] {\n  border: none !important;\n  border-bottom: 1px solid #000 !important;\n  max-width: 400px !important;\n}\n.klaviyo-form button.needsclick {\n    max-width: 400px !important;\n}\n</style>",
         "color_scheme": "background-1",
         "padding_top": 0,
         "padding_bottom": 0
