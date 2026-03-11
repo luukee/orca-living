@@ -14,6 +14,18 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_DFkjqx": {
+          "type": "announcement",
+          "settings": {
+            "text": "Member of the trade? Join now",
+            "text_color": "#000000",
+            "text_alignment": "center",
+            "color_scheme": "accent-2",
+            "link": "shopify://pages/trade",
+            "show_close_button": true,
+            "hide_on_paths": ""
+          }
+        },
         "announcement_c6gPV8": {
           "type": "announcement",
           "settings": {
@@ -23,15 +35,17 @@
             "color_scheme": "accent-2",
             "link": "shopify://pages/planting-palette",
             "show_close_button": true,
-            "hide_on_paths": "/blogs/landscapes, /pages/planting-palette"
+            "hide_on_paths": ""
           }
         }
       },
       "block_order": [
+        "announcement_DFkjqx",
         "announcement_c6gPV8"
       ],
       "settings": {
-        "hide_on_paths": ""
+        "hide_on_paths": "",
+        "rotation_interval_seconds": 3
       }
     },
     "header": {
