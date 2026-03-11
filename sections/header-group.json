@@ -17,11 +17,11 @@
         "announcement_c6gPV8": {
           "type": "announcement",
           "settings": {
-            "text": "Member of the trade? Join now",
+            "text": "Get your planting palette by region",
             "text_color": "#000000",
             "text_alignment": "center",
             "color_scheme": "accent-2",
-            "link": "shopify://pages/trade",
+            "link": "shopify://pages/planting-palette",
             "show_close_button": true,
             "hide_on_paths": "/blogs/landscapes"
           }
