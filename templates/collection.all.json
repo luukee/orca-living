@@ -415,11 +415,11 @@
         "column_8e9BUN": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/Unearthing_-_Alex_Rooted.png",
-            "title": "Unearthing Podcast: Willow",
+            "image": "shopify://shop_images/ORCA_Planting_Palette_by_Region.png",
+            "title": "Planting Palette by Region",
             "text": "",
-            "link_label": "Listen",
-            "link": "shopify://blogs/unearthing/unearthing-willow-with-alex-rooted"
+            "link_label": "Learn More",
+            "link": "https://www.orcaliving.com/pages/planting-palette"
           }
         },
         "column_whe6JX": {
